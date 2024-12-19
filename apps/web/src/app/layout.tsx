@@ -4,6 +4,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import "./styles/globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,16 +19,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className} suppressHydrationWarning>
-        <SidebarProvider>
-          <AppSidebar variant="sidebar" collapsible="icon" />
-          <main className="flex min-h-screen flex-col flex-1 relatives">
-            {children}
-            <Toaster />
-          </main>
-        </SidebarProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className} suppressHydrationWarning>
+          <SidebarProvider>
+            <AppSidebar variant="sidebar" collapsible="icon" />
+            <main className="flex min-h-screen flex-col flex-1 relatives">
+              {children}
+              <Toaster />
+            </main>
+          </SidebarProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

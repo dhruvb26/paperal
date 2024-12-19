@@ -1,6 +1,7 @@
 import { Node } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
+import { slashCommandPluginKey } from "../slash-command/slash-command";
 
 function debounce<T extends (...args: any[]) => any>(
   callback: T,
@@ -80,6 +81,10 @@ export const AiAutocompleteExtension = Node.create<
         view() {
           return {
             update(view, prevState) {
+              if (view.state.doc.textContent.trim().length === 0) {
+                return;
+              }
+
               const selection = view.state.selection;
               const cursorPos = selection.$head.pos;
               const nextNode = view.state.doc.nodeAt(cursorPos);

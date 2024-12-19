@@ -29,7 +29,7 @@ const provider = new TiptapCollabProvider({
   document: doc,
   user: "some name",
   token:
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzQzODI1NDgsIm5iZiI6MTczNDM4MjU0OCwiZXhwIjoxNzM0NDY4OTQ4LCJpc3MiOiJodHRwczovL2Nsb3VkLnRpcHRhcC5kZXYiLCJhdWQiOiJ5OWRyNmVnbSJ9.NhZI3jXRbAwuoYGa3gj6BMOXXZcErw27gZgHhkcPmKc",
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzQ2MjU0NjIsIm5iZiI6MTczNDYyNTQ2MiwiZXhwIjoxNzM0NzExODYyLCJpc3MiOiJodHRwczovL2Nsb3VkLnRpcHRhcC5kZXYiLCJhdWQiOiJ5OWRyNmVnbSJ9.8eicXQcgjOoNtOYUrqvdfdoAFk8CwLRZHWs3-E_DoU8",
 });
 
 // Set to 30 seconds
@@ -147,6 +147,8 @@ export default () => {
       editor.chain().insertContent("<p>/</p>").focus().run();
     }
   };
+
+  if (!editor) return null;
 
   return (
     <>

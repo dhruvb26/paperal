@@ -108,11 +108,11 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
     >
       <div className="relative" ref={menuRef}>
         <button
-          className="flex items-center gap-1 p-2 text-xs hover:bg-gray-100 rounded-sm min-w-[8rem]"
+          className="flex items-center gap-1 p-2 text-xs hover:bg-gray-100 rounded-sm min-w-[9rem] cursor-pointer"
           onClick={() => setIsOpen(!isOpen)}
         >
           {activeStyle?.icon}
-          {activeStyle?.label}
+          <span className="ml-1">{activeStyle?.label}</span>
           <CaretUpDown size={12} className="ml-auto" />
         </button>
 
@@ -122,7 +122,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
               {textStyles.map((style) => (
                 <button
                   key={style.value}
-                  className={`relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-xs outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ${
+                  className={`relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-xs outline-none hover:bg-gray-100 ${
                     editor.isActive(style.value) ? "bg-accent" : ""
                   }`}
                   onClick={() => {
@@ -139,7 +139,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         )}
       </div>
       <button
-        className={`p-2 rounded hover:bg-gray-100 ${
+        className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
           editor.isActive("bold") ? "bg-gray-100" : ""
         }`}
         onClick={() => editor.chain().focus().toggleBold().run()}
@@ -147,7 +147,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <TextB size={16} />
       </button>
       <button
-        className={`p-2 rounded hover:bg-gray-100 ${
+        className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
           editor.isActive("italic") ? "bg-gray-100" : ""
         }`}
         onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -155,7 +155,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <TextItalic size={16} />
       </button>
       <button
-        className={`p-2 rounded hover:bg-gray-100 ${
+        className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
           editor.isActive("underline") ? "bg-gray-100" : ""
         }`}
         onClick={() => editor.chain().focus().toggleUnderline().run()}
@@ -163,7 +163,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <TextUnderline size={16} />
       </button>
       <button
-        className={`p-2 rounded hover:bg-gray-100 ${
+        className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
           editor.isActive("strike") ? "bg-gray-100" : ""
         }`}
         onClick={() => editor.chain().focus().toggleStrike().run()}
@@ -171,7 +171,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <TextStrikethrough size={16} />
       </button>
       <button
-        className={`p-2 rounded hover:bg-gray-100 ${
+        className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
           editor.isActive("highlight") ? "bg-gray-100" : ""
         }`}
         onClick={() => editor.chain().focus().toggleHighlight().run()}
@@ -179,7 +179,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Highlighter className="w-4 h-4" />
       </button>
       <button
-        className={`p-2 rounded hover:bg-gray-100 ${
+        className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
           editor.isActive("code") ? "bg-gray-100" : ""
         }`}
         onClick={() => editor.chain().focus().toggleCode().run()}
@@ -187,7 +187,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <CodeSimple size={16} />
       </button>
       <button
-        className={`p-2 rounded hover:bg-gray-100 ${
+        className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
           editor.isActive("blockquote") ? "bg-gray-100" : ""
         }`}
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
