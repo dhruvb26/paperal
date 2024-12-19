@@ -112,23 +112,28 @@ def StoreResearchPaperAgent(research_url: dict) -> bool:
                 continue
             text = sanitize_text(text)
             extracted_info = ExtractPaperAgent(text)
+            checker = supabase_embeddings.query_metadata("source", url, supabase)
+            if checker.data != 0:
+                logging.warning(f"Research paper already stored: {url}")
+                continue
             docum = Document(page_content=text)
             docs = supabase_embeddings.split_documents([docum])
             supabase_embeddings.add_metadata(docs, url, extracted_info.author, extracted_info.title)
             supabase_embeddings.create_vector_store(docs, embeddings, supabase)
 
-        logging.info("Research papers stored successfully.")
+            logging.info("Research papers stored successfully.")
         return True
     except Exception as e:
         logging.error(f"Error in StoreResearchPaperAgent: {e}")
         return False
 
 
-def SentenceGeneratorAgent(previous_text: str, heading: str, subheading: Optional[str]) -> str:
+def SentenceGeneratorAgent(previous_text: str, heading: str, subheading: Optional[str]) -> dict:
     """
     Generates a sentence based on the given context and heading.
     """
     try:
+        res = {}
         logging.info("Generating sentence...")
         supabase = supabase_embeddings.create_supabase_client()
         embeddings = OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
@@ -146,6 +151,8 @@ def SentenceGeneratorAgent(previous_text: str, heading: str, subheading: Optiona
 
         paper_content = matched_docs[0][0].page_content
         author = matched_docs[0][0].metadata.get("author", "Unknown")
+        title = matched_docs[0][0].metadata.get("title", "Unknown")
+        url = matched_docs[0][0].metadata.get("source", "Unknown")
 
         context = f"""
         text to generate sentence from: {paper_content}
@@ -172,7 +179,13 @@ def SentenceGeneratorAgent(previous_text: str, heading: str, subheading: Optiona
             temperature=0.8,
         )
         logging.info("Sentence generated successfully.")
-        return response.choices[0].message.content.strip()
+        res = {
+            "sentence": response.choices[0].message.content.strip(),
+            "author": author,
+            "url": url,
+            "title": title,
+        }
+        return res
     except Exception as e:
         logging.error(f"Error in SentenceGeneratorAgent: {e}")
         return ""
