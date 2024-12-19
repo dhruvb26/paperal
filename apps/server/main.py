@@ -202,6 +202,9 @@ async def generate_sentence(request: SentenceRequest):
     sentence = SentenceGeneratorAgent(request.previous_text, request.heading, request.subheading)
     return sentence
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 # Example usage
 if __name__ == "__main__":

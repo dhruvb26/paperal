@@ -12,7 +12,7 @@ importers:
         specifier: ^2.3.3
         version: 2.3.3
 
-  apps/web 21-59-04-361:
+  apps/web:
     dependencies:
       '@dagrejs/dagre':
         specifier: ^1.1.4
@@ -5130,6 +5130,7 @@ packages:
   wrangler@3.97.0:
     resolution: {integrity: sha512-NkFAigqZWe4NOK0gYROcpvdugaYJE/JRFrIZ+c5Q5/uie+25WH8OVbRvvmiXhWVhso56cZs2W2TPmAxT/sgHkw==}
     engines: {node: '>=16.17.0'}
+    deprecated: Downgrade to 3.96.0
     hasBin: true
     peerDependencies:
       '@cloudflare/workers-types': ^4.20241205.0
