@@ -1,14 +1,14 @@
 import os
-from typing import List, Optional
+from typing import Optional
 from dotenv import load_dotenv
-from fastapi import FastAPI, middleware
+from fastapi import FastAPI
 from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
-from pypdf import PdfReader
-import supabase_embeddings
+
+import supabase_embeddings as supabase_embeddings
 import tiktoken
-import logging  
-import baml_main
+import logging
+import baml_main as baml_main
 from tavily_test import getURL
 from pydantic import BaseModel
 from openai import OpenAI
@@ -202,9 +202,11 @@ async def generate_sentence(request: SentenceRequest):
     sentence = SentenceGeneratorAgent(request.previous_text, request.heading, request.subheading)
     return sentence
 
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
 
 # Example usage
 if __name__ == "__main__":
