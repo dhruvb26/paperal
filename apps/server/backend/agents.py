@@ -7,7 +7,7 @@ from langchain_openai import OpenAIEmbeddings
 from pypdf import PdfReader
 import supabase_embeddings
 import tiktoken
-import logging
+import logging  
 import baml_main
 from tavily_test import getURL
 from pydantic import BaseModel
