@@ -37,11 +37,13 @@ app.add_middleware(
 class SentenceRequest(BaseModel):
     previous_text: str
     heading: str
-    subheading: Optional[str]
+    subheading: Optional[str] = None
+    user_id: Optional[str] = None
 
 
 class StoreResearchRequest(BaseModel):
     research_urls: dict
+    user_id: Optional[str] = None
 
 
 # Utility function
@@ -83,7 +85,7 @@ def ExtractPaperAgent(text: str) -> str:
         return ""
 
 
-def StoreResearchPaperAgent(research_url: dict) -> bool:
+def StoreResearchPaperAgent(research_url: dict, user_id: Optional[str] = None) -> bool:
     """
     Stores research papers embeddings in the database.
     """
@@ -112,13 +114,15 @@ def StoreResearchPaperAgent(research_url: dict) -> bool:
                 continue
             text = sanitize_text(text)
             extracted_info = ExtractPaperAgent(text)
-            checker = supabase_embeddings.query_metadata("source", url, supabase)
-            if checker.data != 0:
+            checker = supabase_embeddings.query_metadata("source", url, supabase, user_id)
+            if len(checker.data) != 0:
                 logging.warning(f"Research paper already stored: {url}")
                 continue
             docum = Document(page_content=text)
             docs = supabase_embeddings.split_documents([docum])
-            supabase_embeddings.add_metadata(docs, url, extracted_info.author, extracted_info.title)
+            supabase_embeddings.add_metadata(
+                docs, url, extracted_info.author, extracted_info.title, user_id
+            )
             supabase_embeddings.create_vector_store(docs, embeddings, supabase)
 
             logging.info("Research papers stored successfully.")
@@ -128,7 +132,12 @@ def StoreResearchPaperAgent(research_url: dict) -> bool:
         return False
 
 
-def SentenceGeneratorAgent(previous_text: str, heading: str, subheading: Optional[str]) -> dict:
+def SentenceGeneratorAgent(
+    previous_text: str,
+    heading: str,
+    subheading: Optional[str] = None,
+    user_id: Optional[str] = None,
+) -> dict:
     """
     Generates a sentence based on the given context and heading.
     """
@@ -148,11 +157,25 @@ def SentenceGeneratorAgent(previous_text: str, heading: str, subheading: Optiona
         if not matched_docs:
             logging.warning("No matching documents found.")
             return ""
-
-        paper_content = matched_docs[0][0].page_content
-        author = matched_docs[0][0].metadata.get("author", "Unknown")
-        title = matched_docs[0][0].metadata.get("title", "Unknown")
-        url = matched_docs[0][0].metadata.get("source", "Unknown")
+        # Filter documents based on user_id
+        if user_id:
+            # Access PDFs with the provided user_id and PDFs with no user_id
+            filtered_docs = [
+                doc for doc, score in matched_docs if doc.metadata.get("user_id") in {user_id, None}
+            ]
+        else:
+            # Only access PDFs with no user_id
+            filtered_docs = [
+                doc for doc, score in matched_docs if doc.metadata.get("user_id") is None
+            ]
+            logging.info(f"Filtered documents based on no user_id: {len(filtered_docs)}")
+        if not filtered_docs:
+            logging.warning("No matching documents found based on user_id criteria.")
+            return ""
+        paper_content = filtered_docs[0].page_content
+        author = filtered_docs[0].metadata.get("author", "Unknown")
+        title = filtered_docs[0].metadata.get("title", "Unknown")
+        url = filtered_docs[0].metadata.get("source", "Unknown")
 
         context = f"""
         text to generate sentence from: {paper_content}
@@ -204,7 +227,7 @@ async def search_tavily(query: str):
 async def store_research_papers(request: StoreResearchRequest):
     """Endpoint to store research papers in the database."""
     logging.info("Received request to store research papers.")
-    success = StoreResearchPaperAgent(request.research_urls)
+    success = StoreResearchPaperAgent(request.research_urls, request.user_id)
     return {"success": success}
 
 
@@ -212,7 +235,9 @@ async def store_research_papers(request: StoreResearchRequest):
 async def generate_sentence(request: SentenceRequest):
     """Endpoint to generate a sentence based on the given context."""
     logging.info("Received request to generate sentence.")
-    sentence = SentenceGeneratorAgent(request.previous_text, request.heading, request.subheading)
+    sentence = SentenceGeneratorAgent(
+        request.previous_text, request.heading, request.subheading, request.user_id
+    )
     return sentence
 
 

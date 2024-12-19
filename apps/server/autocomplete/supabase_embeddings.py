@@ -7,6 +7,7 @@ from supabase.client import Client, create_client
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import CharacterTextSplitter
 from langchain.schema import Document
+from typing import Optional
 
 # Configure logging
 logging.basicConfig(
@@ -73,19 +74,26 @@ def split_text(text):
     return split_texts
 
 
-def add_metadata(docs, source, author, title):
+def add_metadata(docs, source, author, title, user_id: Optional[str] = None):
     logging.info("Adding metadata to documents...")
     for doc in docs:
         doc.metadata["source"] = source
         doc.metadata["author"] = author
         doc.metadata["title"] = title
+        doc.metadata["user_id"] = user_id
     logging.info("Metadata added.")
 
 
-def query_metadata(field, value, supabase):
+def query_metadata(field, value, supabase, user_id: Optional[str] = None):
     logging.info(f"Querying metadata: {field} = {value}")
     field = f"metadata->>{field}"
-    response = supabase.from_("documents").select("*").eq(field, value).execute()
+    response = (
+        supabase.from_("documents")
+        .select("*")
+        .eq(field, value)
+        .filter("metadata->>user_id", "is", "null")
+        .execute()
+    )
     logging.info(f"Query returned {len(response.data)} result(s).")
     return response
 
