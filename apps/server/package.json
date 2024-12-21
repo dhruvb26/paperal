@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Analyze Research Papers using AI",
   "scripts": {
-    "dev": "uvicorn agents:app --reload"
+    "dev": "uvicorn main:app --reload"
   },
   "keywords": [],
   "author": ""

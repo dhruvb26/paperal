@@ -5,6 +5,9 @@ import { AppSidebar } from "@/components/app-sidebar";
 import "./styles/globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ClerkProvider } from "@clerk/nextjs";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +25,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className} suppressHydrationWarning>
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <SidebarProvider>
             <AppSidebar variant="sidebar" collapsible="icon" />
             <main className="flex min-h-screen flex-col flex-1 relatives">

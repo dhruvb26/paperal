@@ -11,6 +11,8 @@ export const env = createEnv({
     CLERK_SECRET_KEY: z.string().min(1),
     UPLOADTHING_TOKEN: z.string().min(1),
     NODE_ENV: z.enum(["development", "production"]),
+    CLERK_WEBHOOK_SIGNING_SECRET: z.string().min(1),
+    API_URL: z.string().url(),
   },
   /*
    * Environment variables available on the client (and server).
@@ -29,9 +31,11 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
-    UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     NODE_ENV: process.env.NODE_ENV,
+    API_URL: process.env.API_URL,
+    UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
+    CLERK_WEBHOOK_SIGNING_SECRET: process.env.CLERK_WEBHOOK_SIGNING_SECRET,
   },
 });
