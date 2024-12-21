@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
 import { NavUser } from "@/components/nav-user";
+import { useUser } from "@clerk/nextjs";
 import {
   Sidebar,
   SidebarContent,
@@ -31,7 +31,7 @@ const data = {
   },
   navMain: [
     {
-      title: "Playground",
+      title: "Documents",
       url: "#",
       icon: <TerminalWindow size={24} />,
       isActive: true,
@@ -41,7 +41,7 @@ const data = {
           url: "/editor",
         },
         {
-          title: "History",
+          title: "Playground",
           url: "/editor/history",
         },
         {
@@ -102,9 +102,25 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { isLoaded, isSignedIn, user } = useUser();
+
+  if (!isLoaded || !isSignedIn) {
+    return null;
+  }
+
+  const name = user.fullName;
+  const email = user.emailAddresses[0].emailAddress;
+  const avatar = user.imageUrl;
+
+  const userData = {
+    name: name ?? "",
+    email: email ?? "",
+    avatar: avatar ?? "",
+  };
+
   return (
     <Sidebar {...props}>
-      {/* <SidebarHeader>
+      <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
@@ -121,23 +137,24 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   className="rounded-full"
                 />
 
-                <div className="text-sm group-data-[collapsible=icon]:hidden">
-                  <span className="truncate  font-medium text-lg text-black">
+                <div className="group-data-[collapsible=icon]:hidden flex flex-col">
+                  <span className="font-medium text-black font-mono uppercase">
                     Feather
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    Where search begins
                   </span>
                 </div>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-      </SidebarHeader> */}
+      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        {/* <NavProjects projects={data.projects} /> */}
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={userData} />
       </SidebarFooter>
     </Sidebar>
   );

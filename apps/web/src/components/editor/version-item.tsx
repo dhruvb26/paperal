@@ -19,14 +19,19 @@ export const VersionItem = ({
     <Button
       onClick={onClick}
       variant="ghost"
-      className={cn("w-full justify-start gap-2", isActive && "bg-accent")}
-    >
-      <span className="font-medium">{title || renderDate(date)}</span>
-      {title && (
-        <span className="text-muted-foreground text-sm">
-          {renderDate(date)}
-        </span>
+      className={cn(
+        "w-full h-auto p-2 px-3 justify-start",
+        isActive && "bg-accent hover:bg-accent shadow-none"
       )}
+    >
+      <div className="flex flex-col items-start space-y-2">
+        <span className="font-medium text-sm">{title || renderDate(date)}</span>
+        {title && (
+          <span className="text-muted-foreground text-xs">
+            {renderDate(date)}
+          </span>
+        )}
+      </div>
     </Button>
   );
 };

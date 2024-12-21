@@ -38,6 +38,14 @@
     font-size: 1rem;
   }
 
+  a {
+    color: #1d4ed8;
+    cursor: pointer;
+
+    &:hover {
+      color: #1143cc;
+    }
+  }
   /* Code and preformatted text styles */
   code {
     background-color: rgba(#616161, 0.1);
@@ -151,7 +159,7 @@
   font-size: 0.875rem;
   color: hsl(var(--muted-foreground));
   white-space: nowrap;
-  z-index: 100;
+  z-index: 20;
   display: flex;
   gap: 0.5rem;
   box-shadow: var(--shadow-sm);

@@ -54,7 +54,8 @@ export const AiAutocompleteExtension = Node.create<
     const getSuggestion = debounce(
       async (previousText: string, cb: (suggestion: string | null) => void) => {
         const suggestion = await fetch("/api/suggest", {
-          method: "GET",
+          method: "POST",
+          body: JSON.stringify({ previousText }),
         });
         const data = await suggestion.json();
         cb(data as string);

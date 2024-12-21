@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TiptapCollabProvider } from "@hocuspocus/provider";
 import { THistoryVersion } from "@hocuspocus/provider";
-
 import { VersionItem } from "./version-item";
 
 interface VersioningModalProps {
@@ -131,16 +130,13 @@ export const VersioningModal = memo(
 
     return (
       <Dialog open={isOpen} onOpenChange={() => handleClose()}>
-        <DialogContent className="flex gap-4 max-w-4xl">
-          <div className="flex-1">
+        <DialogContent className="flex gap-4 max-w-6xl h-[80vh] p-0">
+          <div className="w-2/3 py-8">
             <EditorContent editor={editor} />
           </div>
-          <div className="w-72 flex flex-col gap-4">
-            <h3 className="font-semibold">
-              History ({reversedVersions.length} versions)
-            </h3>
-            <ScrollArea className="flex-1">
-              <div className="flex flex-col gap-1">
+          <div className="w-1/3 flex flex-col justify-between border-l pt-12 pb-4 px-4">
+            <ScrollArea>
+              <div className="flex flex-col gap-2">
                 {reversedVersions.map((v) => (
                   <VersionItem
                     date={v.date}
@@ -153,9 +149,6 @@ export const VersioningModal = memo(
               </div>
             </ScrollArea>
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={handleClose}>
-                Close
-              </Button>
               <Button
                 disabled={!versionData || isCurrentVersion}
                 onClick={handleRevert}

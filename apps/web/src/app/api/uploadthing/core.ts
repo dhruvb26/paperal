@@ -1,42 +1,54 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { getUser } from "./actions";
+import { db } from "@/db";
+import { libraryTable } from "@/db/schema";
 
 const f = createUploadthing();
-
-const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
   pdfUploader: f({
     pdf: {
-      /**
-       * For full list of options and defaults, see the File Route API reference
-       * @see https://docs.uploadthing.com/file-routes#route-config
-       */
-      maxFileSize: "8MB",
-      maxFileCount: 1,
+      maxFileSize: "64MB",
     },
   })
     // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
       // This code runs on your server before upload
-      const user = await auth(req);
+      const user = await getUser();
 
       // If you throw, the user will not be able to upload
       if (!user) throw new UploadThingError("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
+      console.log("user id", user.id);
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.userId);
-
-      console.log("file url", file.url);
+      await db.insert(libraryTable).values({
+        title: "Proving Test Set Contamination in Black Box Language Models",
+        userId: metadata.userId,
+        metadata: {
+          fileUrl: file.url,
+          authors: [
+            "Yonatan Oren",
+            "Nicole Meister",
+            "Niladri Chatterji",
+            "Faisal Ladhak",
+            "Tatsunori B. Hashimoto",
+          ],
+          year: 2023,
+          citations: {
+            "in-text": "(Oren et al., 2023)",
+            "after-text": `Oren, Y., Meister, N., Chatterji, N., Ladhak, F., & Hashimoto, T. B. (2023). Proving test set contamination in black box language models. ${file.url}`,
+          },
+        },
+      });
 
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.userId };
+      return { uploadedBy: metadata.userId, fileUrl: file.url };
     }),
 } satisfies FileRouter;
 
