@@ -1,5 +1,13 @@
 import { BaseEdge, EdgeProps, getBezierPath } from "@xyflow/react";
-import { Button } from "@/components/ui/button";
+import { useSidebarStore } from "@/store/sidebar-store";
+import { FlowNode } from "@/store/sidebar-store";
+
+interface CustomEdgeProps extends EdgeProps {
+  data: {
+    sourceNode: FlowNode;
+    targetNode: FlowNode;
+  };
+}
 
 export function CustomEdge({
   sourceX,
@@ -11,10 +19,8 @@ export function CustomEdge({
   data,
   style,
   markerEnd,
-  source,
-  target,
-}: EdgeProps) {
-  const [edgePath, labelX, labelY] = getBezierPath({
+}: CustomEdgeProps) {
+  const [edgePath] = getBezierPath({
     sourceX,
     sourceY,
     sourcePosition,
@@ -23,33 +29,23 @@ export function CustomEdge({
     targetPosition,
   });
 
-  const handleExplainClick = () => {
-    // Find the connected nodes and log their text
-    const sourceNode = data?.sourceNode;
-    const targetNode = data?.targetNode;
+  const { toggleRightSidebar, setEdgeData, isRightSidebarOpen } =
+    useSidebarStore();
+
+  const handleEdgeClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEdgeData({
+      sourceNode: data?.sourceNode,
+      targetNode: data?.targetNode,
+    });
+    if (!isRightSidebarOpen) {
+      toggleRightSidebar();
+    }
   };
 
   return (
-    <>
+    <g onClick={handleEdgeClick}>
       <BaseEdge path={edgePath} style={style} markerEnd={markerEnd} />
-      <foreignObject
-        width={150}
-        height={32}
-        x={labelX - 50}
-        y={labelY - 20}
-        className="edge-button-foreignObject"
-      >
-        <Button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleExplainClick();
-          }}
-          size="sm"
-          className="bg-white text-black border text-xs hover:bg-gray-100"
-        >
-          Explain with AI
-        </Button>
-      </foreignObject>
-    </>
+    </g>
   );
 }

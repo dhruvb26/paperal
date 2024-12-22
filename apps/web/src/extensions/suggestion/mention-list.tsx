@@ -136,7 +136,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                   key={index}
                 >
                   <div
-                    className={`flex flex-col items-start gap-2 p-2 ${
+                    className={`flex flex-col items-start gap-2 p-2 citation-div ${
                       index === selectedIndex ? "" : ""
                     }`}
                   >
@@ -197,7 +197,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
               style={{ minHeight: "250px", width: "450px" }}
             >
               <span className="text-muted-foreground text-xs">
-                Discover content coming soon...
+                Discover content coming soon.
               </span>
             </div>
           </ScrollArea>

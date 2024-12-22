@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSidebarStore } from "@/store/sidebar-store";
 
 interface NodeEditorProps {
   selectedNode: string;
@@ -49,16 +50,21 @@ export default function NodeEditor({
 }: NodeEditorProps) {
   const selectedNodeData = nodes.find((n) => n.id === selectedNode)?.data;
   const { toast } = useToast();
+  const { updateNodeLabel } = useSidebarStore();
+
+  const handleLabelChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newLabel = e.target.value;
+    updateNodeData(selectedNode, { label: newLabel });
+    updateNodeLabel(selectedNode, newLabel);
+  };
 
   return (
-    <div className="absolute top-4 right-4 p-4 bg-none  rounded-md min-w-[300px]">
+    <div className="absolute top-4 right-4 bg-none  rounded-md min-w-[300px]">
       <div className="space-y-2">
         <div className="flex flex-col gap-2">
           <Textarea
             value={selectedNodeData?.label || ""}
-            onChange={(e) =>
-              updateNodeData(selectedNode, { label: e.target.value })
-            }
+            onChange={handleLabelChange}
             className="w-full px-2 py-1 border rounded h-40 text-xs bg-background"
             style={{ fontSize: "0.75rem" }}
             placeholder="Enter your text here"
@@ -68,11 +74,13 @@ export default function NodeEditor({
               <TooltipProvider delayDuration={100}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuTrigger>
-                      <Button variant="outline" size="icon">
-                        <Settings2Icon className="w-2 h-2" />
-                      </Button>
-                    </DropdownMenuTrigger>
+                    <div>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="icon">
+                          <Settings2Icon className="w-2 h-2" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                    </div>
                   </TooltipTrigger>
                   <TooltipContent side="top">
                     <p>Customize</p>
@@ -145,20 +153,22 @@ export default function NodeEditor({
             <TooltipProvider delayDuration={100}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button
-                    size="icon"
-                    onClick={() => {
-                      if (selectedNodeData?.label) {
-                        navigator.clipboard.writeText(selectedNodeData.label);
-                        toast({
-                          description:
-                            "The text has been copied to your clipboard.",
-                        });
-                      }
-                    }}
-                  >
-                    <CopyIcon className="w-2 h-2" />
-                  </Button>
+                  <div>
+                    <Button
+                      size="icon"
+                      onClick={() => {
+                        if (selectedNodeData?.label) {
+                          navigator.clipboard.writeText(selectedNodeData.label);
+                          toast({
+                            description:
+                              "The text has been copied to your clipboard.",
+                          });
+                        }
+                      }}
+                    >
+                      <CopyIcon className="w-2 h-2" />
+                    </Button>
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent side="top">
                   <p>Copy</p>

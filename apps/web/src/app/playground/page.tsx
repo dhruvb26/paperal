@@ -2,8 +2,6 @@
 import React, { useCallback, useState, useRef } from "react";
 import {
   ReactFlow,
-  MiniMap,
-  Controls,
   Background,
   useNodesState,
   useEdgesState,
@@ -11,16 +9,15 @@ import {
   useReactFlow,
   ReactFlowProvider,
   ConnectionMode,
-  Panel,
 } from "@xyflow/react";
 import CustomNode from "@/components/flow/custom-node";
 import NodeEditor from "@/components/flow/node-editor";
 import "@xyflow/react/dist/style.css";
 import { AnimatedEdge } from "@/components/flow/animated-edge";
-import Dagre from "@dagrejs/dagre";
 import { Button } from "@/components/ui/button";
-import { StretchHorizontal, StretchVertical } from "lucide-react";
 import { CustomEdge } from "@/components/flow/custom-edge";
+import { useSidebarStore } from "@/store/sidebar-store";
+import { Chats } from "@phosphor-icons/react";
 
 const edgeTypes = {
   animatedSvg: AnimatedEdge,
@@ -32,11 +29,7 @@ const initialNodes = [
     position: { x: 250, y: 50 },
     data: {
       label: "Abstract",
-      backgroundColor: "#ffffff",
-      borderColor: "#000000",
-      textColor: "#000000",
     },
-    fontSize: "0.5rem",
     type: "custom",
     selected: false,
   },
@@ -45,10 +38,6 @@ const initialNodes = [
     position: { x: 100, y: 100 },
     data: {
       label: "This paper talks about applications of AI in the future",
-      backgroundColor: "#ffffff",
-      borderColor: "#000000",
-      textColor: "#000000",
-      fontSize: "0.5rem",
     },
     type: "custom",
     selected: false,
@@ -80,6 +69,10 @@ function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
+
+  const toggleRightSidebar = useSidebarStore(
+    (state) => state.toggleRightSidebar
+  );
 
   const onConnect = useCallback(
     (params: any) => {
@@ -139,9 +132,6 @@ function Flow() {
           }),
           data: {
             label: `Node ${id}`,
-            backgroundColor: "#ffffff",
-            borderColor: "#000000",
-            textColor: "#000000",
           },
           type: "custom",
           fontSize: "0.5rem",
@@ -166,48 +156,20 @@ function Flow() {
     [screenToFlowPosition]
   );
 
-  const getLayoutedElements = (
-    nodes: any[],
-    edges: any[],
-    direction: "TB" | "LR"
-  ) => {
-    const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-    g.setGraph({
-      rankdir: direction,
-    });
-
-    edges.forEach((edge) => g.setEdge(edge.source, edge.target));
-    nodes.forEach((node) => g.setNode(node.id, { width: 100, height: 50 }));
-
-    Dagre.layout(g);
-
-    return {
-      nodes: nodes.map((node) => {
-        const position = g.node(node.id);
-        return {
-          ...node,
-          position: {
-            x: position.x,
-            y: position.y,
-          },
-        };
-      }),
-      edges,
-    };
-  };
-
-  const onLayout = useCallback(
-    (direction: "TB" | "LR") => {
-      const layouted = getLayoutedElements(nodes, edges, direction);
-      setNodes([...layouted.nodes]);
-      setEdges([...layouted.edges]);
-    },
-    [nodes, edges]
-  );
-
   return (
     <div className="w-full h-screen relative" ref={reactFlowWrapper}>
+      <div className="absolute bottom-16 right-4 z-10">
+        <Button
+          variant="outline"
+          onClick={toggleRightSidebar}
+          className="bg-white font-normal"
+        >
+          <Chats size={16} />
+          Chat
+        </Button>
+      </div>
       <ReactFlow
+        proOptions={{ hideAttribution: true }}
         nodes={nodes}
         nodeTypes={nodeTypes}
         edges={edges}
@@ -215,23 +177,15 @@ function Flow() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeClick={onNodeClick}
-        attributionPosition="bottom-left"
+        attributionPosition="top-right"
         connectionMode={ConnectionMode.Loose}
         onConnectEnd={onConnectEnd}
         edgeTypes={edgeTypes}
       >
-        <Controls />
-        <MiniMap />
+        {/* <Controls /> */}
+        {/* <MiniMap position="bottom-left" /> */}
         {/* @ts-ignore */}
         <Background gap={12} size={1} variant="none" />
-        <Panel position="top-left" className="flex flex-col gap-2">
-          <Button onClick={() => onLayout("TB")} size="icon">
-            <StretchHorizontal />
-          </Button>
-          <Button onClick={() => onLayout("LR")} size="icon">
-            <StretchVertical />
-          </Button>
-        </Panel>
       </ReactFlow>
 
       {selectedNode && (
