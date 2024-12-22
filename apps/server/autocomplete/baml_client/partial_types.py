@@ -32,3 +32,4 @@ from .types import Checked, Check
 class Paper(BaseModel):
     author: List[Optional[str]]
     title: Optional[str] = None
+    year: Optional[str] = None

@@ -1,6 +1,7 @@
 class Paper {
     author string[]
     title string
+    year string
     
 }
 
@@ -9,7 +10,7 @@ function ExtractPaper(paper: string) -> Paper {
 
     client "openai/gpt-4o"  
     prompt #"
-        Extract the authors and title from the following content:
+        Extract the authors,title and the year of publication from the following content:
         {{ paper }}
 
         {{ ctx.output_format }}

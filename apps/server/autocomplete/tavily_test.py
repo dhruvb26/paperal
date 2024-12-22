@@ -6,6 +6,8 @@ from typing import Optional
 from PyPDF2 import PdfReader
 import io
 import logging
+from openai import OpenAI
+
 
 # Configure logging
 logging.basicConfig(
@@ -37,8 +39,50 @@ except Exception as e:
     logging.error(f"Error initializing Tavily client: {e}")
     tavily_client = None
 
+# Initialize OpenAI client
+try:
+    openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    logging.info("OpenAI client initialized successfully.")
+except Exception as e:
+    logging.error(f"Error initializing OpenAI client: {e}")
+    openai_client = None
 
-def getURL(research_topic: str) -> dict:
+
+def generate_research_topic(text: str) -> list:
+    """
+    Generates a research topic from a given text using the OpenAI API.
+
+    Args:
+        text: The text to generate a research topic from.
+
+    Returns:
+        list: A list of keywords extracted from the text.
+    """
+    if not openai_client:
+        logging.error("OpenAI client is not initialized.")
+        return []
+
+    try:
+        response = openai_client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Generate a short research topic from the given text. Return only the research topic as a string.",
+                },
+                {"role": "user", "content": text},
+            ],
+        )
+        # Parse the comma-separated keywords into a list
+        research_topic = response.choices[0].message.content.strip()
+        logging.info(f"Generated research topic: {research_topic}")
+        return research_topic
+    except Exception as e:
+        logging.error(f"Error generating research topic: {e}")
+        return ""
+
+
+def getURL(research_sentence: str) -> dict:
     """
     Fetches URLs of research papers based on a topic using Tavily API.
 
@@ -51,7 +95,7 @@ def getURL(research_topic: str) -> dict:
     if not tavily_client:
         logging.error("Tavily client is not initialized.")
         return {}
-
+    research_topic = generate_research_topic(research_sentence)
     logging.info(f"Searching for research papers on: {research_topic}")
     url_list = []
     result = {}
@@ -61,7 +105,7 @@ def getURL(research_topic: str) -> dict:
     search_params = {
         "query": query,
         "max_results": 10,
-        "include_domains": ["arxiv.org"],
+        # "include_domains": ["arxiv.org"],
         "search_depth": "advanced",
         "filter_language": "en",
     }
@@ -77,7 +121,7 @@ def getURL(research_topic: str) -> dict:
                 if pdf_response.status_code == 200:
                     pdf_content = io.BytesIO(pdf_response.content)
                     page_count = check_pdf_pages(pdf_content)
-                    if page_count > 0:
+                    if page_count > 0 and page_count < 30:
                         url_list.append(pdf_url)
                         logging.info(f"Valid PDF with {page_count} pages: {pdf_url}")
                     else:
@@ -86,8 +130,10 @@ def getURL(research_topic: str) -> dict:
                     logging.warning(f"Failed to download PDF: HTTP {pdf_response.status_code}")
             except Exception as download_error:
                 logging.error(f"Error downloading or processing PDF: {download_error}")
-
-        result = {"research_topic": research_topic, "url_list": url_list[:3]}
+        if len(url_list) >= 4:
+            result = {"research_topic": research_topic, "url_list": url_list[:4]}
+        else:
+            result = {"research_topic": research_topic, "url_list": url_list}
         logging.info(f"Search result: {result}")
     except Exception as e:
         logging.error(f"Error during Tavily search: {e}")
@@ -99,7 +145,10 @@ def getURL(research_topic: str) -> dict:
 if __name__ == "__main__":
     logging.info("Script started.")
     try:
-        search_result = getURL("AI in healthcare")
+        query = "a paper on dataset inference in terms of language models with specific focus on the dataset size"
+        logging.info(f"Searching Tavily for query: {query}")
+
+        search_result = getURL(query)
         logging.info(f"Search completed: {search_result}")
     except Exception as e:
         logging.error(f"An error occurred: {e}")
