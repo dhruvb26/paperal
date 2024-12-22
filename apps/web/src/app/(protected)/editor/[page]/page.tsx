@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { getDocument } from "@/app/editor/actions";
+import { getDocument } from "@/app/actions/documents";
 import { useEffect, useState } from "react";
 import Tiptap from "@/components/editor/tip-tap";
 import { Loader } from "@/components/ui/loader";

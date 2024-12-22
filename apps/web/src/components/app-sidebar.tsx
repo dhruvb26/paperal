@@ -18,22 +18,33 @@ import {
   TerminalWindow,
   FadersHorizontal,
   File,
+  DotsThree,
+  DotsThreeVertical,
 } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 
 import { getDocContent, getDocDate, getDocHeading } from "@/utils/render-doc";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
+import { NewDocumentDialog } from "@/components/document/new-document-dialog";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { createDocument } from "@/app/editor/actions";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { deleteDocument } from "@/app/actions/documents";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const data = {
   user: {
@@ -84,9 +95,10 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
   const [sortDesc, setSortDesc] = React.useState(true);
   const pathname = usePathname();
   const [isNewDocOpen, setIsNewDocOpen] = React.useState(false);
-  const [newDocPrompt, setNewDocPrompt] = React.useState("");
-  const [isCreating, setIsCreating] = React.useState(false);
-
+  const [documentToDelete, setDocumentToDelete] = React.useState<string | null>(
+    null
+  );
+  const router = useRouter();
   const filteredDocuments = documents
     .filter((document) => {
       const title = getDocHeading(document.content)?.toLowerCase() || "";
@@ -103,22 +115,6 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
         : dateA.getTime() - dateB.getTime();
     });
 
-  const handleCreateDocument = async () => {
-    if (!newDocPrompt.trim() || isCreating) return;
-
-    try {
-      setIsCreating(true);
-      const newDoc = await createDocument();
-      setNewDocPrompt("");
-      setIsNewDocOpen(false);
-      window.location.href = `/editor/${newDoc}`;
-    } catch (error) {
-      console.error("Error creating document:", error);
-    } finally {
-      setIsCreating(false);
-    }
-  };
-
   if (!isLoaded || !isSignedIn) {
     return null;
   }
@@ -131,6 +127,16 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
     name: name ?? "",
     email: email ?? "",
     avatar: avatar ?? "",
+  };
+
+  const handleDeleteDocument = async (documentId: string) => {
+    try {
+      await deleteDocument(documentId);
+      setDocumentToDelete(null);
+      router.push("/editor");
+    } catch (error) {
+      console.error("Failed to delete document:", error);
+    }
   };
 
   return (
@@ -180,66 +186,61 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
               New
             </Button>
 
-            <Dialog open={isNewDocOpen} onOpenChange={setIsNewDocOpen}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create New Document</DialogTitle>
-                  <DialogDescription>
-                    Enter a prompt to start your new document.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="py-4">
-                  <Input
-                    placeholder="Enter your prompt..."
-                    value={newDocPrompt}
-                    onChange={(e) => setNewDocPrompt(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        handleCreateDocument();
-                      }
-                    }}
-                  />
-                </div>
-                <DialogFooter>
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsNewDocOpen(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button onClick={handleCreateDocument} disabled={isCreating}>
-                    {isCreating ? "Creating..." : "Create"}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <NewDocumentDialog
+              isOpen={isNewDocOpen}
+              onOpenChange={setIsNewDocOpen}
+            />
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup className="px-0 py-0">
               <SidebarGroupContent>
                 {filteredDocuments.map((document) => (
-                  <Link
-                    href={`/editor/${document.id}`}
+                  <div
                     key={document.id}
-                    className={`flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight hover:bg-sidebar-accent hover:text-sidebar-accent-foreground ${
+                    className={`flex flex-col items-start gap-2 whitespace-nowrap border-b p-2 text-sm leading-tight ${
                       pathname === `/editor/${document.id}`
-                        ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                        ? "bg-white text-sidebar-accent-foreground"
                         : ""
                     }`}
                   >
                     <div className="flex w-full items-center gap-2">
-                      <span className="font-medium">
-                        {getDocHeading(document.content)}
-                      </span>
-                      <span className="ml-auto text-xs">
-                        {getDocDate(document.createdAt)}
-                      </span>
+                      <Link
+                        href={`/editor/${document.id}`}
+                        className="flex-1 truncate"
+                      >
+                        <span className="font-medium truncate">
+                          {getDocHeading(document.content)}
+                        </span>
+                      </Link>
+
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 p-0 hover:bg-muted"
+                          >
+                            <DotsThreeVertical size={16} />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => setDocumentToDelete(document.id)}
+                          >
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
 
                     <span className="line-clamp-2 w-[260px] text-muted-foreground whitespace-break-spaces text-xs">
                       {getDocContent(document.content)}
                     </span>
-                  </Link>
+                    <span className="text-xs text-muted-foreground italic">
+                      {getDocDate(document.createdAt)}
+                    </span>
+                  </div>
                 ))}
                 {filteredDocuments.length === 0 && (
                   <div className="p-4 text-sm text-center w-full">
@@ -251,6 +252,31 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
           </SidebarContent>
         </Sidebar>
       </Sidebar>
+
+      <AlertDialog
+        open={!!documentToDelete}
+        onOpenChange={() => setDocumentToDelete(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the
+              document.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                documentToDelete && handleDeleteDocument(documentToDelete)
+              }
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

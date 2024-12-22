@@ -12,7 +12,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
-import { getDocuments } from "@/app/actions";
+import { getDocuments } from "@/app/actions/documents";
+import { auth } from "@clerk/nextjs/server";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -40,16 +41,7 @@ export default async function RootLayout({
             }
           >
             <AppSidebar documents={documents} />
-            <SidebarInset>
-              <header className="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-2.5">
-                <SidebarTrigger className="-ml-1" />
-              </header>
-
-              <main className="flex min-h-screen flex-col flex-1 relative">
-                {children}
-                <Toaster />
-              </main>
-            </SidebarInset>
+            {children}
           </SidebarProvider>
         </body>
       </html>
