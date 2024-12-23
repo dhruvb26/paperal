@@ -20,7 +20,7 @@ from functools import lru_cache
 import fitz
 
 # graphrag (lightrag)
-from knowledge_graphs.helpers import process_text_into_neo4j
+from backend.lightrag.helpers import process_text_into_neo4j
 
 # Load environment variables
 load_dotenv()
