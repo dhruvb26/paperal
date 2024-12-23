@@ -4,12 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        "apps/web/.next/**",
-        "apps/web/dist/**",
-        ".wrangler/**",
-        "!apps/web/.next/cache/**"
-      ]
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,

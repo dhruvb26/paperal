@@ -45,6 +45,7 @@ export const documentsTable = pgTable("documents", {
     .primaryKey()
     .default(sql`uuid_generate_v4()`),
   content: jsonb("content"),
+  title: text("title"),
   prompt: text("prompt"),
   userId: varchar("user_id")
     .references(() => usersTable.id, { onDelete: "cascade" })

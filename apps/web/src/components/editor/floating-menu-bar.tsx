@@ -140,7 +140,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
   };
 
   return (
-    <TooltipProvider delayDuration={100}>
+    <TooltipProvider delayDuration={0}>
       <BubbleMenu
         className="flex flex-nowrap gap-1 p-1 rounded-md bg-white shadow-sm border w-fit"
         editor={editor}

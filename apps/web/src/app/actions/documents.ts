@@ -5,6 +5,8 @@ import { documentsTable } from "@/db/schema";
 import { v4 as uuidv4 } from "uuid";
 import { currentUser } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
+import axios from "axios";
+import { env } from "@/env";
 
 export async function createDocument(prompt: string) {
   const docId = uuidv4();
@@ -15,17 +17,28 @@ export async function createDocument(prompt: string) {
     throw new Error("User not found");
   }
 
+  // await axios.post(`${env.API_URL}/generate_heading`, {
+  //   prompt,
+  //   userId,
+  // });
+
   const defaultContent = {
     type: "doc",
     content: [
       {
-        type: "paragraph",
+        type: "heading",
+        attrs: {
+          level: 1,
+        },
         content: [
           {
             type: "text",
-            text: "",
+            text: "Untitled Document",
           },
         ],
+      },
+      {
+        type: "paragraph",
       },
     ],
   };
@@ -34,6 +47,7 @@ export async function createDocument(prompt: string) {
     id: docId,
     content: JSON.stringify(defaultContent),
     prompt: prompt,
+    title: "Untitled Document",
     userId: userId,
   });
 

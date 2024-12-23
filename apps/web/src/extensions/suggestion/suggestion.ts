@@ -3,6 +3,7 @@ import tippy from "tippy.js";
 import { Editor } from "@tiptap/core";
 
 import { MentionList } from "./mention-list";
+import { LibraryDocument } from "./index";
 
 interface SuggestionProps {
   query: string;

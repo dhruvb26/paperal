@@ -9,7 +9,6 @@ const EditorHomePage = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-2">
       <p className="text-sm">Hey this is the editor.</p>
-      <CustomUploadButton />
     </div>
   );
 };

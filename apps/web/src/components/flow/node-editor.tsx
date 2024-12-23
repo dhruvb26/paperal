@@ -71,7 +71,7 @@ export default function NodeEditor({
           />
           <div className="flex justify-end gap-2">
             <DropdownMenu>
-              <TooltipProvider delayDuration={100}>
+              <TooltipProvider delayDuration={0}>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div>
@@ -150,7 +150,7 @@ export default function NodeEditor({
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
-            <TooltipProvider delayDuration={100}>
+            <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div>

@@ -1,4 +1,4 @@
-type LibraryDocument = {
+export interface LibraryDocument {
   id: string;
   title: string;
   description: string;
@@ -13,4 +13,4 @@ type LibraryDocument = {
       "after-text"?: string;
     };
   };
-};
+}

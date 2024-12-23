@@ -8,50 +8,22 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
   SidebarHeader,
   SidebarInput,
 } from "@/components/ui/sidebar";
-import {
-  GearSix,
-  TerminalWindow,
-  FadersHorizontal,
-  File,
-  DotsThree,
-  DotsThreeVertical,
-} from "@phosphor-icons/react";
+import { GearSix, TerminalWindow, File, Archive } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
-
-import { getDocContent, getDocDate, getDocHeading } from "@/utils/render-doc";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import { NewDocumentDialog } from "@/components/document/new-document-dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { deleteDocument } from "@/app/actions/documents";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import { DocumentList } from "@/components/document/document-list";
+import { DeleteDocumentDialog } from "@/components/document/delete-document-dialog";
+import { LibraryList } from "@/components/document/library-list";
+import { CustomUploadButton } from "./uploadthing/custom-upload-button";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Documents",
@@ -64,11 +36,10 @@ const data = {
       icon: <TerminalWindow size={24} />,
     },
     {
-      title: "Models",
-      url: "/models",
-      icon: <FadersHorizontal size={24} />,
+      title: "Library",
+      url: "/library",
+      icon: <Archive size={24} />,
     },
-
     {
       title: "Settings",
       url: "/settings",
@@ -85,11 +56,27 @@ interface Document {
   userId: string | null;
 }
 
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  documents?: Document[];
+interface Library {
+  id: string;
+  title: string;
+  description: string;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date | null;
+  metadata: any;
 }
 
-export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  documents?: Document[];
+  libraries?: Library[];
+}
+
+export function AppSidebar({
+  documents = [],
+  libraries = [],
+  ...props
+}: AppSidebarProps) {
+  const { toast } = useToast();
   const { isLoaded, isSignedIn, user } = useUser();
   const [searchQuery, setSearchQuery] = React.useState("");
   const [sortDesc, setSortDesc] = React.useState(true);
@@ -99,44 +86,38 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
     null
   );
   const router = useRouter();
-  const filteredDocuments = documents
-    .filter((document) => {
-      const title = getDocHeading(document.content)?.toLowerCase() || "";
-      const content = getDocContent(document.content)?.toLowerCase() || "";
-      const query = searchQuery.toLowerCase();
-
-      return title.includes(query) || content.includes(query);
-    })
-    .sort((a, b) => {
-      const dateA = a.updatedAt || a.createdAt;
-      const dateB = b.updatedAt || b.createdAt;
-      return sortDesc
-        ? dateB.getTime() - dateA.getTime()
-        : dateA.getTime() - dateB.getTime();
-    });
+  const [showLibraryList, setShowLibraryList] = React.useState(false);
 
   if (!isLoaded || !isSignedIn) {
     return null;
   }
 
-  const name = user.fullName;
-  const email = user.emailAddresses[0].emailAddress;
-  const avatar = user.imageUrl;
-
   const userData = {
-    name: name ?? "",
-    email: email ?? "",
-    avatar: avatar ?? "",
+    name: user.fullName ?? "",
+    email: user.emailAddresses[0].emailAddress ?? "",
+    avatar: user.imageUrl ?? "",
   };
 
   const handleDeleteDocument = async (documentId: string) => {
     try {
       await deleteDocument(documentId);
       setDocumentToDelete(null);
+      toast({
+        title: "Document deleted",
+        description: "The document has been deleted successfully.",
+      });
       router.push("/editor");
     } catch (error) {
       console.error("Failed to delete document:", error);
     }
+  };
+
+  const handleLibraryClick = () => {
+    setShowLibraryList(true);
+  };
+
+  const handleEditorClick = () => {
+    setShowLibraryList(false);
   };
 
   return (
@@ -151,14 +132,17 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
           className="!w-[calc(var(--sidebar-width-icon)_+_1px)] border-r group-data-[collapsible=icon]:border-r-0 transition-all duration-300"
         >
           <SidebarContent>
-            <NavMain items={data.navMain} />
+            <NavMain
+              items={data.navMain}
+              onLibraryClick={handleLibraryClick}
+              onEditorClick={handleEditorClick}
+            />
           </SidebarContent>
           <SidebarFooter>
             <NavUser user={userData} />
           </SidebarFooter>
         </Sidebar>
 
-        {/* Secondary sidebar */}
         <Sidebar collapsible="none" className="hidden flex-1 md:flex">
           <SidebarHeader className="border-b p-2 flex justify-between flex-row">
             <SidebarInput
@@ -168,24 +152,40 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </SidebarHeader>
-          <SidebarHeader className="border-b py-1 flex justify-between flex-row w-full">
-            <Button
-              size="sm"
-              variant="ghost"
-              className="h-8"
-              onClick={() => setSortDesc(!sortDesc)}
-            >
-              Sort {sortDesc ? "↓" : "↑"}
-            </Button>
 
-            <Button
-              size="sm"
-              variant="outline"
-              className="h-8 shadow-none"
-              onClick={() => setIsNewDocOpen(true)}
-            >
-              New
-            </Button>
+          <SidebarHeader className="border-b py-1 flex justify-between flex-row w-full">
+            {showLibraryList ? (
+              <>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-8"
+                  onClick={() => setSortDesc(!sortDesc)}
+                >
+                  Sort {sortDesc ? "↓" : "↑"}
+                </Button>
+                <CustomUploadButton />
+              </>
+            ) : (
+              <>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="h-8"
+                  onClick={() => setSortDesc(!sortDesc)}
+                >
+                  Sort {sortDesc ? "↓" : "↑"}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-8 shadow-none"
+                  onClick={() => setIsNewDocOpen(true)}
+                >
+                  New
+                </Button>
+              </>
+            )}
 
             <NewDocumentDialog
               isOpen={isNewDocOpen}
@@ -193,91 +193,32 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
             />
           </SidebarHeader>
           <SidebarContent>
-            <SidebarGroup className="px-0 py-0">
-              <SidebarGroupContent>
-                {filteredDocuments.map((document) => (
-                  <div
-                    key={document.id}
-                    className={`flex flex-col items-start gap-2 whitespace-nowrap border-b p-2 text-sm leading-tight ${
-                      pathname === `/editor/${document.id}`
-                        ? "bg-white text-sidebar-accent-foreground"
-                        : ""
-                    }`}
-                  >
-                    <div className="flex w-full items-center gap-2">
-                      <Link
-                        href={`/editor/${document.id}`}
-                        className="flex-1 truncate"
-                      >
-                        <span className="font-medium truncate hover:underline">
-                          {getDocHeading(document.content)}
-                        </span>
-                      </Link>
-
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 p-0 hover:bg-muted"
-                          >
-                            <DotsThreeVertical size={16} />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
-                            className="text-destructive"
-                            onClick={() => setDocumentToDelete(document.id)}
-                          >
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-
-                    <span className="line-clamp-2 w-[260px] text-muted-foreground whitespace-break-spaces text-xs">
-                      {getDocContent(document.content)}
-                    </span>
-                    <span className="text-xs text-muted-foreground italic">
-                      {getDocDate(document.createdAt)}
-                    </span>
-                  </div>
-                ))}
-                {filteredDocuments.length === 0 && (
-                  <div className="p-4 text-sm text-center w-full">
-                    No results found.
-                  </div>
-                )}
-              </SidebarGroupContent>
-            </SidebarGroup>
+            {showLibraryList ? (
+              <LibraryList
+                libraries={libraries}
+                searchQuery={searchQuery}
+                sortDesc={sortDesc}
+                pathname={pathname}
+                setLibraryToDelete={setDocumentToDelete}
+              />
+            ) : (
+              <DocumentList
+                documents={documents}
+                searchQuery={searchQuery}
+                sortDesc={sortDesc}
+                pathname={pathname}
+                setDocumentToDelete={setDocumentToDelete}
+              />
+            )}
           </SidebarContent>
         </Sidebar>
       </Sidebar>
 
-      <AlertDialog
-        open={!!documentToDelete}
-        onOpenChange={() => setDocumentToDelete(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              document.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() =>
-                documentToDelete && handleDeleteDocument(documentToDelete)
-              }
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteDocumentDialog
+        documentToDelete={documentToDelete}
+        onDelete={handleDeleteDocument}
+        onCancel={() => setDocumentToDelete(null)}
+      />
     </>
   );
 }

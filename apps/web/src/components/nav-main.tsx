@@ -11,6 +11,8 @@ import Link from "next/link";
 
 export function NavMain({
   items,
+  onLibraryClick,
+  onEditorClick,
 }: {
   items: {
     title: string;
@@ -22,6 +24,8 @@ export function NavMain({
       url: string;
     }[];
   }[];
+  onLibraryClick: () => void;
+  onEditorClick: () => void;
 }) {
   return (
     <SidebarGroup>
@@ -36,7 +40,13 @@ export function NavMain({
               isActive={item.isActive}
               asChild
             >
-              <Link href={item.url}>{item.icon}</Link>
+              {item.title === "Library" ? (
+                <button onClick={onLibraryClick}>{item.icon}</button>
+              ) : item.title === "Documents" ? (
+                <button onClick={onEditorClick}>{item.icon}</button>
+              ) : (
+                <Link href={item.url}>{item.icon}</Link>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

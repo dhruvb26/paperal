@@ -50,7 +50,7 @@ export default ({ documentId, initialContent }: TiptapProps) => {
     immediatelyRender: true,
     extensions: [
       StarterKit.configure(),
-      AiAutocompleteExtension,
+      // AiAutocompleteExtension,
       Mention.configure({
         HTMLAttributes: {
           class: "mention",
@@ -128,6 +128,19 @@ export default ({ documentId, initialContent }: TiptapProps) => {
     },
     onCreate: () => {
       setIsEditorLoading(false);
+      let placeholderPos = null;
+
+      editor.state.doc.descendants((node, pos) => {
+        if (node.type.name === "paragraph") {
+          placeholderPos = pos;
+          return false; // Stop iteration once the first paragraph is found
+        }
+      });
+
+      if (placeholderPos !== null) {
+        editor.commands.setTextSelection(placeholderPos);
+        editor.commands.focus();
+      }
     },
     onUpdate: ({ editor }) => {
       debouncedSave(editor);

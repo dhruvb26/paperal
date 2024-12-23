@@ -10,7 +10,7 @@ function debounce<T extends (...args: any[]) => any>(
   let timer: ReturnType<typeof setTimeout>;
 
   return (...args: Parameters<T>): Promise<ReturnType<T>> => {
-    return new Promise((resolve, reject) => {
+    return new Promise<ReturnType<T>>((resolve, reject) => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         try {
@@ -20,6 +20,9 @@ function debounce<T extends (...args: any[]) => any>(
           reject(err);
         }
       }, delay);
+    }).catch((error) => {
+      console.error("Error in debounced function:", error);
+      throw error; // Re-throw the error if you want it to propagate
     });
   };
 }
@@ -53,13 +56,18 @@ export const AiAutocompleteExtension = Node.create<
 
     const getSuggestion = debounce(
       async (previousText: string, cb: (suggestion: string | null) => void) => {
-        const suggestion = await fetch("/api/suggest", {
-          method: "POST",
-          body: JSON.stringify({ previousText }),
-        });
-        const data = await suggestion.json();
-        console.log(data);
-        cb(data as string);
+        try {
+          const suggestion = await fetch("/api/suggest", {
+            method: "POST",
+            body: JSON.stringify({ previousText }),
+          });
+          const data = await suggestion.json();
+          console.log(data);
+          cb(data as string);
+        } catch (error) {
+          console.error(error);
+          cb(null);
+        }
       },
       this.options.suggestionDebounce
     );
