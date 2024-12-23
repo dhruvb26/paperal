@@ -1,0 +1,55 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# giving me issues
+git rm --cached apps/server/venv/lib/python3.12/site-packages/numpy/.dylibs/libopenblas64_.0.dylib
+git rm --cached apps/server/venv/lib/python3.12/site-packages/pyarrow/libarrow.1801.dylib
+git rm --cached apps/server/venv/lib/python3.12/site-packages/torch/lib/libtorch_cpu.dylib
+
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+.npmrc
+
+# Cloudflare related
+/.save.next
+/.worker-next
+/.wrangler
+
+# wrangler files
+.wrangler
+.dev.vars
+
+# Million Lint
+.million
