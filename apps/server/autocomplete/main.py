@@ -1,26 +1,26 @@
+import logging
 import os
+from functools import lru_cache
 from typing import Optional
-from dotenv import load_dotenv
-from fastapi import FastAPI
-from langchain_community.vectorstores import SupabaseVectorStore
-from langchain_openai import OpenAIEmbeddings
-from supabase_embeddings import query_vector_store
+
+import baml_main as baml_main
+import fitz
+import requests
 import supabase_embeddings as supabase_embeddings
 import tiktoken
-import logging
-import baml_main as baml_main
-from tavily_test import getURL
-from pydantic import BaseModel
-from openai import OpenAI
-import requests
-from fastapi.middleware.cors import CORSMiddleware
-from langchain.schema import Document
-from functools import lru_cache
-
-import fitz
 
 # graphrag (lightrag)
-from backend.lightrag.helpers import process_text_into_neo4j
+# from backend.lightrag_implement.helpers import process_text_into_neo4j
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from langchain.schema import Document
+from langchain_community.vectorstores import SupabaseVectorStore
+from langchain_openai import OpenAIEmbeddings
+from openai import OpenAI
+from pydantic import BaseModel
+from supabase_embeddings import query_vector_store
+from tavily_test import getURL, generate_research_topic
 
 # Load environment variables
 load_dotenv()
@@ -47,7 +47,7 @@ class SentenceRequest(BaseModel):
 
 
 class StoreResearchRequest(BaseModel):
-    research_urls: dict
+    research_urls: list[str]
     user_id: Optional[str] = None
 
 
@@ -75,6 +75,15 @@ def sanitize_text(text: str) -> str:
 
 
 # Agents
+
+
+def research_topic_agent(query: str) -> dict:
+    """
+    Agent to generate a research topic.
+    """
+    return generate_research_topic(query)
+
+
 def TavilySearchAgent(query: str) -> dict:
     """
     Agent to search the Tavily database for relevant information.
@@ -126,7 +135,7 @@ def generate_in_text_citation(
         If multiple authors are provided, the citation should be: (Author1(last name) et al., Year)
         If no author is provided, the citation should be: (Year)
 
-        
+        Only return the in-text citation, no other text.
         """
         client = OpenAI()
         response = client.chat.completions.create(
@@ -135,7 +144,7 @@ def generate_in_text_citation(
                 {"role": "system", "content": "You are a research paper writing assistant."},
                 {"role": "user", "content": prompt},
             ],
-            temperature=0.2,
+            temperature=0.9,
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
@@ -143,7 +152,7 @@ def generate_in_text_citation(
         return {}
 
 
-def StoreResearchPaperAgent(research_url: dict, user_id: Optional[str] = None) -> bool:
+def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = None) -> bool:
     """
     Stores research papers embeddings in the database.
     """
@@ -155,7 +164,7 @@ def StoreResearchPaperAgent(research_url: dict, user_id: Optional[str] = None) -
         supabase = get_supabase_client()
         embeddings = get_embeddings_model()
 
-        for url in research_url["url_list"]:
+        for url in research_url:
             text = ""
             response = requests.get(url)
 
@@ -172,7 +181,7 @@ def StoreResearchPaperAgent(research_url: dict, user_id: Optional[str] = None) -
                 continue
             text = sanitize_text(text)
             extracted_info = ExtractPaperAgent(text)
-            checker = supabase_embeddings.query_metadata("source", url, supabase, user_id)
+            checker = supabase_embeddings.query_metadata("fileUrl", url, supabase, user_id)
             if len(checker.data) != 0:
                 logging.warning(f"Research paper already stored: {url}")
                 continue
@@ -180,27 +189,39 @@ def StoreResearchPaperAgent(research_url: dict, user_id: Optional[str] = None) -
             docs = supabase_embeddings.split_documents([docum])
 
             metadata_for_library = {
-                "source": url,
-                "author": extracted_info.author,
+                "fileUrl": url,
+                "authors": extracted_info.author,
                 "year": extracted_info.year,
-                "in-text citation": generate_in_text_citation(
-                    extracted_info.author, extracted_info.year
-                ),
-                # "after-text citation": generate_after_text_citation(
-                #     extracted_info.author, extracted_info.year
-                # ),
+                "citations": {
+                    "in-text": generate_in_text_citation(
+                        extracted_info.author, extracted_info.year
+                    ),
+                    # "after-text citation": generate_after_text_citation(
+                    #     extracted_info.author, extracted_info.year
+                    # ),
+                },
             }
 
-            supabase_embeddings.add_metadata(
-                docs, url, extracted_info.author, extracted_info.title, extracted_info.year, user_id
-            )
             data = {
                 "title": extracted_info.title,
+                "description": "This is a research paper",
                 "user_id": user_id,
                 "metadata": metadata_for_library,
                 "is_public": True if user_id == None else False,
             }
-            supabase.table("library").insert(data).execute()
+            # add library_id to metadata
+            library_id = supabase.table("library").insert(data).execute()
+            print(library_id)
+            print(library_id.data[0]["id"])
+            supabase_embeddings.add_metadata(
+                docs,
+                url,
+                extracted_info.author,
+                extracted_info.title,
+                extracted_info.year,
+                user_id,
+                library_id.data[0]["id"],
+            )
             supabase_embeddings.create_vector_store(docs, embeddings, supabase)
 
             logging.info("Research papers stored successfully.")
@@ -268,7 +289,7 @@ def suggest_structure_helper(heading: str, content: str) -> str:
     You are given a research paper - {content} and a user query - {heading}.
     You are to suggest a subheading for the research paper based on the provided content and user query.
     Make sure the subheading flows logically with the previous content and pertains to the user query.
-    The subheading should be very short and concise.
+    The subheading should be very short and concise something like Abstract, Conclusion, Methodology, etc.
     Only return the subheading, no other text.
     """
     try:
@@ -288,6 +309,7 @@ def suggest_structure_helper(heading: str, content: str) -> str:
 
 
 def generate_ai_sentence(
+    # improve prompt
     previous_text: str,
     heading: str,
     subheading: Optional[str] = None,
@@ -307,8 +329,8 @@ def generate_ai_sentence(
         Generate 1 sentence that naturally follow the previous text.
 
         Guidelines:
-        - Don't use words like "Our research shows that..." or "According to our research..." or "In our research...".
         - Ensure logical flow from the previous text
+        - Don't use words like "Our research shows that..." or "According to our research..." or "In our research...".
         - Focus on creating cohesive transitions between ideas
         - Avoid making specific claims that would require citations
         """
@@ -320,7 +342,7 @@ def generate_ai_sentence(
                 {"role": "system", "content": "You are a research paper writing assistant."},
                 {"role": "user", "content": context},
             ],
-            temperature=0.6,
+            temperature=0.3,
         )
 
         generated_sentence = response.choices[0].message.content.strip()
@@ -383,6 +405,18 @@ def generate_referenced_sentence(
 
 
 # API Endpoints
+
+
+# create new endpoint that only sends research topic
+@app.post("/research_topic")
+async def research_topic(query: str):
+    """Endpoint to generate a sentence based on the given context."""
+    logging.info("Received request to generate topic.")
+    result = research_topic_agent(query)
+
+    return {"research_topic": result}
+
+
 @app.post("/search")
 async def search_tavily(query: str):
     """Endpoint to search Tavily database."""
@@ -411,6 +445,7 @@ async def generate_sentence(request: SentenceRequest):
     for doc in ai_generated.get("similar_documents", []):
         # print(doc)
         if doc["score"] > 0.5:
+            # add user_id
             sentence = generate_referenced_sentence(
                 request.previous_text,
                 request.heading,
@@ -420,16 +455,13 @@ async def generate_sentence(request: SentenceRequest):
         break
 
     return {
-        "sentence": (
-            ai_generated.get("sentence", None)
-            if sentence.get("sentence", None) == None
-            else sentence.get("sentence", None)
-        ),
-        "Referenced_sentence": sentence.get("sentence", None) if sentence else None,
+        "ai_sentence": (None if sentence else ai_generated.get("sentence", None)),
+        "referenced_sentence": sentence.get("sentence", None) if sentence else None,
         "is_referenced": True if sentence else False,
         "author": doc["metadata"].get("author", None) if sentence else None,
         "url": doc["metadata"].get("url", None) if sentence else None,
         "title": doc["metadata"].get("title", None) if sentence else None,
+        "library_id": doc["metadata"].get("library_id", None) if sentence else None,
     }
 
 
@@ -443,21 +475,21 @@ async def suggest_structure(request: SuggestStructureRequest):
 
 # process a string into a kg, stored in neo4j
 # might be more practical to take a pdf input and extract the text all witin this function
-@app.post("/create_document_kg")
-async def create_document_kg(request: SentenceRequest):
-    """Endpoint to process text into a knowledge graph."""
-    logging.info("Received request to process text into a knowledge graph.")
+# @app.post("/create_document_kg")
+# async def create_document_kg(request: SentenceRequest):
+#     """Endpoint to process text into a knowledge graph."""
+#     logging.info("Received request to process text into a knowledge graph.")
 
-    # use lightrag to process text into a kg
-    res = process_text_into_neo4j(request.text)
+#     # use lightrag to process text into a kg
+#     res = process_text_into_neo4j(request.text)
 
-    # we're not returning it here, if the playground wants to call the kg we'll have a dif endpoint for that
-    if res:
-        response = {"success": True}
-    else:
-        response = {"success": False}
+#     # we're not returning it here, if the playground wants to call the kg we'll have a dif endpoint for that
+#     if res:
+#         response = {"success": True}
+#     else:
+#         response = {"success": False}
 
-    return response
+#     return response
 
 
 # should add an endpoint for returning a kg for a "project" or "document" in our app.
