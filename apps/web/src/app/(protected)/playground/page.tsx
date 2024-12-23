@@ -177,16 +177,11 @@ function Flow() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeClick={onNodeClick}
-        attributionPosition="top-right"
         connectionMode={ConnectionMode.Loose}
         onConnectEnd={onConnectEnd}
         edgeTypes={edgeTypes}
-      >
-        {/* <Controls /> */}
-        {/* <MiniMap position="bottom-left" /> */}
-        {/* @ts-ignore */}
-        <Background gap={12} size={1} variant="none" />
-      </ReactFlow>
+        style={{ backgroundColor: "transparent" }}
+      ></ReactFlow>
 
       {selectedNode && (
         <>

@@ -34,6 +34,7 @@ export default async function RootLayout({
         <body className={inter.className} suppressHydrationWarning>
           <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           <SidebarProvider
+            defaultOpen={false}
             style={
               {
                 "--sidebar-width": "350px",

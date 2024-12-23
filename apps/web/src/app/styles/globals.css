@@ -153,7 +153,6 @@
   height: 1.5rem;
   justify-content: center;
   width: 1.5rem;
-  z-index: 0;
   pointer-events: none; /* This prevents hover effects on the drag handle */
 
   /* &:hover {

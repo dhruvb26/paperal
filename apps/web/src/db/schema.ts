@@ -56,6 +56,7 @@ export const libraryTable = pgTable("library", {
     .primaryKey()
     .default(sql`uuid_generate_v4()`),
   title: varchar({ length: 255 }).notNull(),
+  description: text("description").notNull(),
   userId: varchar("user_id").references(() => usersTable.id, {
     onDelete: "cascade",
   }),

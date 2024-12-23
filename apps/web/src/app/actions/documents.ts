@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { documentsTable } from "@/db/schema";
 import { v4 as uuidv4 } from "uuid";
 import { currentUser } from "@clerk/nextjs/server";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export async function createDocument(prompt: string) {
   const docId = uuidv4();

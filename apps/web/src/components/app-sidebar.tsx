@@ -158,6 +158,7 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
           </SidebarFooter>
         </Sidebar>
 
+        {/* Secondary sidebar */}
         <Sidebar collapsible="none" className="hidden flex-1 md:flex">
           <SidebarHeader className="border-b p-2 flex justify-between flex-row">
             <SidebarInput
@@ -208,7 +209,7 @@ export function AppSidebar({ documents = [], ...props }: AppSidebarProps) {
                         href={`/editor/${document.id}`}
                         className="flex-1 truncate"
                       >
-                        <span className="font-medium truncate">
+                        <span className="font-medium truncate hover:underline">
                           {getDocHeading(document.content)}
                         </span>
                       </Link>

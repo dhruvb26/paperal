@@ -16,23 +16,27 @@ export function SidebarRight({
   return (
     <Sidebar
       collapsible="none"
-      className={`sticky hidden lg:flex top-0 h-svh ${
+      className={`sticky hidden text-center lg:flex top-0 h-svh ${
         isRightSidebarOpen ? "border-l transition-all" : ""
       }`}
       open={isRightSidebarOpen}
       {...props}
     >
       <SidebarHeader className="p-4">
-        <h2 className="text-base font-medium">Connected Nodes</h2>
+        <h2 className="text-base font-medium">Chat with your graph</h2>
       </SidebarHeader>
-      <SidebarContent className="px-4">
-        <div className="space-y-4">
+      <SidebarContent className="p-6">
+        <span className="text-sm text-muted-foreground">
+          Ask questions about your graph and get answers coming soon.
+        </span>
+
+        {/* <div className="space-y-4">
           <div>
             <label className="text-sm ">Source Node</label>
             <Textarea
               value={edgeData?.sourceNode?.data?.label || ""}
               readOnly
-              className="mt-2"
+              className="mt-1"
             />
           </div>
           <div>
@@ -40,10 +44,10 @@ export function SidebarRight({
             <Textarea
               value={edgeData?.targetNode?.data?.label || ""}
               readOnly
-              className="mt-2"
+              className="mt-1"
             />
           </div>
-        </div>
+        </div> */}
       </SidebarContent>
     </Sidebar>
   );

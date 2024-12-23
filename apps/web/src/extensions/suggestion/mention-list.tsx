@@ -186,7 +186,16 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                 </ScrollArea>
               ))
             ) : (
-              <div className="item">No result</div>
+              <ScrollArea style={{ height: "250px" }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{ minHeight: "250px", width: "450px" }}
+                >
+                  <span className="text-muted-foreground text-xs">
+                    No results.
+                  </span>
+                </div>
+              </ScrollArea>
             )}
           </div>
         </TabsContent>
