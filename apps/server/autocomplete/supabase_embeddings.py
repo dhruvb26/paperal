@@ -62,6 +62,7 @@ def add_metadata(
     title: str,
     year: int,
     user_id: Optional[str] = None,
+    library_id: Optional[str] = None,
 ):
     logging.info("Adding metadata to documents...")
     for doc in docs:
@@ -70,11 +71,12 @@ def add_metadata(
         doc.metadata["title"] = title
         doc.metadata["year"] = year
         doc.metadata["user_id"] = user_id
+        doc.metadata["library_id"] = library_id
     logging.info("Metadata added.")
 
 
 def query_metadata(field, value, supabase, user_id: Optional[str] = None):
-    logging.info(f"Querying metadata: {field} = {value}")
+    logging.info(f"Querying : {field} = {value}")
     field = f"metadata->>{field}"
     if user_id:
         response = (

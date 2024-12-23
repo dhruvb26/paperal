@@ -82,7 +82,7 @@ def generate_research_topic(text: str) -> list:
         return ""
 
 
-def getURL(research_sentence: str) -> dict:
+def getURL(research_sentence: str) -> list:
     """
     Fetches URLs of research papers based on a topic using Tavily API.
 
@@ -90,15 +90,14 @@ def getURL(research_sentence: str) -> dict:
         research_topic: Topic to search for.
 
     Returns:
-        dict: A dictionary containing the research topic and a list of URLs.
+        list: A list of URLs.
     """
     if not tavily_client:
         logging.error("Tavily client is not initialized.")
         return {}
-    research_topic = generate_research_topic(research_sentence)
+    research_topic = research_sentence
     logging.info(f"Searching for research papers on: {research_topic}")
     url_list = []
-    result = {}
 
     # Search parameters
     query = f"peer reviewed research papers on {research_topic} filetype:pdf"
@@ -131,15 +130,13 @@ def getURL(research_sentence: str) -> dict:
             except Exception as download_error:
                 logging.error(f"Error downloading or processing PDF: {download_error}")
         if len(url_list) >= 4:
-            result = {"research_topic": research_topic, "url_list": url_list[:4]}
-        else:
-            result = {"research_topic": research_topic, "url_list": url_list}
-        logging.info(f"Search result: {result}")
+            url_list = url_list[:4]
+        logging.info(f"Search result: {url_list}")
     except Exception as e:
         logging.error(f"Error during Tavily search: {e}")
-        result = {"research_topic": research_topic, "url_list": []}
+        url_list = []
 
-    return result
+    return url_list
 
 
 if __name__ == "__main__":
