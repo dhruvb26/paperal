@@ -17,17 +17,19 @@ export async function POST(request: Request) {
   // timeout for 10 seconds
   // await new Promise((resolve) => setTimeout(resolve, 10000));
 
-  // const body = (await request.json()) as { previousText: string };
+  const body = (await request.json()) as { previousText: string };
 
-  // const suggestion = await axios.post(`${env.API_URL}/generate`, {
-  //   previous_text: body.previousText,
-  //   heading: "AI in healthcare",
-  //   subheading: "",
-  // });
+  console.log(body.previousText);
 
-  // console.log(suggestion);
+  const suggestion = await axios.post(
+    `https://e4cf-153-33-229-22.ngrok-free.app/generate`,
+    {
+      previous_text: body.previousText,
+      heading: "Membership Inference in Black Box Language Models",
+    }
+  );
 
-  // return NextResponse.json(suggestion.data);
+  console.log(suggestion.data.ai_sentence);
 
-  return NextResponse.json("Hello world!");
+  return NextResponse.json(suggestion.data.ai_sentence);
 }

@@ -50,7 +50,7 @@ export default ({ documentId, initialContent }: TiptapProps) => {
     immediatelyRender: true,
     extensions: [
       StarterKit.configure(),
-
+      AiAutocompleteExtension,
       Mention.configure({
         HTMLAttributes: {
           class: "mention",

@@ -58,6 +58,7 @@ export const AiAutocompleteExtension = Node.create<
           body: JSON.stringify({ previousText }),
         });
         const data = await suggestion.json();
+        console.log(data);
         cb(data as string);
       },
       this.options.suggestionDebounce

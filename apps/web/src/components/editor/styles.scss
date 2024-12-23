@@ -145,7 +145,8 @@
 
 .autocomplete-suggestion-container {
   position: relative;
-  display: inline-block;
+  display: inline;
+  white-space: nowrap;
 }
 
 .autocomplete-shortcuts {
@@ -180,6 +181,11 @@
 .autocomplete-suggestion {
   color: hsl(var(--muted-foreground));
   opacity: 0.8;
+  display: inline;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px; /* Adjust this value as needed */
 }
 
 /* Version Modal and Collaboration Styles */

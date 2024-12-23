@@ -32,6 +32,12 @@ export const embeddingsTable = pgTable("embeddings", {
   content: text("content"),
   metadata: jsonb("metadata"),
   embedding: vector("embedding", { dimensions: 1536 }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .$onUpdate(() => new Date()),
 });
 
 export const documentsTable = pgTable("documents", {
@@ -65,9 +71,9 @@ export const libraryTable = pgTable("library", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 }).$onUpdate(
-    () => new Date()
-  ),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .$onUpdate(() => new Date()),
 });
 
 export const usersRelations = relations(usersTable, ({ many }) => ({
