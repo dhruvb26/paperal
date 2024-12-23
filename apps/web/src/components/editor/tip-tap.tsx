@@ -13,7 +13,7 @@ import { FloatingMenuBar } from "./floating-menu-bar";
 import { Plus } from "@phosphor-icons/react";
 import { useToast } from "@/hooks/use-toast";
 import suggestion from "@/extensions/suggestion/suggestion";
-import { saveDocument } from "@/app/editor/actions";
+import { saveDocument } from "@/app/actions/documents";
 import { AiAutocompleteExtension } from "@/extensions/ai-autocomplete/ai-autocomplete";
 import { CustomLink } from "@/extensions/custom-link/custom-link";
 import debounce from "lodash/debounce";
@@ -61,9 +61,6 @@ export default ({ documentId, initialContent }: TiptapProps) => {
       Highlight,
       Placeholder.configure({
         placeholder: ({ node }) => {
-          if (isEditorLoading) {
-            return "⏳ Setting up...";
-          }
           return "Enter a heading or press '/' for commands";
         },
       }),
@@ -164,7 +161,7 @@ export default ({ documentId, initialContent }: TiptapProps) => {
         <DragHandle editor={editor}>
           <button
             onClick={handlePlusClick}
-            className="p-1.5 text-base hover:bg-muted rounded-sm mr-[3.25rem] text-black/50 z-10 relative"
+            className="p-1.5 text-base hover:bg-muted rounded-sm mr-[3.25rem] text-black/50 relative z-0"
           >
             <Plus weight="bold" size={12} />
           </button>

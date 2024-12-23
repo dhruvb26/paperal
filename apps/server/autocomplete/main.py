@@ -19,6 +19,9 @@ from functools import lru_cache
 
 import fitz
 
+# graphrag (lightrag)
+from knowledge_graphs.helpers import process_text_into_neo4j
+
 # Load environment variables
 load_dotenv()
 
@@ -436,6 +439,31 @@ async def suggest_structure(request: SuggestStructureRequest):
     logging.info("Received request to suggest a subheading.")
     subheading = suggest_structure_helper(request.heading, request.content)
     return {"subheading": subheading}
+
+
+# process a string into a kg, stored in neo4j
+# might be more practical to take a pdf input and extract the text all witin this function
+@app.post("/create_document_kg")
+async def create_document_kg(request: SentenceRequest):
+    """Endpoint to process text into a knowledge graph."""
+    logging.info("Received request to process text into a knowledge graph.")
+
+    # use lightrag to process text into a kg
+    res = process_text_into_neo4j(request.text)
+
+    # we're not returning it here, if the playground wants to call the kg we'll have a dif endpoint for that
+    if res:
+        response = {"success": True}
+    else:
+        response = {"success": False}
+
+    return response
+
+
+# should add an endpoint for returning a kg for a "project" or "document" in our app.
+# That's something we'll need to manually keep track of with metadata in the nodes
+# Unless we can find a way to assign nodes in neo4j to namespaces, Not sure if they have that built in'
+# this endpoint will also involve some parsing to get the data out of neo4j, so that we have a list of nodes, and a list or relationships to pass into react flow
 
 
 @app.get("/")

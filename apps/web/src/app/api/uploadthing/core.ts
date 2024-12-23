@@ -1,6 +1,6 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
-import { getUser } from "./actions";
+import { getUser } from "@/app/actions/user";
 import { db } from "@/db";
 import { libraryTable } from "@/db/schema";
 

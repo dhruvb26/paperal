@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# giving me issues
+git rm --cached apps/server/venv/lib/python3.12/site-packages/numpy/.dylibs/libopenblas64_.0.dylib
+git rm --cached apps/server/venv/lib/python3.12/site-packages/pyarrow/libarrow.1801.dylib
+git rm --cached apps/server/venv/lib/python3.12/site-packages/torch/lib/libtorch_cpu.dylib
+
+
 # dependencies
 /node_modules
 /.pnp
