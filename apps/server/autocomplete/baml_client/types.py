@@ -42,3 +42,4 @@ def all_succeeded(checks: Dict[CheckName, Check]) -> bool:
 class Paper(BaseModel):
     author: List[str]
     title: str
+    year: str
