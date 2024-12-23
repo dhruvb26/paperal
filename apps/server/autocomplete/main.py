@@ -15,8 +15,9 @@ from openai import OpenAI
 import requests
 from fastapi.middleware.cors import CORSMiddleware
 from langchain.schema import Document
+from functools import lru_cache
+
 import fitz
-import random
 
 # Load environment variables
 load_dotenv()
@@ -45,6 +46,23 @@ class SentenceRequest(BaseModel):
 class StoreResearchRequest(BaseModel):
     research_urls: dict
     user_id: Optional[str] = None
+
+
+class SuggestStructureRequest(BaseModel):
+    heading: str
+    content: str
+
+
+@lru_cache()
+def get_supabase_client():
+    """Cached Supabase client to avoid repeated connections"""
+    return supabase_embeddings.create_supabase_client()
+
+
+@lru_cache()
+def get_embeddings_model():
+    """Cached embeddings model"""
+    return OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 # Utility function
@@ -86,6 +104,42 @@ def ExtractPaperAgent(text: str) -> str:
         return ""
 
 
+def generate_in_text_citation(
+    author: str,
+    year: Optional[str] = None,
+) -> dict:
+    """
+    Generates a citation for the research paper.
+    """
+    try:
+        prompt = f"""
+        Generate in-text citiation for the following research paper:
+        Author: {author}
+        Year: {year}
+
+        The citation should follow the following format:
+        If one author is provided, the citation should be: (Author(last name), Year)
+        if two authors are provided, the citation should be: (Author1(last name) & Author2(last name), Year)
+        If multiple authors are provided, the citation should be: (Author1(last name) et al., Year)
+        If no author is provided, the citation should be: (Year)
+
+        
+        """
+        client = OpenAI()
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a research paper writing assistant."},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.2,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        logging.error(f"Error in generate_citation: {e}")
+        return {}
+
+
 def StoreResearchPaperAgent(research_url: dict, user_id: Optional[str] = None) -> bool:
     """
     Stores research papers embeddings in the database.
@@ -95,8 +149,8 @@ def StoreResearchPaperAgent(research_url: dict, user_id: Optional[str] = None) -
             logging.warning("No URLs provided.")
             return False
 
-        supabase = supabase_embeddings.create_supabase_client()
-        embeddings = OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
+        supabase = get_supabase_client()
+        embeddings = get_embeddings_model()
 
         for url in research_url["url_list"]:
             text = ""
@@ -126,6 +180,12 @@ def StoreResearchPaperAgent(research_url: dict, user_id: Optional[str] = None) -
                 "source": url,
                 "author": extracted_info.author,
                 "year": extracted_info.year,
+                "in-text citation": generate_in_text_citation(
+                    extracted_info.author, extracted_info.year
+                ),
+                # "after-text citation": generate_after_text_citation(
+                #     extracted_info.author, extracted_info.year
+                # ),
             }
 
             supabase_embeddings.add_metadata(
@@ -156,8 +216,8 @@ def find_similar_documents(generated_sentence: str, user_id: Optional[str] = Non
     Queries the vector database to find documents similar to the generated sentence.
     """
     try:
-        supabase = supabase_embeddings.create_supabase_client()
-        embeddings = OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
+        supabase = get_supabase_client()
+        embeddings = get_embeddings_model()
         vector_store = SupabaseVectorStore(
             client=supabase,
             embedding=embeddings,
@@ -169,13 +229,13 @@ def find_similar_documents(generated_sentence: str, user_id: Optional[str] = Non
         # Filter documents based on user_id
         if user_id:
             filtered_docs = [
-                (doc, float(score))  # Convert numpy.float32 to Python float
+                (doc, float(score))
                 for doc, score in matched_docs
                 if doc.metadata.get("user_id") in {user_id, None}
             ]
         else:
             filtered_docs = [
-                (doc, float(score))  # Convert numpy.float32 to Python float
+                (doc, float(score))
                 for doc, score in matched_docs
                 if doc.metadata.get("user_id") is None
             ]
@@ -185,8 +245,8 @@ def find_similar_documents(generated_sentence: str, user_id: Optional[str] = Non
         for doc, score in filtered_docs:
             results.append(
                 {
-                    "content": str(doc.page_content),  # Ensure content is string
-                    "score": float(score),  # Convert score to native Python float
+                    "content": str(doc.page_content),
+                    "score": float(score),
                     "metadata": {
                         "author": str(doc.metadata.get("author", "Unknown")),
                         "title": str(doc.metadata.get("title", "Unknown")),
@@ -198,6 +258,30 @@ def find_similar_documents(generated_sentence: str, user_id: Optional[str] = Non
     except Exception as e:
         logging.error(f"Error in find_similar_documents: {e}")
         return []
+
+
+def suggest_structure_helper(heading: str, content: str) -> str:
+    prompt = f"""
+    You are given a research paper - {content} and a user query - {heading}.
+    You are to suggest a subheading for the research paper based on the provided content and user query.
+    Make sure the subheading flows logically with the previous content and pertains to the user query.
+    The subheading should be very short and concise.
+    Only return the subheading, no other text.
+    """
+    try:
+        client = OpenAI()
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a research paper writing assistant."},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=0.6,
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        logging.error(f"Error in suggest_structure: {e}")
+        return ""
 
 
 def generate_ai_sentence(
@@ -259,7 +343,6 @@ def generate_referenced_sentence(
         res = {}
         logging.info("Generating referenced sentence...")
 
-        # Update the context to focus on referenced material
         context = f"""
         Context for Sentence Generation:
         - Research Topic: {heading}
@@ -334,13 +417,25 @@ async def generate_sentence(request: SentenceRequest):
         break
 
     return {
-        "sentence": ai_generated.get("sentence", None),
+        "sentence": (
+            ai_generated.get("sentence", None)
+            if sentence.get("sentence", None) == None
+            else sentence.get("sentence", None)
+        ),
         "Referenced_sentence": sentence.get("sentence", None) if sentence else None,
         "is_referenced": True if sentence else False,
         "author": doc["metadata"].get("author", None) if sentence else None,
         "url": doc["metadata"].get("url", None) if sentence else None,
         "title": doc["metadata"].get("title", None) if sentence else None,
     }
+
+
+@app.post("/suggest_structure")
+async def suggest_structure(request: SuggestStructureRequest):
+    """Endpoint to suggest a subheading for the research paper."""
+    logging.info("Received request to suggest a subheading.")
+    subheading = suggest_structure_helper(request.heading, request.content)
+    return {"subheading": subheading}
 
 
 @app.get("/")
