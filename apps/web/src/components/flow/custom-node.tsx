@@ -16,15 +16,18 @@ const CustomNode = ({
   };
   selected?: boolean;
 }) => {
+  const divRef = React.useRef<HTMLDivElement>(null);
+
   return (
     <>
       <NodeResizer
         color="rgba(0, 0, 0, 0.5)"
         isVisible={selected}
-        minWidth={100}
-        minHeight={30}
+        minWidth={divRef.current?.offsetWidth || 100}
+        minHeight={divRef.current?.offsetHeight || 30}
       />
       <div
+        ref={divRef}
         className="px-2 py-2 rounded-md border-[0.8px]"
         style={{
           backgroundColor: data.backgroundColor || "#ffffff",

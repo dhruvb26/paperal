@@ -4,16 +4,27 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", "apps/web/dist/**"],
-      "cache": true
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "env": [
+        "UPLOADTHING_TOKEN",
+        "CLERK_SECRET_KEY",
+        "DATABASE_URL",
+        "API_URL",
+        "NODE_ENV",
+        "CLERK_WEBHOOK_SIGNING_SECRET",
+        "DATABASE_USER",
+        "NPM_RC",
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "NEXT_PUBLIC_CLERK_SIGN_IN_URL",
+        "NEXT_PUBLIC_CLERK_SIGN_UP_URL",
+        "DATABASE_PASSWORD"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
     "lint": {},
-    "test": {
-      "dependsOn": ["^build"]
-    }
+    "test": {}
   }
 }

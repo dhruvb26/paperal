@@ -18,7 +18,7 @@
     "build:worker": "cloudflare",
     "dev:worker": "wrangler dev --port 8771",
     "preview:worker": "pnpm run build:worker && pnpm run dev:worker",
-    "deploy:worker": "npm run build:worker && wrangler deploy"
+    "deploy:worker": "pnpm run build:worker && wrangler deploy"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.9.5",

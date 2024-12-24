@@ -13,7 +13,6 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "production"]),
     CLERK_WEBHOOK_SIGNING_SECRET: z.string().min(1),
     API_URL: z.string().url(),
-    NPM_TOKEN: z.string().min(1),
     DATABASE_USER: z.string().min(1),
     DATABASE_PASSWORD: z.string().min(1),
   },
@@ -46,6 +45,5 @@ export const env = createEnv({
     CLERK_WEBHOOK_SIGNING_SECRET: process.env.CLERK_WEBHOOK_SIGNING_SECRET,
     DATABASE_USER: process.env.DATABASE_USER,
     DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-    NPM_TOKEN: process.env.NPM_TOKEN,
   },
 });
