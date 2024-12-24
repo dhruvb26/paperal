@@ -3,6 +3,7 @@ import { libraryTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
