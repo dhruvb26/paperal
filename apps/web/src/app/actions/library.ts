@@ -95,5 +95,11 @@ export async function deleteLibrary(libraryId: string) {
     throw new Error("User not found");
   }
 
-  await db.delete(libraryTable).where(eq(libraryTable.id, libraryId));
+  await db
+    .delete(libraryTable)
+    .where(
+      and(eq(libraryTable.id, libraryId), eq(libraryTable.userId, userId))
+    );
+
+  return true;
 }

@@ -59,7 +59,7 @@ export const DocumentList: React.FC<DocumentListProps> = ({
               : ""
           }`}
         >
-          <div className="flex w-full items-center gap-2">
+          <div className="flex w-full items-center">
             <Link href={`/editor/${document.id}`} className="flex-1 truncate">
               <span className="font-medium truncate hover:underline">
                 {getDocHeading(document.content)}

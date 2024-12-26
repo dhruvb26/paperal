@@ -34,7 +34,6 @@ export const CustomLink = Link.extend({
               border: 1px solid #ddd;
               border-radius: 4px;
               padding: 8px;
-              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
               z-index: 1000;
               width: 450px;
             `;
@@ -102,9 +101,11 @@ export const CustomLink = Link.extend({
                 // Add both citation formats to the popover with a toggle switch
                 popover.innerHTML = `
                   <div class="flex flex-col items-start gap-2 p-2 citation-div">
-                    <div class="flex flex-col space-y-1 items-start text-xs" style="width: 100%">
-                      <span class="text-xs truncate">${document.title}</span>
-                      <span class="text-xs truncate w-full text-muted-foreground">
+                    <div class="flex flex-col space-y-1 items-start text-xs w-full">
+                      <span class="text-xs w-full truncate text-ellipsis whitespace-nowrap">${
+                        document.title
+                      }</span>
+                      <span class="text-xs w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground">
                         ${document.metadata?.authors?.join(", ") || ""}
                       </span>
                       <span class="text-xs text-muted-foreground italic">
@@ -114,6 +115,7 @@ export const CustomLink = Link.extend({
                     <div class="flex items-center justify-between w-full">
                       <div class="flex items-center gap-2">
                         <button 
+                          disabled={true}
                           class="citation-toggle flex items-center gap-2 px-2 py-1 rounded-md bg-muted hover:bg-muted/80"
                         >
                           <span class="text-xs current-citation-type">
@@ -138,7 +140,9 @@ export const CustomLink = Link.extend({
                         </button>
                       </div>
                       <div class="flex items-center gap-2 text-muted-foreground">
-                        <span class="text-xs italic">Library</span>
+                          <span class="text-xs italic">
+                          ${document.isInLibrary ? "Library" : "Discover"}
+                        </span>
                       </div>
                     </div>
                   </div>

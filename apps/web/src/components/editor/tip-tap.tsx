@@ -34,11 +34,9 @@ export default ({ documentId, initialContent }: TiptapProps) => {
           JSON.parse(JSON.stringify(editor.getJSON()))
         );
       } catch (error) {
-        console.error("Auto-save error:", error);
         toast({
           title: "Error saving document",
-          description: "Your changes could not be saved",
-          variant: "destructive",
+          description: "Your changes could not be saved.",
         });
       }
     }, 500),
@@ -128,19 +126,26 @@ export default ({ documentId, initialContent }: TiptapProps) => {
     },
     onCreate: () => {
       setIsEditorLoading(false);
-      let placeholderPos = null;
 
-      editor.state.doc.descendants((node, pos) => {
-        if (node.type.name === "paragraph") {
-          placeholderPos = pos;
-          return false; // Stop iteration once the first paragraph is found
+      // If there's content, move cursor to the end
+      if (editor.state.doc.content.size > 0) {
+        editor.commands.setTextSelection(editor.state.doc.content.size);
+      } else {
+        // If empty, find first paragraph for placeholder
+        let placeholderPos = null;
+        editor.state.doc.descendants((node, pos) => {
+          if (node.type.name === "paragraph") {
+            placeholderPos = pos;
+            return false;
+          }
+        });
+
+        if (placeholderPos !== null) {
+          editor.commands.setTextSelection(placeholderPos);
         }
-      });
-
-      if (placeholderPos !== null) {
-        editor.commands.setTextSelection(placeholderPos);
-        editor.commands.focus();
       }
+
+      editor.commands.focus();
     },
     onUpdate: ({ editor }) => {
       debouncedSave(editor);
@@ -181,7 +186,7 @@ export default ({ documentId, initialContent }: TiptapProps) => {
         </DragHandle>
       </div>
 
-      <EditorContent editor={editor} className="text-sm max-w-4xl" />
+      <EditorContent editor={editor} className="text-sm min-w-full" />
     </>
   );
 };

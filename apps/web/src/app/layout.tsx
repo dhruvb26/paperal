@@ -14,6 +14,7 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { getDocuments } from "@/app/actions/documents";
 import { auth } from "@clerk/nextjs/server";
+import { getLibraries } from "./actions/library";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const documents = await getDocuments();
+  const libraries = await getLibraries();
 
   return (
     <ClerkProvider>
@@ -41,7 +43,13 @@ export default async function RootLayout({
               } as React.CSSProperties
             }
           >
-            <AppSidebar documents={documents} />
+            <AppSidebar
+              documents={documents}
+              libraries={libraries.map((lib) => ({
+                ...lib,
+                isPublic: lib.isPublic ?? false,
+              }))}
+            />
             {children}
           </SidebarProvider>
         </body>

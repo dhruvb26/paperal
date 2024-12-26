@@ -275,6 +275,7 @@ def find_similar_documents(generated_sentence: str, user_id: Optional[str] = Non
                         "author": str(doc.metadata.get("author", "Unknown")),
                         "title": str(doc.metadata.get("title", "Unknown")),
                         "url": str(doc.metadata.get("source", "Unknown")),
+                        "library_id": str(doc.metadata.get("library_id", "Unknown")),
                     },
                 }
             )
@@ -461,7 +462,7 @@ async def generate_sentence(request: SentenceRequest):
         "author": doc["metadata"].get("author", None) if sentence else None,
         "url": doc["metadata"].get("url", None) if sentence else None,
         "title": doc["metadata"].get("title", None) if sentence else None,
-        "library_id": doc["metadata"].get("library_id", None) if sentence else None,
+        "library_id": doc["metadata"].get("library_id", None) if sentence else None,  # Ensure this line correctly references the 'id'
     }
 
 

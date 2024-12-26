@@ -22,6 +22,7 @@ import { DocumentList } from "@/components/document/document-list";
 import { DeleteDocumentDialog } from "@/components/document/delete-document-dialog";
 import { LibraryList } from "@/components/document/library-list";
 import { CustomUploadButton } from "./uploadthing/custom-upload-button";
+import { deleteLibrary } from "@/app/actions/library";
 
 const data = {
   navMain: [
@@ -85,6 +86,9 @@ export function AppSidebar({
   const [documentToDelete, setDocumentToDelete] = React.useState<string | null>(
     null
   );
+  const [libraryToDelete, setLibraryToDelete] = React.useState<string | null>(
+    null
+  );
   const router = useRouter();
   const [showLibraryList, setShowLibraryList] = React.useState(false);
 
@@ -101,14 +105,30 @@ export function AppSidebar({
   const handleDeleteDocument = async (documentId: string) => {
     try {
       await deleteDocument(documentId);
+
       setDocumentToDelete(null);
       toast({
         title: "Document deleted",
         description: "The document has been deleted successfully.",
       });
-      router.push("/editor");
+      router.refresh();
     } catch (error) {
       console.error("Failed to delete document:", error);
+    }
+  };
+
+  const handleDeleteLibrary = async (libraryId: string) => {
+    try {
+      await deleteLibrary(libraryId);
+
+      setLibraryToDelete(null);
+      toast({
+        title: "Library deleted",
+        description: "The library has been deleted successfully.",
+      });
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to delete library:", error);
     }
   };
 
@@ -199,7 +219,7 @@ export function AppSidebar({
                 searchQuery={searchQuery}
                 sortDesc={sortDesc}
                 pathname={pathname}
-                setLibraryToDelete={setDocumentToDelete}
+                setLibraryToDelete={setLibraryToDelete}
               />
             ) : (
               <DocumentList
@@ -218,6 +238,12 @@ export function AppSidebar({
         documentToDelete={documentToDelete}
         onDelete={handleDeleteDocument}
         onCancel={() => setDocumentToDelete(null)}
+      />
+
+      <DeleteDocumentDialog
+        documentToDelete={libraryToDelete}
+        onDelete={handleDeleteLibrary}
+        onCancel={() => setLibraryToDelete(null)}
       />
     </>
   );

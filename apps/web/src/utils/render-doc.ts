@@ -47,7 +47,7 @@ export const getDocContent = (docString: string): string => {
         .flatMap((node: any) =>
           node.content.map((contentNode: any) => contentNode.text)
         )
-        .join(" ") || "No content"
+        .join(" ") || "Nothing here yet. Start writing now!"
     );
   } catch (error) {
     return "";

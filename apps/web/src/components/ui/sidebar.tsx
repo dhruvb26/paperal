@@ -301,7 +301,7 @@ const SidebarTrigger = React.forwardRef<
       {state === "collapsed" ? (
         <SidebarSimple size={20} />
       ) : (
-        <CaretDoubleLeft size={20} />
+        <CaretLeft size={20} />
       )}
       <span className="sr-only">Toggle Sidebar</span>
       {children}

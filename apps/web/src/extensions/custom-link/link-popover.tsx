@@ -24,10 +24,7 @@ export const LinkPopover = React.forwardRef<HTMLDivElement, LinkPopoverProps>(
         ref={ref}
         className="flex flex-col items-start gap-2 p-2 citation-div"
       >
-        <div
-          className="flex flex-col space-y-1 items-start text-xs"
-          style={{ width: "100%" }}
-        >
+        <div className="flex flex-col space-y-1 items-start text-xs">
           <span className="text-xs truncate">{document.title}</span>
           <span className="text-xs truncate w-full text-muted-foreground">
             {document.metadata?.authors?.join(", ") || ""}

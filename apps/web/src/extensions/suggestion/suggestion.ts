@@ -1,27 +1,19 @@
 import { ReactRenderer } from "@tiptap/react";
 import tippy from "tippy.js";
 import { Editor } from "@tiptap/core";
-
 import { MentionList } from "./mention-list";
-import { LibraryDocument } from "./index";
 
 interface SuggestionProps {
   query: string;
   editor: Editor;
   clientRect: (() => DOMRect) | null;
   event?: KeyboardEvent;
+  isLoading?: boolean;
 }
 
 export default {
   items: async () => {
-    try {
-      const response = await fetch("/api/library/documents");
-      const documents: LibraryDocument[] = await response.json();
-      return documents;
-    } catch (error) {
-      console.error("Error fetching library documents:", error);
-      return [];
-    }
+    return [];
   },
 
   render: () => {
@@ -38,7 +30,6 @@ export default {
           props: {
             ...props,
             command: ({
-              id,
               href,
               citations,
             }: {
@@ -48,6 +39,7 @@ export default {
                 "in-text"?: string;
                 "after-text"?: string;
               };
+              isLoading: boolean;
             }) => {
               const citation = citations?.["in-text"];
               props.editor
@@ -63,7 +55,7 @@ export default {
                 .insertContent([
                   {
                     type: "text",
-                    text: "  ", // Add two spaces before
+                    text: " ",
                   },
                   {
                     type: "text",
@@ -77,7 +69,7 @@ export default {
                   },
                   {
                     type: "text",
-                    text: "  ", // Add two spaces after
+                    text: " ",
                   },
                 ])
                 .run();

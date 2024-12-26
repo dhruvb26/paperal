@@ -69,8 +69,12 @@ export const LibraryList: React.FC<LibraryListProps> = ({
               : ""
           }`}
         >
-          <div className="flex w-full items-center gap-2">
-            <Link href={`/library/${library.id}`} className="flex-1 truncate">
+          <div className="flex w-full items-center">
+            <Link
+              href={`${library.metadata.fileUrl}`}
+              target="_blank"
+              className="flex-1 truncate"
+            >
               <span className="font-medium truncate hover:underline">
                 {library.title}
               </span>
@@ -102,7 +106,7 @@ export const LibraryList: React.FC<LibraryListProps> = ({
           </span>
           <div className="flex w-full justify-between text-xs text-muted-foreground italic">
             <span>{formatDate(library.createdAt)}</span>
-            <span>{library.isPublic ? "Public" : "Private"}</span>
+            <span>{library.isPublic ? "Discover" : "Library"}</span>
           </div>
         </div>
       ))}

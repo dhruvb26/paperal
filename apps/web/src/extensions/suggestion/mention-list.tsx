@@ -8,21 +8,11 @@ import React, {
   useState,
 } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Loader } from "@/components/ui/loader";
+import { LibraryDocument } from "./index";
 
 interface MentionListProps {
-  items: Array<{
-    id: string;
-    title: string;
-    metadata?: {
-      fileUrl?: string;
-      year?: string;
-      authors?: string[];
-      citations?: {
-        "in-text"?: string;
-        "after-text"?: string;
-      };
-    };
-  }>;
+  items: Array<LibraryDocument>;
   command: (props: {
     id: string;
     href?: string;
@@ -31,6 +21,7 @@ interface MentionListProps {
       "after-text"?: string;
     };
   }) => void;
+  isLoading?: boolean;
 }
 
 interface MentionListRef {
@@ -40,6 +31,10 @@ interface MentionListRef {
 export const MentionList = forwardRef<MentionListRef, MentionListProps>(
   (props, ref) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [libraryItems, setLibraryItems] = useState<LibraryDocument[]>([]);
+    const [discoverItems, setDiscoverItems] = useState<LibraryDocument[]>([]);
+    const [isLibraryLoading, setIsLibraryLoading] = useState(false);
+    const [isDiscoverLoading, setIsDiscoverLoading] = useState(false);
 
     const selectItem = (index: number) => {
       const item = props.items[index];
@@ -90,18 +85,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
       },
     }));
 
-    const handleCite = (item: {
-      id: string;
-      title: string;
-      metadata?: {
-        fileUrl?: string;
-        year?: string;
-        citations?: {
-          "in-text"?: string;
-          "after-text"?: string;
-        };
-      };
-    }) => {
+    const handleCite = (item: LibraryDocument) => {
       props.command({
         id: item.id,
         href: item.metadata?.fileUrl || "#",
@@ -109,13 +93,40 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
       });
     };
 
-    const handleView = (item: {
-      id: string;
-      title: string;
-      metadata?: { fileUrl?: string };
-    }) => {
+    const handleView = (item: LibraryDocument) => {
       window.open(item.metadata?.fileUrl || "#", "_blank");
     };
+
+    const fetchDiscoverItems = async () => {
+      setIsDiscoverLoading(true);
+      try {
+        const response = await fetch("/api/library/discover");
+        const data = (await response.json()) as LibraryDocument[];
+        setDiscoverItems(data);
+      } catch (error) {
+        console.error("Error fetching discover items:", error);
+      } finally {
+        setIsDiscoverLoading(false);
+      }
+    };
+
+    const fetchLibraryItems = async () => {
+      setIsLibraryLoading(true);
+      try {
+        const response = await fetch("/api/library/documents");
+        const data = (await response.json()) as LibraryDocument[];
+        setLibraryItems(data);
+      } catch (error) {
+        console.error("Error fetching library items:", error);
+      } finally {
+        setIsLibraryLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      fetchLibraryItems();
+      fetchDiscoverItems();
+    }, []);
 
     return (
       <Tabs
@@ -128,11 +139,22 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
         </TabsList>
         <TabsContent value="library">
           <div>
-            {props.items.length ? (
-              props.items.map((item, index) => (
+            {isLibraryLoading ? (
+              <ScrollArea style={{ height: "250px" }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{ minHeight: "250px", width: "450px" }}
+                >
+                  <span className="text-muted-foreground text-xs">
+                    <Loader />
+                  </span>
+                </div>
+              </ScrollArea>
+            ) : libraryItems.length ? (
+              libraryItems.map((item, index) => (
                 <ScrollArea
-                  style={{ height: "250px" }}
-                  className="pr-6"
+                  style={{ height: "250px", width: "450px" }}
+                  className="pr-6 pl-2 py-1"
                   key={index}
                 >
                   <div
@@ -140,21 +162,17 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                       index === selectedIndex ? "" : ""
                     }`}
                   >
-                    <div
-                      className="flex flex-col space-y-1 items-start text-xs"
-                      style={{ width: "450px" }}
-                    >
-                      <span className="text-xs truncate">{item.title}</span>
-                      <span className="text-xs truncate w-full text-muted-foreground">
+                    <div className="flex flex-col space-y-1 items-start text-xs">
+                      <span className="text-xs line-clamp-2">{item.title}</span>
+                      <span className="text-xs w-full text-muted-foreground line-clamp-2">
                         {item.metadata?.authors?.join(", ")}
                       </span>
-                      <span className="text-xs text-muted-foreground italic">
+                      <span className="text-xs text-muted-foreground italic ">
                         {item.metadata?.year}
                       </span>
 
-                      <span className="text-xs text-muted-foreground mt-2 overflow-hidden">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Sed do eiusmod tempor incididunt ...
+                      <span className="text-xs line-clamp-2 text-muted-foreground mt-2">
+                        {item.description}
                         <span className="text-xs text-muted-foreground font-medium">
                           see more
                         </span>
@@ -182,7 +200,11 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                       </div>
                     </div>
                   </div>
-                  <Separator />
+                  <Separator
+                    className={`${
+                      index === props.items.length - 1 ? "hidden" : ""
+                    }`}
+                  />
                 </ScrollArea>
               ))
             ) : (
@@ -200,16 +222,86 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
           </div>
         </TabsContent>
         <TabsContent value="discover">
-          <ScrollArea style={{ height: "250px" }}>
-            <div
-              className="flex items-center justify-center"
-              style={{ minHeight: "250px", width: "450px" }}
-            >
-              <span className="text-muted-foreground text-xs">
-                Discover content coming soon.
-              </span>
-            </div>
-          </ScrollArea>
+          <div>
+            {isDiscoverLoading ? (
+              <ScrollArea style={{ height: "250px" }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{ minHeight: "250px", width: "450px" }}
+                >
+                  <span className="text-muted-foreground text-xs">
+                    <Loader />
+                  </span>
+                </div>
+              </ScrollArea>
+            ) : discoverItems.length ? (
+              <ScrollArea
+                style={{ height: "250px", width: "450px" }}
+                className="pr-6 pl-2 py-1"
+              >
+                {discoverItems.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <div className="flex flex-col items-start gap-2 p-2 citation-div">
+                      <div className="flex flex-col space-y-1 items-start text-xs">
+                        <span className="text-xs line-clamp-2">
+                          {item.title}
+                        </span>
+                        <span className="text-xs w-full text-muted-foreground line-clamp-2">
+                          {item.metadata?.authors?.join(", ")}
+                        </span>
+                        <span className="text-xs text-muted-foreground italic">
+                          {item.metadata?.year}
+                        </span>
+                        <span className="text-xs line-clamp-2 text-muted-foreground mt-2">
+                          {item.description}
+                          <span className="text-xs text-muted-foreground font-medium">
+                            see more
+                          </span>
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-2">
+                          <button
+                            className="flex text-xs items-center gap-1 hover:underline text-foreground"
+                            onClick={() => handleCite(item)}
+                          >
+                            <Plus size={12} weight="bold" />
+                            Cite
+                          </button>
+                          <button
+                            className="flex text-xs items-center gap-1 hover:underline text-foreground"
+                            onClick={() => handleView(item)}
+                          >
+                            <ArrowUpRight size={12} weight="bold" />
+                            View
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <span className="text-xs italic">Discover</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Separator
+                      className={`${
+                        index === discoverItems.length - 1 ? "hidden" : ""
+                      }`}
+                    />
+                  </React.Fragment>
+                ))}
+              </ScrollArea>
+            ) : (
+              <ScrollArea style={{ height: "250px" }}>
+                <div
+                  className="flex items-center justify-center"
+                  style={{ minHeight: "250px", width: "450px" }}
+                >
+                  <span className="text-muted-foreground text-xs">
+                    No results found.
+                  </span>
+                </div>
+              </ScrollArea>
+            )}
+          </div>
         </TabsContent>
       </Tabs>
     );

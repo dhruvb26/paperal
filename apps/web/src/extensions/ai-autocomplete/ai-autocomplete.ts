@@ -1,7 +1,6 @@
 import { Node } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
-import { slashCommandPluginKey } from "../slash-command/slash-command";
 
 function debounce<T extends (...args: any[]) => any>(
   callback: T,
@@ -55,14 +54,22 @@ export const AiAutocompleteExtension = Node.create<
     const pluginKey = new PluginKey<DecorationSet>("suggestion");
 
     const getSuggestion = debounce(
-      async (previousText: string, cb: (suggestion: string | null) => void) => {
+      async (
+        previousText: string,
+        documentId: string,
+        cb: (suggestion: string | null) => void
+      ) => {
         try {
+          const pathDocumentId = window.location.pathname.split("/editor/")[1];
+
           const suggestion = await fetch("/api/suggest", {
             method: "POST",
-            body: JSON.stringify({ previousText }),
+            body: JSON.stringify({
+              previousText,
+              documentId: pathDocumentId || documentId,
+            }),
           });
           const data = await suggestion.json();
-          console.log(data);
           cb(data as string);
         } catch (error) {
           console.error(error);
@@ -125,11 +132,13 @@ export const AiAutocompleteExtension = Node.create<
                 view.dispatch(tr);
               }, 0);
 
+              const documentId = view.state.doc.attrs.id;
+
               // fetch a new suggestion
               const previousText = view.state.doc
                 .textBetween(0, view.state.doc.content.size, " ")
                 .slice(-4000);
-              getSuggestion(previousText, (suggestion) => {
+              getSuggestion(previousText, documentId, (suggestion) => {
                 if (!suggestion) return;
 
                 const updatedState = view.state;
@@ -186,49 +195,53 @@ export const AiAutocompleteExtension = Node.create<
                       });
                       view.dispatch(clearTr);
 
-                      getSuggestion(previousText, (newSuggestion) => {
-                        if (!newSuggestion) return;
+                      getSuggestion(
+                        previousText,
+                        documentId,
+                        (newSuggestion) => {
+                          if (!newSuggestion) return;
 
-                        const cursorPos = view.state.selection.$head.pos;
-                        const nextNode = view.state.doc.nodeAt(cursorPos);
-                        const suggestionDecoration = Decoration.widget(
-                          cursorPos,
-                          () => {
-                            const container = document.createElement("span");
-                            container.classList.add(
-                              "autocomplete-suggestion-container"
-                            );
+                          const cursorPos = view.state.selection.$head.pos;
+                          const nextNode = view.state.doc.nodeAt(cursorPos);
+                          const suggestionDecoration = Decoration.widget(
+                            cursorPos,
+                            () => {
+                              const container = document.createElement("span");
+                              container.classList.add(
+                                "autocomplete-suggestion-container"
+                              );
 
-                            const suggestionSpan =
-                              document.createElement("span");
-                            const addSpace =
-                              nextNode && nextNode.isText ? " " : "";
-                            suggestionSpan.innerHTML = `${addSpace}${newSuggestion}`;
-                            suggestionSpan.classList.add(
-                              "autocomplete-suggestion"
-                            );
+                              const suggestionSpan =
+                                document.createElement("span");
+                              const addSpace =
+                                nextNode && nextNode.isText ? " " : "";
+                              suggestionSpan.innerHTML = `${addSpace}${newSuggestion}`;
+                              suggestionSpan.classList.add(
+                                "autocomplete-suggestion"
+                              );
 
-                            const shortcuts = document.createElement("div");
-                            shortcuts.classList.add("autocomplete-shortcuts");
-                            shortcuts.innerHTML =
-                              "→ to accept | Shift + → for new suggestion";
+                              const shortcuts = document.createElement("div");
+                              shortcuts.classList.add("autocomplete-shortcuts");
+                              shortcuts.innerHTML =
+                                "→ to accept | Shift + → for new suggestion";
 
-                            container.appendChild(suggestionSpan);
-                            container.appendChild(shortcuts);
-                            return container;
-                          },
-                          { side: 1 }
-                        );
+                              container.appendChild(suggestionSpan);
+                              container.appendChild(shortcuts);
+                              return container;
+                            },
+                            { side: 1 }
+                          );
 
-                        const decorations = DecorationSet.create(
-                          view.state.doc,
-                          [suggestionDecoration]
-                        );
-                        const tr = view.state.tr;
-                        tr.setMeta("addToHistory", false);
-                        tr.setMeta(pluginKey, { decorations });
-                        view.dispatch(tr);
-                      });
+                          const decorations = DecorationSet.create(
+                            view.state.doc,
+                            [suggestionDecoration]
+                          );
+                          const tr = view.state.tr;
+                          tr.setMeta("addToHistory", false);
+                          tr.setMeta(pluginKey, { decorations });
+                          view.dispatch(tr);
+                        }
+                      );
                     };
 
                     shortcuts.appendChild(acceptButton);
@@ -286,50 +299,57 @@ export const AiAutocompleteExtension = Node.create<
                 .textBetween(0, view.state.doc.content.size, " ")
                 .slice(-4000);
 
+              const pathDocumentId =
+                window.location.pathname.split("/editor/")[1];
+
               // Reset current suggestion
               const clearTr = view.state.tr;
               clearTr.setMeta(pluginKey, { decorations: DecorationSet.empty });
               view.dispatch(clearTr);
 
-              // Request new suggestion
-              getSuggestion(previousText, (suggestion) => {
-                if (!suggestion) return;
+              // Request new suggestion with actual documentId
+              getSuggestion(
+                previousText,
+                pathDocumentId || "123",
+                (suggestion) => {
+                  if (!suggestion) return;
 
-                const cursorPos = view.state.selection.$head.pos;
-                const nextNode = view.state.doc.nodeAt(cursorPos);
-                const suggestionDecoration = Decoration.widget(
-                  cursorPos,
-                  () => {
-                    const container = document.createElement("span");
-                    container.classList.add(
-                      "autocomplete-suggestion-container"
-                    );
+                  const cursorPos = view.state.selection.$head.pos;
+                  const nextNode = view.state.doc.nodeAt(cursorPos);
+                  const suggestionDecoration = Decoration.widget(
+                    cursorPos,
+                    () => {
+                      const container = document.createElement("span");
+                      container.classList.add(
+                        "autocomplete-suggestion-container"
+                      );
 
-                    const suggestionSpan = document.createElement("span");
-                    const addSpace = nextNode && nextNode.isText ? " " : "";
-                    suggestionSpan.innerHTML = `${addSpace}${suggestion}`;
-                    suggestionSpan.classList.add("autocomplete-suggestion");
+                      const suggestionSpan = document.createElement("span");
+                      const addSpace = nextNode && nextNode.isText ? " " : "";
+                      suggestionSpan.innerHTML = `${addSpace}${suggestion}`;
+                      suggestionSpan.classList.add("autocomplete-suggestion");
 
-                    const shortcuts = document.createElement("div");
-                    shortcuts.classList.add("autocomplete-shortcuts");
-                    shortcuts.innerHTML =
-                      "→ to accept | Shift + → for new suggestion";
+                      const shortcuts = document.createElement("div");
+                      shortcuts.classList.add("autocomplete-shortcuts");
+                      shortcuts.innerHTML =
+                        "→ to accept | Shift + → for new suggestion";
 
-                    container.appendChild(suggestionSpan);
-                    container.appendChild(shortcuts);
-                    return container;
-                  },
-                  { side: 1 }
-                );
+                      container.appendChild(suggestionSpan);
+                      container.appendChild(shortcuts);
+                      return container;
+                    },
+                    { side: 1 }
+                  );
 
-                const decorations = DecorationSet.create(view.state.doc, [
-                  suggestionDecoration,
-                ]);
-                const tr = view.state.tr;
-                tr.setMeta("addToHistory", false);
-                tr.setMeta(pluginKey, { decorations });
-                view.dispatch(tr);
-              });
+                  const decorations = DecorationSet.create(view.state.doc, [
+                    suggestionDecoration,
+                  ]);
+                  const tr = view.state.tr;
+                  tr.setMeta("addToHistory", false);
+                  tr.setMeta(pluginKey, { decorations });
+                  view.dispatch(tr);
+                }
+              );
 
               event.preventDefault();
               return true;

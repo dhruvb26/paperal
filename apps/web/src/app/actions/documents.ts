@@ -5,6 +5,8 @@ import { documentsTable } from "@/db/schema";
 import { v4 as uuidv4 } from "uuid";
 import { currentUser } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
+import { createEmbeddings } from "@/trigger/embeddings";
+import { tasks } from "@trigger.dev/sdk/v3";
 import axios from "axios";
 import { env } from "@/env";
 
@@ -17,10 +19,16 @@ export async function createDocument(prompt: string) {
     throw new Error("User not found");
   }
 
-  // await axios.post(`${env.API_URL}/generate_heading`, {
-  //   prompt,
-  //   userId,
-  // });
+  const response = await axios.post(
+    `${env.API_URL}/research_topic?query=${prompt}`
+  );
+
+  const researchTopic = response.data.research_topic;
+  const cleanedResearchTopic = researchTopic.replace(/['"]+/g, "");
+
+  await tasks.trigger<typeof createEmbeddings>("create-embeddings", {
+    prompt,
+  });
 
   const defaultContent = {
     type: "doc",
@@ -33,7 +41,7 @@ export async function createDocument(prompt: string) {
         content: [
           {
             type: "text",
-            text: "Untitled Document",
+            text: cleanedResearchTopic,
           },
         ],
       },
@@ -47,7 +55,7 @@ export async function createDocument(prompt: string) {
     id: docId,
     content: JSON.stringify(defaultContent),
     prompt: prompt,
-    title: "Untitled Document",
+    title: researchTopic,
     userId: userId,
   });
 
@@ -113,5 +121,11 @@ export async function deleteDocument(documentId: string) {
     throw new Error("User not found");
   }
 
-  await db.delete(documentsTable).where(eq(documentsTable.id, documentId));
+  await db
+    .delete(documentsTable)
+    .where(
+      and(eq(documentsTable.id, documentId), eq(documentsTable.userId, userId))
+    );
+
+  return true;
 }
