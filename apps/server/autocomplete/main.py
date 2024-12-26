@@ -105,7 +105,7 @@ def ExtractPaperAgent(text: str) -> str:
         tokenizer = tiktoken.get_encoding("cl100k_base")
 
         tokens = tokenizer.encode(text)
-        truncated_tokens = tokens[:1000]
+        truncated_tokens = tokens[:1500]
         truncated_text = tokenizer.decode(truncated_tokens)
         sanitized_text = sanitize_text(truncated_text)
         logging.info("Getting response from baml_main...")
@@ -204,7 +204,7 @@ def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = No
 
             data = {
                 "title": extracted_info.title,
-                "description": "This is a research paper",
+                "description": extracted_info.abstract,
                 "user_id": user_id,
                 "metadata": metadata_for_library,
                 "is_public": True if user_id == None else False,

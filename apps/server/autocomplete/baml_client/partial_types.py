@@ -33,3 +33,4 @@ class Paper(BaseModel):
     author: List[Optional[str]]
     title: Optional[str] = None
     year: Optional[str] = None
+    abstract: Optional[str] = None

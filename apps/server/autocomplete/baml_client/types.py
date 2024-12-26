@@ -43,3 +43,4 @@ class Paper(BaseModel):
     author: List[str]
     title: str
     year: str
+    abstract: str
