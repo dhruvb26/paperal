@@ -23,6 +23,7 @@ import { DeleteDocumentDialog } from "@/components/document/delete-document-dial
 import { LibraryList } from "@/components/document/library-list";
 import { CustomUploadButton } from "./uploadthing/custom-upload-button";
 import { deleteLibrary } from "@/app/actions/library";
+import { CustomUploadDropzone } from "./uploadthing/custom-upload-dropzone";
 
 const data = {
   navMain: [
@@ -184,7 +185,8 @@ export function AppSidebar({
                 >
                   Sort {sortDesc ? "↓" : "↑"}
                 </Button>
-                <CustomUploadButton />
+                {/* <CustomUploadButton /> */}
+                <CustomUploadDropzone />
               </>
             ) : (
               <>

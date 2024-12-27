@@ -185,7 +185,12 @@
   white-space: wrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 300px; /* Adjust this value as needed */
+  max-width: 500px;
+
+  .citation {
+    color: hsl(var(--muted-foreground));
+    font-weight: 500;
+  }
 }
 
 /* Version Modal and Collaboration Styles */

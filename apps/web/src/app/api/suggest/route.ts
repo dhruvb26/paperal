@@ -5,12 +5,6 @@ import { db } from "@/db";
 import { eq } from "drizzle-orm";
 import { documentsTable, libraryTable } from "@/db/schema";
 
-interface SuggestionResponse {
-  ai_sentence: string;
-  is_reference: boolean;
-  library_id: string | null;
-}
-
 interface Metadata {
   url: string;
   citations: {
@@ -49,22 +43,20 @@ export async function POST(request: Request) {
     const citations = metadata.citations;
 
     if (libraryDoc[0]) {
-      console.log("Returning citation sentence");
       return NextResponse.json({
         text: suggestion.referenced_sentence,
-        citation: {
-          id: libraryDoc[0].id,
-          citations: citations,
-          href: metadata.url,
+        is_referenced: true,
+        citations: {
+          "in-text": citations["in-text"],
+          "after-text": citations["after-text"],
         },
+        href: metadata.url,
       });
     }
   }
 
-  console.log("Returning ai sentence");
-
   return NextResponse.json({
     text: suggestion.ai_sentence,
-    citation: null,
+    is_referenced: false,
   });
 }

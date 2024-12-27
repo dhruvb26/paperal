@@ -26,6 +26,16 @@ function debounce<T extends (...args: any[]) => any>(
   };
 }
 
+interface CallbackInput {
+  text: string;
+  is_referenced: boolean;
+  citations?: {
+    "in-text"?: string;
+    "after-text"?: string;
+  };
+  href: string;
+}
+
 export const AiAutocompleteExtension = Node.create<
   {
     applySuggestionKey: string;
@@ -57,7 +67,7 @@ export const AiAutocompleteExtension = Node.create<
       async (
         previousText: string,
         documentId: string,
-        cb: (suggestion: string | null) => void
+        cb: (suggestion: string | null, data?: CallbackInput) => void
       ) => {
         try {
           const pathDocumentId = window.location.pathname.split("/editor/")[1];
@@ -69,8 +79,9 @@ export const AiAutocompleteExtension = Node.create<
               documentId: pathDocumentId || documentId,
             }),
           });
-          const data = await suggestion.json();
-          cb(data as string);
+          const data = (await suggestion.json()) as CallbackInput;
+          const string = data.text;
+          cb(string, data);
         } catch (error) {
           console.error(error);
           cb(null);
@@ -138,8 +149,8 @@ export const AiAutocompleteExtension = Node.create<
               const previousText = view.state.doc
                 .textBetween(0, view.state.doc.content.size, " ")
                 .slice(-4000);
-              getSuggestion(previousText, documentId, (suggestion) => {
-                if (!suggestion) return;
+              getSuggestion(previousText, documentId, (suggestion, data) => {
+                if (!suggestion || !data) return;
 
                 const updatedState = view.state;
 
@@ -155,8 +166,22 @@ export const AiAutocompleteExtension = Node.create<
 
                     const suggestionSpan = document.createElement("span");
                     const addSpace = nextNode && nextNode.isText ? " " : "";
-                    suggestionSpan.innerHTML = `${addSpace}${suggestion}`;
+
+                    // Format the suggestion to place citation before the period
+                    let formattedSuggestion = suggestion;
+                    if (data.citations?.["in-text"]) {
+                      // Remove any trailing period
+                      formattedSuggestion = suggestion.replace(/\.$/, "");
+                      // Add citation and period
+                      formattedSuggestion = `${formattedSuggestion} ${data.citations["in-text"]}.`;
+                    }
+
+                    suggestionSpan.innerHTML = `${addSpace}${formattedSuggestion}`;
                     suggestionSpan.classList.add("autocomplete-suggestion");
+                    suggestionSpan.setAttribute(
+                      "data-response-data",
+                      JSON.stringify(data)
+                    );
 
                     const shortcuts = document.createElement("div");
                     shortcuts.classList.add("autocomplete-shortcuts");
@@ -166,9 +191,56 @@ export const AiAutocompleteExtension = Node.create<
                     acceptButton.classList.add("shortcut-button");
                     acceptButton.onclick = (e) => {
                       e.preventDefault();
-                      const tr = view.state.tr.insertText(
-                        suggestionSpan.textContent || ""
+                      const tr = view.state.tr;
+                      const responseData = JSON.parse(
+                        suggestionSpan.getAttribute("data-response-data") ||
+                          "{}"
                       );
+
+                      if (responseData.citations?.["in-text"]) {
+                        const schema = view.state.schema;
+                        const text = suggestionSpan.textContent || "";
+                        const lastPeriodIndex = text.lastIndexOf(".");
+
+                        if (lastPeriodIndex !== -1) {
+                          // Remove the citation from the suggestion text (it's added twice currently)
+                          const textWithoutCitation = text
+                            .replace(responseData.citations["in-text"], "")
+                            .trim();
+                          // Split at the last period
+                          const beforePeriod = textWithoutCitation.substring(
+                            0,
+                            textWithoutCitation.lastIndexOf(".")
+                          );
+
+                          tr.replaceWith(tr.selection.from, tr.selection.from, [
+                            schema.text(beforePeriod + " "),
+                            schema.text(responseData.citations["in-text"], [
+                              schema.marks.link.create({
+                                href: responseData.href,
+                              }),
+                            ]),
+                            schema.text(". "),
+                          ]);
+                        } else {
+                          // If no period, just append citation before adding one
+                          const textWithoutCitation = text
+                            .replace(responseData.citations["in-text"], "")
+                            .trim();
+                          tr.replaceWith(tr.selection.from, tr.selection.from, [
+                            schema.text(textWithoutCitation + " "),
+                            schema.text(responseData.citations["in-text"], [
+                              schema.marks.link.create({
+                                href: responseData.href,
+                              }),
+                            ]),
+                            schema.text(". "),
+                          ]);
+                        }
+                      } else {
+                        tr.insertText(suggestionSpan.textContent || "");
+                      }
+
                       view.dispatch(tr);
 
                       const clearTr = view.state.tr;
@@ -198,8 +270,8 @@ export const AiAutocompleteExtension = Node.create<
                       getSuggestion(
                         previousText,
                         documentId,
-                        (newSuggestion) => {
-                          if (!newSuggestion) return;
+                        (newSuggestion, newData) => {
+                          if (!newSuggestion || !newData) return;
 
                           const cursorPos = view.state.selection.$head.pos;
                           const nextNode = view.state.doc.nodeAt(cursorPos);
@@ -215,9 +287,18 @@ export const AiAutocompleteExtension = Node.create<
                                 document.createElement("span");
                               const addSpace =
                                 nextNode && nextNode.isText ? " " : "";
-                              suggestionSpan.innerHTML = `${addSpace}${newSuggestion}`;
+                              const citationText = newData.citations?.[
+                                "in-text"
+                              ]
+                                ? ` ${newData.citations["in-text"]}`
+                                : "";
+                              suggestionSpan.innerHTML = `${addSpace}${newSuggestion}${citationText}`;
                               suggestionSpan.classList.add(
                                 "autocomplete-suggestion"
+                              );
+                              suggestionSpan.setAttribute(
+                                "data-response-data",
+                                JSON.stringify(newData)
                               );
 
                               const shortcuts = document.createElement("div");
@@ -275,10 +356,57 @@ export const AiAutocompleteExtension = Node.create<
               if (decorationSet?.find().length) {
                 const suggestionEl = document.querySelector(
                   ".autocomplete-suggestion"
-                );
+                ) as HTMLElement;
                 if (suggestionEl) {
-                  const suggestion = suggestionEl.textContent || "";
-                  const tr = view.state.tr.insertText(suggestion);
+                  const tr = view.state.tr;
+                  const responseData = JSON.parse(
+                    suggestionEl.getAttribute("data-response-data") || "{}"
+                  );
+
+                  if (responseData.citations?.["in-text"]) {
+                    const schema = view.state.schema;
+                    const text = suggestionEl.textContent || "";
+                    const lastPeriodIndex = text.lastIndexOf(".");
+
+                    if (lastPeriodIndex !== -1) {
+                      // Remove the citation from the suggestion text (it's added twice currently)
+                      const textWithoutCitation = text
+                        .replace(responseData.citations["in-text"], "")
+                        .trim();
+                      // Split at the last period
+                      const beforePeriod = textWithoutCitation.substring(
+                        0,
+                        textWithoutCitation.lastIndexOf(".")
+                      );
+
+                      tr.replaceWith(tr.selection.from, tr.selection.from, [
+                        schema.text(beforePeriod + ""),
+                        schema.text(responseData.citations["in-text"], [
+                          schema.marks.link.create({
+                            href: responseData.href,
+                          }),
+                        ]),
+                        schema.text(". "),
+                      ]);
+                    } else {
+                      // If no period, just append citation before adding one
+                      const textWithoutCitation = text
+                        .replace(responseData.citations["in-text"], "")
+                        .trim();
+                      tr.replaceWith(tr.selection.from, tr.selection.from, [
+                        schema.text(textWithoutCitation + ""),
+                        schema.text(responseData.citations["in-text"], [
+                          schema.marks.link.create({
+                            href: responseData.href,
+                          }),
+                        ]),
+                        schema.text(". "),
+                      ]);
+                    }
+                  } else {
+                    tr.insertText(suggestionEl.textContent || "");
+                  }
+
                   view.dispatch(tr);
 
                   const clearTr = view.state.tr;
@@ -310,9 +438,9 @@ export const AiAutocompleteExtension = Node.create<
               // Request new suggestion with actual documentId
               getSuggestion(
                 previousText,
-                pathDocumentId || "123",
-                (suggestion) => {
-                  if (!suggestion) return;
+                pathDocumentId || "",
+                (suggestion, data) => {
+                  if (!suggestion || !data) return;
 
                   const cursorPos = view.state.selection.$head.pos;
                   const nextNode = view.state.doc.nodeAt(cursorPos);
@@ -326,8 +454,15 @@ export const AiAutocompleteExtension = Node.create<
 
                       const suggestionSpan = document.createElement("span");
                       const addSpace = nextNode && nextNode.isText ? " " : "";
-                      suggestionSpan.innerHTML = `${addSpace}${suggestion}`;
+                      const citationText = data.citations?.["in-text"]
+                        ? ` ${data.citations["in-text"]}`
+                        : "";
+                      suggestionSpan.innerHTML = `${addSpace}${suggestion}${citationText}`;
                       suggestionSpan.classList.add("autocomplete-suggestion");
+                      suggestionSpan.setAttribute(
+                        "data-response-data",
+                        JSON.stringify(data)
+                      );
 
                       const shortcuts = document.createElement("div");
                       shortcuts.classList.add("autocomplete-shortcuts");

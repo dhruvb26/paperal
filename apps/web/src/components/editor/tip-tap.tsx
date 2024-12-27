@@ -7,7 +7,6 @@ import StarterKit from "@tiptap/starter-kit";
 import React, { useState, useCallback } from "react";
 import DragHandle from "@tiptap-pro/extension-drag-handle-react";
 import Placeholder from "@tiptap/extension-placeholder";
-import Highlight from "@tiptap/extension-highlight";
 import { Mention } from "@tiptap/extension-mention";
 import { FloatingMenuBar } from "./floating-menu-bar";
 import { Plus } from "@phosphor-icons/react";
@@ -48,7 +47,7 @@ export default ({ documentId, initialContent }: TiptapProps) => {
     immediatelyRender: true,
     extensions: [
       StarterKit.configure(),
-      // AiAutocompleteExtension,
+      AiAutocompleteExtension,
       Mention.configure({
         HTMLAttributes: {
           class: "mention",
@@ -56,7 +55,6 @@ export default ({ documentId, initialContent }: TiptapProps) => {
         suggestion: suggestion as any,
       }),
       SlashCommand,
-      Highlight,
       Placeholder.configure({
         placeholder: ({ node }) => {
           return "Enter a heading or press '/' for commands";

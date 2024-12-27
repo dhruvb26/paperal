@@ -565,7 +565,6 @@ async def generate_sentence(request: SentenceRequest):
 
     sentence = {}
     for doc in ai_generated.get("similar_documents", []):
-        # print(doc)
         if doc["score"] > 0.5:
             # add user_id
             sentence = generate_referenced_sentence(
