@@ -97,37 +97,55 @@ def query_vector_store(
 ) -> List[Document]:
     """
     Query the vector store with improved filtering and reranking.
+    Returns a list of tuples (Document, score) sorted by relevance.
     """
     logging.info(f"Querying vector store for: {query}")
 
     try:
-        # results = vector_store.similarity_search(
-        #     query, k=k * 2  # Get more results initially for reranking
-        # )
-        results = vector_store.similarity_search(query, k=k)
+        # Get initial results
+        results = vector_store.similarity_search_with_relevance_scores(
+            query, 
+            k=k * 4  # Get more initial results for better diversity
+        )
         logging.info(f"Initial search returned {len(results)} results")
 
         if not results:
             logging.warning("No results found in vector store")
             return []
 
-        # Filter by similarity threshold
-        filtered_results = [doc for doc in results]
+        # Group results by document metadata to ensure diversity
+        doc_groups = {}
+        for doc, score in results:
+            # Create a key from the document's metadata
+            doc_key = (
+                doc.metadata.get('library_id', ''),  # Using library_id as the primary grouping key
+                doc.metadata.get('title', '')        # Title as secondary grouping key
+            )
+            if doc_key not in doc_groups:
+                doc_groups[doc_key] = []
+            doc_groups[doc_key].append((doc, score))
 
-        if not filtered_results:
-            logging.warning("No results passed similarity threshold")
-            return []
+        # Take top results from each document
+        diverse_results = []
+        for group in doc_groups.values():
+            # Sort each group by score and take top 2
+            sorted_group = sorted(group, key=lambda x: x[1], reverse=True)
+            diverse_results.extend(sorted_group[:2])
 
-        # Rerank results using global cross-encoder instance
-        pairs = [(query, doc.page_content) for doc in filtered_results]
+        # Rerank the diverse results
+        pairs = [(query, doc.page_content) for doc, _ in diverse_results]
         rerank_scores = _reranker.predict(pairs)
 
-        # Sort by reranker scores and take top k
-        reranked_pairs = sorted(zip(rerank_scores, filtered_results), reverse=True)
-        final_results = [(doc, score) for score, doc in reranked_pairs[:k]]
+        # Combine reranker scores with documents and sort
+        final_results = sorted(
+            zip(diverse_results, rerank_scores),
+            key=lambda x: x[1],  # Sort by reranker score
+            reverse=True
+        )
 
-        logging.info(f"Final reranked results: {len(final_results)} documents")
-        return final_results
+        # Return top k results in the original (Document, score) format
+        print(final_results)
+        return [(doc, score) for (doc, _), score in final_results[:k]]
 
     except Exception as e:
         logging.error(f"Error in query_vector_store: {str(e)}", exc_info=True)

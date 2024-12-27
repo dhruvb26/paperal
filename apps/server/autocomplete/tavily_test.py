@@ -63,14 +63,17 @@ def generate_research_topic(text: str) -> list:
         return []
 
     try:
+        prompt = f"""Generate a very short,concise and simple to understand research topic from the given text. Return only the research topic as a string.
+        Text: {text}
+        """
         response = openai_client.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {
                     "role": "system",
-                    "content": "Generate a short research topic from the given text. Return only the research topic as a string.",
+                    "content": "Generate a very short,concise and simple to understand research topic from the given text. Return only the research topic as a string.",
                 },
-                {"role": "user", "content": text},
+                {"role": "user", "content": prompt},
             ],
         )
         # Parse the comma-separated keywords into a list
@@ -95,7 +98,23 @@ def getURL(research_sentence: str) -> list:
     if not tavily_client:
         logging.error("Tavily client is not initialized.")
         return {}
-    research_topic = research_sentence
+    # use openai to extract important words from the research_sentence
+
+    prompt = f"""Extract important words from the following research sentence: {research_sentence}
+    Return only the important words as a comma separated string.
+    """
+    client = OpenAI()
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "You are a world class researcher. Extract important words from the given research sentence."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=0.8,
+    )
+    research_topic = response.choices[0].message.content.strip()
+
+    # research_topic = research_sentence
     logging.info(f"Searching for research papers on: {research_topic}")
     url_list = []
 
@@ -129,8 +148,8 @@ def getURL(research_sentence: str) -> list:
                     logging.warning(f"Failed to download PDF: HTTP {pdf_response.status_code}")
             except Exception as download_error:
                 logging.error(f"Error downloading or processing PDF: {download_error}")
-        if len(url_list) >= 4:
-            url_list = url_list[:4]
+        if len(url_list) >= 5:
+            url_list = url_list[:5]
         logging.info(f"Search result: {url_list}")
     except Exception as e:
         logging.error(f"Error during Tavily search: {e}")
