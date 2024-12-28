@@ -15,6 +15,7 @@ import suggestion from "@/extensions/suggestion/suggestion";
 import { saveDocument } from "@/app/actions/documents";
 import { AiAutocompleteExtension } from "@/extensions/ai-autocomplete/ai-autocomplete";
 import { CustomLink } from "@/extensions/custom-link/custom-link";
+import { Highlight } from "@tiptap/extension-highlight";
 import debounce from "lodash/debounce";
 
 interface TiptapProps {
@@ -61,6 +62,7 @@ export default ({ documentId, initialContent }: TiptapProps) => {
         },
       }),
       Underline,
+      Highlight,
       CustomLink.configure({
         openOnClick: true,
         autolink: true,

@@ -1,8 +1,8 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { getUser } from "@/app/actions/user";
-import { createLibraryEmbeddings } from "@/trigger/library-embeddings";
-import { tasks } from "@trigger.dev/sdk/v3";
+import { env } from "@/env";
+import axios from "axios";
 
 const f = createUploadthing();
 
@@ -22,13 +22,10 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       const research_urls = [file.url];
 
-      await tasks.trigger<typeof createLibraryEmbeddings>(
-        "create-library-embeddings",
-        {
-          research_urls,
-          user_id: metadata.userId,
-        }
-      );
+      await axios.post(`${env.API_URL}/store`, {
+        research_urls,
+        user_id: metadata.userId,
+      });
 
       return { uploadedBy: metadata.userId, fileUrl: file.url };
     }),

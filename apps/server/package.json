@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Analyze Research Papers using AI",
   "scripts": {
-    "dev": "uvicorn main:app --reload"
+    "dev": "../../venv/bin/python run.py",
+    "build": "pip install -r requirements.txt"
   },
   "keywords": [],
   "author": ""

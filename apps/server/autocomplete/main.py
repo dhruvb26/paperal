@@ -376,44 +376,38 @@ def generate_ai_sentence(
     """
     try:
         context = f"""
-        You are an advanced AI research paper writing assistant. Your task is to generate a single, academically-styled sentence that continues the narrative flow of a research paper. You will be provided with context about the paper and must adhere to specific guidelines to ensure high-quality, coherent output.
+        Your task is to generate a single, academically-styled sentence that continues the narrative flow of a research paper. You will be provided with context about the paper and must adhere to specific guidelines to ensure high-quality, coherent output.
 
-First, carefully review the following context:
+        First, carefully review the following context:
 
-<research_topic>
-{heading}
-</research_topic>
+        <research_topic>
+        {heading}
+        </research_topic>
 
-<current_section>
-{subheading if subheading else None}
-</current_section>
+        <current_section>
+        {subheading if subheading else None}
+        </current_section>
 
-<previous_text>
-{previous_text}
-</previous_text>
+        <previous_text>
+        {previous_text}
+        </previous_text>
 
-Before generating the sentence, wrap your analysis in <analysis> tags. Consider the following:
+        Before generating the sentence, consider the following:
 
-1. Identify the current section of the paper (Introduction, Body, or Conclusion).
-2. Identify key themes or concepts from the research topic and current section.
-3. Note any important terminology or jargon that should be incorporated.
-4. Analyze the previous text to determine the last concept discussed.
-5. Plan how to continue the narrative flow while adhering to the section-specific guidelines.
-6. Consider how the new sentence can build upon or transition from the last concept in the previous text.
-7. Consider potential transition words or phrases if needed.
-8. Count the words in each potential sentence to ensure they meet the length requirement. Do this by numbering each word, e.g., "1. This 2. sentence 3. has 4. four 5. words."
-9. Brainstorm 2-3 potential sentences, including a word count for each to ensure they're not too long or short.
+        1. Identify the current section of the paper (Introduction, Body, or Conclusion).
+        2. Identify key themes or concepts from the research topic and current section.
+        3. Note any important terminology or jargon that should be incorporated.
+        4. Analyze the previous text to determine the last concept discussed.
+        5. Plan how to continue the narrative flow while adhering to the section-specific guidelines.
+        6. Consider how the new sentence can build upon or transition from the last concept in the previous text.
+        7. Make sure the sentence is not too long or short.
+        8. Sentence should follow grammar rules. For example, if previous text ends with a comma, the sentence should not end with a comma and should begin with a lowercase letter. 
 
-After your analysis, generate a single sentence that meets the following criteria:
+        Example output format:
 
-Example output format:
-<sentence_planning>
-[Your analysis and planning process here]
-</sentence_planning>
+        [Your single, academically-styled sentence here]
 
-[Your single, academically-styled sentence here]
-
-Remember, the final output should only include the generated sentence, without the sentence_planning tags or any other text.
+        Remember, the final output should only include the generated sentence, without any tags or any other text.
         """
 
         client = OpenAI()
@@ -450,61 +444,39 @@ def generate_referenced_sentence(
         logging.info("Generating referenced sentence...")
 
         context = f"""
-        You are an advanced academic writing assistant tasked with generating a single, academically-styled sentence that integrates information from reference material while maintaining flow with existing text. Your goal is to help researchers seamlessly incorporate new information into their papers.
+        Generate a single, academically-styled sentence that integrates information from reference material while maintaining flow with existing text.
 
-Here is the context for the academic writing task:
+        Here is the context for the academic writing task:
 
-Research Topic:
-<research_topic>
-{heading}
-</research_topic>
+        <research_topic>
+        {heading}
+        </research_topic>
 
-Current Section:
-<current_section>
-{subheading if subheading else None}
-</current_section>
+        <previous_text>
+        {previous_text}
+        </previous_text>
 
-Previous Text:
-<previous_text>
-{previous_text}
-</previous_text>
+        <reference_material>
+        {paper_content}
+        </reference_material>
 
-Reference Material:
-<reference_material>
-{paper_content}
-</reference_material>
+        Your task is to generate one academically-styled sentence that integrates information from the reference material while maintaining flow with the previous text.
 
-Your task is to generate one academically-styled sentence that integrates information from the reference material while maintaining flow with the previous text. Before providing the final sentence, wrap your analysis and planning process inside sentence_planning tags.
+        Instructions for the sentence planning process:
+        1. Go through the reference material and find the most relevant information that pertains to the previous text.
+        2. Review the previous text to understand the context. For example, if previous text sounds like an introduction, the sentence should follow that flow. 
+        3. Consider how the new sentence can build upon or transition from the last concept in the previous text.
+        4. Make sure the sentence is not too long or short.
+        5. Sentence should follow grammar rules. For example, if previous text ends with a comma, the sentence should not end with a comma and should begin with a lowercase letter. 
+        6. Ensure the sentence doesn't violate any of these prohibitions:
+        - No direct quotes from the reference material
+        - No speculative or unsupported claims
+        - No informal language or colloquialisms
 
-Instructions for the sentence planning process:
-1. Summarize the key points from the research topic and current section.
-2. Review the previous text to ensure logical flow.
-3. List 2-3 relevant quotes from the reference material that are pertinent to the current section.
-4. Brainstorm 2-3 potential sentence structures that adhere to the following requirements:
-   - Length: 15-25 words
-   - Use precise academic vocabulary
-   - Maintain third-person perspective
-   - Avoid passive voice unless necessary
-   - Include appropriate citation markers (e.g., "Research has shown that...")
-5. Count the words in each potential sentence to ensure they meet the length requirement. Do this by numbering each word, e.g., "1. This 2. sentence 3. has 4. four 5. words."
-6. Consider how to integrate this information while maintaining academic objectivity and formal tone.
-7. Ensure the sentence doesn't violate any of these prohibitions:
-   - No first-person references (we, our, us)
-   - No direct quotes from the reference material
-   - No self-referential phrases ("this research," "our study," etc.)
-   - No speculative or unsupported claims
-   - No informal language or colloquialisms
+        Example output format:
+        [Your single, academically-styled sentence here]
 
-After your sentence planning process, provide only the generated sentence, with no additional text or explanations.
-
-Example output format:
-<sentence_planning>
-[Your analysis and planning process here]
-</sentence_planning>
-
-[Your single, academically-styled sentence here]
-
-Remember, the final output should only include the generated sentence, without the sentence_planning tags,references or any other text.
+        Remember, the final output should only include the generated sentence, without tags, references or any other text.
         """
 
         client = OpenAI()

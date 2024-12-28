@@ -131,7 +131,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
     return (
       <Tabs
         defaultValue="library"
-        className="border border-muted rounded-md p-1"
+        className="border border-muted rounded-md p-1 bg-white"
       >
         <TabsList>
           <TabsTrigger value="library">Library</TabsTrigger>

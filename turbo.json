@@ -4,7 +4,13 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "**/venv/**",
+        "**/site-packages/**"
+      ],
       "env": [
         "UPLOADTHING_TOKEN",
         "CLERK_SECRET_KEY",
@@ -18,7 +24,18 @@
         "NEXT_PUBLIC_CLERK_SIGN_IN_URL",
         "NEXT_PUBLIC_CLERK_SIGN_UP_URL",
         "DATABASE_PASSWORD",
-        "TRIGGER_SECRET_KEY"
+        "TRIGGER_SECRET_KEY",
+        "PINECONE_API_KEY",
+        "INDEX_NAME",
+        "OPENAI_API_KEY",
+        "LANGCHAIN_TRACING_V2",
+        "LANGCHAIN_ENDPOINT",
+        "LANGCHAIN_API_KEY",
+        "LANGCHAIN_PROJECT",
+        "SUPABASE_SERVICE_KEY",
+        "SUPABASE_PASSWORD",
+        "SUPABASE_URL",
+        "TAVILY_API_KEY"
       ]
     },
     "dev": {
