@@ -10,6 +10,7 @@ from langchain.schema import Document
 from typing import Optional, List
 import re
 from sentence_transformers import CrossEncoder
+from openai import OpenAI
 
 # Configure logging
 logging.basicConfig(
@@ -45,10 +46,8 @@ def split_documents(documents: List[Document]) -> List[Document]:
     logging.info("Splitting documents...")
     # Using RecursiveCharacterTextSplitter for better semantic splitting
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,  # Smaller chunks for better context
-        chunk_overlap=50,
-        length_function=len,
-        separators=["\n\n", "\n", ".", "!", "?", " ", ""],  # Hierarchical splitting
+        chunk_size=1000,  
+        chunk_overlap=0,
     )
     split_docs = text_splitter.split_documents(documents)
     logging.info(f"Split into {len(split_docs)} chunk(s).")
@@ -92,75 +91,53 @@ def query_metadata(field, value, supabase, user_id: Optional[str] = None):
 
 def query_vector_store(
     query: str,
-    vector_store: SupabaseVectorStore,
-    k: int = 5,
+  
 ) -> List[Document]:
     """
-    Query the vector store with improved filtering and reranking.
-    Returns a list of tuples (Document, score) sorted by relevance.
+    Optimized vector store query with reranking.
     """
     logging.info(f"Querying vector store for: {query}")
 
     try:
-        # Get initial results
-        results = vector_store.similarity_search_with_relevance_scores(
-            query, 
-            k=k * 4  # Get more initial results for better diversity
+        supabase_client = create_supabase_client()
+        openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    # Generate embedding for the query
+        embedding_response = openai_client.embeddings.create(
+            model="text-embedding-3-large",
+            input=query,
+            dimensions=1536
         )
-        logging.info(f"Initial search returned {len(results)} results")
+    
+        embedding = embedding_response.data[0].embedding
 
-        if not results:
-            logging.warning("No results found in vector store")
-            return []
-
-        # Group results by document metadata to ensure diversity
-        doc_groups = {}
-        for doc, score in results:
-            # Create a key from the document's metadata
-            doc_key = (
-                doc.metadata.get('library_id', ''),  # Using library_id as the primary grouping key
-                doc.metadata.get('title', '')        # Title as secondary grouping key
-            )
-            if doc_key not in doc_groups:
-                doc_groups[doc_key] = []
-            doc_groups[doc_key].append((doc, score))
-
-        # Take top results from each document
-        diverse_results = []
-        for group in doc_groups.values():
-            # Sort each group by score and take top 2
-            sorted_group = sorted(group, key=lambda x: x[1], reverse=True)
-            diverse_results.extend(sorted_group[:2])
-
-        # Rerank the diverse results
-        pairs = [(query, doc.page_content) for doc, _ in diverse_results]
-        rerank_scores = _reranker.predict(pairs)
-
-        # Combine reranker scores with documents and sort
-        final_results = sorted(
-            zip(diverse_results, rerank_scores),
-            key=lambda x: x[1],  # Sort by reranker score
-            reverse=True
-        )
-
-        # Return top k results in the original (Document, score) format
-        print(final_results)
-        return [(doc, score) for (doc, _), score in final_results[:k]]
+        # Call hybrid_search function via RPC with all required parameters
+        documents = supabase_client.rpc(
+            'hybrid_search',
+            {
+                'query_text': query,
+                'query_embedding': embedding,
+                'match_count': 10,
+                
+            }
+        ).execute()
+        # json.stringify(documents)
+    
+        return documents
 
     except Exception as e:
         logging.error(f"Error in query_vector_store: {str(e)}", exc_info=True)
         raise
 
 
-def create_vector_store(docs: List[Document], embeddings, supabase: Client) -> SupabaseVectorStore:
+def create_vector_store(embeddings, supabase: Client) -> SupabaseVectorStore:
     logging.info("Creating vector store...")
 
-    vector_store = SupabaseVectorStore.from_documents(
-        docs,
-        embeddings,
+    vector_store = SupabaseVectorStore(
         client=supabase,
-        table_name="embeddings",
-        query_name="match_documents",
+        embedding=embeddings,
+        table_name="embeddings",  # your table name
+        query_name="hybrid_search" # your search function name
     )
     logging.info("Vector store created successfully.")
     return vector_store

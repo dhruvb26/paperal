@@ -1,6 +1,5 @@
 import logging
 import os
-from functools import lru_cache
 from typing import Optional
 from contextlib import contextmanager
 import atexit
@@ -10,14 +9,13 @@ import fitz
 import requests
 import supabase_embeddings as supabase_embeddings
 import tiktoken
-
+import json
 # graphrag (lightrag)
 # from backend.lightrag_implement.helpers import process_text_into_neo4j
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from langchain.schema import Document
-from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
 from openai import OpenAI
 from pydantic import BaseModel
@@ -77,25 +75,23 @@ def get_clients():
     except Exception as e:
         logging.error(f"Error creating clients: {e}")
         raise
-    finally:
-        # Resources will be cleaned up at program exit
-        pass
 
 def cleanup_clients():
     """Cleanup function to be called at program exit"""
     global _supabase_client, _embeddings_model
     if _supabase_client:
         try:
-            _supabase_client.close()
-        except:
-            pass
-        _supabase_client = None
+            _supabase_client.postgrest.session.close()
+            _supabase_client = None
+        except Exception as e:
+            logging.error(f"Error closing Supabase client: {e}")
     if _embeddings_model:
         try:
-            _embeddings_model.client.close()
-        except:
-            pass
-        _embeddings_model = None
+            if hasattr(_embeddings_model, 'client'):
+                _embeddings_model.client.close()
+            _embeddings_model = None
+        except Exception as e:
+            logging.error(f"Error closing embeddings model: {e}")
 
 # Register cleanup function
 atexit.register(cleanup_clients)
@@ -252,8 +248,8 @@ def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = No
                     user_id,
                     library_id.data[0]["id"],
                 )
-                supabase_embeddings.create_vector_store(docs, embeddings, supabase)
-
+                vector_store = supabase_embeddings.create_vector_store(embeddings, supabase)
+                vector_store.add_documents(docs)
                 logging.info("Research papers stored successfully.")
         return True
     except Exception as e:
@@ -272,60 +268,53 @@ def find_similar_documents(generated_sentence: str, user_id: Optional[str] = Non
     """
     global last_used_document_source
     try:
-        with get_clients() as (supabase, embeddings):
-            vector_store = SupabaseVectorStore(
-                client=supabase,
-                embedding=embeddings,
-                table_name="embeddings",
-                query_name="match_documents",
-            )
+        
             
             # Search for similar documents
-            matched_docs = query_vector_store(generated_sentence, vector_store)
-            
+            matched_docs = query_vector_store(generated_sentence)
             # Filter documents based on user_id and last used document
             if user_id:
                 filtered_docs = [
-                    (doc, float(score))
-                    for doc, score in matched_docs
-                    if doc.metadata.get("user_id") in {user_id, None}
-                    and doc.metadata.get("library_id") != last_used_document_source
+                    (doc, doc.get("similarity"))
+                    for doc in matched_docs.data
+                    if doc.get("metadata").get("user_id") in {user_id, None}
+                    and doc.get("metadata").get("library_id") != last_used_document_source
                 ]
             else:
                 filtered_docs = [
-                    (doc, float(score))
-                    for doc, score in matched_docs
-                    if doc.metadata.get("user_id") is None
-                    and doc.metadata.get("library_id") != last_used_document_source
+                    (doc, doc.get("similarity"))
+                    for doc in matched_docs.data
+                    if doc.get("metadata").get("user_id") is None
+                    and doc.get("metadata").get("library_id") != last_used_document_source
                 ]
 
             # If no documents found after filtering, remove the last_used_document constraint
             if not filtered_docs:
                 if user_id:
                     filtered_docs = [
-                        (doc, float(score))
-                        for doc, score in matched_docs
-                        if doc.metadata.get("user_id") in {user_id, None}
+                        (doc, doc.get("similarity"))
+                        for doc in matched_docs.data
+                        if doc.get("metadata").get("user_id") in {user_id, None}
                     ]
                 else:
                     filtered_docs = [
-                        (doc, float(score))
-                        for doc, score in matched_docs
-                        if doc.metadata.get("user_id") is None
+                        (doc, doc.get("similarity"))
+                        for doc in matched_docs.data
+                        if doc.get("metadata").get("user_id") is None
                     ]
 
-            # Format results with native Python types
             results = []
-            for doc, score in filtered_docs:
+            for doc in matched_docs.data:
+              
                 results.append(
                     {
-                        "content": str(doc.page_content),
-                        "score": float(score),
+                        "content": str(doc["content"]),
+                        "score": float(doc["similarity"]),
                         "metadata": {
-                            "author": str(doc.metadata.get("author", "Unknown")),
-                            "title": str(doc.metadata.get("title", "Unknown")),
-                            "url": str(doc.metadata.get("source", "Unknown")),
-                            "library_id": str(doc.metadata.get("library_id", "Unknown")),
+                            "author": str(doc["metadata"]["author"]),
+                            "title": str(doc["metadata"]["title"]),
+                            "url": str(doc["metadata"]["source"]),
+                            "library_id": str(doc["metadata"]["library_id"]),
                         },
                     }
                 )
@@ -376,52 +365,20 @@ def generate_ai_sentence(
     """
     try:
         context = f"""
-        You are an advanced AI research paper writing assistant. Your task is to generate a single, academically-styled sentence that continues the narrative flow of a research paper. You will be provided with context about the paper and must adhere to specific guidelines to ensure high-quality, coherent output.
+        you are research paper writer, writing a paper on the topic - {heading}.
+Given the previous content of the paper, and the context to generate the next sentence of the paper, write the next sentence of the paper.
 
-First, carefully review the following context:
 
-<research_topic>
-{heading}
-</research_topic>
-
-<current_section>
-{subheading if subheading else None}
-</current_section>
-
-<previous_text>
-{previous_text}
-</previous_text>
-
-Before generating the sentence, wrap your analysis in <analysis> tags. Consider the following:
-
-1. Identify the current section of the paper (Introduction, Body, or Conclusion).
-2. Identify key themes or concepts from the research topic and current section.
-3. Note any important terminology or jargon that should be incorporated.
-4. Analyze the previous text to determine the last concept discussed.
-5. Plan how to continue the narrative flow while adhering to the section-specific guidelines.
-6. Consider how the new sentence can build upon or transition from the last concept in the previous text.
-7. Consider potential transition words or phrases if needed.
-8. Count the words in each potential sentence to ensure they meet the length requirement. Do this by numbering each word, e.g., "1. This 2. sentence 3. has 4. four 5. words."
-9. Brainstorm 2-3 potential sentences, including a word count for each to ensure they're not too long or short.
-
-After your analysis, generate a single sentence that meets the following criteria:
-
-Example output format:
-<sentence_planning>
-[Your analysis and planning process here]
-</sentence_planning>
-
-[Your single, academically-styled sentence here]
-
-Remember, the final output should only include the generated sentence, without the sentence_planning tags or any other text.
+Make sure to generate the next sentence using the context provided and only the context provided.
+Keep the sentence between 25 to 30 words.
         """
 
         client = OpenAI()
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a research paper writing assistant."},
-                {"role": "user", "content": context},
+                {"role": "system", "content": context},
+                {"role": "user", "content": previous_text},
             ],
             temperature=0.8,
         )
@@ -444,81 +401,30 @@ def generate_referenced_sentence(
     """
     Generates a sentence using referenced materials from the vector store.
     """
-    global last_used_document_source
     try:
         res = {}
         logging.info("Generating referenced sentence...")
 
-        context = f"""
-        You are an advanced academic writing assistant tasked with generating a single, academically-styled sentence that integrates information from reference material while maintaining flow with existing text. Your goal is to help researchers seamlessly incorporate new information into their papers.
+        prompt = f"""you are research paper writer, writing a paper on the topic - {heading}.
+Given the previous content of the paper, and the context to generate the next sentence of the paper, write the next sentence of the paper.
 
-Here is the context for the academic writing task:
+Context to generate the next sentence: {paper_content}
 
-Research Topic:
-<research_topic>
-{heading}
-</research_topic>
-
-Current Section:
-<current_section>
-{subheading if subheading else None}
-</current_section>
-
-Previous Text:
-<previous_text>
-{previous_text}
-</previous_text>
-
-Reference Material:
-<reference_material>
-{paper_content}
-</reference_material>
-
-Your task is to generate one academically-styled sentence that integrates information from the reference material while maintaining flow with the previous text. Before providing the final sentence, wrap your analysis and planning process inside sentence_planning tags.
-
-Instructions for the sentence planning process:
-1. Summarize the key points from the research topic and current section.
-2. Review the previous text to ensure logical flow.
-3. List 2-3 relevant quotes from the reference material that are pertinent to the current section.
-4. Brainstorm 2-3 potential sentence structures that adhere to the following requirements:
-   - Length: 15-25 words
-   - Use precise academic vocabulary
-   - Maintain third-person perspective
-   - Avoid passive voice unless necessary
-   - Include appropriate citation markers (e.g., "Research has shown that...")
-5. Count the words in each potential sentence to ensure they meet the length requirement. Do this by numbering each word, e.g., "1. This 2. sentence 3. has 4. four 5. words."
-6. Consider how to integrate this information while maintaining academic objectivity and formal tone.
-7. Ensure the sentence doesn't violate any of these prohibitions:
-   - No first-person references (we, our, us)
-   - No direct quotes from the reference material
-   - No self-referential phrases ("this research," "our study," etc.)
-   - No speculative or unsupported claims
-   - No informal language or colloquialisms
-
-After your sentence planning process, provide only the generated sentence, with no additional text or explanations.
-
-Example output format:
-<sentence_planning>
-[Your analysis and planning process here]
-</sentence_planning>
-
-[Your single, academically-styled sentence here]
-
-Remember, the final output should only include the generated sentence, without the sentence_planning tags,references or any other text.
-        """
-
+Make sure to generate the next sentence using the context provided and only the context provided.
+Keep the sentence between 25 to 30 words.
+"""
+        print(paper_content)
         client = OpenAI()
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a research paper writing assistant."},
-                {"role": "user", "content": context},
-            ],
-            temperature=0.6,
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": previous_text},
+            ]
         )
         logging.info("Sentence generated successfully.")
         res = {
-            "sentence": response.choices[0].message.content.strip().split("\n\n")[-1],
+            "sentence": response.choices[0].message.content,
         }
         return res
     except Exception as e:
@@ -527,7 +433,29 @@ Remember, the final output should only include the generated sentence, without t
 
 
 # API Endpoints
-
+def json_to_markdown(json_data, level: int = 0) -> str:
+    """
+    Convert a JSON object to markdown format.
+    """
+    markdown = ""
+    indent = "  " * level
+    
+    if isinstance(json_data, list):
+        for item in json_data:
+            markdown += f"{indent}- "
+            if isinstance(item, (dict, list)):
+                markdown += "\n" + json_to_markdown(item, level + 1)
+            else:
+                markdown += f"{item}\n"
+    elif isinstance(json_data, dict):
+        for key, value in json_data.items():
+            if isinstance(value, (dict, list)):
+                markdown += f"{indent}- **{key}**:\n"
+                markdown += json_to_markdown(value, level + 1)
+            else:
+                markdown += f"{indent}- **{key}**: {value}\n"
+                
+    return markdown
 
 # create new endpoint that only sends research topic
 @app.post("/research_topic")
@@ -561,18 +489,20 @@ async def generate_sentence(request: SentenceRequest):
     logging.info("Received request to generate sentence.")
 
     # Generate non-referenced sentence
+    
+    
     ai_generated = generate_ai_sentence(request.previous_text, request.heading, request.subheading)
-
     sentence = {}
     for doc in ai_generated.get("similar_documents", []):
         # print(doc)
-        if doc["score"] > 0.5:
+        # if doc["score"] > 0.5:
             # add user_id
-            sentence = generate_referenced_sentence(
-                request.previous_text,
-                request.heading,
-                doc["content"],
-                request.subheading,
+        print(doc)
+        sentence = generate_referenced_sentence(
+            request.previous_text,
+            request.heading,
+            doc["content"],
+            request.subheading,
             )
         break
 
