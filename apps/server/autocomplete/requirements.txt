@@ -1,6 +1,6 @@
 python-dotenv
 openai
-PyMuPDF==1.23.8  # fitz is part of PyMuPDF
+PyMuPDF==1.23.8
 requests
 supabase
 tiktoken
@@ -12,5 +12,6 @@ pydantic
 sentence-transformers
 tavily-python
 PyPDF2
-python-multipart  # for FastAPI file uploads
-uvicorn  # for running FastAPI
+python-multipart
+uvicorn
+gunicorn
