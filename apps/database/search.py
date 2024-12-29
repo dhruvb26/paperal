@@ -70,5 +70,5 @@ def search_similar_papers_in_category(query_text, top_k_initial=5, top_k_final=2
         final_results = session.run(final_search_query, category=most_common_category, embedding=query_embedding, top_k=top_k_final)
         return [(record['title'], record['abstract'], record['score']) for record in final_results]
 
-results = search_similar_papers_in_category("Large language models, machine learning, transformers", top_k_initial=5, top_k_final=25)
+results = search_similar_papers_in_category("Data science life cycle can be used to tacle United Nation SDG 17", top_k_initial=5, top_k_final=25)
 print(json.dumps({"results": results}, indent=4))
