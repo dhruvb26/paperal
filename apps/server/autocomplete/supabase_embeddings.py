@@ -21,8 +21,6 @@ logging.basicConfig(
 
 dotenv.load_dotenv()
 
-_reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-
 
 def create_supabase_client():
     logging.info("Creating Supabase client...")
