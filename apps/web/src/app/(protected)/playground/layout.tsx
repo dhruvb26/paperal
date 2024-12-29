@@ -7,7 +7,7 @@ export default async function PlaygroundLayout({
 }>) {
   return (
     <div className="flex h-screen">
-      <main className="flex-1 relative">{children}</main>
+      <main className="flex-1 relative ">{children}</main>
       <SidebarRight />
     </div>
   );

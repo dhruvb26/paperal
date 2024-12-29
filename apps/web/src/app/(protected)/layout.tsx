@@ -11,7 +11,7 @@ export default function ProtectedLayout({
   return (
     <>
       <SidebarInset>
-        <header className="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-2.5">
+        <header className="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-2.5 z-50">
           <SidebarTrigger className="-ml-1" />
         </header>
 

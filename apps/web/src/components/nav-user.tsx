@@ -61,7 +61,7 @@ export function NavUser({
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkle size={16} />
                 Upgrade to Pro
@@ -77,8 +77,8 @@ export function NavUser({
                 <CreditCard size={16} />
                 Billing
               </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            </DropdownMenuGroup> */}
+            {/* <DropdownMenuSeparator /> */}
             <DropdownMenuItem>
               <SignOutButton>Log out</SignOutButton>
             </DropdownMenuItem>

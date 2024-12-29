@@ -21,6 +21,7 @@
     "deploy:worker": "pnpm run build:worker && wrangler deploy"
   },
   "dependencies": {
+    "@clerk/elements": "^0.22.5",
     "@clerk/nextjs": "^6.9.5",
     "@dagrejs/dagre": "^1.1.4",
     "@hocuspocus/provider": "^2.15.0",

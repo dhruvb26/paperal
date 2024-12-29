@@ -10,8 +10,15 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarInput,
+  useSidebar,
 } from "@/components/ui/sidebar";
-import { GearSix, TerminalWindow, File, Archive } from "@phosphor-icons/react";
+import {
+  GearSix,
+  TerminalWindow,
+  File,
+  Archive,
+  House,
+} from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
@@ -21,12 +28,16 @@ import { useToast } from "@/hooks/use-toast";
 import { DocumentList } from "@/components/document/document-list";
 import { DeleteDocumentDialog } from "@/components/document/delete-document-dialog";
 import { LibraryList } from "@/components/document/library-list";
-import { CustomUploadButton } from "./uploadthing/custom-upload-button";
 import { deleteLibrary } from "@/app/actions/library";
 import { CustomUploadDropzone } from "./uploadthing/custom-upload-dropzone";
 
 const data = {
   navMain: [
+    {
+      title: "Home",
+      url: "/",
+      icon: <House weight="fill" size={24} />,
+    },
     {
       title: "Documents",
       url: "/editor",
@@ -90,6 +101,7 @@ export function AppSidebar({
   const [libraryToDelete, setLibraryToDelete] = React.useState<string | null>(
     null
   );
+  const { toggleSidebar, open } = useSidebar();
   const router = useRouter();
   const [showLibraryList, setShowLibraryList] = React.useState(false);
 
@@ -112,7 +124,7 @@ export function AppSidebar({
         title: "Document deleted",
         description: "The document has been deleted successfully.",
       });
-      router.refresh();
+      router.push("/editor");
     } catch (error) {
       console.error("Failed to delete document:", error);
     }
@@ -135,10 +147,16 @@ export function AppSidebar({
 
   const handleLibraryClick = () => {
     setShowLibraryList(true);
+    if (!open) {
+      toggleSidebar();
+    }
   };
 
   const handleEditorClick = () => {
     setShowLibraryList(false);
+    if (!open) {
+      toggleSidebar();
+    }
   };
 
   return (

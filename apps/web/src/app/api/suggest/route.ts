@@ -19,8 +19,6 @@ export async function POST(request: Request) {
     documentId: string;
   };
 
-  console.log(body);
-
   const document = await db
     .select()
     .from(documentsTable)

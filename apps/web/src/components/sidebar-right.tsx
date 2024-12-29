@@ -23,10 +23,10 @@ export function SidebarRight({
       {...props}
     >
       <SidebarHeader className="p-4">
-        <h2 className="text-base font-medium">Chat with your graph</h2>
+        <h2 className="text-sm font-medium">Chat with your graph</h2>
       </SidebarHeader>
-      <SidebarContent className="p-6">
-        <span className="text-sm text-muted-foreground">
+      <SidebarContent className="px-6 py-0">
+        <span className="text-xs text-muted-foreground">
           Ask questions about your graph and get answers coming soon.
         </span>
 

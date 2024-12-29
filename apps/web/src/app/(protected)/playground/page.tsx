@@ -27,7 +27,7 @@ const initialNodes = [
     id: "1",
     position: { x: 250, y: 50 },
     data: {
-      label: "Abstract",
+      label: "Attention is all you need.",
     },
     type: "custom",
     selected: false,
@@ -36,7 +36,8 @@ const initialNodes = [
     id: "2",
     position: { x: 100, y: 100 },
     data: {
-      label: "This paper talks about applications of AI in the future",
+      label:
+        "This paper published in 2017 introduced the Transformer architecture, revolutionizing NLP with self-attention mechanisms.",
     },
     type: "custom",
     selected: false,
