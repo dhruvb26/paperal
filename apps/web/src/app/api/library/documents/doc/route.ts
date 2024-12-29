@@ -20,7 +20,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if the document belongs to the user's library
     const isInLibrary = userId && document.userId === userId;
 
     return NextResponse.json({

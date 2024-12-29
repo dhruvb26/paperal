@@ -30,7 +30,7 @@ export const CustomLink = Link.extend({
               position: absolute;
               left: ${event.pageX}px;
               top: ${event.pageY + 20}px;
-              background: white;
+              background: white; 
               border: 1px solid #ddd;
               border-radius: 4px;
               padding: 8px;
@@ -102,7 +102,7 @@ export const CustomLink = Link.extend({
                 popover.innerHTML = `
                   <div class="flex flex-col items-start gap-2 p-2 citation-div">
                     <div class="flex flex-col space-y-1 items-start text-xs w-full">
-                      <span class="text-xs w-full truncate text-ellipsis whitespace-nowrap">${
+                      <span class="text-xs whitespace-break-spaces w-full truncate text-ellipsis line-clamp-2">${
                         document.title
                       }</span>
                       <span class="text-xs w-full overflow-hidden text-ellipsis whitespace-nowrap text-muted-foreground">
@@ -110,6 +110,12 @@ export const CustomLink = Link.extend({
                       </span>
                       <span class="text-xs text-muted-foreground italic">
                         ${document.metadata?.year || ""}
+                      </span>
+                      <span class="text-xs line-clamp-2 text-muted-foreground mt-2">
+                        ${document.description || ""}
+                         <span className="text-xs text-muted-foreground font-medium">
+                            see more
+                          </span>
                       </span>
                     </div>
                     <div class="flex items-center justify-between w-full">

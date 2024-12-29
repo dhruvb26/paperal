@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "autocomplete/main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/autocomplete/main.py"
+    }
+  ],
+  "env": {
+    "PYTHON_VERSION": "3.12.0",
+    "APP_MODULE": "autocomplete.main:app"
+  }
+}

@@ -12,9 +12,9 @@ export const createEmbeddings = task({
   run: async (payload: CreateEmbeddingsPayload, { ctx }) => {
     const { prompt } = payload;
 
-    const searchResponse = await axios.post(`${env.API_URL}/search`, null, {
-      params: { query: prompt },
-    });
+    const searchResponse = await axios.post(
+      `${env.API_URL}/search/?query=${prompt}`
+    );
     const papers = searchResponse.data.results;
 
     await axios.post(`${env.API_URL}/store`, {

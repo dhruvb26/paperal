@@ -5,14 +5,8 @@ import { db } from "@/db";
 import { eq } from "drizzle-orm";
 import { documentsTable, libraryTable } from "@/db/schema";
 
-interface SuggestionResponse {
-  ai_sentence: string;
-  is_reference: boolean;
-  library_id: string | null;
-}
-
 interface Metadata {
-  url: string;
+  fileUrl: string;
   citations: {
     "in-text": string;
     "after-text": string;
@@ -25,6 +19,8 @@ export async function POST(request: Request) {
     documentId: string;
   };
 
+  console.log(body);
+
   const document = await db
     .select()
     .from(documentsTable)
@@ -34,8 +30,6 @@ export async function POST(request: Request) {
     previous_text: body.previousText,
     heading: document[0].title,
   });
-
-  console.log(response.data);
 
   const suggestion = response.data;
 
@@ -49,22 +43,23 @@ export async function POST(request: Request) {
     const citations = metadata.citations;
 
     if (libraryDoc[0]) {
-      console.log("Returning citation sentence");
+      console.log(metadata);
+
       return NextResponse.json({
         text: suggestion.referenced_sentence,
-        citation: {
-          id: libraryDoc[0].id,
-          citations: citations,
-          href: metadata.url,
+        is_referenced: true,
+        citations: {
+          "in-text": citations["in-text"],
+          "after-text": citations["after-text"],
         },
+        href: metadata.fileUrl,
       });
     }
   }
 
-  console.log("Returning ai sentence");
-
   return NextResponse.json({
     text: suggestion.ai_sentence,
-    citation: null,
+    is_referenced: false,
+    href: undefined,
   });
 }

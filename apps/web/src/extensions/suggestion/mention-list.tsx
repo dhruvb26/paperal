@@ -131,7 +131,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
     return (
       <Tabs
         defaultValue="library"
-        className="border border-muted rounded-md p-1"
+        className="border border-muted rounded-md p-1 bg-white"
       >
         <TabsList>
           <TabsTrigger value="library">Library</TabsTrigger>
@@ -151,62 +151,60 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                 </div>
               </ScrollArea>
             ) : libraryItems.length ? (
-              libraryItems.map((item, index) => (
-                <ScrollArea
-                  style={{ height: "250px", width: "450px" }}
-                  className="pr-6 pl-2 py-1"
-                  key={index}
-                >
-                  <div
-                    className={`flex flex-col items-start gap-2 p-2 citation-div ${
-                      index === selectedIndex ? "" : ""
-                    }`}
-                  >
-                    <div className="flex flex-col space-y-1 items-start text-xs">
-                      <span className="text-xs line-clamp-2">{item.title}</span>
-                      <span className="text-xs w-full text-muted-foreground line-clamp-2">
-                        {item.metadata?.authors?.join(", ")}
-                      </span>
-                      <span className="text-xs text-muted-foreground italic ">
-                        {item.metadata?.year}
-                      </span>
-
-                      <span className="text-xs line-clamp-2 text-muted-foreground mt-2">
-                        {item.description}
-                        <span className="text-xs text-muted-foreground font-medium">
-                          see more
+              <ScrollArea
+                style={{ height: "250px", width: "450px" }}
+                className="pr-6 pl-2 py-1"
+              >
+                {libraryItems.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <div className="flex flex-col items-start gap-2 p-2 citation-div">
+                      <div className="flex flex-col space-y-1 items-start text-xs">
+                        <span className="text-xs line-clamp-2">
+                          {item.title}
                         </span>
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-2">
-                        <button
-                          className="flex text-xs items-center gap-1 hover:underline text-foreground"
-                          onClick={() => handleCite(item)}
-                        >
-                          <Plus size={12} weight="bold" />
-                          Cite
-                        </button>
-                        <button
-                          className="flex text-xs items-center gap-1 hover:underline text-foreground"
-                          onClick={() => handleView(item)}
-                        >
-                          <ArrowUpRight size={12} weight="bold" />
-                          View
-                        </button>
+                        <span className="text-xs w-full text-muted-foreground line-clamp-2">
+                          {item.metadata?.authors?.join(", ")}
+                        </span>
+                        <span className="text-xs text-muted-foreground italic">
+                          {item.metadata?.year}
+                        </span>
+                        <span className="text-xs line-clamp-2 text-muted-foreground mt-2">
+                          {item.description}
+                          <span className="text-xs text-muted-foreground font-medium">
+                            see more
+                          </span>
+                        </span>
                       </div>
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <span className="text-xs italic">Library</span>
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-2">
+                          <button
+                            className="flex text-xs items-center gap-1 hover:underline text-foreground"
+                            onClick={() => handleCite(item)}
+                          >
+                            <Plus size={12} weight="bold" />
+                            Cite
+                          </button>
+                          <button
+                            className="flex text-xs items-center gap-1 hover:underline text-foreground"
+                            onClick={() => handleView(item)}
+                          >
+                            <ArrowUpRight size={12} weight="bold" />
+                            View
+                          </button>
+                        </div>
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <span className="text-xs italic">Library</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <Separator
-                    className={`${
-                      index === props.items.length - 1 ? "hidden" : ""
-                    }`}
-                  />
-                </ScrollArea>
-              ))
+                    <Separator
+                      className={`${
+                        index === libraryItems.length - 1 ? "hidden" : ""
+                      }`}
+                    />
+                  </React.Fragment>
+                ))}
+              </ScrollArea>
             ) : (
               <ScrollArea style={{ height: "250px" }}>
                 <div
