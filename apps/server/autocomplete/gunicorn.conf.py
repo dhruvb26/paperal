@@ -6,4 +6,4 @@ import os
 # # Timeout
 # timeout = 300
 worker_class = "uvicorn.workers.UvicornWorker"
-bind = "0.0.0.0:12090"
+bind = "0.0.0.0:6556"
