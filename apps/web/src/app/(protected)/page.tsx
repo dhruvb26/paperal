@@ -27,7 +27,7 @@ export default async function Home() {
           </p>
           <div className="mt-4 p-4 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-600">
-              We're currently in beta and value your feedback! Reach out at{" "}
+              We&apos;re currently in beta and value your feedback! Reach out at{" "}
               <a
                 href="mailto:dhruvb26@asu.edu"
                 className="text-gray-600 hover:text-gray-700 hover:underline transition-colors"

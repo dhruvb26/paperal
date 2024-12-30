@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, eq, isNull, or } from "drizzle-orm";
 import { libraryTable } from "@/db/schema";
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
@@ -14,7 +14,7 @@ export async function GET() {
     }
 
     const documents = await db.query.libraryTable.findMany({
-      where: and(eq(libraryTable.userId, userId), isNull(libraryTable.userId)),
+      where: or(eq(libraryTable.userId, userId), isNull(libraryTable.userId)),
     });
     return NextResponse.json(documents);
   } catch (error) {

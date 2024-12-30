@@ -58,11 +58,11 @@ export default ({ documentId, initialContent }: TiptapProps) => {
         suggestion: suggestion as any,
       }),
       SlashCommand,
-      Placeholder.configure({
-        placeholder: ({ node }) => {
-          return "Enter a heading or press '/' for commands";
-        },
-      }),
+      // Placeholder.configure({
+      //   placeholder: ({ node }) => {
+      //     return "Enter a heading or press '/' for commands";
+      //   },
+      // }),
       Underline,
       Highlight,
       CustomLink.configure({

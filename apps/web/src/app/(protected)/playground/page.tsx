@@ -157,8 +157,8 @@ function Flow() {
   );
 
   return (
-    <div className="w-full h-screen relative" ref={reactFlowWrapper}>
-      <div className="absolute bottom-16 right-4 z-10">
+    <div className="w-full h-full relative" ref={reactFlowWrapper}>
+      <div className="absolute bottom-4 right-4 z-10">
         <Button
           variant="outline"
           onClick={toggleRightSidebar}

@@ -8,7 +8,7 @@ export function AiSettings() {
   const { showAiSuggestions, toggleAiSuggestions } = useSettingsStore();
 
   return (
-    <div className="space-y-6 max-w-lg min-h-screen z-0">
+    <div className="space-y-6 max-w-lg z-0">
       <div className="flex flex-row items-center justify-between p-4">
         <div className="">
           <Label className="text-sm">AI Suggestions</Label>

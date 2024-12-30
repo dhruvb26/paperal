@@ -66,7 +66,6 @@ export const AiAutocompleteExtension = Node.create<
     const getSuggestion = debounce(
       async (
         previousText: string,
-        documentId: string,
         cb: (suggestion: string | null, data?: CallbackInput) => void
       ) => {
         try {
@@ -76,12 +75,12 @@ export const AiAutocompleteExtension = Node.create<
             method: "POST",
             body: JSON.stringify({
               previousText,
-              documentId: pathDocumentId || documentId,
+              documentId: pathDocumentId,
             }),
           });
           const data = (await suggestion.json()) as CallbackInput;
-          const string = data.text;
-          cb(string, data);
+          console.log(data);
+          cb(data.text, data);
         } catch (error) {
           console.error(error);
           cb(null);
@@ -107,40 +106,17 @@ export const AiAutocompleteExtension = Node.create<
           },
         },
         view() {
-          let isTyping = false;
-          let typingTimer: NodeJS.Timeout;
-          let hasPendingSuggestion = false;
-
           return {
             update(view, prevState) {
-              // Check if document is empty
               if (view.state.doc.textContent.trim().length === 0) {
                 return;
               }
 
-              if (prevState && !prevState.doc.eq(view.state.doc)) {
-                const existingSuggestion = pluginKey
-                  .getState(view.state)
-                  ?.find().length;
-                if (existingSuggestion) {
-                  const tr = view.state.tr;
-                  tr.setMeta("addToHistory", false);
-                  tr.setMeta(pluginKey, { decorations: DecorationSet.empty });
-                  view.dispatch(tr);
-                  hasPendingSuggestion = false;
-                  return;
-                }
-              }
               const selection = view.state.selection;
               const cursorPos = selection.$head.pos;
               const nextNode = view.state.doc.nodeAt(cursorPos);
 
-              // If there's a pending suggestion, don't make new requests
-              if (hasPendingSuggestion) {
-                return;
-              }
-
-              // Clear existing suggestion if cursor is not at end of block
+              // If the cursor is not at the end of the block and we have a suggestion => hide the suggestion
               if (
                 nextNode &&
                 !nextNode.isBlock &&
@@ -158,259 +134,105 @@ export const AiAutocompleteExtension = Node.create<
                 return;
               }
 
-              // Set typing flag and clear previous timer
-              clearTimeout(typingTimer);
-              isTyping = true;
+              // reset the suggestion before fetching a new one
+              setTimeout(() => {
+                const tr = view.state.tr;
+                tr.setMeta("addToHistory", false);
+                tr.setMeta(pluginKey, { decorations: DecorationSet.empty });
+                view.dispatch(tr);
+              }, 0);
 
-              // Wait for user to stop typing for 1 second
-              typingTimer = setTimeout(() => {
-                isTyping = false;
+              // fetch a new suggestion
+              const previousText = view.state.doc
+                .textBetween(0, view.state.doc.content.size, " ")
+                .slice(-4000);
+              getSuggestion(previousText, (suggestion, data) => {
+                if (!suggestion || !data) return;
 
-                const documentId = view.state.doc.attrs.id;
-                const previousText = JSON.stringify(view.state.doc.toJSON());
+                const updatedState = view.state;
 
-                // Only proceed if there's actual content and user isn't typing
-                if (previousText.trim().length > 0 && !isTyping) {
-                  hasPendingSuggestion = true;
+                const cursorPos = updatedState.selection.$head.pos;
+                const nextNode = view.state.doc.nodeAt(cursorPos);
+                const suggestionDecoration = Decoration.widget(
+                  cursorPos,
+                  () => {
+                    const container = document.createElement("span");
+                    container.classList.add(
+                      "autocomplete-suggestion-container"
+                    );
 
-                  // Reset the suggestion before fetching a new one
-                  const tr = view.state.tr;
-                  tr.setMeta("addToHistory", false);
-                  tr.setMeta(pluginKey, { decorations: DecorationSet.empty });
-                  view.dispatch(tr);
+                    const suggestionSpan = document.createElement("span");
+                    const addSpace = nextNode && nextNode.isText ? " " : "";
+                    const citationText = data.citations?.["in-text"]
+                      ? ` ${data.citations["in-text"]}`
+                      : "";
+                    suggestionSpan.innerHTML = `${addSpace}${suggestion}${citationText}`;
+                    suggestionSpan.classList.add("autocomplete-suggestion");
+                    suggestionSpan.setAttribute(
+                      "data-response-data",
+                      JSON.stringify(data)
+                    );
 
-                  getSuggestion(
-                    previousText,
-                    documentId,
-                    (suggestion, data) => {
-                      hasPendingSuggestion = false;
-                      if (!suggestion || !data) return;
+                    const shortcuts = document.createElement("div");
+                    shortcuts.classList.add("autocomplete-shortcuts");
 
-                      const updatedState = view.state;
-
-                      const cursorPos = updatedState.selection.$head.pos;
-                      const nextNode = view.state.doc.nodeAt(cursorPos);
-                      const suggestionDecoration = Decoration.widget(
-                        cursorPos,
-                        () => {
-                          const container = document.createElement("span");
-                          container.classList.add(
-                            "autocomplete-suggestion-container"
-                          );
-
-                          const suggestionSpan = document.createElement("span");
-                          const addSpace =
-                            nextNode && nextNode.isText ? " " : "";
-
-                          // Format the suggestion to place citation before the period
-                          let formattedSuggestion = suggestion;
-                          if (data.citations?.["in-text"]) {
-                            // Remove any trailing period
-                            formattedSuggestion = suggestion.replace(/\.$/, "");
-                            // Add citation and period
-                            formattedSuggestion = `${formattedSuggestion} ${data.citations["in-text"]}.`;
-                          }
-
-                          suggestionSpan.innerHTML = `${addSpace}${formattedSuggestion}`;
-                          suggestionSpan.classList.add(
-                            "autocomplete-suggestion"
-                          );
-                          suggestionSpan.setAttribute(
-                            "data-response-data",
-                            JSON.stringify(data)
-                          );
-
-                          const shortcuts = document.createElement("div");
-                          shortcuts.classList.add("autocomplete-shortcuts");
-
-                          const acceptButton = document.createElement("button");
-                          acceptButton.innerHTML = "→ to accept";
-                          acceptButton.classList.add("shortcut-button");
-                          acceptButton.onclick = (e) => {
-                            e.preventDefault();
-                            const tr = view.state.tr;
-                            const responseData = JSON.parse(
-                              suggestionSpan.getAttribute(
-                                "data-response-data"
-                              ) || "{}"
-                            );
-
-                            if (responseData.citations?.["in-text"]) {
-                              const schema = view.state.schema;
-                              const text = suggestionSpan.textContent || "";
-                              const lastPeriodIndex = text.lastIndexOf(".");
-
-                              if (lastPeriodIndex !== -1) {
-                                // Remove the citation from the suggestion text (it's added twice currently)
-                                const textWithoutCitation = text
-                                  .replace(
-                                    responseData.citations["in-text"],
-                                    ""
-                                  )
-                                  .trim();
-                                // Split at the last period
-                                const beforePeriod =
-                                  textWithoutCitation.substring(
-                                    0,
-                                    textWithoutCitation.lastIndexOf(".")
-                                  );
-
-                                tr.replaceWith(
-                                  tr.selection.from,
-                                  tr.selection.from,
-                                  [
-                                    schema.text(beforePeriod + " "),
-                                    schema.text(
-                                      responseData.citations["in-text"],
-                                      [
-                                        schema.marks.link.create({
-                                          href: responseData.href,
-                                        }),
-                                      ]
-                                    ),
-                                    schema.text(". "),
-                                  ]
-                                );
-                              } else {
-                                // If no period, just append citation before adding one
-                                const textWithoutCitation = text
-                                  .replace(
-                                    responseData.citations["in-text"],
-                                    ""
-                                  )
-                                  .trim();
-                                tr.replaceWith(
-                                  tr.selection.from,
-                                  tr.selection.from,
-                                  [
-                                    schema.text(textWithoutCitation + " "),
-                                    schema.text(
-                                      responseData.citations["in-text"],
-                                      [
-                                        schema.marks.link.create({
-                                          href: responseData.href,
-                                        }),
-                                      ]
-                                    ),
-                                    schema.text(". "),
-                                  ]
-                                );
-                              }
-                            } else {
-                              tr.insertText(suggestionSpan.textContent || "");
-                            }
-
-                            view.dispatch(tr);
-
-                            const clearTr = view.state.tr;
-                            clearTr.setMeta(pluginKey, {
-                              decorations: DecorationSet.empty,
-                            });
-                            view.dispatch(clearTr);
-                          };
-
-                          const newSuggestionButton =
-                            document.createElement("button");
-                          newSuggestionButton.innerHTML = "Shift + → for new";
-                          newSuggestionButton.classList.add("shortcut-button");
-                          newSuggestionButton.onclick = (e) => {
-                            e.preventDefault();
-                            const previousText = JSON.stringify(
-                              view.state.doc.toJSON()
-                            );
-
-                            // Reset and request new suggestion
-                            const clearTr = view.state.tr;
-                            clearTr.setMeta(pluginKey, {
-                              decorations: DecorationSet.empty,
-                            });
-                            view.dispatch(clearTr);
-
-                            getSuggestion(
-                              previousText,
-                              documentId,
-                              (newSuggestion, newData) => {
-                                if (!newSuggestion || !newData) return;
-
-                                const cursorPos =
-                                  view.state.selection.$head.pos;
-                                const nextNode =
-                                  view.state.doc.nodeAt(cursorPos);
-                                const suggestionDecoration = Decoration.widget(
-                                  cursorPos,
-                                  () => {
-                                    const container =
-                                      document.createElement("span");
-                                    container.classList.add(
-                                      "autocomplete-suggestion-container"
-                                    );
-
-                                    const suggestionSpan =
-                                      document.createElement("span");
-                                    const addSpace =
-                                      nextNode && nextNode.isText ? " " : "";
-                                    const citationText = newData.citations?.[
-                                      "in-text"
-                                    ]
-                                      ? ` ${newData.citations["in-text"]}`
-                                      : "";
-                                    suggestionSpan.innerHTML = `${addSpace}${newSuggestion}${citationText}`;
-                                    suggestionSpan.classList.add(
-                                      "autocomplete-suggestion"
-                                    );
-                                    suggestionSpan.setAttribute(
-                                      "data-response-data",
-                                      JSON.stringify(newData)
-                                    );
-
-                                    const shortcuts =
-                                      document.createElement("div");
-                                    shortcuts.classList.add(
-                                      "autocomplete-shortcuts"
-                                    );
-                                    shortcuts.innerHTML =
-                                      "→ to accept | Shift + → for new suggestion";
-
-                                    container.appendChild(suggestionSpan);
-                                    container.appendChild(shortcuts);
-                                    return container;
-                                  },
-                                  { side: 1 }
-                                );
-
-                                const decorations = DecorationSet.create(
-                                  view.state.doc,
-                                  [suggestionDecoration]
-                                );
-                                const tr = view.state.tr;
-                                tr.setMeta("addToHistory", false);
-                                tr.setMeta(pluginKey, { decorations });
-                                view.dispatch(tr);
-                              }
-                            );
-                          };
-
-                          shortcuts.appendChild(acceptButton);
-                          shortcuts.appendChild(newSuggestionButton);
-                          container.appendChild(suggestionSpan);
-                          container.appendChild(shortcuts);
-                          return container;
-                        },
-                        { side: 1 }
+                    const acceptButton = document.createElement("button");
+                    acceptButton.innerHTML = "→ to accept";
+                    acceptButton.classList.add("shortcut-button");
+                    acceptButton.onclick = (e) => {
+                      e.preventDefault();
+                      handleSuggestionAcceptance(
+                        view,
+                        suggestionSpan,
+                        pluginKey
                       );
+                    };
 
-                      const decorations = DecorationSet.create(
-                        updatedState.doc,
-                        [suggestionDecoration]
-                      );
-                      const tr = view.state.tr;
-                      tr.setMeta("addToHistory", false);
-                      tr.setMeta(pluginKey, { decorations });
-                      view.dispatch(tr);
-                    }
-                  );
-                }
-              }, 1000); // 1 second delay
+                    const newSuggestionButton =
+                      document.createElement("button");
+                    newSuggestionButton.innerHTML = "Shift + → for new";
+                    newSuggestionButton.classList.add("shortcut-button");
+                    newSuggestionButton.onclick = (e) => {
+                      e.preventDefault();
+                      const previousText = view.state.doc
+                        .textBetween(0, view.state.doc.content.size, " ")
+                        .slice(-4000);
+
+                      // Reset and request new suggestion
+                      const clearTr = view.state.tr;
+                      clearTr.setMeta(pluginKey, {
+                        decorations: DecorationSet.empty,
+                      });
+                      view.dispatch(clearTr);
+
+                      getSuggestion(previousText, (newSuggestion, newData) => {
+                        if (!newSuggestion || !newData) return;
+                        createAndDispatchSuggestion(
+                          view,
+                          newSuggestion,
+                          newData,
+                          pluginKey
+                        );
+                      });
+                    };
+
+                    shortcuts.appendChild(acceptButton);
+                    shortcuts.appendChild(newSuggestionButton);
+                    container.appendChild(suggestionSpan);
+                    container.appendChild(shortcuts);
+                    return container;
+                  },
+                  { side: 1 }
+                );
+
+                const decorations = DecorationSet.create(updatedState.doc, [
+                  suggestionDecoration,
+                ]);
+                const tr = view.state.tr;
+                tr.setMeta("addToHistory", false);
+                tr.setMeta(pluginKey, { decorations });
+                view.dispatch(tr);
+              });
             },
           };
         },
@@ -427,63 +249,7 @@ export const AiAutocompleteExtension = Node.create<
                   ".autocomplete-suggestion"
                 ) as HTMLElement;
                 if (suggestionEl) {
-                  const tr = view.state.tr;
-                  const responseData = JSON.parse(
-                    suggestionEl.getAttribute("data-response-data") || "{}"
-                  );
-
-                  if (responseData.citations?.["in-text"]) {
-                    const schema = view.state.schema;
-                    const text = suggestionEl.textContent || "";
-                    const lastPeriodIndex = text.lastIndexOf(".");
-
-                    if (lastPeriodIndex !== -1) {
-                      // Remove the citation from the suggestion text (it's added twice currently)
-                      const textWithoutCitation = text
-                        .replace(responseData.citations["in-text"], "")
-                        .trim();
-                      // Split at the last period
-                      const beforePeriod = textWithoutCitation.substring(
-                        0,
-                        textWithoutCitation.lastIndexOf(".")
-                      );
-
-                      tr.replaceWith(tr.selection.from, tr.selection.from, [
-                        schema.text(beforePeriod + ""),
-                        schema.text(responseData.citations["in-text"], [
-                          schema.marks.link.create({
-                            href: responseData.href,
-                          }),
-                        ]),
-                        schema.text(". "),
-                      ]);
-                    } else {
-                      // If no period, just append citation before adding one
-                      const textWithoutCitation = text
-                        .replace(responseData.citations["in-text"], "")
-                        .trim();
-                      tr.replaceWith(tr.selection.from, tr.selection.from, [
-                        schema.text(textWithoutCitation + ""),
-                        schema.text(responseData.citations["in-text"], [
-                          schema.marks.link.create({
-                            href: responseData.href,
-                          }),
-                        ]),
-                        schema.text(". "),
-                      ]);
-                    }
-                  } else {
-                    tr.insertText(suggestionEl.textContent || "");
-                  }
-
-                  view.dispatch(tr);
-
-                  const clearTr = view.state.tr;
-                  clearTr.setMeta(pluginKey, {
-                    decorations: DecorationSet.empty,
-                  });
-                  view.dispatch(clearTr);
-
+                  handleSuggestionAcceptance(view, suggestionEl, pluginKey);
                   event.preventDefault();
                   return true;
                 }
@@ -492,66 +258,20 @@ export const AiAutocompleteExtension = Node.create<
 
             // Handle new suggestion request with Shift + ArrowRight
             if (event.key === "ArrowRight" && event.shiftKey) {
-              const previousText = JSON.stringify(view.state.doc.toJSON());
-
-              const pathDocumentId =
-                window.location.pathname.split("/editor/")[1];
+              const previousText = view.state.doc
+                .textBetween(0, view.state.doc.content.size, " ")
+                .slice(-4000);
 
               // Reset current suggestion
               const clearTr = view.state.tr;
               clearTr.setMeta(pluginKey, { decorations: DecorationSet.empty });
               view.dispatch(clearTr);
 
-              // Request new suggestion with actual documentId
-              getSuggestion(
-                previousText,
-                pathDocumentId || "",
-                (suggestion, data) => {
-                  if (!suggestion || !data) return;
-
-                  const cursorPos = view.state.selection.$head.pos;
-                  const nextNode = view.state.doc.nodeAt(cursorPos);
-                  const suggestionDecoration = Decoration.widget(
-                    cursorPos,
-                    () => {
-                      const container = document.createElement("span");
-                      container.classList.add(
-                        "autocomplete-suggestion-container"
-                      );
-
-                      const suggestionSpan = document.createElement("span");
-                      const addSpace = nextNode && nextNode.isText ? " " : "";
-                      const citationText = data.citations?.["in-text"]
-                        ? ` ${data.citations["in-text"]}`
-                        : "";
-                      suggestionSpan.innerHTML = `${addSpace}${suggestion}${citationText}`;
-                      suggestionSpan.classList.add("autocomplete-suggestion");
-                      suggestionSpan.setAttribute(
-                        "data-response-data",
-                        JSON.stringify(data)
-                      );
-
-                      const shortcuts = document.createElement("div");
-                      shortcuts.classList.add("autocomplete-shortcuts");
-                      shortcuts.innerHTML =
-                        "→ to accept | Shift + → for new suggestion";
-
-                      container.appendChild(suggestionSpan);
-                      container.appendChild(shortcuts);
-                      return container;
-                    },
-                    { side: 1 }
-                  );
-
-                  const decorations = DecorationSet.create(view.state.doc, [
-                    suggestionDecoration,
-                  ]);
-                  const tr = view.state.tr;
-                  tr.setMeta("addToHistory", false);
-                  tr.setMeta(pluginKey, { decorations });
-                  view.dispatch(tr);
-                }
-              );
+              // Request new suggestion
+              getSuggestion(previousText, (suggestion, data) => {
+                if (!suggestion || !data) return;
+                createAndDispatchSuggestion(view, suggestion, data, pluginKey);
+              });
 
               event.preventDefault();
               return true;
@@ -564,3 +284,108 @@ export const AiAutocompleteExtension = Node.create<
     ];
   },
 });
+
+function createAndDispatchSuggestion(
+  view: any,
+  suggestion: string,
+  data: CallbackInput,
+  pluginKey: PluginKey
+) {
+  const cursorPos = view.state.selection.$head.pos;
+  const nextNode = view.state.doc.nodeAt(cursorPos);
+  const suggestionDecoration = Decoration.widget(
+    cursorPos,
+    () => {
+      const container = document.createElement("span");
+      container.classList.add("autocomplete-suggestion-container");
+
+      const suggestionSpan = document.createElement("span");
+      const addSpace = nextNode && nextNode.isText ? " " : "";
+      const citationText = data.citations?.["in-text"]
+        ? ` ${data.citations["in-text"]}`
+        : "";
+      suggestionSpan.innerHTML = `${addSpace}${suggestion}${citationText}`;
+      suggestionSpan.classList.add("autocomplete-suggestion");
+      suggestionSpan.setAttribute("data-response-data", JSON.stringify(data));
+
+      const shortcuts = document.createElement("div");
+      shortcuts.classList.add("autocomplete-shortcuts");
+      shortcuts.innerHTML = "→ to accept | Shift + → for new suggestion";
+
+      container.appendChild(suggestionSpan);
+      container.appendChild(shortcuts);
+      return container;
+    },
+    { side: 1 }
+  );
+
+  const decorations = DecorationSet.create(view.state.doc, [
+    suggestionDecoration,
+  ]);
+  const tr = view.state.tr;
+  tr.setMeta("addToHistory", false);
+  tr.setMeta(pluginKey, { decorations });
+  view.dispatch(tr);
+}
+
+function handleSuggestionAcceptance(
+  view: any,
+  suggestionEl: HTMLElement,
+  pluginKey: PluginKey
+) {
+  const tr = view.state.tr;
+  const responseData = JSON.parse(
+    suggestionEl.getAttribute("data-response-data") || "{}"
+  );
+
+  if (responseData.citations?.["in-text"]) {
+    const schema = view.state.schema;
+    const text = suggestionEl.textContent || "";
+    const lastPeriodIndex = text.lastIndexOf(".");
+
+    if (lastPeriodIndex !== -1) {
+      const textWithoutCitation = text
+        .replace(responseData.citations["in-text"], "")
+        .trim();
+      const beforePeriod = textWithoutCitation.substring(
+        0,
+        textWithoutCitation.lastIndexOf(".")
+      );
+
+      tr.replaceWith(tr.selection.from, tr.selection.from, [
+        schema.text(beforePeriod + " "),
+        schema.text(responseData.citations["in-text"], [
+          schema.marks.link.create({
+            href: responseData.href,
+          }),
+        ]),
+        schema.text(". "),
+      ]);
+    } else {
+      const textWithoutCitation = text
+        .replace(responseData.citations["in-text"], "")
+        .trim();
+      tr.replaceWith(tr.selection.from, tr.selection.from, [
+        schema.text(textWithoutCitation + ""),
+        schema.text(responseData.citations["in-text"], [
+          schema.marks.link.create({
+            href: responseData.href,
+          }),
+        ]),
+        schema.text(". "),
+      ]);
+    }
+  } else {
+    tr.insertText(suggestionEl.textContent || "");
+  }
+
+  view.dispatch(tr);
+
+  const clearTr = view.state.tr;
+  clearTr.setMeta(pluginKey, {
+    decorations: DecorationSet.empty,
+  });
+  view.dispatch(clearTr);
+
+  return true;
+}

@@ -12,7 +12,7 @@ import { getLibraries } from "./actions/library";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Feather",
+  title: "Feather - Research Companion",
   description: "Feather is your intelligent research companion.",
 };
 

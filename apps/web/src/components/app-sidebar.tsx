@@ -203,7 +203,6 @@ export function AppSidebar({
                 >
                   Sort {sortDesc ? "↓" : "↑"}
                 </Button>
-                {/* <CustomUploadButton /> */}
                 <CustomUploadDropzone />
               </>
             ) : (

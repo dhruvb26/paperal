@@ -7,8 +7,6 @@ import { currentUser } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { createEmbeddings } from "@/trigger/embeddings";
 import { tasks } from "@trigger.dev/sdk/v3";
-import axios from "axios";
-import { env } from "@/env";
 
 export async function createDocument(prompt: string) {
   const docId = uuidv4();
@@ -18,13 +16,6 @@ export async function createDocument(prompt: string) {
   if (!userId) {
     throw new Error("User not found");
   }
-
-  const response = await axios.post(
-    `${env.API_URL}/research_topic?query=${prompt}`
-  );
-
-  const researchTopic = response.data.research_topic;
-  const cleanedResearchTopic = researchTopic.replace(/['"]+/g, "");
 
   await tasks.trigger<typeof createEmbeddings>("create-embeddings", {
     prompt,
@@ -41,7 +32,7 @@ export async function createDocument(prompt: string) {
         content: [
           {
             type: "text",
-            text: cleanedResearchTopic,
+            text: prompt,
           },
         ],
       },
@@ -55,7 +46,7 @@ export async function createDocument(prompt: string) {
     id: docId,
     content: JSON.stringify(defaultContent),
     prompt: prompt,
-    title: researchTopic,
+    title: prompt,
     userId: userId,
   });
 
