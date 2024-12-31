@@ -20,7 +20,7 @@ from baml_py.type_builder import TypeBuilder as _TypeBuilder, ClassPropertyBuild
 class TypeBuilder(_TypeBuilder):
     def __init__(self):
         super().__init__(classes=set(
-          ["Paper",]
+          ["CitationObject","Page","ReferenceObject","References","Section",]
         ), enums=set(
           []
         ))

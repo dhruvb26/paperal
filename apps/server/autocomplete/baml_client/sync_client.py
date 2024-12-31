@@ -49,9 +49,9 @@ class BamlSyncClient:
     
     def ExtractPaper(
         self,
-        paper: str,
+        references: str,page_content: List[str],
         baml_options: BamlCallOptions = {},
-    ) -> types.Paper:
+    ) -> types.Page:
       __tb__ = baml_options.get("tb", None)
       if __tb__ is not None:
         tb = __tb__._tb # type: ignore (we know how to use this private attribute)
@@ -62,13 +62,36 @@ class BamlSyncClient:
       raw = self.__runtime.call_function_sync(
         "ExtractPaper",
         {
+          "references": references,"page_content": page_content,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+      return cast(types.Page, raw.cast_to(types, types))
+    
+    def ExtractReferences(
+        self,
+        paper: List[str],
+        baml_options: BamlCallOptions = {},
+    ) -> types.References:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = self.__runtime.call_function_sync(
+        "ExtractReferences",
+        {
           "paper": paper,
         },
         self.__ctx_manager.get(),
         tb,
         __cr__,
       )
-      return cast(types.Paper, raw.cast_to(types, types))
+      return cast(types.References, raw.cast_to(types, types))
     
 
 
@@ -84,9 +107,9 @@ class BamlStreamClient:
     
     def ExtractPaper(
         self,
-        paper: str,
+        references: str,page_content: List[str],
         baml_options: BamlCallOptions = {},
-    ) -> baml_py.BamlSyncStream[partial_types.Paper, types.Paper]:
+    ) -> baml_py.BamlSyncStream[partial_types.Page, types.Page]:
       __tb__ = baml_options.get("tb", None)
       if __tb__ is not None:
         tb = __tb__._tb # type: ignore (we know how to use this private attribute)
@@ -97,6 +120,37 @@ class BamlStreamClient:
       raw = self.__runtime.stream_function_sync(
         "ExtractPaper",
         {
+          "references": references,
+          "page_content": page_content,
+        },
+        None,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+
+      return baml_py.BamlSyncStream[partial_types.Page, types.Page](
+        raw,
+        lambda x: cast(partial_types.Page, x.cast_to(types, partial_types)),
+        lambda x: cast(types.Page, x.cast_to(types, types)),
+        self.__ctx_manager.get(),
+      )
+    
+    def ExtractReferences(
+        self,
+        paper: List[str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlSyncStream[partial_types.References, types.References]:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = self.__runtime.stream_function_sync(
+        "ExtractReferences",
+        {
           "paper": paper,
         },
         None,
@@ -105,10 +159,10 @@ class BamlStreamClient:
         __cr__,
       )
 
-      return baml_py.BamlSyncStream[partial_types.Paper, types.Paper](
+      return baml_py.BamlSyncStream[partial_types.References, types.References](
         raw,
-        lambda x: cast(partial_types.Paper, x.cast_to(types, partial_types)),
-        lambda x: cast(types.Paper, x.cast_to(types, types)),
+        lambda x: cast(partial_types.References, x.cast_to(types, partial_types)),
+        lambda x: cast(types.References, x.cast_to(types, types)),
         self.__ctx_manager.get(),
       )
     

@@ -29,8 +29,21 @@ from .types import Checked, Check
 ###############################################################################
 
 
-class Paper(BaseModel):
-    author: List[Optional[str]]
+class CitationObject(BaseModel):
+    in_text: Optional[str] = None
+    complete_reference: Optional[str] = None
+
+class Page(BaseModel):
+    sections: List["Section"]
+
+class ReferenceObject(BaseModel):
+    text: Optional[str] = None
+    url: Optional[str] = None
+
+class References(BaseModel):
+    references: List["ReferenceObject"]
+
+class Section(BaseModel):
     title: Optional[str] = None
-    year: Optional[str] = None
-    abstract: Optional[str] = None
+    content: Optional[str] = None
+    references: List["CitationObject"]
