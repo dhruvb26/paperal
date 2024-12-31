@@ -113,6 +113,9 @@ def query_vector_store(query: str) -> List[Document]:
                 'query_text': query,
                 'query_embedding': embedding,
                 'match_count': 10,
+                'min_similarity': 0.3,
+                'semantic_weight': 0.9,
+                'full_text_weight': 0.1
             }
         ).execute()
 
@@ -125,8 +128,14 @@ def query_vector_store(query: str) -> List[Document]:
         raise
 
 
-def create_vector_store(embeddings, supabase: Client) -> SupabaseVectorStore:
+def create_vector_store(embeddings1, supabase: Client) -> SupabaseVectorStore:
     logging.info("Creating vector store...")
+    embeddings = OpenAIEmbeddings(
+        model="text-embedding-3-large",
+        dimensions=1536,
+        api_key=os.getenv("OPENAI_API_KEY")
+    )
+    
     vector_store = SupabaseVectorStore(
         client=supabase,
         embedding=embeddings,
@@ -146,7 +155,7 @@ if __name__ == "__main__":
             documents = load_documents("attention.pdf")
             docs = split_documents(documents)
             add_metadata(docs, "Attention url", "John Doe", "Attention is all you need", 2021)
-            vector_store = create_vector_store(docs, embeddings, supabase)
+            vector_store = create_vector_store(docs, supabase)
         except Exception as e:
             logging.error(f"An error occurred: {e}")
 

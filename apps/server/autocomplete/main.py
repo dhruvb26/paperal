@@ -175,6 +175,7 @@ async def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str
                 extracted_info = await ExtractPaperAgent(text)
                 checker = supabase_embeddings.query_metadata("fileUrl", url, supabase, user_id)
                 
+                # check this before baml by using url
                 if len(checker.data) != 0:
                     logging.warning(f"Research paper already stored: {url}")
                     continue
@@ -447,15 +448,16 @@ async def generate_sentence(request: SentenceRequest):
     """Endpoint to generate a sentence based on the given context."""
     logging.info("Received request to generate sentence.")
 
-    # Try to parse as JSON first, if it fails, use the raw text
-    #     print(request.previous_text)
+    # Handle the previous_text parsing more gracefully
+    json_text = request.previous_text
     if request.previous_text:
-        parsed_text = json.loads(request.previous_text)
-        print(parsed_text)
-        json_text = json_to_markdown(parsed_text)
-        print(json_text)
-    else:
-        json_text = request.previous_text
+        try:
+            parsed_text = json.loads(request.previous_text)
+            json_text = json_to_markdown(parsed_text)
+        except json.JSONDecodeError:
+            # If JSON parsing fails, use the raw text
+            logging.warning("Failed to parse JSON, using raw text")
+            json_text = request.previous_text
     
     # Generate non-referenced sentence
     ai_generated = await generate_ai_sentence(
