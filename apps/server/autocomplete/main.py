@@ -4,7 +4,7 @@ from typing import Optional
 from contextlib import contextmanager
 import atexit
 
-import apps.server.autocomplete.baml_references as baml_references
+import baml_main as baml_main
 import fitz
 import requests
 import supabase_embeddings as supabase_embeddings
@@ -137,7 +137,7 @@ def ExtractPaperAgent(text: str) -> str:
         truncated_text = tokenizer.decode(truncated_tokens)
         sanitized_text = sanitize_text(truncated_text)
         logging.info("Getting response from baml_main...")
-        response = baml_references.example(sanitized_text)
+        response = baml_main.example(sanitized_text)
         return response
     except Exception as e:
         logging.error(f"Error in ExtractPaperAgent: {e}")

@@ -52,6 +52,29 @@ class BamlAsyncClient:
     
     async def ExtractPaper(
         self,
+        paper: str,
+        baml_options: BamlCallOptions = {},
+    ) -> types.Paper:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = await self.__runtime.call_function(
+        "ExtractPaper",
+        {
+          "paper": paper,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+      return cast(types.Paper, raw.cast_to(types, types))
+    
+    async def ExtractPaperContent(
+        self,
         references: str,page_content: List[str],
         baml_options: BamlCallOptions = {},
     ) -> types.Page:
@@ -63,7 +86,7 @@ class BamlAsyncClient:
       __cr__ = baml_options.get("client_registry", None)
 
       raw = await self.__runtime.call_function(
-        "ExtractPaper",
+        "ExtractPaperContent",
         {
           "references": references,"page_content": page_content,
         },
@@ -109,6 +132,36 @@ class BamlStreamClient:
     
     def ExtractPaper(
         self,
+        paper: str,
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[partial_types.Paper, types.Paper]:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = self.__runtime.stream_function(
+        "ExtractPaper",
+        {
+          "paper": paper,
+        },
+        None,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+
+      return baml_py.BamlStream[partial_types.Paper, types.Paper](
+        raw,
+        lambda x: cast(partial_types.Paper, x.cast_to(types, partial_types)),
+        lambda x: cast(types.Paper, x.cast_to(types, types)),
+        self.__ctx_manager.get(),
+      )
+    
+    def ExtractPaperContent(
+        self,
         references: str,page_content: List[str],
         baml_options: BamlCallOptions = {},
     ) -> baml_py.BamlStream[partial_types.Page, types.Page]:
@@ -120,7 +173,7 @@ class BamlStreamClient:
       __cr__ = baml_options.get("client_registry", None)
 
       raw = self.__runtime.stream_function(
-        "ExtractPaper",
+        "ExtractPaperContent",
         {
           "references": references,
           "page_content": page_content,

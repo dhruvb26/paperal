@@ -14,7 +14,7 @@ reset_baml_env_vars(dict(os.environ))
 OpenAI.api_key = os.getenv("OPENAI_API_KEY")
 
 def extract_pages(references: str, page_content: list[str]) -> Page:
-    response = b.ExtractPaper(references, page_content)
+    response = b.ExtractPaperContent(references, page_content)
     return response
 
 if __name__ == "__main__":

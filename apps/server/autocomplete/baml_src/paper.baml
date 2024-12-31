@@ -14,7 +14,7 @@ class Page {
 }
 
 
-function ExtractPaper(references: string, page_content: string[]) -> Page {
+function ExtractPaperContent(references: string, page_content: string[]) -> Page {
 
     client "openai/gpt-4o"  
     prompt #"

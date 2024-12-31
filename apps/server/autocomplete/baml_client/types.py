@@ -46,6 +46,12 @@ class CitationObject(BaseModel):
 class Page(BaseModel):
     sections: List["Section"]
 
+class Paper(BaseModel):
+    author: List[str]
+    title: str
+    year: str
+    abstract: str
+
 class ReferenceObject(BaseModel):
     text: str
     url: str

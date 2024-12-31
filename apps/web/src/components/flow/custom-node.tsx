@@ -19,7 +19,7 @@ const CustomNode = ({
   const divRef = React.useRef<HTMLDivElement>(null);
 
   return (
-    <div style={{ width: "100%", minHeight: "30px" }}>
+    <div style={{ minHeight: "30px" }} className="max-w-xl">
       <div
         ref={divRef}
         className="px-2 py-2 rounded-md border-[0.8px]"

@@ -1,0 +1,24 @@
+{
+  "sections": [
+    {
+      "title": "Comparative Analysis of Min-k% Probability and Membership Inference Attacks (MIAs)",
+      "content": "M@ Min-K Prob M@ Reversed Train/Val 5.0 10.0 20.0 30.0 40.0 50.0 60.0 K (a) Performance for different model sizes. (b) False Positives when reversing train/val sets. Figure 2: Comparative analysis of the Min-k% Prob [Shi et al., 2024]. We measure the performance (a) across different model sizes and (b) the observed reversal effect. The method performs close to a random guess on non-members from the Pile validation sets. datasets, (3) experiments must be performed over multiple data distributions (4) careful experimentation must be done on both false positives and false negatives to ensure MIAs do not wrongly label non-members as members.",
+      "references": [
+        {
+          "in_text": "[Shi et al., 2024]",
+          "complete_reference": "Weijia Shi, Anirudh Ajith, Mengzhou Xia, Yangsibo Huang, Daogao Liu, Terra Blevins, Danqi Chen, and Luke Zettlemoyer. Detecting pretraining data from large language models. In The Twelfth International Conference on Learning Representations, 2024."
+        }
+      ]
+    },
+    {
+      "title": "Performance of MIAs on Various Datasets",
+      "content": "Figure 3: Performance of various MIAs on different subsets of the Pile dataset. We report 6 different MIAs based on the best performing ones across various categories like reference based, and perturbation based methods (Section 2.1). An effective MIA must have an AUC much greater than 0.5. Few methods meet this criterion for specific datasets, but the success is not consistent across datasets.",
+      "references": []
+    },
+    {
+      "title": "LLM Dataset Inference",
+      "content": "Dataset inference builds on the idea of membership inference by leveraging distributional properties to determine if a model was trained on a particular dataset. While MIAs operate at the instance level\u2014aiming to identify whether each example was part of the training data. In the previous sections, we have shown that MIAs often yield signals that is close to random in determining example membership. However, if we achieve even slightly better than random accuracy in inferring membership, we can aggregate these attacks across multiple examples to perform a statistical test. This test can then distinguish between the distributions of the model\u2019s training and validation sets. In the context of LLM dataset inference, we combine all the MIA methods discussed in Section 2.1.",
+      "references": []
+    }
+  ]
+}
