@@ -9,8 +9,11 @@ interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Loader({ className, ...props }: LoaderProps) {
   return (
-    <div {...props} className={cn("animate-spin", className)}>
-      <Loader2 />
+    <div
+      {...props}
+      className={cn("flex items-center justify-center", className)}
+    >
+      <Loader2 className="animate-spin" />
     </div>
   );
 }

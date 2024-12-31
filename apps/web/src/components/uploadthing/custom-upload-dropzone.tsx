@@ -45,6 +45,9 @@ export const CustomUploadDropzone = () => {
             allowedContent() {
               return "PDF file upto 8MB";
             },
+            label({ isUploading }) {
+              return isUploading ? "Uploading" : "Upload";
+            },
           }}
           appearance={{
             container({ isDragActive }) {

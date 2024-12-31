@@ -17,6 +17,7 @@ import { AiAutocompleteExtension } from "@/extensions/ai-autocomplete/ai-autocom
 import { CustomLink } from "@/extensions/custom-link/custom-link";
 import { Highlight } from "@tiptap/extension-highlight";
 import debounce from "lodash/debounce";
+import { useSettingsStore } from "@/stores/settings-store";
 
 interface TiptapProps {
   documentId: string;
@@ -25,6 +26,7 @@ interface TiptapProps {
 export default ({ documentId, initialContent }: TiptapProps) => {
   const { toast } = useToast();
   const [isEditorLoading, setIsEditorLoading] = useState(true);
+  const { showAiSuggestions } = useSettingsStore();
 
   const debouncedSave = useCallback(
     debounce(async (editor) => {
@@ -48,7 +50,7 @@ export default ({ documentId, initialContent }: TiptapProps) => {
     immediatelyRender: true,
     extensions: [
       StarterKit.configure(),
-      AiAutocompleteExtension,
+      ...(showAiSuggestions ? [AiAutocompleteExtension] : []),
       Mention.configure({
         HTMLAttributes: {
           class: "mention",
@@ -56,11 +58,11 @@ export default ({ documentId, initialContent }: TiptapProps) => {
         suggestion: suggestion as any,
       }),
       SlashCommand,
-      Placeholder.configure({
-        placeholder: ({ node }) => {
-          return "Enter a heading or press '/' for commands";
-        },
-      }),
+      // Placeholder.configure({
+      //   placeholder: ({ node }) => {
+      //     return "Enter a heading or press '/' for commands";
+      //   },
+      // }),
       Underline,
       Highlight,
       CustomLink.configure({

@@ -39,8 +39,27 @@ def all_succeeded(checks: Dict[CheckName, Check]) -> bool:
 
 
 
+class CitationObject(BaseModel):
+    in_text: str
+    complete_reference: str
+
+class Page(BaseModel):
+    sections: List["Section"]
+
 class Paper(BaseModel):
     author: List[str]
     title: str
     year: str
     abstract: str
+
+class ReferenceObject(BaseModel):
+    text: str
+    url: str
+
+class References(BaseModel):
+    references: List["ReferenceObject"]
+
+class Section(BaseModel):
+    title: str
+    content: str
+    references: List["CitationObject"]

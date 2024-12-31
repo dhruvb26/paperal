@@ -1,0 +1,12 @@
+{
+  "references": [
+    "Getty images vs. stability ai: A landmark case in copyright and ai, 2023. URL https://www.bakerlaw. com/getty-images-v-stability-ai/.",
+    "The times sues openai and microsoft over a.i. use of copyrighted work https://www.nytimes.com/2023/12/27/business/media/new-york-times-open-ai-microsoft- lawsuit.html. 2023. URL https://www.nytimes.com/2023/12/27/business/media/ new-york-times-open-ai-microsoft-lawsuit.html.",
+    "Sarah silverman and authors sue openai and meta over copyright infringement. 2023. URL https: //www.nytimes.com/2023/07/10/arts/sarah-silverman-lawsuit-openai-meta.html.",
+    "Guangsheng Bao, Yanbin Zhao, Zhiyang Teng, Linyi Yang, and Yue Zhang. Fast-detectGPT: Efficient zero-shot detection of machine-generated text via conditional probability curvature. In The Twelfth International Conference on Learning Representations, 2024. URL https://openreview.net/forum?id=Bpcgcr8E8Z.",
+    "Stella Biderman, Hailey Schoelkopf, Quentin Anthony, Herbie Bradley, Kyle O\u2019Brien, Eric Hallahan, Mohammad Aflah Khan, Shivanshu Purohit, USVSN Sai Prashanth, Edward Raff, Aviya Skowron, Lintang Sutawika, and Oskar Van Der Wal. Pythia: a suite for analyzing large language models across training and scaling. In Proceedings of the 40th International Conference on Machine Learning, ICML\u201923. JMLR.org, 2023.",
+    "Morton B Brown. 400: A method for combining non-independent, one-sided tests of significance. Biometrics, pages 987\u2013992, 1975.",
+    "Nicholas Carlini, Florian Tram\u00e8r, Eric Wallace, Matthew Jagielski, Ariel Herbert-Voss, Katherine Lee, Adam Roberts, Tom Brown, Dawn Song, \u00dalfar Erlingsson, Alina Oprea, and Colin Raffel. Extracting training data from large language models. In 30th USENIX Security Symposium (USENIX Security 21), pages 2633\u20132650. USENIX Association, August 2021. ISBN 978-1-939133-24-3. URL https: //www.usenix.org/conference/usenixsecurity21/presentation/carlini-extracting.",
+    "Nicholas Carlini, Steve Chien, Milad Nasr, Shuang Song, Andreas Terzis, and Florian Tram\u00e8r. Membership inference attacks from first principles. In 2022 IEEE Symposium on Security and Privacy (SP), pages 1897\u20131914, 2022. doi: 10.1109/SP46214.2022.9833649."
+  ]
+}

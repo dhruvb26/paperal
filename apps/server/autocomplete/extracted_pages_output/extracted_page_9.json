@@ -1,0 +1,42 @@
+{
+  "sections": [
+    {
+      "title": "Score Aggregation in Dataset Inference",
+      "content": "To aggregate scores from different MIAs, we (i) normalize feature values to ensure that all features aggregated across various membership inference attacks are on a comparable scale. Then, we (ii) adjust values of outliers before learning correlations with the classifier by replacing the top and bottom 2.5% of outlier values with the mean of that (normalized) feature. Finally, we (iii) remove outliers before performing t-test in Stage 3 once we have a single membership value from the regressor outputs for each sample in the B splits of the suspect and validation sets. Once again we remove the top and bottom 2.5% of outlier.",
+      "references": []
+    },
+    {
+      "title": "Assumptions for Dataset Inference",
+      "content": "In order to operationalize dataset inference, we must obey certain assumptions on both the datasets (points 1 and 2 below), and the suspect language model (point 3 below).\n\n1. The suspect train set and the unseen validation sets should be IID. This prevents the results from being confounded due to distribution shifts (such as temporal shifts in the case of WikiMIA).\n\n2. We must ensure no leakage between the (suspected) train and (unseen) validation sets. The validation set should be strictly private, and only accessible to the victim.\n\n3. We need access to the output loss of the suspect LLM in order to perform various MIAs.",
+      "references": []
+    },
+    {
+      "title": "Experimental Details",
+      "content": "Datasets and Architectures We perform dataset inference experiments on all 20 subsets of the PILE. For experiments with false positives, we split the validation sets into two subsets of 500 examples each. In all other experiments, we compare 1000 examples of train and validation sets of the PILE [Gao et al., 2020]. We perform dataset inference on models from the Pythia [Biderman et al., 2023] family at 410M, 1.4B, 6.9B, and 12B scales. These open-source models allow us to know exactly which examples trained on.\n\nMIAs used In our experiments, we aggregate 52 different Membership Inference Attacks (MIAs) in Stage 1 (many of which are overlapping and only differ in whether they capture the perplexity or the log-likelihood, or contrast the ratios or differences of model predictions). For the linear regression model trained in Stage 2, we train for 1000 updates over the data using simple weights over the 52 features. A total of 1000 examples are saved for training the regressor to learn correlations for stage 2, except in the false positive experiments where we use half the data. A complete list of all the MIAs used in our work is present in Appendix C.",
+      "references": [
+        {
+          "in_text": "[Gao et al., 2020]",
+          "complete_reference": "Leo Gao, Stella Biderman, Sid Black, Laurence Golding, Travis Hoppe, Charles Foster, Jason Phang, Horace He, Anish Thite, Noa Nabeshima, et al. The pile: An 800gb dataset of diverse text for language modeling. arXiv preprint arXiv:2101.00027, 2020."
+        },
+        {
+          "in_text": "[Biderman et al., 2023]",
+          "complete_reference": "Stella Biderman, Hailey Schoelkopf, Quentin Anthony, Herbie Bradley, Kyle O\u2019Brien, Eric Hallahan, Mohammad Aflah Khan, Shivanshu Purohit, USVSN Sai Prashanth, Edward Raff, Aviya Skowron, Lintang Sutawika, and Oskar Van Der Wal. Pythia: a suite for analyzing large language models across training and scaling. In Proceedings of the 40th International Conference on Machine Learning, ICML\u201923. JMLR.org, 2023."
+        }
+      ]
+    },
+    {
+      "title": "Analysis and Results with Dataset Inference",
+      "content": "We analyze the performance of LLM dataset inference on the Pythia suite of models [Biderman et al., 2023] trained on the Pile dataset [Gao et al., 2020]. We separately perform dataset inference on each and every subset of the PILE using the provided train and validation sets, and report the p-values for correctly",
+      "references": [
+        {
+          "in_text": "[Biderman et al., 2023]",
+          "complete_reference": "Stella Biderman, Hailey Schoelkopf, Quentin Anthony, Herbie Bradley, Kyle O\u2019Brien, Eric Hallahan, Mohammad Aflah Khan, Shivanshu Purohit, USVSN Sai Prashanth, Edward Raff, Aviya Skowron, Lintang Sutawika, and Oskar Van Der Wal. Pythia: a suite for analyzing large language models across training and scaling. In Proceedings of the 40th International Conference on Machine Learning, ICML\u201923. JMLR.org, 2023."
+        },
+        {
+          "in_text": "[Gao et al., 2020]",
+          "complete_reference": "Leo Gao, Stella Biderman, Sid Black, Laurence Golding, Travis Hoppe, Charles Foster, Jason Phang, Horace He, Anish Thite, Noa Nabeshima, et al. The pile: An 800gb dataset of diverse text for language modeling. arXiv preprint arXiv:2101.00027, 2020."
+        }
+      ]
+    }
+  ]
+}
