@@ -449,11 +449,13 @@ async def generate_sentence(request: SentenceRequest):
 
     # Try to parse as JSON first, if it fails, use the raw text
     #     print(request.previous_text)
-    parsed_text = json.loads(request.previous_text)
-    print(parsed_text)
-    json_text = json_to_markdown(parsed_text)
-    print(json_text)
-
+    if request.previous_text:
+        parsed_text = json.loads(request.previous_text)
+        print(parsed_text)
+        json_text = json_to_markdown(parsed_text)
+        print(json_text)
+    else:
+        json_text = request.previous_text
     
     # Generate non-referenced sentence
     ai_generated = await generate_ai_sentence(
