@@ -7,8 +7,7 @@ from PyPDF2 import PdfReader
 import io
 import logging
 from openai import OpenAI
-
-
+from langchain_community.document_loaders import WebBaseLoader
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,  # Set to DEBUG for more detailed logs
@@ -119,11 +118,12 @@ def getURL(research_sentence: str) -> list:
     url_list = []
 
     # Search parameters
-    query = f"peer reviewed research papers on {research_topic} filetype:pdf"
+    query = f"peer reviewed research papers on {research_topic}"
     search_params = {
         "query": query,
-        "max_results": 10,
-        # "include_domains": ["arxiv.org"],
+        "max_results": 15,
+# some other good domains
+        "include_domains": ["arxiv.org", "aclanthology.org"],
         "search_depth": "advanced",
         "filter_language": "en",
     }
@@ -135,7 +135,19 @@ def getURL(research_sentence: str) -> list:
 
             # Download the PDF and check the page count
             try:
-                pdf_response = requests.get(pdf_url, timeout=30)
+                # # url = "https://arxiv.org/abs/2312.10997"
+                # https://aclanthology.org/2024.acl-srw.42.pdf
+                if "arxiv.org/abs" in pdf_url:
+                    pdf_url = pdf_url.replace("abs", "pdf")
+                    pdf_response = requests.get(pdf_url, timeout=30)
+                elif "aclanthology.org" in pdf_url and ".pdf" not in pdf_url:
+                    # replace the last / with .pdf
+                    pdf_url = pdf_url.rsplit("/", 1)[0] + ".pdf"
+                    pdf_response = requests.get(pdf_url, timeout=30)
+               
+                else:
+                    pdf_response = requests.get(pdf_url, timeout=30)
+
                 if pdf_response.status_code == 200:
                     pdf_content = io.BytesIO(pdf_response.content)
                     page_count = check_pdf_pages(pdf_content)
@@ -148,8 +160,7 @@ def getURL(research_sentence: str) -> list:
                     logging.warning(f"Failed to download PDF: HTTP {pdf_response.status_code}")
             except Exception as download_error:
                 logging.error(f"Error downloading or processing PDF: {download_error}")
-        if len(url_list) >= 5:
-            url_list = url_list[:5]
+   
         logging.info(f"Search result: {url_list}")
     except Exception as e:
         logging.error(f"Error during Tavily search: {e}")
@@ -161,7 +172,7 @@ def getURL(research_sentence: str) -> list:
 if __name__ == "__main__":
     logging.info("Script started.")
     try:
-        query = "a paper on dataset inference in terms of language models with specific focus on the dataset size"
+        query = "applications of machine learning in healthcare"
         logging.info(f"Searching Tavily for query: {query}")
 
         search_result = getURL(query)

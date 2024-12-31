@@ -3,6 +3,8 @@ import os
 from typing import Optional
 from contextlib import contextmanager
 import atexit
+import asyncio
+import aiohttp
 
 import baml_main as baml_main
 import fitz
@@ -56,46 +58,6 @@ class SuggestStructureRequest(BaseModel):
     content: str
 
 
-# Global client storage
-_supabase_client = None
-_embeddings_model = None
-
-@contextmanager
-def get_clients():
-    """Context manager to handle client lifecycle"""
-    try:
-        # Get or create clients
-        global _supabase_client, _embeddings_model
-        if _supabase_client is None:
-            _supabase_client = supabase_embeddings.create_supabase_client()
-        if _embeddings_model is None:
-            _embeddings_model = OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
-        
-        yield _supabase_client, _embeddings_model
-    except Exception as e:
-        logging.error(f"Error creating clients: {e}")
-        raise
-
-def cleanup_clients():
-    """Cleanup function to be called at program exit"""
-    global _supabase_client, _embeddings_model
-    if _supabase_client:
-        try:
-            _supabase_client.postgrest.session.close()
-            _supabase_client = None
-        except Exception as e:
-            logging.error(f"Error closing Supabase client: {e}")
-    if _embeddings_model:
-        try:
-            if hasattr(_embeddings_model, 'client'):
-                _embeddings_model.client.close()
-            _embeddings_model = None
-        except Exception as e:
-            logging.error(f"Error closing embeddings model: {e}")
-
-# Register cleanup function
-atexit.register(cleanup_clients)
-
 # Utility function
 def sanitize_text(text: str) -> str:
     """Remove null characters and sanitize the text."""
@@ -124,7 +86,7 @@ def TavilySearchAgent(query: str) -> dict:
         return {}
 
 
-def ExtractPaperAgent(text: str) -> str:
+async def ExtractPaperAgent(text: str) -> str:
     """
     Extracts text from a PDF file and processes it for further use.
     """
@@ -180,7 +142,7 @@ def generate_in_text_citation(
         return {}
 
 
-def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = None) -> bool:
+async def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = None) -> bool:
     """
     Stores research papers embeddings in the database.
     """
@@ -189,28 +151,34 @@ def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = No
             logging.warning("No URLs provided.")
             return False
 
-        with get_clients() as (supabase, embeddings):
+        supabase = supabase_embeddings.create_supabase_client()
+        embeddings = OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
+
+        async with aiohttp.ClientSession() as session:
             for url in research_url:
                 text = ""
-                response = requests.get(url)
+                async with session.get(url) as response:
+                    if response.status == 200:
+                        logging.info(f"Downloading PDF from URL: {url}")
+                        pdf_data = await response.read()
+                        pdf_document = fitz.open(stream=pdf_data, filetype="pdf")
 
-                if response.status_code == 200:
-                    logging.info(f"Downloading PDF from URL: {url}")
-                    pdf_data = response.content
-                    pdf_document = fitz.open(stream=pdf_data, filetype="pdf")
+                        # Run CPU-intensive PDF processing in a thread pool
+                        text = await asyncio.to_thread(lambda: "".join(
+                            page.get_text() for page in pdf_document
+                        ))
+                    else:
+                        logging.warning(f"Failed to fetch PDF. Status code: {response.status}")
+                        continue
 
-                    for page_number in range(len(pdf_document)):
-                        page = pdf_document[page_number]
-                        text += page.get_text()
-                else:
-                    logging.warning(f"Failed to fetch PDF. Status code: {response.status_code}")
-                    continue
                 text = sanitize_text(text)
-                extracted_info = ExtractPaperAgent(text)
+                extracted_info = await ExtractPaperAgent(text)
                 checker = supabase_embeddings.query_metadata("fileUrl", url, supabase, user_id)
+                
                 if len(checker.data) != 0:
                     logging.warning(f"Research paper already stored: {url}")
                     continue
+
                 docum = Document(page_content=text)
                 docs = supabase_embeddings.split_documents([docum])
 
@@ -222,9 +190,6 @@ def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = No
                         "in-text": generate_in_text_citation(
                             extracted_info.author, extracted_info.year
                         ),
-                        # "after-text citation": generate_after_text_citation(
-                        #     extracted_info.author, extracted_info.year
-                        # ),
                     },
                 }
 
@@ -235,10 +200,11 @@ def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = No
                     "metadata": metadata_for_library,
                     "is_public": True if user_id == None else False,
                 }
-                # add library_id to metadata
-                library_id = supabase.table("library").insert(data).execute()
-                print(library_id)
-                print(library_id.data[0]["id"])
+
+                # Execute Supabase operations without await
+                library_response = supabase.table("library").insert(data).execute()
+                library_id = library_response.data[0]["id"]
+
                 supabase_embeddings.add_metadata(
                     docs,
                     url,
@@ -246,10 +212,12 @@ def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = No
                     extracted_info.title,
                     extracted_info.year,
                     user_id,
-                    library_id.data[0]["id"],
+                    library_id,
                 )
+
                 vector_store = supabase_embeddings.create_vector_store(embeddings, supabase)
                 vector_store.add_documents(docs)
+                
                 logging.info("Research papers stored successfully.")
         return True
     except Exception as e:
@@ -261,69 +229,62 @@ def StoreResearchPaperAgent(research_url: list[str], user_id: Optional[str] = No
 last_used_document_source = None
 
 
-def find_similar_documents(generated_sentence: str, user_id: Optional[str] = None) -> list:
+async def find_similar_documents(generated_sentence: str, user_id: Optional[str] = None) -> list:
     """
     Queries the vector database to find documents similar to the generated sentence.
-    Avoids using the same document consecutively.
     """
     global last_used_document_source
+    
     try:
-        
-            
-            # Search for similar documents
-            matched_docs = query_vector_store(generated_sentence)
-            # Filter documents based on user_id and last used document
+        matched_docs = query_vector_store(generated_sentence)
+        # Filter documents based on user_id and last used document
+        if user_id:
+            filtered_docs = [
+                doc
+                for doc in matched_docs.data
+                if doc.get("metadata").get("user_id") in {user_id, None}
+                and doc.get("metadata").get("library_id") != last_used_document_source
+            ]
+        else:
+            filtered_docs = [
+                doc
+                for doc in matched_docs.data
+                if doc.get("metadata").get("user_id") is None
+                and doc.get("metadata").get("library_id") != last_used_document_source
+            ]
+
+        # If no documents found after filtering, remove the last_used_document constraint
+        if not filtered_docs:
             if user_id:
                 filtered_docs = [
-                    (doc, doc.get("similarity"))
+                    doc
                     for doc in matched_docs.data
                     if doc.get("metadata").get("user_id") in {user_id, None}
-                    and doc.get("metadata").get("library_id") != last_used_document_source
                 ]
             else:
                 filtered_docs = [
-                    (doc, doc.get("similarity"))
+                    doc
                     for doc in matched_docs.data
                     if doc.get("metadata").get("user_id") is None
-                    and doc.get("metadata").get("library_id") != last_used_document_source
                 ]
 
-            # If no documents found after filtering, remove the last_used_document constraint
-            if not filtered_docs:
-                if user_id:
-                    filtered_docs = [
-                        (doc, doc.get("similarity"))
-                        for doc in matched_docs.data
-                        if doc.get("metadata").get("user_id") in {user_id, None}
-                    ]
-                else:
-                    filtered_docs = [
-                        (doc, doc.get("similarity"))
-                        for doc in matched_docs.data
-                        if doc.get("metadata").get("user_id") is None
-                    ]
-
-            results = []
-            for doc in matched_docs.data:
-              
-                results.append(
-                    {
-                        "content": str(doc["content"]),
-                        "score": float(doc["similarity"]),
-                        "metadata": {
-                            "author": str(doc["metadata"]["author"]),
-                            "title": str(doc["metadata"]["title"]),
-                            "url": str(doc["metadata"]["source"]),
-                            "library_id": str(doc["metadata"]["library_id"]),
-                        },
-                    }
-                )
-
-            # Update last_used_document_source if we found results
-            if results:
-                last_used_document_source = results[0]["metadata"]["library_id"]
-            
-            return results
+        results = []
+        for doc in filtered_docs:
+            results.append({
+                "content": str(doc["content"]),
+                "score": float(doc["similarity"]),
+                "metadata": {
+                    "author": str(doc["metadata"]["author"]),
+                    "title": str(doc["metadata"]["title"]),
+                    "url": str(doc["metadata"]["source"]),
+                    "library_id": str(doc["metadata"]["library_id"]),
+                },
+            })
+        
+        if results:
+            last_used_document_source = results[0]["metadata"]["library_id"]
+        
+        return results
     except Exception as e:
         logging.error(f"Error in find_similar_documents: {e}")
         return []
@@ -353,8 +314,7 @@ def suggest_structure_helper(heading: str, content: str) -> str:
         return ""
 
 
-def generate_ai_sentence(
-    # improve prompt
+async def generate_ai_sentence(
     previous_text: str,
     heading: str,
     subheading: Optional[str] = None,
@@ -367,7 +327,6 @@ def generate_ai_sentence(
         context = f"""
         you are research paper writer, writing a paper on the topic - {heading}.
 Given the previous content of the paper, and the context to generate the next sentence of the paper, write the next sentence of the paper.
-
 
 Make sure to generate the next sentence using the context provided and only the context provided.
 Keep the sentence between 25 to 30 words.
@@ -384,7 +343,7 @@ Keep the sentence between 25 to 30 words.
         )
 
         generated_sentence = response.choices[0].message.content.strip().split("\n\n")[-1]
-        similar_docs = find_similar_documents(generated_sentence, user_id)
+        similar_docs = await find_similar_documents(generated_sentence, user_id)
 
         return {"sentence": generated_sentence, "similar_documents": similar_docs}
     except Exception as e:
@@ -479,7 +438,7 @@ async def search_tavily(query: str):
 async def store_research_papers(request: StoreResearchRequest):
     """Endpoint to store research papers in the database."""
     logging.info("Received request to store research papers.")
-    success = StoreResearchPaperAgent(request.research_urls, request.user_id)
+    success = await StoreResearchPaperAgent(request.research_urls, request.user_id)
     return {"success": success}
 
 
@@ -488,22 +447,31 @@ async def generate_sentence(request: SentenceRequest):
     """Endpoint to generate a sentence based on the given context."""
     logging.info("Received request to generate sentence.")
 
+    # Try to parse as JSON first, if it fails, use the raw text
+    #     print(request.previous_text)
+    parsed_text = json.loads(request.previous_text)
+    print(parsed_text)
+    json_text = json_to_markdown(parsed_text)
+    print(json_text)
+
+    
     # Generate non-referenced sentence
+    ai_generated = await generate_ai_sentence(
+        json_text,
+        request.heading,
+        request.subheading,
+        request.user_id
+    )
     
-    
-    ai_generated = generate_ai_sentence(request.previous_text, request.heading, request.subheading)
     sentence = {}
     for doc in ai_generated.get("similar_documents", []):
-        # print(doc)
-        # if doc["score"] > 0.5:
-            # add user_id
         print(doc)
         sentence = generate_referenced_sentence(
-            request.previous_text,
+            json_text,
             request.heading,
             doc["content"],
             request.subheading,
-            )
+        )
         break
 
     return {
@@ -513,7 +481,7 @@ async def generate_sentence(request: SentenceRequest):
         "author": doc["metadata"].get("author", None) if sentence else None,
         "url": doc["metadata"].get("url", None) if sentence else None,
         "title": doc["metadata"].get("title", None) if sentence else None,
-        "library_id": doc["metadata"].get("library_id", None) if sentence else None,  # Ensure this line correctly references the 'id'
+        "library_id": doc["metadata"].get("library_id", None) if sentence else None,
     }
 
 
@@ -558,5 +526,8 @@ async def root():
 # Example usage
 if __name__ == "__main__":
     logging.info("Starting example usage.")
-    query_results = TavilySearchAgent("RAG")
-    StoreResearchPaperAgent(query_results)
+    async def main():
+        query_results = TavilySearchAgent("RAG")
+        await StoreResearchPaperAgent(query_results)
+    
+    asyncio.run(main())

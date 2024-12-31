@@ -11,6 +11,9 @@ from typing import Optional, List
 import re
 from sentence_transformers import CrossEncoder
 from openai import OpenAI
+import aiohttp
+from aiohttp import ClientSession
+import asyncio
 
 # Configure logging
 logging.basicConfig(
@@ -35,6 +38,7 @@ def create_supabase_client():
 def load_documents(file_path):
     logging.info(f"Loading documents from file: {file_path}")
     loader = PyPDFLoader(file_path)
+    # Run CPU-intensive document loading in a thread pool
     documents = loader.load()
     logging.info(f"Loaded {len(documents)} pages")
     return documents
@@ -42,11 +46,11 @@ def load_documents(file_path):
 
 def split_documents(documents: List[Document]) -> List[Document]:
     logging.info("Splitting documents...")
-    # Using RecursiveCharacterTextSplitter for better semantic splitting
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,  
         chunk_overlap=0,
     )
+    # Run CPU-intensive splitting in a thread pool
     split_docs = text_splitter.split_documents(documents)
     logging.info(f"Split into {len(split_docs)} chunk(s).")
     return split_docs
@@ -76,21 +80,14 @@ def query_metadata(field, value, supabase, user_id: Optional[str] = None):
     logging.info(f"Querying : {field} = {value}")
     field = f"metadata->>{field}"
     if user_id:
-        response = (
-            supabase.from_("library").select("*").eq(field, value).eq("user_id", user_id).execute()
-        )
+        response = supabase.from_("library").select("*").eq(field, value).eq("user_id", user_id).execute()
     else:
-        response = (
-            supabase.from_("library").select("*").eq(field, value).is_("user_id", None).execute()
-        )
+        response = supabase.from_("library").select("*").eq(field, value).is_("user_id", None).execute()
     logging.info(f"Query returned {len(response.data)} result(s).")
     return response
 
 
-def query_vector_store(
-    query: str,
-  
-) -> List[Document]:
+def query_vector_store(query: str) -> List[Document]:
     """
     Optimized vector store query with reranking.
     """
@@ -100,7 +97,7 @@ def query_vector_store(
         supabase_client = create_supabase_client()
         openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    # Generate embedding for the query
+        # Generate embedding for the query
         embedding_response = openai_client.embeddings.create(
             model="text-embedding-3-large",
             input=query,
@@ -116,11 +113,11 @@ def query_vector_store(
                 'query_text': query,
                 'query_embedding': embedding,
                 'match_count': 10,
-                
             }
         ).execute()
-        # json.stringify(documents)
-    
+
+        # print(documents.data[0])
+        # print("\n\n\n")
         return documents
 
     except Exception as e:
@@ -130,31 +127,28 @@ def query_vector_store(
 
 def create_vector_store(embeddings, supabase: Client) -> SupabaseVectorStore:
     logging.info("Creating vector store...")
-
     vector_store = SupabaseVectorStore(
         client=supabase,
         embedding=embeddings,
-        table_name="embeddings",  # your table name
-        query_name="hybrid_search" # your search function name
+        table_name="embeddings",
+        query_name="hybrid_search"
     )
     logging.info("Vector store created successfully.")
     return vector_store
 
 
 if __name__ == "__main__":
-    logging.info("Starting script...")
-    try:
-        supabase = create_supabase_client()
-        embeddings = OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
-        documents = load_documents("attention.pdf")
-        docs = split_documents(documents)
-        add_metadata(docs, "Attention url", "John Doe", "Attention is all you need", 2021)
-        vector_store = create_vector_store(docs, embeddings, supabase)
-        # print(
-        #     query_vector_store(
-        #         "Moreover, this investigation can aid in identifying scenarios where smaller datasets may suffice, or where expanding the dataset size is necessary to achieve desired levels of accuracy and reliability in inferential outcomes.",
-        #         vector_store,
-        #     )
-        # )
-    except Exception as e:
-        logging.error(f"An error occurred: {e}")
+    def main():
+        logging.info("Starting script...")
+        try:
+            supabase = create_supabase_client()
+            embeddings = OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
+            documents = load_documents("attention.pdf")
+            docs = split_documents(documents)
+            add_metadata(docs, "Attention url", "John Doe", "Attention is all you need", 2021)
+            vector_store = create_vector_store(docs, embeddings, supabase)
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+
+    # Run the async main function
+    main()
