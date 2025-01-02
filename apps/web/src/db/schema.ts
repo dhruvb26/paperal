@@ -6,11 +6,14 @@ import {
   timestamp,
   uuid,
   varchar,
-  vector,
+  customType,
   boolean,
+  doublePrecision,
+  json,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import { relations } from "drizzle-orm";
+import { vector } from "drizzle-orm/pg-core";
 
 export const usersTable = pgTable("users", {
   id: varchar({ length: 255 }).primaryKey().notNull(),
@@ -25,6 +28,12 @@ export const usersTable = pgTable("users", {
   ),
 });
 
+const tsvector = customType<{ data: string }>({
+  dataType() {
+    return `tsvector`;
+  },
+});
+
 export const embeddingsTable = pgTable("embeddings", {
   id: uuid()
     .primaryKey()
@@ -32,6 +41,8 @@ export const embeddingsTable = pgTable("embeddings", {
   content: text("content"),
   metadata: jsonb("metadata"),
   embedding: vector("embedding", { dimensions: 1536 }),
+  fts: tsvector("fts"),
+  similarity: doublePrecision("similarity"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -68,7 +79,7 @@ export const libraryTable = pgTable("library", {
     onDelete: "cascade",
   }),
   isPublic: boolean("is_public").default(true),
-  metadata: jsonb("metadata"),
+  metadata: json("metadata").$type<Record<string, any>>(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

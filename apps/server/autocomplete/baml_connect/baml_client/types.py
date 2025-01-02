@@ -44,6 +44,19 @@ class CitationObject(BaseModel):
     complete_reference: str
     url: str
 
+class NewCitationObject(BaseModel):
+    in_text: str
+    complete_reference: str
+
+class NewPage(BaseModel):
+    sections: List["Section"]
+
+class NewSection(BaseModel):
+    title: str
+    content: str
+    references: List["CitationObject"]
+    is_finished: bool
+
 class Page(BaseModel):
     sections: List["Section"]
 
@@ -64,3 +77,4 @@ class Section(BaseModel):
     title: str
     content: str
     references: List["CitationObject"]
+    is_finished: bool

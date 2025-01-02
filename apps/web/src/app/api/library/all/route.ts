@@ -17,7 +17,7 @@ export async function GET() {
       where: eq(libraryTable.userId, userId),
     });
 
-    return NextResponse.json(documents);
+    return NextResponse.json({ documents }, { status: 200 });
   } catch (error) {
     console.error("Error fetching library documents:", error);
     return NextResponse.json(

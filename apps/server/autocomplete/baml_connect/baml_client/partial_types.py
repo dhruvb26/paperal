@@ -34,6 +34,19 @@ class CitationObject(BaseModel):
     complete_reference: Optional[str] = None
     url: Optional[str] = None
 
+class NewCitationObject(BaseModel):
+    in_text: Optional[str] = None
+    complete_reference: Optional[str] = None
+
+class NewPage(BaseModel):
+    sections: List["Section"]
+
+class NewSection(BaseModel):
+    title: Optional[str] = None
+    content: Optional[str] = None
+    references: List["CitationObject"]
+    is_finished: Optional[bool] = None
+
 class Page(BaseModel):
     sections: List["Section"]
 
@@ -54,3 +67,4 @@ class Section(BaseModel):
     title: Optional[str] = None
     content: Optional[str] = None
     references: List["CitationObject"]
+    is_finished: Optional[bool] = None
