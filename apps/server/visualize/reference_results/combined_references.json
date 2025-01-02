@@ -1,0 +1,152 @@
+{
+  "references": [
+    {
+      "text": "Germini",
+      "url": "https://gemini.google.com/"
+    },
+    {
+      "text": "Introducing meta llama 3: The most capable openly available llm to date",
+      "url": "https://ai.meta.com/blog/meta-llama-3/"
+    },
+    {
+      "text": "Openai",
+      "url": "https://openai.com"
+    },
+    {
+      "text": "Introducing dbrx: A new state-of-the-art open llm",
+      "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm"
+    },
+    {
+      "text": "Getty images vs. stability ai: A landmark case in copyright and ai, 2023",
+      "url": "https://www.bakerlaw.com/getty-images-v-stability-ai/"
+    },
+    {
+      "text": "The times sues openai and microsoft over a.i. use of copyrighted work",
+      "url": "https://www.nytimes.com/2023/12/27/business/media/new-york-times-open-ai-microsoft-lawsuit.html"
+    },
+    {
+      "text": "Sarah silverman and authors sue openai and meta over copyright infringement. 2023",
+      "url": "https://www.nytimes.com/2023/07/10/arts/sarah-silverman-lawsuit-openai-meta.html"
+    },
+    {
+      "text": "Guangsheng Bao, Yanbin Zhao, Zhiyang Teng, Linyi Yang, and Yue Zhang. Fast-detectGPT: Efficient zero-shot detection of machine-generated text via conditional probability curvature",
+      "url": "https://openreview.net/forum?id=Bpcgcr8E8Z"
+    },
+    {
+      "text": "Stella Biderman, Hailey Schoelkopf, Quentin Anthony, Herbie Bradley, Kyle O\u2019Brien, Eric Hallahan, Mohammad Aflah Khan, Shivanshu Purohit, USVSN Sai Prashanth, Edward Raff, Aviya Skowron, Lintang Sutawika, and Oskar Van Der Wal. Pythia: a suite for analyzing large language models across training and scaling",
+      "url": ""
+    },
+    {
+      "text": "Morton B Brown. 400: A method for combining non-independent, one-sided tests of significance. Biometrics, pages 987\u2013992, 1975",
+      "url": ""
+    },
+    {
+      "text": "Nicholas Carlini, Florian Tram\u00e8r, Eric Wallace, Matthew Jagielski, Ariel Herbert-Voss, Katherine Lee, Adam Roberts, Tom Brown, Dawn Song, \u00dalfar Erlingsson, Alina Oprea, and Colin Raffel. Extracting training data from large language models",
+      "url": "https://www.usenix.org/conference/usenixsecurity21/presentation/carlini-extracting"
+    },
+    {
+      "text": "Nicholas Carlini, Steve Chien, Milad Nasr, Shuang Song, Andreas Terzis, and Florian Tram\u00e8r. Membership inference attacks from first principles",
+      "url": ""
+    },
+    {
+      "text": "Kaustubh D. Dhole, Varun Gangal, Sebastian Gehrmann, Aadesh Gupta, Zhenhao Li, Saad Mahamood, Abinaya Mahendiran, Simon Mille, Ashish Srivastava, Samson Tan, Tongshuang Wu, Jascha Sohl-Dickstein, Jinho D. Choi, Eduard Hovy, Ondrej Dusek, Sebastian Ruder, Sajant Anand, Nagender Aneja, Rabin Banjade, Lisa Barthe, Hanna Behnke, Ian Berlot-Attwell, Connor Boyle, Caroline Brun, Marco Antonio Sobrevilla Cabezudo, Samuel Cahyawijaya, Emile Chapuis, Wanxiang Che, Mukund Choudhary, Christian Clauss, Pierre Colombo, Filip Cornell, Gautier Dagan, Mayukh Das, Tanay Dixit, Thomas Dopierre, Paul-Alexis Dray, Suchitra Dubey, Tatiana Ekeinhor, Marco Di Giovanni, Rishabh Gupta, Rishabh Gupta, Louanes Hamla, Sang Han, Fabrice Harel-Canada, Antoine Honore, Ishan Jindal, Przemyslaw K. Joniak, Denis Kleyko, Venelin Kovatchev, Kalpesh Krishna, Ashutosh Kumar, Stefan Langer, Seungjae Ryan Lee, Corey James Levinson, Hualou Liang, Kaizhao Liang, Zhexiong Liu, Andrey Lukyanenko, Vukosi Marivate, Gerard de Melo, Simon Meoni, Maxime Meyer, Afnan Mir, Nafise Sadat Moosavi, Niklas Muennighoff, Timothy Sum Hon Mun, Kenton Murray, Marcin Namysl, Maria Obedkova, Priti Oli, Nivranshu Pasricha, Jan Pfister, Richard Plant, Vinay Prabhu, Vasile Pais, Libo Qin, Shahab Raji, Pawan Kumar Rajpoot, Vikas Raunak, Roy Rinberg, Nicolas Roberts, Juan Diego Rodriguez, Claude Roux, Vasconcellos P. H. S., Ananya B. Sai, Robin M. Schmidt, Thomas Scialom, Tshephisho Sefara, Saqib N. Shamsi, Xudong Shen, Haoyue Shi, Yiwen Shi, Anna Shvets, Nick Siegel, Damien Sileo, Jamie Simon, Chandan Singh, Roman Sitelew, Priyank Soni, Taylor Sorensen, William Soto, Aman Srivastava, KV Aditya Srivatsa, Tony Sun, Mukund Varma T, A Tabassum, Fiona Anting Tan, Ryan Teehan, Mo Tiwari, Marie Tolkiehn, Athena Wang, Zijian Wang, Gloria Wang, Zijie J. Wang, Fuxuan 12Wei, Bryan Wilie, Genta Indra Winata, Xinyi Wu, Witold Wydma\u0144ski, Tianbao Xie, Usama Yaseen, M. Yee, Jing Zhang, and Yue Zhang. Nl-augmenter: A framework for task-sensitive natural language augmentation",
+      "url": ""
+    },
+    {
+      "text": "Haonan Duan, Adam Dziedzic, Nicolas Papernot, and Franziska Boenisch. Flocks of stochastic parrots: Differentially private prompt learning for large language models",
+      "url": ""
+    },
+    {
+      "text": "Michael Duan, Anshuman Suri, Niloofar Mireshghallah, Sewon Min, Weijia Shi, Luke Zettlemoyer, Yulia Tsvetkov, Yejin Choi, David Evans, and Hannaneh Hajishirzi. Do membership inference attacks work on large language models?",
+      "url": ""
+    },
+    {
+      "text": "Adam Dziedzic, Haonan Duan, Muhammad Ahmad Kaleem, Nikita Dhawan, Jonas Guan, Yannis Cattan, Franziska Boenisch, and Nicolas Papernot. Dataset inference for self-supervised models",
+      "url": ""
+    },
+    {
+      "text": "Ronen Eldan and Yuanzhi Li. Tinystories: How small can language models be and still speak coherent english?",
+      "url": ""
+    },
+    {
+      "text": "Jean-loup Gailly and Mark Adler. zlib compression library",
+      "url": "http://www.dspace.cam.ac.uk/handle/1810/3486"
+    },
+    {
+      "text": "Leo Gao, Stella Biderman, Sid Black, Laurence Golding, Travis Hoppe, Charles Foster, Jason Phang, Horace He, Anish Thite, Noa Nabeshima, et al. The pile: An 800gb dataset of diverse text for language modeling",
+      "url": ""
+    },
+    {
+      "text": "James T Kost and Michael P McDermott. Combining dependent p-values. Statistics & Probability Letters",
+      "url": ""
+    },
+    {
+      "text": "Katherine Lee, Daphne Ippolito, Andrew Nystrom, Chiyuan Zhang, Douglas Eck, Chris Callison-Burch, and Nicholas Carlini. Deduplicating training data makes language models better",
+      "url": "https://aclanthology.org/2022.acl-long.577"
+    },
+    {
+      "text": "Yuanzhi Li, S\u00e9bastien Bubeck, Ronen Eldan, Allie Del Giorno, Suriya Gunasekar, and Yin Tat Lee. Textbooks are all you need ii: phi-1.5 technical report",
+      "url": ""
+    },
+    {
+      "text": "Pratyush Maini, Mohammad Yaghini, and Nicolas Papernot. Dataset inference: Ownership resolution in machine learning",
+      "url": "https://openreview.net/forum?id=hvdKKV2yt7T"
+    },
+    {
+      "text": "Justus Mattern, Fatemehsadat Mireshghallah, Zhijing Jin, Bernhard Schoelkopf, Mrinmaya Sachan, and Taylor Berg-Kirkpatrick. Membership inference attacks against language models via neighbourhood comparison",
+      "url": "https://aclanthology.org/2023.findings-acl.719"
+    },
+    {
+      "text": "Xiao-Li Meng. Posterior predictive p-values",
+      "url": ""
+    },
+    {
+      "text": "Sewon Min, Suchin Gururangan, Eric Wallace, Hannaneh Hajishirzi, Noah A Smith, and Luke Zettlemoyer. Silo language models: Isolating legal risk in a nonparametric datastore",
+      "url": ""
+    },
+    {
+      "text": "Eric Mitchell, Yoonho Lee, Alexander Khazatsky, Christopher D. Manning, and Chelsea Finn. Detectgpt: zero-shot machine-generated text detection using probability curvature",
+      "url": ""
+    },
+    {
+      "text": "Yonatan Oren, Nicole Meister, Niladri S. Chatterji, Faisal Ladhak, and Tatsunori Hashimoto. Proving test set contamination for black-box language models",
+      "url": "https://openreview.net/forum?id=KS8mIvetg2"
+    },
+    {
+      "text": "Noorjahan Rahman and Eduardo Santacana. Beyond fair use: Legal risk evaluation for training llms on copyrighted text",
+      "url": "https://genlaw.org/CameraReady/57.pdf"
+    },
+    {
+      "text": "Ludger R\u00fcschendorf. Random variables with maximum sums. Advances in Applied Probability",
+      "url": ""
+    },
+    {
+      "text": "Avital Shafran, Shmuel Peleg, and Yedid Hoshen. Membership inference attacks are easier on difficult problems",
+      "url": ""
+    },
+    {
+      "text": "Weijia Shi, Anirudh Ajith, Mengzhou Xia, Yangsibo Huang, Daogao Liu, Terra Blevins, Danqi Chen, and Luke Zettlemoyer. Detecting pretraining data from large language models",
+      "url": "https://openreview.net/forum?id=zWqr3MQuNs"
+    },
+    {
+      "text": "R. Shokri, M. Stronati, C. Song, and V. Shmatikov. Membership inference attacks against machine learning models",
+      "url": "https://doi.ieeecomputersociety.org/10.1109/SP.2017.41"
+    },
+    {
+      "text": "Thomas Steinke, Milad Nasr, and Matthew Jagielski. Privacy auditing with one (1) training run",
+      "url": "https://openreview.net/forum?id=f38EY21lBw"
+    },
+    {
+      "text": "Vladimir Vovk and Ruodu Wang. Combining p-values via averaging. Biometrika",
+      "url": ""
+    },
+    {
+      "text": "Xiaodong Wu, Ran Duan, and Jianbing Ni. Unveiling security, privacy, and ethical concerns of chatgpt",
+      "url": ""
+    },
+    {
+      "text": "S. Yeom, I. Giacomelli, M. Fredrikson, and S. Jha. Privacy risk in machine learning: Analyzing the connection to overfitting",
+      "url": "https://doi.ieeecomputersociety.org/10.1109/CSF.2018.00027"
+    }
+  ]
+}

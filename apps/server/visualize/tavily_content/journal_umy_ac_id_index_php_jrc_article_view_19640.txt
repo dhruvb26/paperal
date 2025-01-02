@@ -1,0 +1,225 @@
+Application of Machine Learning in Healthcare and Medicine: A Review | Furizal | Journal of Robotics and Control (JRC)
+QUICK MENU
+Editorial Team
+Reviewer
+Author Guidelines
+Focus and Scope
+Publications Ethics
+Open Access Policy
+Peer Review Process
+Online Submission
+Publication Charge (Fee)
+Visitor Statistics
+Contact
+Article Tools
+ How to cite item
+					About The Authors
+Furizal Furizal
+ Universitas Ahmad Dahlan		Indonesia	
+Alfian Ma'arif
+Universitas Ahmad Dahlan		Indonesia	
+Dianda Rifaldi
+Universitas Ahmad Dahlan		Indonesia	
+User
+Username
+Password
+ Remember me
+Article Template
+Ms. Word (DOCX)
+Latex (TEX)
+Notifications
+View
+Subscribe
+Journal Content
+Search 
+				Search Scope
+All
+Authors
+Title
+Abstract
+Index terms
+Full Text
+Browse
+By Issue
+By Author
+By Title
+Other Journals
+Categories 
+Keywords
+Adaptive Control
+Arduino
+Arduino Uno
+Artificial Intelligence
+Deep Learning
+Fuzzy Logic
+Genetic Algorithm
+Internet of Things
+IoT
+Machine Learning
+Microcontroller
+Mobile Robot
+Nonlinear Control
+Object Detection
+PID
+PID Control
+PID Controller
+Path Planning
+Robot
+Sliding Mode Control
+microcontroller
+Visitor Stats 
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;div class="statcounter"&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;a title="real time web analytics" href="https://statcounter.com/" target="_blank"&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;img class="statcounter" src="https://c.statcounter.com/12133373/0/5a8297b5/0/" alt="real time web analytics"&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;/a&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;/div&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;
+ View JRC Stats
+Visitor Country
+Home
+About
+Login
+Register
+Categories
+Search
+Current
+Archives
+Announcements
+Indexing
+Youtube Channel
+Journal Partners
+Home >
+	Vol 4, No 5 (2023) >	Furizal
+Application of Machine Learning in Healthcare and Medicine: A Review
+Furizal Furizal, Alfian Ma'arif, Dianda Rifaldi
+Abstract
+This extensive literature review investigates the integration of Machine Learning (ML) into the healthcare sector, uncovering its potential, challenges, and strategic resolutions. The main objective is to comprehensively explore how ML is incorporated into medical practices, demonstrate its impact, and provide relevant solutions. The research motivation stems from the necessity to comprehend the convergence of ML and healthcare services, given its intricate implications. Through meticulous analysis of existing research, this method elucidates the broad spectrum of ML applications in disease prediction and personalized treatment. The research's precision lies in dissecting methodologies, scrutinizing studies, and extrapolating critical insights. The article establishes that ML has succeeded in various aspects of medical care. In certain studies, ML algorithms, especially Convolutional Neural Networks (CNNs), have achieved high accuracy in diagnosing diseases such as lung cancer, colorectal cancer, brain tumors, and breast tumors. Apart from CNNs, other algorithms like SVM, RF, k-NN, and DT have also proven effective. Evaluations based on accuracy and F1-score indicate satisfactory results, with some studies exceeding 90% accuracy. This principal finding underscores the impressive accuracy of ML algorithms in diagnosing diverse medical conditions. This outcome signifies the transformative potential of ML in reshaping conventional diagnostic techniques. Discussions revolve around challenges like data quality, security risks, potential misinterpretations, and obstacles in integrating ML into clinical realms. To mitigate these, multifaceted solutions are proposed, encompassing standardized data formats, robust encryption, model interpretation, clinician training, and stakeholder collaboration.
+Keywords
+Algorithm; Disease Prediction; Healthcare; Machine Learning; Medical Treatment.
+Full Text:
+PDF
+References
+F. Di Carlo et al., “Telepsychiatry and other cutting‐edge technologies in COVID‐19 pandemic: Bridging the distance in mental health assistance,” Int. J. Clin. Pract., vol. 75, no. 1, Jan. 2021, doi: 10.1111/ijcp.13716.
+H. Ullah, S. Manickam, M. Obaidat, S. U. A. Laghari, and M. Uddin, “Exploring the Potential of Metaverse Technology in Healthcare: Applications, Challenges, and Future Directions,” IEEE Access, vol. 11, pp. 69686–69707, 2023, doi: 10.1109/ACCESS.2023.3286696.
+U. A. K. Betz et al., “Game changers in science and technology - now and beyond,” Technol. Forecast. Soc. Change, vol. 193, p. 122588, Aug. 2023, doi: 10.1016/j.techfore.2023.122588.
+R. Sil, A. Roy, B. Bhushan, and A. K. Mazumdar, “Artificial Intelligence and Machine Learning based Legal Application: The State-of-the-Art and Future Research Trends,” in 2019 International Conference on Computing, Communication, and Intelligent Systems (ICCCIS), pp. 57–62, Oct. 2019, doi: 10.1109/ICCCIS48478.2019.8974479.
+D. Touretzky, C. Gardner-McCune, and D. Seehorn, “Machine Learning and the Five Big Ideas in AI,” Int. J. Artif. Intell. Educ., vol. 33, no. 2, pp. 233–266, Jun. 2023, doi: 10.1007/s40593-022-00314-1.
+M. Zaresefat and R. Derakhshani, “Revolutionizing Groundwater Management with Hybrid AI Models: A Practical Review,” Water (Basel), vol. 15, no. 9, p. 1750, May 2023, doi: 10.3390/w15091750.
+M. J. Iqbal et al., “Clinical applications of artificial intelligence and machine learning in cancer diagnosis: looking into the future,” Cancer Cell Int., vol. 21, no. 1, p. 270, May 2021, doi: 10.1186/s12935-021-01981-1.
+Y. Yan, J. -W. Zhang, G.-Y. Zang, and J. Pu, “The primary use of artificial intelligence in cardiovascular diseases: what kind of potential role does artificial intelligence play in future medicine?,” Journal of geriatric cardiology: JGC, vol. 16, no. 8, pp. 585–591, Aug. 2019, doi: 10.11909/j.issn.1671-5411.2019.08.010.
+M. van der Schaar et al., “How artificial intelligence and machine learning can help healthcare systems respond to COVID-19,” Machine Learning, vol. 110, no. 1, pp. 1–14, Jan. 2021, doi: 10.1007/s10994-020-05928-x.
+M. Srivani, A. Murugappan, T. Mala, “Cognitive computing technological trends and future research directions in healthcare — A systematic literature review,” Artificial Intelligence in Medicine, vol. 138, p. 102513, Apr. 2023, doi: 10.1016/j.artmed.2023.102513.
+G. Rea et al., “Beyond Visual Interpretation: Quantitative Analysis and Artificial Intelligence in Interstitial Lung Disease Diagnosis ‘Expanding Horizons in Radiology,” Diagnostics, vol. 13, no. 14, p. 2333, Jul. 2023, doi: 10.3390/diagnostics13142333.
+G. Battineni, G. G. Sagaro, N. Chinatalapudi, and F. Amenta, “Applications of Machine Learning Predictive Models in the Chronic Disease Diagnosis,” J. Pers. Med., vol. 10, no. 2, p. 21, Mar. 2020, doi: 10.3390/jpm10020021.
+M. M. Ahsan and Z. Siddique, “Machine learning-based heart disease diagnosis: A systematic literature review,” Artificial Intelligence in Medicine, vol. 128, p. 102289, 2022.
+M. M. Ahsan, S. A. Luna, and Z. Siddique, “Machine-Learning-Based Disease Diagnosis: A Comprehensive Review,” Healthcare, vol. 10, no. 3, p. 541, Mar. 2022, doi: 10.3390/healthcare10030541.
+D. A. A. Pertiwi, P. R. Setyorini, M. A. Muslim, and E. Sugiharti, “Implementation of Discretisation and Correlation-based Feature Selection to Optimize Support Vector Machine in Diagnosis of Chronic Kidney Disease,” Buletin Ilmiah Sarjana Teknik Elektro, vol. 5, no. 2, pp. 201–209, 2023, doi: 10.12928/biste.v5i2.7548.
+W. Cai et al., “CT Quantification and Machine-learning Models for Assessment of Disease Severity and Prognosis of COVID-19 Patients,” Acad. Radiol., vol. 27, no. 12, pp. 1665–1678, Dec. 2020, doi: 10.1016/j.acra.2020.09.004.
+F. M. J. M. Shamrat, P. Ghosh, M. H. Sadek, Md. A. Kazi, and S. Shultana, “Implementation of Machine Learning Algorithms to Detect the Prognosis Rate of Kidney Disease,” in 2020 IEEE International Conference for Innovation in Technology (INOCON), pp. 1–7, 2020, doi: 10.1109/INOCON50539.2020.9298026.
+P. Palimkar, R. N. Shaw, and A. Ghosh, “Machine Learning Technique to Prognosis Diabetes Disease: Random Forest Classifier Approach,” in Advanced Computing and Intelligent Technologies, pp. 219–244, 2022, doi: 10.1007/978-981-16-2164-2_19.
+Z. Ahmed, K. Mohamed, S. Zeeshan, and X. Dong, “Artificial intelligence with multi-functional machine learning platform development for better healthcare and precision medicine,” Database, vol. 2020, 2020, doi: 10.1093/database/baaa010.
+D. Bertsimas, A. Orfanoudaki, and R. B. Weiner, “Personalized treatment for coronary artery disease patients: a machine learning approach,” Health Care Management Science, vol. 23, no. 4, pp. 482–506, Dec. 2020, doi: 10.1007/s10729-020-09522-4.
+M. Wijnberge et al., “The use of a machine-learning algorithm that predicts hypotension during surgery in combination with personalized treatment guidance: study protocol for a randomized clinical trial,” Trials, vol. 20, no. 1, p. 582, Dec. 2019, doi: 10.1186/s13063-019-3637-4.
+P. Carracedo-Reboredo et al., “A review on machine learning approaches and trends in drug discovery,” Computational and Structural Biotechnology Journal, vol. 19, pp. 4538–4558, 2021, doi: 10.1016/j.csbj.2021.08.011.
+A. Nurcahyo, J. Suroso, and G. Wang, “The Artificial Intelligence (AI) Model Canvas Framework and Use Cases,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 8, no. 1, p. 1, 2022, doi: 10.26555/jiteki.v8i1.22206.
+J. Delafiori et al., “Covid-19 Automated Diagnosis and Risk Assessment through Metabolomics and Machine Learning,” Analytical Chemistry, vol. 93, no. 4, pp. 2471–2479, Feb. 2021, doi: 10.1021/acs.analchem.0c04497.
+D. Assaf et al., “Utilization of machine-learning models to accurately predict the risk for critical COVID-19,” Internal and emergency medicine, vol. 15, no. 8, pp. 1435–1443, Nov. 2020, doi: 10.1007/s11739-020-02475-0.
+T. Dhar, N. Dey, S. Borra, and R. S. Sherratt, “Challenges of Deep Learning in Medical Image Analysis—Improving Explainability and Trust,” IEEE Transactions on Technology and Society, vol. 4, no. 1, pp. 68–75, Mar. 2023, doi: 10.1109/TTS.2023.3234203.
+E. Petersen et al., “Responsible and Regulatory Conform Machine Learning for Medicine: A Survey of Challenges and Solutions,” IEEE Access, vol. 10, pp. 58375–58418, 2022, doi: 10.1109/ACCESS.2022.3178382.
+N. C. Jacobson et al., “Ethical dilemmas posed by mobile health and machine learning in psychiatry research,” Bulletin of the World Health Organization, vol. 98, no. 4, pp. 270–276, Apr. 2020, doi: 10.2471/BLT.19.237107.
+A. Saboor, M. Usman, S. Ali, A. Samad, M. F. Abrar, and N. Ullah, “A Method for Improving Prediction of Human Heart Disease Using Machine Learning Algorithms,” Mobile Information Systems, vol. 2022, pp. 1–9, Mar. 2022, doi: 10.1155/2022/1410169.
+A. Helisa, T. H. Saragih, I. Budiman, F. Indriani, and D. Kartini, “Prediction of Post-Operative Survival Expectancy in Thoracic Lung Cancer Surgery Using Extreme Learning Machine and SMOTE,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 2, pp. 239–249, 2023, doi: 10.26555/jiteki.v9i2.25973.
+Y. Achour and H. R. Pourghasemi, “How do machine learning techniques help in increasing accuracy of landslide susceptibility maps?,” Geoscience Frontiers, vol. 11, no. 3, pp. 871–883, May 2020, doi: 10.1016/j.gsf.2019.10.001.
+R. A. Asmara, N. D. Hendrawan, A. N. Handayani, and K. Arai, “Basketball Activity Recognition Using Supervised Machine Learning Implemented on Tizen OS Smartwatch,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 8, no. 3, p. 447, 2022, doi: 10.26555/jiteki.v8i3.23668.
+I. S. Hofer, M. Kupina, L. Laddaran, and E. Halperin, “Integration of feature vectors from raw laboratory, medication and procedure names improves the precision and recall of models to predict postoperative mortality and acute kidney injury,” Sci. Rep., vol. 12, no. 1, p. 10254, Jun. 2022, doi: 10.1038/s41598-022-13879-7.
+S. H. Hyun, M. S. Ahn, Y. W. Koh, and S. J. Lee, “A Machine-Learning Approach Using PET-Based Radiomics to Predict the Histological Subtypes of Lung Cancer,” Clin. Nucl. Med., vol. 44, no. 12, pp. 956–960, Dec. 2019, doi: 10.1097/RLU.0000000000002810.
+M. F. Nafiz, D. Kartini, M. R. Faisal, F. Indriani, and T. Hamonangan, “Automated Detection of COVID-19 Cough Sound using Mel- Spectrogram Images and Convolutional Neural Network,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 3, pp. 535–548, 2023, doi: 10.26555/jiteki.v9i3.26374.
+S. Aulia and S. Hadiyoso, “Tuberculosis Detection in X-Ray Image Using Deep Learning Approach with VGG-16 Architecture,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 8, no. 2, p. 290, 2022, doi: 10.26555/jiteki.v8i2.23994.
+M. Muttaqin et al., “CNN Classification of Malaria Parasites in Digital Microscope Images Using Python on Raspberry Pi,” Buletin Ilmiah Sarjana Teknik Elektro, vol. 5, no. 1, pp. 108–120, 2023, doi: 10.12928/biste.v5i1.7522.
+N. H. Parmenas and R. S. Samosir, “Industrial Relations Dispute Simulation System Prototype with Artificial Intelligence Approach,” Buletin Ilmiah Sarjana Teknik Elektro, vol. 5, no. 2, pp. 291–302, 2023, doi: 10.12928/biste.v5i2.7607.
+A. A. Waskita, S. Yushady, C. H. Bissa, I. A. Satya, and R. S. Alwi, “Development of Novel Machine Learning to Optimize the Solubility of Azathioprine as Anticancer Drug in Supercritical Carbon Dioxide,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 1, pp. 49–57, 2023, doi: 10.26555/jiteki.v9i1.25608.
+D. C. E. Saputra, Y. Maulana, T. A. Win, R. Phann, and W. Caesarendra, “Implementation of Machine Learning and Deep Learning Models Based on Structural MRI for Identification Autism Spectrum Disorder,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 2, pp. 307–318, 2023, doi: 10.26555/jiteki.v9i2.26094.
+I. N. Y. Saputra, S. Saadah, and P. E. Yunanto, “Analysis of Random Forest, Multiple Regression, and Backpropagation Methods in Predicting Apartment Price Index in Indonesia,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 7, no. 2, p. 238, Jul. 2021, doi: 10.26555/jiteki.v7i2.20997.
+M. M. Amin, S. Kermani, A. Talebi, and M. G. Oghli, “Recognition of acute lymphoblastic leukemia cells in microscopic images using k-means clustering and support vector machine classifier,” Journal of medical signals and sensors, vol. 5, no. 1, pp. 49–58, 2015.
+V. Singhal and P. Singh, “Texture Features for the Detection of Acute Lymphoblastic Leukemia,” in Proceedings of International Conference on ICT for Sustainable Development, pp. 535–543, 2016, doi: 10.1007/978-981-10-0135-2_52.
+J. Zhao, M. Zhang, Z. Zhou, J. Chu, and F. Cao, “Automatic detection and classification of leukocytes using convolutional neural networks,” Med. Biol. Eng. Comput., vol. 55, no. 8, pp. 1287–1301, Aug. 2017, doi: 10.1007/s11517-016-1590-x.
+P. Shimpi, S. Shah, M. Shroff, and A. Godbole, “A machine learning approach for the classification of cardiac arrhythmia,” in 2017 International Conference on Computing Methodologies and Communication (ICCMC), pp. 603–607, 2017, doi: 10.1109/ICCMC.2017.8282537.
+M. Akbari et al., “Classification of Informative Frames in Colonoscopy Videos Using Convolutional Neural Networks with Binarized Weights,” in 2018 40th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC), pp. 65–68, 2018, doi: 10.1109/EMBC.2018.8512226.
+G. Urban et al., “Deep Learning Localizes and Identifies Polyps in Real Time With 96% Accuracy in Screening Colonoscopy,” Gastroenterology, vol. 155, no. 4, pp. 1069-1078, Oct. 2018, doi: 10.1053/j.gastro.2018.06.037.
+J. Ker, Y. Bai, H. Y. Lee, J. Rao, and L. Wang, “Automated brain histology classification using machine learning,” Journal of Clinical Neuroscience, vol. 66, pp. 239–245, Aug. 2019, doi: 10.1016/j.jocn.2019.05.019.
+M. Siar and M. Teshnehlab, “Brain Tumor Detection Using Deep Neural Network and Machine Learning Algorithm,” in 2019 9th International Conference on Computer and Knowledge Engineering (ICCKE), pp. 363–368, 2019, doi: 10.1109/ICCKE48569.2019.8964846.
+G. Hemanth, M. Janardhan, and L. Sujihelen, “Design and Implementing Brain Tumor Detection Using Machine Learning Approach,” in 2019 3rd International Conference on Trends in Electronics and Informatics (ICOEI), pp. 1289–1294, 2019, doi: 10.1109/ICOEI.2019.8862553.
+B. K. Hatuwal and H. C. Thapa, “Lung Cancer Detection Using Convolutional Neural Network on Histopathological Images,” International Journal of Computer Trends & Technology, vol. 68, no. 10, pp. 21–24, Oct. 2020, doi: 10.14445/22312803/IJCTT-V68I10P104.
+S. Mangal, A. Chaurasia, A. Khajanchi, S. Mangal, A. Chaurasia, and A. Khajanchi, “Convolution Neural Networks for diagnosing colon and lung cancer histopathological images,” arXiv preprint arXiv:2009.03878, 2020, doi: 10.48550/ARXIV.2009.03878.
+A. S. Assiri, S. Nazir, and S. A. Velastin, “Breast Tumor Classification Using an Ensemble Machine Learning Method,” J. Imaging, vol. 6, no. 6, p. 39, May 2020, doi: 10.3390/jimaging6060039.
+Y. Xu, L. Ju, J. Tong, C.-M. Zhou, and J.-J. Yang, “Machine Learning Algorithms for Predicting the Recurrence of Stage IV Colorectal Cancer After Tumor Resection,” Sci. Rep., vol. 10, no. 1, p. 2519, Feb. 2020, doi: 10.1038/s41598-020-59115-y.
+S. Wang, Y. Zhou, X. Qin, S. Nair, X. Huang, and Y. Liu, “Label-free detection of rare circulating tumor cells by image analysis and machine learning,” Sci. Rep., vol. 10, no. 1, p. 12226, Jul. 2020, doi: 10.1038/s41598-020-69056-1.
+M. Masud, N. Sikder, A.-A. Nahid, A. K. Bairagi, and M. A. AlZain, “A Machine Learning Approach to Diagnosing Lung and Colon Cancer Using a Deep Learning-Based Classification Framework,” Sensors, vol. 21, no. 3, p. 748, Jan. 2021, doi: 10.3390/s21030748.
+A. A. Borkowski, M. M. Bui, L. B. Thomas, C. P. Wilson, L. A. DeLand, and S. M. Mastorides, “Lung and Colon Cancer Histopathological Image Dataset (LC25000),” arXiv preprint arXiv:1912.12142, 2019.
+P. López-Úbeda, M. C. Díaz-Galiano, T. Martín-Noguerol, A. Luna, L. A. Ureña-López, and M. T. Martín-Valdivia, “Automatic medical protocol classification using machine learning approaches,” Computer Methods and Programs in Biomedicine, vol. 200, p. 105939, Mar. 2021, doi: 10.1016/j.cmpb.2021.105939.
+J. Wu and C. Hicks, “Breast Cancer Type Classification Using Machine Learning,” J. Pers. Med., vol. 11, no. 2, p. 61, Jan. 2021, doi: 10.3390/jpm11020061.
+G. Dhiman et al., “A Novel Machine-Learning-Based Hybrid CNN Model for Tumor Identification in Medical Image Processing,” Sustainability, vol. 14, no. 3, p. 1447, Jan. 2022, doi: 10.3390/su14031447.
+E. Michael, H. Ma, H. Li, and S. Qi, “An Optimized Framework for Breast Cancer Classification Using Machine Learning,” Biomed. Res. Int., vol. 2022, pp. 1–18, Feb. 2022, doi: 10.1155/2022/8482022.
+A. Muis, S. Sunardi, and A. Yudhana, “Comparison Analysis of Brain Image Classification Based on Thresholding Segmentation With Convolutional Neural Network,” Journal of Applied Engineering and Technological Science (JAETS), vol. 4, no. 2, pp. 664–673, Jun. 2023, doi: 10.37385/jaets.v4i2.1583.
+Y. Wang et al., “Double-Uncertainty Weighted Method for Semi-supervised Learning,” in International Conference on Medical Image Computing and Computer-Assisted Intervention, pp. 542–551, 2020, doi: 10.1007/978-3-030-59710-8_53.
+J. E. van Engelen and H. H. Hoos, “A survey on semi-supervised learning,” Machine learning, vol. 109, no. 2, pp. 373–440, Feb. 2020, doi: 10.1007/s10994-019-05855-6.
+T. L. Nikmah, B. Prasetiyo, N. Fitriani, and M. A. Muslim, “Deep Learning Model Implementation Using Convolutional Neural Network Algorithm for Default P2P Lending Prediction,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 3, pp. 802–809, 2023, doi: 10.26555/jiteki.v9i3.26366.
+A. Zahri, R. Adam, and E. B. Setiawan, “Social Media Sentiment Analysis using Convolutional Neural Network (CNN) dan Gated Recurrent Unit (GRU),” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 1, pp. 119–131, 2023, doi: 10.26555/jiteki.v9i1.25813.
+Purwono and I. S. Mangkunegara, “Evaluation of Stochastic Gradient Descent Optimizer on U-Net Architecture for Brain Tumor Segmentation,” International Journal of Robotics and Control Systems, vol. 3, no. 3, pp. 588–598, 2023, doi: 10.31763/ijrcs.v3i3.1104.
+P. Purwono, A. Ma’arif, W. Rahmaniar, H. I. K. Fathurrahman, A. Z. K. Frisky, and Q. M. ul Haq, “Understanding of Convolutional Neural Network (CNN): A Review,” International Journal of Robotics and Control Systems, vol. 2, no. 4, pp. 739–748, Jan. 2023, doi: 10.31763/ijrcs.v2i4.888.
+F. T. Kurniati, D. H. F. Manongga, E. Sediyono, S. Yulianto, and J. Prasetya, “Object Classification Model Using Ensemble Learning with Gray- Level Co-Occurrence Matrix and Histogram Extraction,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 3, pp. 793–801, 2023, doi: 10.26555/jiteki.v9i3.26683.
+X. Dong, Z. Yu, W. Cao, Y. Shi, and Q. Ma, “A survey on ensemble learning,” Front. Comput. Sci., vol. 14, no. 2, pp. 241–258, Apr. 2020, doi: 10.1007/s11704-019-8208-z.
+M. A. Talukder, M. M. Islam, M. A. Uddin, A. Akhter, K. F. Hasan, and M. A. Moni, “Machine learning-based lung and colon cancer detection using deep feature extraction and ensemble learning,” Expert Systems with Applications, vol. 205, p. 117695, Nov. 2022, doi: 10.1016/j.eswa.2022.117695.
+A. B. Nassif, M. A. Talib, Q. Nasir, and F. M. Dakalbab, “Machine Learning for Anomaly Detection: A Systematic Review,” IEEE Access, vol. 9, pp. 78658–78700, 2021, doi: 10.1109/ACCESS.2021.3083060.
+S. Mokhtari, A. Abbaspour, K. K. Yen, and A. Sargolzaei, “A Machine Learning Approach for Anomaly Detection in Industrial Control Systems Based on Measurement Data,” Electronics (Basel), vol. 10, no. 4, p. 407, Feb. 2021, doi: 10.3390/electronics10040407.
+M. S. Islam, M. S. Sultana, M. U. Kumar, J. Al Mahmud, and S. J. Islam, “HARC-New Hybrid Method with Hierarchical Attention Based Bidirectional Recurrent Neural Network with Dilated Convolutional Neural Network to Recognize Multilabel Emotions from Text,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 7, no. 1, p. 142, 2021, doi: 10.26555/jiteki.v7i1.20550.
+W. T. Handoko and A. N. Handayani, “Forecasting Solar Irradiation on Solar Tubes Using the LSTM Method and Exponential Smoothing,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 3, pp. 649–660, 2023, doi: 10.26555/jiteki.v9i3.26395.
+S. Nurhayati, R. Lubis, and M. Fajar Wicaksono, “Application of the Machine Learning Method for Predicting International Tourists in West Java Indonesia Using the Averege-Based Fuzzy Time Series Model,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 1, pp. 1–11, 2023, doi: 10.26555/jiteki.v9i1.25475.
+N. N and N. G. Cholli, “Early Identification of Alzheimer’s Disease Using Medical Imaging: A Review From a Machine Learning Approach Perspective,” Jurnal Ilmiah Teknik Elektro Komputer dan Informatika (JITEKI), vol. 9, no. 3, 2023, doi: 10.26555/jiteki.v9i3.25148.
+K. K. L. Wong, G. Fortino, and D. Abbott, “Deep learning-based cardiovascular image diagnosis: A promising challenge,” Future Generation Computer Systems, vol. 110, pp. 802–811, Sep. 2020, doi: 10.1016/j.future.2019.09.047.
+F. Lussier, V. Thibault, B. Charron, G. Q. Wallace, and J.-F. Masson, “Deep learning and artificial intelligence methods for Raman and surface-enhanced Raman scattering,” TrAC Trends in Analytical Chemistry, vol. 124, p. 115796, Mar. 2020, doi: 10.1016/j.trac.2019.115796.
+S. Suganyadevi, V. Seethalakshmi, and K. Balasamy, “A review on deep learning in medical image analysis,” Int. J. Multimed. Inf. Retr., vol. 11, no. 1, pp. 19–38, Mar. 2022, doi: 10.1007/s13735-021-00218-1.
+S. Dixit, A. Kumar, and K. Srinivasan, “A Current Review of Machine Learning and Deep Learning Models in Oral Cancer Diagnosis: Recent Technologies, Open Challenges, and Future Research Directions,” Diagnostics, vol. 13, no. 7, p. 1353, Apr. 2023, doi: 10.3390/diagnostics13071353.
+S. Aminizadeh et al., “The applications of machine learning techniques in medical data processing based on distributed computing and the Internet of Things,” Computer Methods and Programs in Biomedicine, vol. 241, p. 107745, Nov. 2023, doi: 10.1016/j.cmpb.2023.107745.
+M. A. Talukder et al., “An efficient deep learning model to categorize brain tumor using reconstruction and fine-tuning,” Expert Systems with Applications, vol. 230, p. 120534, Nov. 2023, doi: 10.1016/j.eswa.2023.120534.
+D. Müller and F. Kramer, “MIScnn: a framework for medical image segmentation with convolutional neural networks and deep learning,” BMC medical imaging, vol. 21, no. 1, p. 12, Dec. 2021, doi: 10.1186/s12880-020-00543-7.
+J. C. Gore, “Artificial intelligence in medical imaging,” Magnetic resonance imaging, vol. 68, pp. A1–A4, May 2020, doi: 10.1016/j.mri.2019.12.006.
+P. Singhal, A. L. M. Tan, T. G. Drivas, K. B. Johnson, M. D. Ritchie, and B. K. Beaulieu-Jones, “Opportunities and challenges for biomarker discovery using electronic health record data,” Trends in Molecular Medicine, vol. 29, no. 9, pp. 765–776, Sep. 2023, doi: 10.1016/j.molmed.2023.06.006.
+J. T. Schwartz, M. Gao, E. A. Geng, K. S. Mody, C. M. Mikhail, and S. K. Cho, “Applications of Machine Learning Using Electronic Medical Records in Spine Surgery,” Neurospine, vol. 16, no. 4, pp. 643–653, Dec. 2019, doi: 10.14245/ns.1938386.193.
+M. Estevez et al., “Considerations for the Use of Machine Learning Extracted Real-World Data to Support Evidence Generation: A Research-Centric Evaluation Framework,” Cancers, vol. 14, no. 13, p. 3063, Jun. 2022, doi: 10.3390/cancers14133063.
+X. Lin, X. Li, and X. Lin, “A Review on Applications of Computational Methods in Drug Screening and Design,” Molecules, vol. 25, no. 6, p. 1375, Mar. 2020, doi: 10.3390/molecules25061375.
+L. Patel, T. Shukla, X. Huang, D. W. Ussery, and S. Wang, “Machine Learning Methods in Drug Discovery,” Molecules, vol. 25, no. 22, p. 5277, Nov. 2020, doi: 10.3390/molecules25225277.
+S. Shilo, H. Rossman, and E. Segal, “Axes of a revolution: challenges and promises of big data in healthcare,” Nature medicine, vol. 26, no. 1, pp. 29–38, Jan. 2020, doi: 10.1038/s41591-019-0727-5.
+M. J. Willemink et al., “Preparing Medical Imaging Data for Machine Learning,” Radiology, vol. 295, no. 1, pp. 4–15, Apr. 2020, doi: 10.1148/radiol.2020192224.
+M. Tayefi et al., “Challenges and opportunities beyond structured data in analysis of electronic health records,” WIREs Computational Statistics, vol. 13, no. 6, Nov. 2021, doi: 10.1002/wics.1549.
+C. Park, S. C. You, H. Jeon, C. W. Jeong, J. W. Choi, and R. W. Park, “Development and Validation of the Radiology Common Data Model (R-CDM) for the International Standardization of Medical Imaging Data,” Yonsei Medical Journal, vol. 63, pp. S74-S83, 2022, doi: 10.3349/ymj.2022.63.S74.
+A. Benhamida, A. Kanas, M. Vincze, K. T. Papp, M. Abbassi, and M. Kozlovszky, “SaECG: a new FHIR Data format revision to enable continuous ECG storage and monitoring,” in 2020 IEEE 20th International Symposium on Computational Intelligence and Informatics (CINTI), pp. 000115–000120, 2020, doi: 10.1109/CINTI51262.2020.9305828.
+A. Craig, A. Marquerita, and J. Abernathy Michael, “Real-time Algorithmic Exchange and Processing of Pharmaceutical Quality Data and Information,” International Journal of Pharmaceutics, p. 123342, Aug. 2023, doi: 10.1016/j.ijpharm.2023.123342.
+S. Houta, T. Ameler, and R. Surges, “Use of HL7 FHIR to structure data in epilepsy self-management applications,” in 2019 International Conference on Wireless and Mobile Computing, Networking and Communications (WiMob), pp. 111–115, 2019, doi: 10.1109/WiMOB.2019.8923179.
+B. B. Ozcan, B. K. Patel, I. Banerjee, and B. E. Dogan, “Artificial Intelligence in Breast Imaging: Challenges of Integration Into Clinical Practice,” Journal of Breast Imaging, vol. 5, no. 3, pp. 248–257, May 2023, doi: 10.1093/jbi/wbad007.
+I. Li et al., “Neural Natural Language Processing for unstructured data in electronic health records: A review,” Computer Science Review, vol. 46, p. 100511, Nov. 2022, doi: 10.1016/j.cosrev.2022.100511.
+G. M. Silverman et al., “NLP Methods for Extraction of Symptoms from Unstructured Data for Use in Prognostic COVID-19 Analytic Models,” Journal of Artificial Intelligence Research, vol. 72, pp. 429–474, Oct. 2021, doi: 10.1613/jair.1.12631.
+K. H. Goh et al., “Artificial intelligence in sepsis early prediction and diagnosis using unstructured data in healthcare,” Nature communications, vol. 12, no. 1, p. 711, Jan. 2021, doi: 10.1038/s41467-021-20910-4.
+D. Dhagarra, M. Goswami, and G. Kumar, “Impact of Trust and Privacy Concerns on Technology Acceptance in Healthcare: An Indian Perspective,” International journal of medical informatics, vol. 141, p. 104164, Sep. 2020, doi: 10.1016/j.ijmedinf.2020.104164.
+S. M. Shah and R. A. Khan, “Secondary Use of Electronic Health Record: Opportunities and Challenges,” IEEE Access, vol. 8, pp. 136947–136965, 2020, doi: 10.1109/ACCESS.2020.3011099.
+M. Shuaib, S. Alam, M. S. Alam, and M. S. Nasir, “Compliance with HIPAA and GDPR in blockchain-based electronic health record,” Materials Today: Proceedings, 2021, doi: 10.1016/j.matpr.2021.03.059.
+A. Pika, M. T. Wynn, S. Budiono, A. H. M. ter Hofstede, W. M. P. van der Aalst, and H. A. Reijers, “Privacy-Preserving Process Mining in Healthcare,” International Journal of Environmental Research and Public Health, vol. 17, no. 5, p. 1612, Mar. 2020, doi: 10.3390/ijerph17051612.
+K. Williams and P. Colomb, “Important Considerations for the Institutional Review Board When Granting Health Insurance Portability and Accountability Act Authorization Waivers,” Ochsner Journal, vol. 20, no. 1, pp. 95–97, Apr. 2020, doi: 10.31486/toj.19.0083.
+P. Mulgund, B. P. Mulgund, R. Sharman, and R. Singh, “The implications of the California Consumer Privacy Act (CCPA) on healthcare organizations: Lessons learned from early compliance experiences,” Health Policy and Technology, vol. 10, no. 3, p. 100543, Sep. 2021, doi: 10.1016/j.hlpt.2021.100543.
+M. Tasnim, A. J. Patinga, H. Shahriar, and S. Sneha, “Cardiovascular Health Management Compliance with Health Insurance Portability and Accountability Act,” in 2023 IEEE 47th Annual Computers, Software, and Applications Conference (COMPSAC), pp. 1423–1428, 2023, doi: 10.1109/COMPSAC57700.2023.00218.
+A. Rieger, F. Guggenmos, J. Lockl, G. Fridgen, and N. Urbach, “Building a Blockchain Application that Complies with the EU General Data Protection Regulation,” MIS Quarterly Executive, vol. 18, no. 4, pp. 263–279, Dec. 2019, doi: 10.17705/2msqe.00020.
+B. Yuan and J. Li, “The Policy Effect of the General Data Protection Regulation (GDPR) on the Digital Public Health Sector in the European Union: An Empirical Investigation,” International Journal of Environmental Research and Public Health, vol. 16, no. 6, p. 1070, Mar. 2019, doi: 10.3390/ijerph16061070.
+G. Marvin, D. Jjingo, J. Nakatumba-Nabende, and Md. G. R. Alam, “Local Interpretable Model-Agnostic Explanations for Online Maternal Healthcare,” in 2023 2nd International Conference on Smart Technologies and Systems for Next Generation Computing (ICSTSN), pp. 1–6, 2023, doi: 10.1109/ICSTSN57873.2023.10151520.
+K. Mridha, S. Ghimire, J. Shin, A. Aran, Md. M. Uddin, and M. F. Mridha, “Automated Stroke Prediction Using Machine Learning: An Explainable and Exploratory Study With a Web Application for Early Intervention,” IEEE Access, vol. 11, pp. 52288–52308, 2023, doi: 10.1109/ACCESS.2023.3278273.
+O. Higgins, B. L. Short, S. K. Chalup, and R. L. Wilson, “Artificial intelligence (AI) and machine learning (ML) based decision support systems in mental health: An integrative review,” International Journal of Mental Health Nursing, vol. 32, no. 4, pp. 966–978, Aug. 2023, doi: 10.1111/inm.13114.
+A.-D. Samaras, S. Moustakidis, I. D. Apostolopoulos, N. Papandrianos, and E. Papageorgiou, “Classification models for assessing coronary artery disease instances using clinical and biometric data: an explainable man-in-the-loop approach,” Scientific Reports, vol. 13, no. 1, p. 6668, Apr. 2023, doi: 10.1038/s41598-023-33500-9.
+E. Madrigal and L. P. Le, “Digital media archive for gross pathology images based on open-source tools and Fast Healthcare Interoperability Resources (FHIR),” Modern Pathology, vol. 34, no. 9, pp. 1686–1695, Sep. 2021, doi: 10.1038/s41379-021-00824-8.
+E. Chukwu, L. Garg, N. Obande-Ogbuinya, and V. K. Chattu, “Standardizing Primary Health Care Referral Data Sets in Nigeria: Practitioners’ Survey, Form Reviews, and Profiling of Fast Healthcare Interoperability Resources (FHIR),” JMIR Formative Research, vol. 6, no. 7, p. e28510, Jul. 2022, doi: 10.2196/28510.
+K. Shear, A. L. Horgas, and R. Lucero, “Experts’ Perspectives on Use of Fast Healthcare Interoperable Resources for Computerized Clinical Decision Support,” CIN: Computers, Informatics, Nursing, Jul. 2023, doi: 10.1097/CIN.0000000000001033.
+L. Xue, P. Song, A. Rai, C. Zhang, and X. Zhao, “Implications of Application Programming Interfaces for Third‐Party New App Development and Copycatting,” Production and Operations Management, vol. 28, no. 8, pp. 1887–1902, Aug. 2019, doi: 10.1111/poms.13021.
+J. Wulf and I. Blohm, “Fostering Value Creation with Digital Platforms: A Unified Theory of the Application Programming Interface Design,” Journal of Management Information Systems, vol. 37, no. 1, pp. 251–281, Jan. 2020, doi: 10.1080/07421222.2019.1705514.
+P. Singh et al., “Application of Artificial Intelligence in Healthcare by Industries in Australia: Opportunities and Challenges,” in Proceedings of the International Conference on Intelligent Vision and Computing (ICIVC 2021), pp. 568–580, 2022, doi: 10.1007/978-3-030-97196-0_47.
+W. Bani Issa et al., “Privacy, confidentiality, security and patient safety concerns about electronic health records,” International Nursing Review, vol. 67, no. 2, pp. 218–230, Jun. 2020, doi: 10.1111/inr.12585.
+P. K. D. Pramanik, G. Pareek, and A. Nayyar, “Security and privacy in remote healthcare: Issues, solutions, and standards,” in Telemedicine technologies, pp. 201–225, 2019, doi: 10.1016/B978-0-12-816948-3.00014-3.
+A. Tapuria, T. Porat, D. Kalra, G. Dsouza, S. Xiaohui, and V. Curcin, “Impact of patient access to their electronic health record: systematic review,” Informatics for Health and Social Care, vol. 46, no. 2, pp. 194–206, Jun. 2021, doi: 10.1080/17538157.2021.1879810.
+		DOI: https://doi.org/10.18196/jrc.v4i5.19640
+Refbacks
+There are currently no refbacks.
+		Copyright (c) 2023 Furizal Furizal, Alfian Ma'arif, Dianda Rifaldi
+This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.
+ Journal of Robotics and Control (JRC)P-ISSN: 2715-5056 || E-ISSN: 2715-5072 Organized by Peneliti Teknologi Teknik Indonesia Published by Universitas Muhammadiyah Yogyakarta in collaboration with Peneliti Teknologi Teknik Indonesia, Indonesia and the Department of Electrical Engineering Website: http://journal.umy.ac.id/index.php/jrc  Email: jrcofumy@gmail.comKuliah Teknik Elektro Terbaik 

@@ -1,6 +1,7 @@
 python-dotenv
 openai
-PyMuPDF==1.23.8
+aiohttp
+PyMuPDF
 requests
 supabase
 tiktoken
@@ -9,11 +10,10 @@ langchain
 langchain-openai
 langchain-community
 pydantic
-sentence-transformers
 tavily-python
 PyPDF2
 python-multipart
 uvicorn
 gunicorn
-urllib3==1.26.15
+urllib3
 baml-py

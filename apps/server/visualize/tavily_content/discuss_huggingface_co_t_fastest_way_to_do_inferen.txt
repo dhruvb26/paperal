@@ -1,0 +1,79 @@
+Fastest way to do inference on a large dataset in huggingface? - ðŸ¤—Datasets - Hugging Face Forums
+    Hugging Face Forums
+Fastest way to do inference on a large dataset in huggingface?
+ðŸ¤—Datasets
+olaffson
+                    December 9, 2021,  2:00pm
+1
+Hello there!
+Here is my issue. I have a model trained with huggingface (yay) that works well. Now I need to perform inference and compute predictions on a very large dataset of several millions of observations.
+What is the best way to proceed here?  Should I write the prediction loop myself? Which routines in datasets should be useful here? My computer has lots of RAM (100GB+), 20+ cpus and a big GPU card.
+Thanks!
+lhoestq
+                    December 15, 2021,  2:17pm
+2
+Hi ! If you have enough RAM I guess you can use any tool to load your data.
+However if your dataset doesnâ€™t fit in RAM Iâ€™d suggest to use the datasets, since it allows to load datasets without filling up your RAM and gives excellent performance.
+Then I guess you can write your prediction loop yourself. Just make sure to pass batches of data to your model to make sure that your GPU is fully utilized. You can also use my_dataset.map() with batched=True and set batch_size to a reasonable value
+1 Like
+StephennFernandes
+                    February 16, 2024,  8:44am
+3
+Hey @lhoestq,
+I have a large dataset that I want to use for eval/other tasks that requires a trained model to do inference on it.  (for context: i am using a translation model to translate multiple SFT, DPO datasets to multiple other language from english)
+Iâ€™ve been using the .map() function from datasets with batched=True, and batch_size specified.
+The problem is the inference model takes way too long to process even a couple of thousand datasets.
+i have lots of vram and lots of GPU such that I can launch multiple instances of the same model on the same GPU and even have multiple GPUs.
+Is there a way where I can use the map() function and do batched inference but utilising multiple instances of the model to gain more throughput more samples processed / second.
+something like multithreading/multiprocessing where each thread accesses seperate instance of the model.
+lhoestq
+                    February 16, 2024, 10:50am
+4
+Hi ! Yes there is a code example in the docs of multi-GPU inference using map() with multiprocessing
+Let me know how it goes !
+StephennFernandes
+                    May 2, 2024,  8:01pm
+5
+@lhoestq thanks a ton for replying back, my vram size is quite large and i have 8xA6000 and the model i am using to do the inference only requires 4 GB of vram, so i have orders of magnitude worth of vram sitting idleas the example only scales upto num GPUs.
+is there a way to have multiple instances of the model on the same GPU intil the vram is full. such that i can max out the full performance of my GPUs and thus leverage much more faster processing (less total time to proc) ?
+lhoestq
+                    May 3, 2024, 11:02am
+6
+You can run your script multiple times until you max out your vram
+Each script would have to process a subset of the dataset. You can use split_dataset_by_node() to achieve this
+    Related topics
+Topic
+Replies
+Views
+Activity
+Which model for inference on 11 GB GPU?
+Beginners
+1
+384
+              October 30, 2021
+What's the best way to speed up inference on a large dataset?
+Beginners
+3
+3712
+              March 13, 2022
+Huggingface using only half of the cores for inference
+Intermediate
+0
+502
+              September 6, 2023
+Exploring contexts of occurrence of particular words in large datasets
+Research
+2
+797
+              October 19, 2022
+Does hugging face save your data?
+ðŸ¤—Transformers
+0
+804
+              June 14, 2023
+Home 
+Categories 
+Guidelines 
+Terms of Service 
+Privacy Policy 
+Powered by Discourse, best viewed with JavaScript enabled

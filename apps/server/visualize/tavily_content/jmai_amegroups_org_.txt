@@ -1,0 +1,647 @@
+Home  - Journal of Medical Artificial Intelligence
+Have a website account?Log In orRegister for exclusive website content.
+ Subscribe
+Advanced Search
+Home
+Journal Info
+About jmai
+Indexing and Archiving
+Editors-in-Chief
+Editorial Board
+Former Editorial Board
+Peer Review Process
+Supplements and Series
+Advertising Policy
+For Authors
+Author Instruction
+Online Submission
+Submit Multimedia Files
+Reference Style
+Ethics and Policies
+AME Editing Service
+Interviews with Outstanding Authors
+For Reviewers
+Guidelines for Reviewers
+Online Review
+Reviewers
+Ethics and Policies
+Journal Management (Editorial Roles)
+Editorial Policies
+Publication Ethics Policy
+Research Ethics Policy
+Human and Animal Rights
+Authorship and Contributorship
+Informed Consent Policy
+Conflicts of Interest
+Data Sharing Policy
+Open Access Statement
+Content Licensing
+Copyright and Permission
+Quality Control System
+Data and Reproducibility
+Policy of Screening for Plagiarism Process
+Policy of Dealing with Allegations of Research Misconduct
+Corrections and Retractions
+Complaints and Appeals
+Special Contents
+Special Series (Published)
+Archives
+Online First
+Article Processing Charges
+News
+Home
+/
+Home
+   Journal of Medical Artificial Intelligence 2023 CiteScore Released: 2.3  We are pleased to announce that the Journal of Medical Artificial Intelligence (JMAI) has received its 2023 CiteScore: 2.3, ranking 198 out of 398 journals in the Medicine (miscellaneous) category.   Furthermore, we are delighted to highlight the remarkable achievements made by all AME journals in the CiteScore ranking.     Read More>> 
+   Interviews with Outstanding Authors (2024) In 2024, many JMAI authors make outstanding contributions to our journal. Their articles published with us have received very well feedback in the field and stimulate a lot of discussions and new insights among the peers. Hereby, we would like to highlight some of our outstanding authors who have been making immense efforts in their research fields, with a brief interview of their unique perspective and insightful view as authors.   Read More>> 
+   Reviewer of the Month (2024)  In 2024, JMAI reviewers continue to make outstanding contributions to the peer review process. They demonstrated professional effort and enthusiasm in their reviews and provided comments that genuinely help the authors to enhance their work.	Hereby, we would like to highlight some of our outstanding reviewers, with a brief interview of their thoughts and insights as a reviewer. Allow us to express our heartfelt gratitude for their tremendous effort and valuable contributions to the scientific process.	  Read More>> 
+   JMAI Annual Report 2023       Greetings from the editorial office of JMAI. First of all, we would like to sincerely thank you for your support and assistance in improving the journal as our editorial board members, authors, reviewers and readers. We appreciate your great work, commitment and dedication in the past year, which have been integral to JMAI's progress and success.    Here we would like to share the annual report with you, we would love to hear your thoughts on how we can improve our journal. We are looking forward to your innovations and contributions in the year to come.We wish you a very Happy 2024, filled with success, happiness and good health.  Read More>> 
+   Implementation of transparent peer review at Journal of Medical Artificial Intelligence (JMAI)          With a commitment to openness and accountability, and to increase the level of transparency throughout our peer review process, our editorial office has decided to implement a transparent peer review process as an option for all manuscripts submitted to JMAI from March 19, 2020.      Read More>> 
+‹
+›
+Articles in Press
+Past Issues
+About jmai
+About jmai
+Editor-in-Chief
+Editorial Board
+Manuscript Submission
+                        Online Submission
+                        Submit Multimedia Files
+AME Editing Service
+                        English Editing
+                        Translation
+Reprint & Permission
+ Reprint
+ Permission
+Advertising
+Contact us
+General editorial enquiries:
+                            Email: jmai@amegroups.com
+Copyright related contact: 
+                            Email: permissions@amegroups.com
+Commercial Sales contact (Reprints, advertising, etc.): 
+                            Email: sales@amegroups.com
+Latest
+Online First
+Most Read 
+                        Brief Report 
+Development potential of dermatological artificial intelligence and U-healthcare: perceptions reported by middle-aged people in the Republic of Korea
+                                                Jinkyung Lee, Ki Han Kwon                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            17
+            (30 June 2025) 
+PDF
+Full Text
+                                                                                                    (95)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                        Review Article 
+In the era of patient-centricity, is the use of PROMs optimized?—a narrative review based on AI models
+                                                Charbel Alhelou, Julien Dufour, Romain Clement                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            16
+            (30 June 2025) 
+PDF
+Full Text
+                                                                                                    (155)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                        Review Article 
+Evaluating the predictive power of machine learning in cirrhosis mortality: a systematic review
+                                                Sheza Malik, Lewis J. Frey, Kamran Qureshi                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            15
+            (30 June 2025) 
+PDF
+Full Text
+                                                                                                    (74)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+Large language models performance on pediatrics question: a new challenge
+                                                Gianluca Mondillo, Alessandra Perrotta, Vittoria Frattolillo, Simone Colosimo, Cristiana Indolfi, Michele Miraglia del Giudice, Francesca Rossi                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            14
+            (30 June 2025) 
+PDF
+Full Text
+                                                                                                    (106)
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+Comparative analysis of deep learning architectures for performance of image classification in pineal region tumors
+                                                Thara Tunthanathip, Anukoon Kaewborisutsakul, Suchada Supbumrung                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            13
+            (30 June 2025) 
+PDF
+Full Text
+                                                                                                    (75)
+Reporting Checklist
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+A cross-sectional study of the artificial intelligence and metaverse for healthy food and skin health
+                                                Jinkyung Lee, Ki Han Kwon                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            12
+            (30 June 2025) 
+PDF
+Full Text
+                                                                                                    (69)
+Reporting Checklist
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+Machine learning model better identifies patients for pharmacist intervention to reduce hospitalization risk in a large outpatient population
+                                                Erik Hefti, Yao Xie, Kristen Engelen                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            11
+            (30 June 2025) 
+PDF
+Full Text
+                                                                                                    (73)
+Reporting Checklist
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+AI2-SXI algorithm enables predicting and reducing the risk of less than 30 days patient readmissions with 99% accuracy and precision
+                                                Dharambir Mahto, Prashant Yadav, Alan T. Joseph, Srinivas Kilambi                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            10
+            (30 June 2025) 
+PDF
+Full Text
+                                                                                                    (76)
+Peer Review File
+COI Form
+Open Access
+                        Editorial Commentary 
+Decoding the heart: how artificial intelligence is transforming cardiology
+                                                Panteleimon Pantelidis, Evangelos Oikonomou, Ioannis Gialamas, Athina Goliopoulou, Savvas Sarantos, Georgios E. Zakynthinos, Artemis Anastasiou, Maria Ioanna Gounaridi, Konstantinos Kalogeras, Gerasimos Siasos                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            9
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (316)
+Peer Review File
+COI Form
+Open Access
+                        Review Article 
+Artificial intelligence technologies for color matching cosmetics in dermatology: a systematic review focusing on OCA2 gene direct-to-consumer genetic testing
+                                                Jinkyung Lee, Ki Han Kwon                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            8
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (256)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                        Review Article 
+The long road ahead: navigating obstacles and building bridges for clinical integration of artificial intelligence technologies
+                                                Sandeep Reddy, Sameer Shaikh                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            7
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (266)
+Peer Review File
+COI Form
+Open Access
+                        Brief Report 
+Jailbreaking large language models: navigating the crossroads of innovation, ethics, and health risks
+                                                Gianluca Mondillo, Simone Colosimo, Alessandra Perrotta, Vittoria Frattolillo, Cristiana Indolfi, Michele Miraglia del Giudice, Francesca Rossi                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            6
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (327)
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+Novel hierarchical deep learning models predict type of leukemia from whole slide microscopic images of peripheral blood
+                                                Naveed Syed, Mohamed Eltag Salih Saeed, Shakir Hussain, Imran Mirza, Amira Mahmoud Abdalla, Eiman Ahmed Al Zaabi, Imrana Afrooz, Shahrukh Hashmi, Mohammad Yaqub                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            5
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (291)
+Reporting Checklist
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+Machine learning methods application: generating clinically meaningful insights from healthcare survey data
+                                                Qianhui Lu, Sam Taimourzadeh, David Rhew, Peter J. Fitzgerald, Arash Harzand, Jennifer McCaney, Julie B. Prillinger                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            4
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (212)
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+Harder to mend than to break?—counterfactual explainable artificial intelligence for lifestyle medicine and heart disease prediction
+                                                Hakan Lane, Michal Valko, Shree Rath, Mark David Walker, Matthew L. Olson, Stefan Kramer                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            3
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (240)
+Reporting Checklist
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+Qualitative American Heart Association plot of late gadolinium enhancement with mortality and ventricular arrhythmia prediction using artificial intelligence
+                                                Ebraham Alskaf, Cian M. Scannell, Avan Suinesiaputra, Richard Crawley, PierGiorgio Masci, Alistair Young, Divaka Perera, Amedeo Chiribiri                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            2
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (351)
+Reporting Checklist
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Original Article 
+Would ChatPDF be advantageous for expediting the interpretation of imaging and clinical articles in PDF format?
+                                                Amato Infante, Giulia Guerri, Annemilia Del Ciello, Consolato Gullì, Sabrina Chiloiro, Silvia De Vizio, Luigi Ruscelli, Biagio Merlino, Luigi Natale, Evis Sala, Simona Gaudino                    
+        Journal of Medical Artificial Intelligence
+                            2025;
+            8:
+            1
+            (30 March 2025) 
+PDF
+Full Text
+                                                                                                    (340)
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                        Case Report 
+PathoBiocheModel of the double-edged sword of glucocorticoids: a case report of COVID-19 management of an outpatient with sarcoidosis
+                                                Yuliya Buinitskaya, Clifford G. Wlodaver, Roman Gurinovich, Siarhei Kastsiuchenka                    
+        Journal of Medical Artificial Intelligence
+                            2024;
+            7:
+            40
+            (30 December 2024) 
+PDF
+Full Text
+                                                                                                    (647)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                        Review Article 
+Emerging multifaceted application of artificial intelligence in chest radiography: a narrative review
+                                                Victor Chigbundu Nwaiwu, Sreemoy Kanti Das                    
+        Journal of Medical Artificial Intelligence
+                            2024;
+            7:
+            39
+            (30 December 2024) 
+PDF
+Full Text
+                                                                                                    (878)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                        Review Article 
+Navigating the horizon of opportunity: a comprehensive review of artificial intelligence applications in cancer care—insights from the 2024 landscape, a narrative review
+                                                Youssra Al Hajji, Fatima-Zahra Al Hajji, Lennard Y. W. Lee                    
+        Journal of Medical Artificial Intelligence
+                            2024;
+            7:
+            38
+            (30 December 2024) 
+PDF
+Full Text
+                                                                                                    (733)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+View more articles
+Original Article
+                                miRNA biomarkers-based diagnosis of diffuse large B-cell lymphoma using machine learning
+                            Summer Tang, Igor F. Tsigelny, Santosh Kesari, Valentina L. Kouznetsova                        
+Published online: 27 December 2024 
+Original Article
+                                Development and validation of a data visualization dashboard for automatic pain assessment and artificial intelligence analyses in cancer patients
+                            Francesco Cutugno, Marco Cascella                        
+Published online: 20 December 2024 
+Review Article
+                                Clinician interaction with artificial intelligence systems: a narrative review
+                            Yasmine Madan, Argyrios Perivolaris, Robert Chris Adams-McGavin, James J. Jung                        
+Published online: 18 December 2024 
+Original Article
+                                Artificial intelligence in the medical field: diagnostic capabilities of GPT-4 in comparison with physicians
+                            Nino Gvajaia, Luka Kutchava, Levan Alavidze, Sai Pratibha Yandamuri, Elene Pestvenidze, Vaso Kupradze                        
+Published online: 17 December 2024 
+Brief Report
+                                A large language model-guided approach to the focused physical exam
+                            Arya S. Rao, Christian Rivera, Husayn F. Ramji, Sarah Wagner, Andrew Mu, John Kim, William Marks, Benjamin White, David C. Whitehead, Michael J. Senter-Zapata, Marc D. Succi                        
+Published online: 16 December 2024 
+Review Article
+                                Applications of deep learning in periodontal disease diagnosis and management: a systematic review and critical appraisal
+                            Elisabetta Ferrara, Biagio Rapone, Alessandro D’Albenzio                        
+Published online: 06 December 2024 
+Review Article
+                                Artificial intelligence in the diagnosis and prevention of multi- stage colorectal cancer: potential algorithmic bias and systematic mitigation
+                            Anupama Nair                        
+Published online: 25 November 2024 
+Brief Report
+                                A novel artificial intelligence leadership curriculum for pre-college students interested in medicine and engineering: program development and global competition outcomes
+                            Hannah Ong, Joshua Ong, Dejian Chen, Stanley Li, Dennis Ong                        
+Published online: 11 November 2024 
+                                    Review Article 
+Factors influencing trust in medical artificial intelligence for healthcare professionals: a narrative review
+                                    Victoria Tucci, Joan Saary, Thomas E. Doyle                                
+                                    Published online: 30 March 2022                                
+PDF
+Full Text
+                                                                                                                            (11104)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                                    Review Article 
+Intersection of artificial intelligence and medicine: tort liability in the technological age
+                                    Kyle T. Jorstad                                
+                                    Published online: 30 December 2020                                
+PDF
+Full Text
+                                                                                                                            (9844)
+COI Form
+Open Access
+                                    Original Article 
+The top 100 most cited articles in medical artificial intelligence: a bibliometric analysis
+                                    Subhashaan Sreedharan, Mustafa Mian, Ross A. Robertson, Natalie Yang                                
+                                    Published online: 25 March 2020                                
+PDF
+Full Text
+                                                                                                                            (7635)
+COI Form
+Open Access
+                                    Review Article 
+A survey of pulmonary nodule detection, segmentation and classification in computed tomography with deep learning techniques
+                                    Jianrong Wu, Tianyi Qian                                
+                                    Published online: 19 April 2019                                
+PDF
+Full Text
+                                                                                                                            (7146)
+COI Form
+Open Access
+                                    Original Article 
+Defining functional requirements for a patient-centric computerized glaucoma treatment and care ecosystem
+                                    Nahum Goldmann, Simon E. Skalicky, Robert N. Weinreb, Ricardo Augusto Paletta Guedes, Christophe Baudouin, Xiulan Zhang, Aukje van Gestel, Eytan Z. Blumenthal, Paul L. Kaufman, Robert Rothman, Ana Maria Vasquez, Paul Harasymowycz, Derek S. Welsbie, Ivan Goldberg                                
+                                    Published online: 28 February 2023                                
+PDF
+Full Text
+                                                                                                                            (6596)
+Peer Review File
+COI Form
+Open Access
+                                    Review Article 
+A systematic literature review of predicting diabetic retinopathy, nephropathy and neuropathy in patients with type 1 diabetes using machine learning
+                                    Qingqing Xu, Liye Wang, Sujit S. Sansgiry                                
+                                    Published online: 25 March 2020                                
+PDF
+Full Text
+                                                                                                                            (6289)
+COI Form
+Open Access
+                                    Review Article 
+Artificial intelligence, chatbots and ChatGPT in healthcare—narrative review of historical evolution, current application, and change management approach to increase adoption
+                                    Jitendra Singh, Brandi Sillerud, Advitya Singh                                
+                                    Published online: 23 November 2023                                
+PDF
+Full Text
+                                                                                                                            (6255)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                                    Review Article 
+Artificial intelligence in periodontology and implantology—a narrative review
+                                    Safiya Fatima Khan, Abubakar Siddique, Asim Mustafa Khan, Bhavya Shetty, Ibrahim Fazal                                
+                                    Published online: 25 March 2024                                
+PDF
+Full Text
+                                                                                                                            (6184)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                                    Original Article 
+Perceptions of the use and benefits of artificial intelligence applications: survey study
+                                    Safa Chaieb, Karim Garrouch, Nasser Sulaiman Al-Ali                                
+                                    Published online: 18 December 2023                                
+PDF
+Full Text
+                                                                                                                            (5990)
+Reporting Checklist
+Data Sharing Statement
+Peer Review File
+COI Form
+Open Access
+                                    Letter to the Editor 
+Does artificial intelligence have any role in healthcare in low resource settings?
+                                    Zahra Hoodbhoy, Babar Hasan, Khan Siddiqui                                
+                                    Published online: 02 July 2019                                
+PDF
+Full Text
+                                                                                                                            (5884)
+COI Form
+Open Access
+                                    Editorial 
+AI’s role in deep space
+                                    Nora M. Haney, Alexandra Urman, Tayab Waseem, Yvonne Cagle, José M. Morey                                
+                                    Published online: 30 September 2020                                
+PDF
+Full Text
+                                                                                                                            (5816)
+COI Form
+Open Access
+                                    Review Article 
+Heart disease detection using machine learning methods: a comprehensive narrative review
+                                    Mohammadreza Hajiarbabi                                
+                                    Published online: 26 June 2024                                
+PDF
+Full Text
+                                                                                                                            (5718)
+Reporting Checklist
+Peer Review File
+COI Form
+Open Access
+                                    Technical Report 
+Improving ultrasound video classification: an evaluation of novel deep learning methods in echocardiography
+                                    James P. Howard, Jeremy Tan, Matthew J. Shun-Shin, Dina Mahdi, Alexandra N. Nowbar, Ahran D. Arnold, Yousif Ahmad, Peter McCartney, Massoud Zolgharni, Nick W. F. Linton, Nilesh Sutaria, Bushra Rana, Jamil Mayet, Daniel Rueckert, Graham D. Cole, Darrel P. Francis                                
+                                    Published online: 25 March 2020                                
+PDF
+Full Text
+                                                                                                                            (5678)
+COI Form
+Open Access
+                                    Review Article 
+Artificial intelligence in the diagnosis and management of COVID-19: a narrative review
+                                    Samer Ellahham                                
+                                    Published online: 30 March 2021                                
+PDF
+Full Text
+                                                                                                                            (5361)
+Reporting Checklist
+COI Form
+Open Access
+                                    Original Article 
+Developing an app to interpret chest X-rays to support the diagnosis of respiratory pathology with artificial intelligence
+                                    Andrew Elkins, Felipe F. Freitas, Verónica Sanz                                
+                                    Published online: 30 June 2020                                
+PDF
+Full Text
+                                                                                                                            (5366)
+COI Form
+Open Access
+                                    Review Article 
+Artificial intelligence in radiation oncology treatment planning: a brief overview
+                                    Kendall J. Kiser, Clifton D. Fuller, Valerie K. Reed                                
+                                    Published online: 08 May 2019                                
+PDF
+Full Text
+                                                                                                                            (5328)
+COI Form
+Open Access
+                                    Editorial 
+Promises and limitations of deep learning for medical image segmentation
+                                    Christian S. Perone, Julien Cohen-Adad                                
+                                    Published online: 10 January 2019                                
+PDF
+Full Text
+                                                                                                                            (5225)
+COI Form
+Open Access
+                                    Original Article 
+Prediction of low back pain using artificial intelligence modeling
+                                    Nitish Aggarwal                                
+                                    Published online: 30 March 2021                                
+PDF
+Full Text
+                                                                                                                            (4941)
+COI Form
+Open Access
+                                    Review Article 
+ChatGPT and medicine: a potential threat to science or a step towards the future?
+                                    Lucas Lacerda de Souza, Felipe Paiva Fonseca, Manoela Domingues Martins, Oslei Paes de Almeida, Helder Antônio Rebelo Pontes, Fábio Luiz Coracin, Márcio Ajudarte Lopes, Syed Ali Khurram, Alan Roger Santos-Silva, Ahmed Hagag, Pablo Agustin Vargas                                
+                                    Published online: 26 October 2023                                
+PDF
+Full Text
+                                                                                                                            (4994)
+Peer Review File
+COI Form
+Open Access
+                                    Review Article 
+Impact of machine learning and feature selection on type 2 diabetes risk prediction
+                                    Päivi Riihimaa                                
+                                    Published online: 30 June 2020                                
+PDF
+Full Text
+                                                                                                                            (4829)
+COI Form
+Open Access
+Full Most Read article list >>
+Journal highlight
+more
+Journal of Medical Artificial Intelligence is a peer-reviewed and open access journal that publishes articles from a wide variety of new research and innovative ideas in medical artificial intelligence. It includes but not limited to, AI in bio- and clinical medicine, machine learning based decision support, robotic surgery, data analytics and mining, laboratory information systems and AI in medical education.
+Indexing
+Journal of Medical Artificial Intelligence has now been indexed/archived in
+                    Scopus
+Reviewers
+more
+                                                    In 2024, JMAI reviewers continue to make outstanding contributions to the peer review process.
+                                More >>
+                                                    In 2023, many JMAI reviewers make outstanding contributions to the peer review process.
+                                More >>
+                                                    In 2022, JMAI reviewers continue to make outstanding contributions to the peer review process.
+                                More >>
+Announcement
+more
+                                                                                                                                            Journal of Medical Artificial Intelligence 2023 CiteScore Released: 2.3
+                    We are pleased to announce that the Journal of Medical Artificial Intelligence (JMAI) has received its 2023 CiteScore: 2.3, ranking 198 out of 398 journals in the Medicine (miscell...
+                        More >>
+                                                                                                                                            JMAI Annual Report 2023
+                    Greetings from the editorial office of JMAI. First of all, we would like to sincerely thank you for your support and assistance in improving the journal as our editorial board memb...
+                        More >>
+                                                                                                                                            Journal of Medical Artificial Intelligence 2022 CiteScore Released: 3
+                    We are pleased to announce that the Journal of Medical Artificial Intelligence (JMAI) has received its 2022 CiteScore: 3, ranking 146 out of 309 journals in the Medicine (miscellan...
+                        More >>
+Membership
+                Publishing Information
+Journal of Medical Artificial Intelligence is published by AME Publishing Company
+Social Media
+  AboutAims and ScopeJournal of Medical Artificial Intelligence (JMAI, J Med Artif Intell, Online ISSN 2617-2496) is a peer-reviewed and open access journal that publishes articles from a wide variety of new...AME Publishing CompanyAME Case ReportsAME Medical JournalAME Surgical JournalAnnals of BloodAnnals of Breast SurgeryAnnals of Cancer EpidemiologyAnnals of Cardiothoracic SurgeryAnnals of EsophagusAnnals of Eye ScienceAnnals of InfectionAnnals of JointAnnals of Laparoscopic and Endoscopic SurgeryAnnals of LymphomaAnnals of Nasopharynx CancerAnnals of Palliative MedicineAnnals of Pancreatic CancerAnnals of ThyroidAnnals of Translational MedicineArt of SurgeryAustralian Journal of OtolaryngologyBiotargetCardiovascular Diagnosis and TherapyChinese Clinical OncologyCurrent Challenges in Thoracic SurgeryDigestive Medicine ResearchFrontiers of Oral and Maxillofacial MedicineGastrointestinal Stromal TumorGland SurgeryGynecology and Pelvic MedicineHealth TechnologyHepatobiliary Surgery and NutritionJournal of Emergency and Critical Care MedicineJournal of Gastrointestinal OncologyJournal of Hospital Management and Health PolicyJournal of Laboratory and Precision MedicineJournal of Medical Artificial IntelligenceJournal of Oral and Maxillofacial AnesthesiaJournal of Public Health and EmergencyJournal of Spine SurgeryJournal of Thoracic DiseaseJournal of Visualized SurgeryJournal of Xiangya MedicineLaparoscopic SurgeryLonghua Chinese MedicineMediastinumMesentery and PeritoneummHealthMicrophysiological SystemsPediatric MedicinePrecision Cancer MedicinePharmacogenomics Research and Personalized MedicineQuantitative Imaging in Medicine and SurgeryShanghai ChestTherapeutic Radiology and OncologyTranslational Breast Cancer ResearchTranslational Andrology and UrologyTranslational Cancer ResearchTranslational Gastroenterology and HepatologyTranslational Lung Cancer ResearchTranslational PediatricsVideo-Assisted Thoracic SurgeryMore JournalAll content on this site: Copyright © 2025 AME Publishing Company. All rights are reserved. For all open access content, the Creative Commons licensing terms apply.Published by AME Publishing Company Address: Flat/RM C 16F, Kings Wing Plaza 1, NO. 3 on Kwan Street, Shatin, NT, Hong Kong, China.Email: jmai@amegroups.com

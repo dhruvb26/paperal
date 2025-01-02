@@ -1,0 +1,163 @@
+LogicInference: A New Dataset for Teaching Logical Inference to seq2seq Models
+Jump to Content
+Research
+Research
+        Who we are
+Back to
+ Who we are
+              menu
+Defining the technology of today and tomorrow.
+                Philosophy
+We strive to create an environment conducive to many different types of research across many different time scales and levels of risk.
+Learn more about our Philosophy
+Learn more
+                Philosophy
+                People
+Our researchers drive advancements in computer science through both fundamental and applied research.
+Learn more about our People
+Learn more
+                People
+        Research areas
+Back to
+ Research areas
+              menu
+Research areas
+                                Explore all research areas
+            Research areas 
+Back to
+ Research areas
+                  menu
+                                    Explore all research areas
+Foundational ML & Algorithms
+                                Algorithms & Theory
+                                Data Management
+                                Data Mining & Modeling
+                                Information Retrieval & the Web
+                                Machine Intelligence
+                                Machine Perception
+                                Machine Translation
+                                Natural Language Processing
+                                Speech Processing
+            Foundational ML & Algorithms 
+Back to
+ Foundational ML & Algorithms
+                  menu
+                                    Algorithms & Theory
+                                    Data Management
+                                    Data Mining & Modeling
+                                    Information Retrieval & the Web
+                                    Machine Intelligence
+                                    Machine Perception
+                                    Machine Translation
+                                    Natural Language Processing
+                                    Speech Processing
+Computing Systems & Quantum AI
+                                Distributed Systems & Parallel Computing
+                                Hardware & Architecture
+                                Mobile Systems
+                                Networking
+                                Quantum Computing
+                                Robotics
+                                Security, Privacy, & Abuse Prevention
+                                Software Engineering
+                                Software Systems
+            Computing Systems & Quantum AI 
+Back to
+ Computing Systems & Quantum AI
+                  menu
+                                    Distributed Systems & Parallel Computing
+                                    Hardware & Architecture
+                                    Mobile Systems
+                                    Networking
+                                    Quantum Computing
+                                    Robotics
+                                    Security, Privacy, & Abuse Prevention
+                                    Software Engineering
+                                    Software Systems
+Science, AI & Society
+                                Climate & Sustainability
+                                Economics & Electronic Commerce
+                                Education Innovation
+                                General Science
+                                Health & Bioscience
+                                Human-Computer Interaction and Visualization
+            Science, AI & Society 
+Back to
+ Science, AI & Society
+                  menu
+                                    Climate & Sustainability
+                                    Economics & Electronic Commerce
+                                    Education Innovation
+                                    General Science
+                                    Health & Bioscience
+                                    Human-Computer Interaction and Visualization
+        Our work
+Back to
+ Our work
+              menu
+                Projects
+We regularly open-source projects with the broader research community and apply our developments to Google products.
+Learn more about our Projects
+Learn more
+                Projects
+                Publications
+Publishing our work allows us to share ideas and work collaboratively to advance the field of computer science.
+Learn more about our Publications
+Learn more
+                Publications
+                Resources
+We make products, tools, and datasets available to everyone with the goal of building a more collaborative ecosystem.
+Learn more about our Resources
+Learn more
+                Resources
+        Programs & events
+Back to
+ Programs & events
+              menu
+Shaping the future, together.
+                        Collaborate with us
+                Student programs
+Supporting the next generation of researchers through a wide range of programming.
+Learn more about our Student programs
+Learn more
+                Student programs
+                Faculty programs
+Participating in the academic research community through meaningful engagement with university faculty.
+Learn more about our Faculty programs
+Learn more
+                Faculty programs
+                Conferences & events
+Connecting with the broader research community through events is essential for creating progress in every aspect of our work.
+Learn more about our Conferences & events
+Learn more
+                Conferences & events
+                    Collaborate with us
+        Careers
+        Blog
+Search
+Home
+Publications
+LogicInference: A New Dataset for Teaching Logical Inference to seq2seq Models
+Santiago Ontanon
+                        Joshua Ainslie
+                        Vaclav Cvicek
+Zach Fisher
+                        ICLR 2022 Workshop on Elements of Reasoning: Objects, Structure and Causality
+Download
+Google Scholar
+Copy Bibtex
+Abstract
+                Machine learning models such as Transformers or LSTMs struggle with tasks that are compositional in nature such as those involving reasoning/inference. Although many datasets exist to evaluate compositional generalization, when it comes to evaluating inference abilities, options are more limited. This paper presents LogicInference, a new dataset to evaluate the ability of models to perform logical inference. The dataset focuses on inference using propositional logic and a small subset of first-order logic, represented both in semi-formal logical notation, as well as in natural language. We also report initial results using a collection of machine learning models to establish an initial baseline in this dataset.
+Research Areas
+                        Natural Language Processing
+                        Machine Intelligence
+Meet the teams driving innovation
+Our teams advance the state of the art through research, systems engineering, and collaboration across Google.
+See our teams
+                    Follow us
+                        About Google
+                        Google Products
+                        Privacy
+                        Terms
+                        Help
+                            Submit feedback

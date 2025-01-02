@@ -1,0 +1,633 @@
+Machine Learning in Health and Biomedicine - PLOS Collections
+Skip to content
+About
+Our mission and vision
+Research integrity and publication ethics
+Sustainability
+The Executive Team
+The Board of Directors
+The Scientific Advisory Council
+Governance
+Careers at PLOS
+Contact us
+Open Science
+What is Open Science?
+Open Science Publishing
+> Research journals
+> Publication metrics
+> Publication fees
+Open Science Practice
+> Research by PLOS
+Open Science Policy
+> DORA
+Libraries
+Institutional Sales
+Supporting researchers
+Institutional models
+Our partners
+Terms of service
+FAQs
+Community
+Cancer
+Digital health
+Impacts of hazards
+Marine ecosystems
+Population and aging
+Smart cities
+Terrestrial ecosystems
+Announcements
+An exciting new era
+PLOS receives $3.3m grant
+Redefining publishing
+PLOS pledge
+Blogs
+Press
+Media inquiries
+Embargo policy
+Author media toolkit
+Guidelines
+Careers
+Why join PLOS?
+Search:
+Menu
+When you choose to publish with PLOS, your research makes an impact. Make your work accessible to all, without restrictions, and accelerate scientific discovery with options like preprints and published peer review that make your work more Open.
+Journals
+PLOS Biology
+PLOS Climate
+PLOS Complex Systems
+PLOS Computational Biology
+PLOS Digital Health
+PLOS Genetics
+PLOS Global Public Health
+PLOS Medicine
+PLOS Mental Health
+PLOS Neglected Tropical Diseases
+PLOS One
+PLOS Pathogens
+PLOS Sustainability and Transformation
+PLOS Water
+More Content
+PLOS Blogs
+PLOS Collections
+More About Collections
+Collections Home
+About Collections
+Browse Collections
+Medicine & Health
+Machine Learning in Health and Biomedicine
+Published August 21, 2019
+Special Issues
+Modern statistical modeling techniques—often called machine learning—are posited as a transformative force for human health. High-profile reports of diagnostic success demonstrate promise, but head-to-head comparisons to classical analyses of clinical data indicate that restraint is warranted. Practical questions are also timely. Will machine learning drive precision medicine? Will it elevate care in low-resource settings? How will the clinician interact with the machine? In this Collection, PLOS ONE, PLOS Computational Biology, PLOS Medicine and our teams of Guest Editors will feature research that applies machine learning methods to health and biomedicine. These articles will be accompanied by expert commentary on the application, impact, and ethics of these approaches.
+Image Credit: StockSnap, Pixabay
+Jump to section
+Guest Editors (PLOS Medicine Special Issue)
+PLOS Medicine Special Issue
+Collection Editor (PLOS Computational Biology)
+PLOS Computational Biology Collection
+Guest Editors (PLOS ONE)
+Collection Overview: PLOS ONE
+PLOS ONE Collection: Acute Care
+PLOS ONE Collection: Primary Care
+PLOS ONE Collection: Mental Health
+PLOS ONE Collection: Global Health
+PLOS ONE Collection: Medical Imaging
+PLOS ONE Collection: Ophthalmology
+PLOS ONE Collection: Biobank and Omics Studies
+PLOS ONE Collection: Miscellaneous
+Guest Editors (PLOS Medicine Special Issue)
+Image credit
+Atul Butte
+Atul Butte
+Dr. Atul Butte
+March 1, 2018
+Guest Editor, PLOS Medicine Machine Learning in Health and Biomedicine
+Image credit
+Suchi Saria
+Suchi Saria
+Dr. Suchi Saria
+March 1, 2018
+Guest Editor, PLOS Medicine Machine Learning in Health and Biomedicine
+Image credit
+Aziz Sheikh
+Aziz Sheikh
+Dr. Aziz Sheikh
+March 1, 2018
+Guest Editor, PLOS Medicine Machine Learning in Health and Biomedicine
+PLOS Medicine Special Issue
+Image credit
+10.1371/journal.pmed.1002750
+PLOS Medicine
+Patterns of joint involvement in juvenile idiopathic arthritis and prediction of disease course: A prospective study with multilayer non-negative matrix factorization
+February 26, 2019
+Simon Eng, Florence Aeschlimann, Mira van Veenendaal, Roberta Berard, Alan Rosenberg, Quaid Morris, Rae Yeung
+Image credit
+Wikimedia
+PLOS Medicine
+Predicting survival from colorectal cancer histology slides using deep learning: A retrospective multicenter study
+January 24, 2019
+Jakob Kather, Johannes Krisam, Pornpimol Charoentong, Tom Luedde, Esther Herpel, Cleo-Aron Weis, Timo Gaiser, Alexander Marx, Nektarios Valous, Dyke Ferber, Lina Jansen, Constantino Carlos Reyes-Aldasoro, Inka Zörnig...
+Image credit
+geralt, Pixabay
+PLOS Medicine
+Better medicine through machine learning: What’s real, and what’s artificial?
+December 31, 2018
+Suchi Saria, Atul Butte, Aziz Sheikh
+Image credit
+geralt, Pixabay
+PLOS Medicine
+Advancing the beneficial use of machine learning in health care and medicine: Toward a community understanding
+November 30, 2018
+Linda Nevin
+Image credit
+PublicDomainPictures.net
+PLOS Medicine
+Characterising risk of in-hospital mortality following cardiac arrest using machine learning: A retrospective international registry study
+November 30, 2018
+Shane Nanayakkara, Sam Fogarty, Michael Tremeer, Kelvin Ross, Brent Richards, Christoph Bergmeir, Sheng Xu, Dion Stub, Karen Smith, Mark Tacey, Danny Liew, David Pilcher...
+Image credit
+MaxPixel.net
+PLOS Medicine
+Deep learning for lung cancer prognostication: A retrospective multi-cohort radiomics study
+November 30, 2018
+Ahmed Hosny, Chintan Parmar, Thibaud Coroller, Patrick Grossmann, Roman Zeleznik, Avnish Kumar, Johan Bussink, Robert Gillies, Raymond Mak, Hugo Aerts
+Image credit
+Staff Sgt Benjamin W Stratton, US Air Force
+PLOS Medicine
+Deep learning and artificial intelligence in radiology: Current applications and future directions
+November 30, 2018
+Koichiro Yasaka, Osamu Abe
+Image credit
+pxhere.com
+PLOS Medicine
+Mobile detection of autism through machine learning on home video: A development and prospective validation study
+November 27, 2018
+Qandeel Tariq, Jena Daniels, Jessey Schwartz, Peter Washington, Haik Kalantarian, Dennis Wall
+Image credit
+10.1371/journal.pmed.1002699
+PLOS Medicine
+Deep-learning-assisted diagnosis for knee magnetic resonance imaging: Development and retrospective validation of MRNet
+November 27, 2018
+Nicholas Bien, Pranav Rajpurkar, Robyn Ball, Jeremy Irvin, Allison Park, Erik Jones, Michael Bereket, Bhavik Patel, Kristen Yeom, Katie Shpanskaya, Safwan Halabi...
+Image credit
+Snr Airman Wesley Farnsworth, US Air Force
+PLOS Medicine
+Development and validation of machine learning models to identify high-risk surgical patients using automatically curated electronic health record data (Pythia)
+November 27, 2018
+Kristin Corey, Sehj Kashyap, Elizabeth Lorenzi, Sandhya Lagoo-Deenadayalan, Katherine Heller, Krista Whalen, Suresh Balu, Mitchell Heflin, Shelley McDonald...
+Image credit
+Josh Plueger, US Air Force
+PLOS Medicine
+Enhancing the prediction of acute kidney injury risk after percutaneous coronary intervention using machine learning techniques: A retrospective cohort study
+November 27, 2018
+Chenxi Huang, Karthik Murugiah, Shiwani Mahajan, Shu-Xia Li, Sanket Dhruva, Julian Haimovich, Yongfei Wang, Wade Schulz, Jeffrey Testani, Francis Wilson, Carlos Mena...
+Image credit
+geralt, Pixabay
+PLOS Medicine
+Machine learning in population health: Opportunities and threats
+November 27, 2018
+Abraham Flaxman, Theo Vos
+Image credit
+Staff Sgt. Benjamin W Stratton, US Air Force
+PLOS Medicine
+Deep learning for chest radiograph diagnosis: A retrospective comparison of the CheXNeXt algorithm to practicing radiologists
+November 20, 2018
+Pranav Rajpurkar, Jeremy Irvin, Robyn Ball, Kaylie Zhu, Brandon Yang, Hershel Mehta, Tony Duan, Daisy Ding, Aarti Bagul, Curtis Langlotz, Bhavik Patel, Kristen Yeom...
+Image credit
+Graham Richardson, Wikimedia
+PLOS Medicine
+Predicting the risk of emergency admission with machine learning: Development & validation using linked electronic health records
+November 20, 2018
+Fatemeh Rahimian, Golamreza Salimi-Khorshidi, Amir H. Payberah, Jenny Tran, Roberto Ayala Solares, Francesca Raimondi, Milad Nazarzadeh, Dexter Canoy, Kazem Rahimi
+Image credit
+Vitor Pamplona
+PLOS Medicine
+Automated detection of moderate and large pneumothorax on frontal chest X-rays using deep convolutional neural networks: A retrospective study
+November 20, 2018
+Andrew Taylor, Clinton Mielke, John Mongan
+Image credit
+Bjecas, Wikimedia
+PLOS Medicine
+The use of machine learning to understand the relationship between IgE to specific allergens and asthma
+November 20, 2018
+Thomas Platts-Mills, Matthew Perzanowski
+Image credit
+https://doi.org/10.1371/journal.pmed.1002693
+PLOS Medicine
+Machine learning assessment of myocardial ischemia using angiography: Development and retrospective validation
+November 13, 2018
+Hyeonyong Hae, Soo-Jin Kang, Won-Jang Kim, So-Yeon Choi, June-Goo Lee, Youngoh Bae, Hyungjoo Cho, Dong Hyun Yang, Joon-Won Kang, Tae-Hwan Lim...
+Image credit
+Dartmouth College Electron Microscope Facility, Wikimedia
+PLOS Medicine
+Machine learning to identify pairwise interactions between specific IgE antibodies and their association with asthma
+November 13, 2018
+Sara Fontanella, Clément Frainay, Clare Murray, Angela Simpson, Adnan Custovic
+Image credit
+geralt, Pixabay
+PLOS Medicine
+Transforming health policy through machine learning
+November 13, 2018
+Hutan Ashrafian, Ara Darzi
+Image credit
+TBIT, Pixabay
+PLOS Medicine
+Prediction of myopia development using machine learning: A retrospective, multicentre machine learning study
+November 6, 2018
+Haotian Lin, Erping Long, Xiaohu Ding, Hongxing Diao, Zicong Chen, Runzhong Liu, Jialing Huang, Jingheng Cai, Shuangjuan Xu, Xiayin Zhang, Dongni Wang, Kexin Chen...
+Image credit
+scott feldstein, Flickr
+PLOS Medicine
+Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: A cross-sectional study
+November 6, 2018
+John Zech, Marcus Badgeley, Manway Liu, Anthony Costa, Joseph Titano, Eric Oermann
+Image credit
+US Army Illustration
+PLOS Medicine
+Machine learning in medicine: Addressing ethical challenges
+November 6, 2018
+Effy Vayena, Alessandro Blasimme, I. Cohen
+Collection Editor (PLOS Computational Biology)
+Image credit
+Quaid Morris
+Quaid Morris
+Dr. Quaid Morris
+March 1, 2018
+Academic Editor, PLOS Computational Biology Machine Learning in Health and Biomedicine
+PLOS Computational Biology Collection
+Image credit
+10.1371/journal.pcbi.1006952
+PLOS Computational Biology
+Prediction of VRC01 neutralization sensitivity by HIV-1 gp160 sequence features
+April 1, 2019
+Craig A. Magaret, David C. Benkeser, Brian D. Williamson, Bhavesh R. Borate, Lindsay N. Carpp, Ivelin S. Georgiev, Ian Setliff, Adam S. Dingens, Noah Simon, Marco Carone, Christopher Simpkins, David Montefiori, Galit Alter, Wen-Han Yu, Michal Juraska, Paul T. Edlefsen, Shelly Karuna, Nyaradzo M. Mgodi, Srilatha Edugupanti, Peter B. Gilbert
+Image credit
+10.1371/journal.pcbi.1006269
+PLOS Computational Biology
+Evaluating reproducibility of AI algorithms in digital pathology with DAPPER
+March 27, 2019
+Andrea Bizzego, Nicole Bussola, Marco Chierici, Valerio Maggio, Margherita Francescatto, Luca Cima, Marco Cristoforetti, Giuseppe Jurman, Cesare Furlanello
+Image credit
+10.1371/journal.pcbi.1006721
+PLOS Computational Biology
+16S rRNA sequence embeddings: Meaningful numeric feature representations of nucleotide sequences that are convenient for downstream analyses
+February 26, 2019
+Stephen Woloszynek, Zhengqiao Zhao, Jian Chen, Gail L. Rosen
+Image credit
+10.1371/journal.pcbi.1006799
+PLOS Computational Biology
+Integrated structural variation and point mutation signatures in cancer genomes using correlated topic models
+February 22, 2019
+Tyler Funnell, Allen Zhang, Diljot Grewal, Steven McKinney, Ali Bashashati, Yi Kan Wang, Sohrab Shah
+Image credit
+10.1371/journal.pcbi.1006826
+PLOS Computational Biology
+Machine learning analysis of gene expression data reveals novel diagnostic and prognostic biomarkers and identifies therapeutic targets for soft tissue sarcomas
+February 20, 2019
+David G. P. van IJzendoorn, Karoly Szuhai, Inge H. Briaire-de Bruijn, Marie Kostine, Marieke L. Kuijjer, Judith V. M. G. Bovée
+Image credit
+10.1371/journal.pcbi.1006693
+PLOS Computational Biology
+Utilizing longitudinal microbiome taxonomic profiles to predict food allergy via Long Short-Term Memory networks
+February 4, 2019
+Ahmed A. Metwally, Philip S. Yu, Derek Reiman, Yang Dai, Patricia W. Finn, David L. Perkins
+Image credit
+10.1371/journal.pcbi.1006663
+PLOS Computational Biology
+Global analysis of N6-methyladenosine functions and its disease association using deep learning and network-based methods
+January 2, 2019
+Song-yao Zhang, Shao-wu Zhang, Xiao-nan Fan, Jia Meng, Yidong Chen, Shou-Jiang Gao, Yufei Huang
+Image credit
+10.1371/journal.pcbi.1006258
+PLOS Computational Biology
+Prediction of antibiotic resistance in Escherichia coli from large-scale pan-genome data
+December 14, 2018
+Danesh Moradigaravand, Martin Palm, Anne Farewell, Ville Mustonen, Jonas Warringer, Leopold Parts
+Image credit
+Jiminez-Carretero et al. 
+PLOS Computational Biology
+Tox_(R)CNN: Deep learning-based nuclei profiling tool for drug toxicity screening
+November 30, 2018
+Daniel Jimenez-Carretero, Vahid Abrishami, Laura Fernández-de-Manuel, Irene Palacios, Antonio Quílez-Álvarez, Alberto Díez-Sánchez, Miguel A. del Pozo, María C. Montoya
+Image credit
+10.1371/journal.pcbi.1006514
+PLOS Computational Biology
+RNA3DCNN: Local and global quality assessments of RNA 3D structures using 3D deep convolutional neural networks
+November 27, 2018
+Jun Li, Wei Zhu, Jun Wang, Wenfei Li, Sheng Gong, Jian Zhang, Wei Wang
+Image credit
+10.1371/journal.pcbi.1006516
+PLOS Computational Biology
+A Bayesian mixture modelling approach for spatial proteomics
+November 27, 2018
+Laurent Gatto, Paul Kirk, Kathryn Lilley, Oliver Crook, Claire Mulvey
+Image credit
+Wick et al. 
+PLOS Computational Biology
+Deepbinner: Demultiplexing barcoded Oxford Nanopore reads with deep convolutional neural networks
+November 20, 2018
+Ryan Wick, Louise Judd, Kathryn Holt
+Guest Editors (PLOS ONE)
+Image credit
+Leo Anthony Celi
+Leo Anthony Celi
+Dr. Leo Anthony Celi
+March 1, 2018
+Academic Editor, PLOS ONE Machine Learning in Health and Biomedicine
+Image credit
+LucaCiti
+Luca Citi
+Dr. Luca Citi
+March 1, 2018
+Academic Editor, PLOS ONE Machine Learning in Health and Biomedicine
+Image credit
+Marzyeh Ghassemi
+Marzyeh Ghassemi
+Dr. Marzyeh Ghassemi
+March 1, 2018
+Academic Editor, PLOS ONE Machine Learning in Health and Biomedicine
+Image credit
+Tom Pollard
+Tom Pollard 
+Dr. Tom Pollard
+March 1, 2018
+Academic Editor, PLOS ONE Machine Learning in Health and Biomedicine
+Collection Overview: PLOS ONE
+Image credit
+PLOS ONE
+PLOS ONE
+The PLOS ONE collection on machine learning in health and biomedicine: Towards open code and open data
+January 15, 2019
+Leo Celi, Luca Citi, Marzyeh Ghassemi, Tom Pollard
+PLOS ONE Collection: Acute Care
+Image credit
+10.1371/journal.pone.0214904
+PLOS ONE
+Improved predictive models for acute kidney injury with IDEA: Intraoperative Data Embedded Analytics
+April 4, 2019
+Lasith Adhikari, Tezcan Ozrazgat-Baslanti, Matthew Ruppert, R. W. M. A. Madushani, Srajan Paliwal, Haleh Hashemighouchani, Feng Zheng, Ming Tao, Juliano M. Lopes, Xiaolin Li, Parisa Rashidi, Azra Bihorac
+Image credit
+10.1371/journal.pone.0214465
+PLOS ONE
+Machine learning for patient risk stratification for acute respiratory distress syndrome
+March 28, 2019
+Daniel Zeiberg, Tejas Prahlad, Brahmajee K. Nallamothu, Theodore J. Iwashyna, Jenna Wiens, Michael W. Sjoding
+Image credit
+10.1371/journal.pone.0198919
+PLOS ONE
+Improving preterm newborn identification in low-resource settings with machine learning
+February 27, 2019
+Katelyn J. Rittenhouse, Bellington Vwalika, Alexander Keil, Jennifer Winston, Marie Stoner, Joan T. Price, Monica Kapasa, Mulaya Mubambe, Vanilla Banda, Whyson Muunga, Jeffrey S. A. Stringer
+Image credit
+10.1371/journal.pone.0212665
+PLOS ONE
+Machine learning models for early sepsis recognition in the neonatal intensive care unit using readily available electronic health record data
+February 22, 2019
+Aaron Masino, Mary Harris, Daniel Forsyth, Svetlana Ostapenko, Lakshmi Srinivasan, Christopher Bonafide, Fran Balamuth, Melissa Schmatz, Robert Grundmeier
+Image credit
+10.1371/journal.pone.0198921
+PLOS ONE
+Using machine learning models to predict oxygen saturation following ventilator support adjustment in critically ill children: a single center pilot study
+February 20, 2019
+Sam Ghazal, Michael Sauthier, David Brossier, Wassim Bouachir, Philippe Jouvet, Rita Noumeir
+Image credit
+10.1371/journal.pone.0211057
+PLOS ONE
+An attention based deep learning model of clinical events in the intensive care unit
+February 13, 2019
+Deepak Kaji, John Zech, Jun Kim, Samuel Cho, Neha Dangayach, Anthony Costa, Eric Oermann
+Image credit
+Air Force Medical Service
+PLOS ONE
+Predicting inadequate postoperative pain management in depressed patients: A machine learning approach
+February 6, 2019
+Arjun Parthipan, Imon Banerjee, Keith Humphreys, Steven Asch, Catherine Curtin, Ian Carroll, Tina Hernandez-Boussard
+Image credit
+10.1371/journal.pone.0210966
+PLOS ONE
+Predicting Neurological Recovery with Canonical Autocorrelation Embeddings
+January 28, 2019
+Maria De-Arteaga, Jieshi Chen, Peter Huggins, Jonathan Elmer, Gilles Clermont, Artur Dubrawski
+Image credit
+Nellis AFB, Nev. 
+PLOS ONE
+Feature selection for the accurate prediction of septic and cardiogenic shock ICU mortality in the acute phase
+November 20, 2018
+Alexander Aushev, Vicent Ripoll, Alfredo Vellido, Federico Aletti, Bernardo Pinto, Antoine Herpain, Emiel Post, Eduardo Medina, Ricard Ferrer, Giuseppe Baselli, Karim Bendjelid
+Image credit
+Wikimedia Commons
+PLOS ONE
+Optimal intensive care outcome prediction over time using machine learning
+November 14, 2018
+Christopher Meiring, Abhishek Dixit, Steve Harris, Niall S. MacCallum, David A. Brealey, Peter J. Watkinson, Andrew Jones, Simon Ashworth, Richard Beale, Stephen J. Brett, Mervyn Singer, Ari Ercole
+Image credit
+Pixabay
+PLOS ONE
+Improving counterfactual reasoning with kernelised dynamic mixing models
+November 12, 2018
+Sonali Parbhoo, Omer Gottesman, Andrew Slavin Ross, Matthieu Komorowski, Aldo Faisal, Isabella Bon, Volker Roth, Finale Doshi-Velez
+Image credit
+Wikimedia Commons
+PLOS ONE
+Preoperative and postoperative prediction of long-term meningioma outcomes
+September 20, 2018
+Efstathios D. Gennatas, Ashley Wu, Steve E. Braunstein, Olivier Morin, William C. Chen, Stephen T. Magill, Chetna Gopinath, Javier E. Villaneueva-Meyer, Arie Perry, Michael W. McDermott, Timothy D. Solberg, Gilmer Valdes, David R. Raleigh
+PLOS ONE Collection: Primary Care
+Image credit
+10.1371/journal.pone.0218942
+PLOS ONE
+Analysis and prediction of unplanned intensive care unit readmission using recurrent neural networks with long short-term memory
+July 8, 2019
+Yu-Wei Lin, Yuqian Zhou, Michael J. Shaw, Roy H. Campbell, Faraz Faghri
+Image credit
+10.1371/journal.pone.0215571
+PLOS ONE
+Predicting childhood obesity using electronic health records and publicly available data
+April 22, 2019
+Robert Hammond, Rodoniki Athanasiadou, Silvia Curado, Yindalon Aphinyanaphongs, Courtney Abrams, Mary Jo Messito, Rachel Gross, Michelle Katzow, Melanie Jay, Narges Razavian, Brian Elbel
+Image credit
+Wikimedia Commons
+PLOS ONE
+Exploring the use of machine learning for risk adjustment: A comparison of standard and penalized linear regression models in predicting health care costs in older adults
+March 6, 2019
+Hong J. Kan, Hadi Kharrazi, Hsien-Yen Chang, Dave Bodycombe, Klaus Lemke, Jonathan P. Weiner
+Image credit
+10.1371/journal.pone.0208737
+PLOS ONE
+Computational prediction of diagnosis and feature selection on mesothelioma patient health records
+January 10, 2019
+Davide Chicco, Cristina Rovelli
+Image credit
+10.1371/journal.pone.0209018
+PLOS ONE
+Mucopolysaccharidosis type II detection by Naïve Bayes Classifier: An example of patient classification for a rare disease using electronic medical records from the Canadian Primary Care Sentinel Surveillance Network
+December 19, 2018
+Behrouz Ehsani-Moghaddam, John A. Queenan, Jennifer MacKenzie, Richard V. Birtwhistle
+Image credit
+10.1371/journal.pone.0208141
+PLOS ONE
+Machine Learning Models to Predict Disease Progression Among Veterans with Hepatitis C Virus
+January 4, 2019
+Monica Konerman, Lauren Beste, Tony Van, Boang Liu, Xuefei Zhang, Ji Zhu, Sameer Saini, Grace Su, Brahmajee Nallamothu, George Ioannou, Akbar Waljee
+Image credit
+10.1371/journal.pone.0207523
+PLOS ONE
+Using machine learning to investigate self-medication purchasing in England via high street retailer loyalty card data
+November 19, 2018
+Alec Davies, Mark Green, Alex Singleton
+Image credit
+Flickr
+PLOS ONE
+Machine learning models in electronic health records can outperform conventional survival models for predicting patient mortality in coronary artery disease
+August 31, 2018
+Andrew J. Steele, Spiros C. Denaxas, Anoop D. Shah, Harry Hemingway, Nicholas M. Luscombe
+Image credit
+Wikimedia Commons
+PLOS ONE
+Applying particle filtering in both aggregated and age-structured population compartmental models of pre-vaccination measles
+November 2, 2018
+Xiaoyan Li, Alexander Doroshenko, Nathaniel D. Osgood
+PLOS ONE Collection: Mental Health
+Image credit
+Rajeev Krishnadas
+PLOS ONE
+Predicting one-year outcome in first episode psychosis using machine learning
+March 7, 2019
+Samuel P. Leighton, Kelly Chung, Alison Blair, Susie Brown, Suzy Clark, Kathryn Sowerbutts, Matthias Schwannauer, Jonathan Cavanagh, Andrew I. Gumley, Rajeev Krishnadas
+Image credit
+Wikimedia Commons
+PLOS ONE
+Identification of suicidal behavior among psychiatrically hospitalized adolescents using natural language processing and machine learning of electronic health records
+February 19, 2019
+Nicholas Carson, Brian Mullin, Maria Jose Sanchez, Frederick Lu, Kelly Yang, Michelle Menezes, Benjamin Cook
+PLOS ONE Collection: Global Health
+Image credit
+Sebastian Bauhoff
+PLOS ONE
+Using supervised learning to select audit targets in performance-based financing in health: An example from Zambia
+January 29, 2019
+Dhruv Grover, Sebastian Bauhoff, Jed Friedman
+Image credit
+Adel Daoud 
+PLOS ONE
+The influence of maternal agency on severe child undernutrition in conflict-ridden Nigeria: Modeling heterogeneous treatment effects with machine learning
+January 9, 2019
+Nadine Kraamwinkel, Hans Ekbrand, Stefania Davia, Adel Daoud
+Image credit
+Torange.biz
+PLOS ONE
+Feature selection and prediction of treatment failure in tuberculosis
+November 20, 2018
+Christopher Martin Sauer, David Sasson, Kenneth E. Paik, Ned McCague, Leo Anthony Celi, Iván Sánchez Fernández, Ben M. W. Illigens
+PLOS ONE Collection: Medical Imaging
+Image credit
+10.1371/journal.pone.0211121
+PLOS ONE
+Revealing heterogeneity of brain imaging phenotypes in Alzheimer’s disease based on unsupervised clustering of blood marker profiles
+March 4, 2019
+Gerard Martí-Juan, Gerard Sanroma, Gemma Piella, for the Alzheimer’s Disease Neuroimaging Initiative and the Alzheimer’s Disease Metabolomics Consortium 
+Image credit
+10.1371/journal.pone.0212550
+PLOS ONE
+Exploit fully automatic low-level segmented PET data for training high-level deep learning algorithms for the corresponding CT data
+March 5, 2019
+Christina Gsaxner, Peter M. Roth, Jürgen Wallner, Jan Egger
+Image credit
+10.1371/journal.pone.0207496
+PLOS ONE
+Ossification area localization in pediatric hand radiographs using deep neural networks for object detection
+November 16, 2018
+Sven Koitka, Aydin Demircioglu, Moon S. Kim, Christoph M. Friedrich, Felix Nensa
+Image credit
+pone.0206229
+PLOS ONE
+Annotation of enhanced radiographs for medical image retrieval with deep convolutional neural networks
+November 12, 2018
+Obioma Pelka, Felix Nensa, Christoph M. Friedrich
+Image credit
+pone.0207385
+PLOS ONE
+Predicting functional networks from region connectivity profiles in task-based versus resting-state fMRI data
+November 12, 2018
+Javier Rasero, Hannelore Aerts, Marlis Ontivero Ortega, Jesus M. Cortes, Daniele Marinazzo, Sebastiano Stramaglia
+PLOS ONE Collection: Ophthalmology
+Image credit
+10.1371/journal.pone.0206081
+PLOS ONE
+A deep learning approach to automatic detection of early glaucoma from visual fields
+November 28, 2018
+Şerife Seda Kucur, Gábor Holló, Raphael Sznitman
+Image credit
+10.1371/journal.pone.0205998
+PLOS ONE
+Keratoconus severity identification using unsupervised machine learning
+November 6, 2018
+Siamak Yousefi, Ebrahim Yousefi, Hidenori Takahashi, Takahiko Hayashi, Hironobu Tampo, Satoru Inoda, Yusuke Arai, Penny Asbell
+PLOS ONE Collection: Biobank and Omics Studies
+Image credit
+10.1371/journal.pone.0214365
+PLOS ONE
+Prediction of premature all-cause mortality: A prospective general population cohort study comparing machine-learning and standard epidemiological approaches
+March 27, 2019
+Stephen F. Weng, Luis Vaz, Nadeem Qureshi, Joe Kai
+Image credit
+10.1371/journal.pone.0206686
+PLOS ONE
+Network assessment of demethylation treatment in melanoma: Differential transcriptome-methylome and antigen profile signatures
+November 28, 2018
+Zhijie Jiang, Caterina Cinti, Monia Taranta, Elisabetta Mattioli, Elisa Schena, Sakshi Singh, Rimpi Khurana, Giovanna Lattanzi, Nicholas F. Tsinoremas, Enrico Capobianco
+PLOS ONE Collection: Miscellaneous
+Image credit
+10.1371/journal.pone.0213829
+PLOS ONE
+Machine learning performance in a microbial molecular autopsy context: A cross-sectional postmortem human population study
+April 15, 2019
+Yu Zhang, Jennifer L. Pechal, Carl J. Schmidt, Heather R. Jordan, Wesley W. Wang, M. Eric Benbow, Sing-Hoi Sze, Aaron M. Tarone
+Image credit
+10.1371/journal.pone.0199340
+PLOS ONE
+Kernel machine tests of association between brain networks and phenotypes
+March 21, 2019
+Alexandria M. Jensen, Jason R. Tregellas, Brianne Sutton, Fuyong Xing, Debashis Ghosh
+Image credit
+10.1371/journal.pone.0208203
+PLOS ONE
+Risk prediction system for dengue transmission based on high resolution weather data
+December 6, 2018
+Chathurika Hettiarachchige, Stefan von Cavallar, Timothy Lynar, Roslyn Hickson, Manoj Gambhir
+Image credit
+10.1371/journal.pone.0208924
+PLOS ONE
+Distillation of the clinical algorithm improves prognosis by multi-task deep learning in high-risk Neuroblastoma
+December 7, 2018
+Valerio Maggio, Marco Chierici, Giuseppe Jurman, Cesare Furlanello
+Image credit
+Pixabay
+PLOS ONE
+Machine learning to support social media empowered patients in cancer care and cancer treatment decisions
+October 18, 2018
+Daswin De Silva, Weranja Ranasinghe, Tharindu Bandaragoda, Achini Adikari, Nishan Mills, Lahiru Iddamalgoda, Damminda Alahakoon, Nathan Lawrentschuk, Raj Persad, Evgeny Osipov, Richard Gray, Damien Bolton
+Machine Learning in Health and Biomedicine: A PLOS cross-journal Call for Papers 
+Read the original Call For Papers on the Speaking of Medicine blog.
+Click Here
+Latest from Speaking of Medicine
+Loading...
+Bluesky
+Facebook
+Linkedin
+PLOS is a nonprofit 501(c)(3) corporation, #C2354500, and is based in California, US
+Contact
+Finance
+Pay invoice
+Terms and Conditions
+Blogs
+Advertise
+Legal
+Privacy Policy
+Cookie Policy
+Terms of Use
+News & Updates
+Email
+PLOS will use your email address to provide news and updates. You can find out more about how PLOS processes your data by reading our Privacy Policy.
+ You can unsubscribe at any time by clicking the unsubscribe link in our emails or by contacting us at privacy@plos.org.PhoneThis field is for validation purposes and should be left unchanged.
+Δ
+Back to top

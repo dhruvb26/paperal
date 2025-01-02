@@ -1,0 +1,302 @@
+[
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.8480002880096436,
+    "coordinates": {
+      "points": [
+        [179.407470703125, 246.71018981933594],
+        [179.407470703125, 289.37896728515625],
+        [469.22113037109375, 289.37896728515625],
+        [469.22113037109375, 246.71018981933594]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "filename": "Removed Document (1).pdf",
+    "category": "Title",
+    "element_id": "a8dec57ab777aaa8863796e105b432a3"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.9540368914604187,
+    "coordinates": {
+      "points": [
+        [179.94821166992188, 316.9712829589844],
+        [179.94821166992188, 546.113178888889],
+        [1472.341552734375, 546.113178888889],
+        [1472.341552734375, 316.9712829589844]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "parent_id": "a8dec57ab777aaa8863796e105b432a3",
+    "filename": "Removed Document (1).pdf",
+    "category": "NarrativeText",
+    "element_id": "d120485c2e9e4c98bd9c519ee1aeaa61"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.95772385597229,
+    "coordinates": {
+      "points": [
+        [181.52386474609375, 588.8261108398438],
+        [181.52386474609375, 817.2881788888889],
+        [1472.685546875, 817.2881788888889],
+        [1472.685546875, 588.8261108398438]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "parent_id": "a8dec57ab777aaa8863796e105b432a3",
+    "filename": "Removed Document (1).pdf",
+    "category": "NarrativeText",
+    "element_id": "81e5857d67210193978fa0beb8ec45ff"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.9568339586257935,
+    "coordinates": {
+      "points": [
+        [183.00277777777777, 860.7890625],
+        [183.00277777777777, 1154.8826233333332],
+        [1473.04052734375, 1154.8826233333332],
+        [1473.04052734375, 860.7890625]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "parent_id": "a8dec57ab777aaa8863796e105b432a3",
+    "filename": "Removed Document (1).pdf",
+    "category": "NarrativeText",
+    "element_id": "cff801fe88854bc81d751eb9e72eb138"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.8683714866638184,
+    "coordinates": {
+      "points": [
+        [183.99999999999997, 1207.366455078125],
+        [183.99999999999997, 1249.0992431640625],
+        [613.8092041015625, 1249.0992431640625],
+        [613.8092041015625, 1207.366455078125]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "filename": "Removed Document (1).pdf",
+    "category": "Title",
+    "element_id": "d5f0680a5db286aa31e1ead61a004e31"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.9538280367851257,
+    "coordinates": {
+      "points": [
+        [182.58888888888887, 1279.3226233333332],
+        [182.58888888888887, 1506.2492900000002],
+        [1473.9034423828125, 1506.2492900000002],
+        [1473.9034423828125, 1279.3226233333332]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "parent_id": "d5f0680a5db286aa31e1ead61a004e31",
+    "filename": "Removed Document (1).pdf",
+    "category": "NarrativeText",
+    "element_id": "6a8eef129c33e8b3ce41cb77cd896dd2"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.8539086580276489,
+    "coordinates": {
+      "points": [
+        [183.8057098388672, 1560.2665633333331],
+        [183.8057098388672, 1600.1171188888889],
+        [391.6148376464844, 1600.1171188888889],
+        [391.6148376464844, 1560.2665633333331]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "filename": "Removed Document (1).pdf",
+    "category": "Title",
+    "element_id": "b7dd8781e2218a79e0e55df26804e171"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.8512157797813416,
+    "coordinates": {
+      "points": [
+        [183.11105346679688, 1629.195556640625],
+        [183.11105346679688, 1659.1380477777777],
+        [1115.5772705078125, 1659.1380477777777],
+        [1115.5772705078125, 1629.195556640625]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "parent_id": "b7dd8781e2218a79e0e55df26804e171",
+    "filename": "Removed Document (1).pdf",
+    "category": "NarrativeText",
+    "element_id": "7f1cc46e7c472a1f100311b4b07979ff"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.9121782779693604,
+    "coordinates": {
+      "points": [
+        [177.05712890625, 1684.582275390625],
+        [177.05712890625, 1747.6936033333332],
+        [1470.8355712890625, 1747.6936033333332],
+        [1470.8355712890625, 1684.582275390625]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "parent_id": "b7dd8781e2218a79e0e55df26804e171",
+    "filename": "Removed Document (1).pdf",
+    "category": "ListItem",
+    "element_id": "f3ebd03bec54bb7dbe88efbdf7fb34c1"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.8103315830230713,
+    "coordinates": {
+      "points": [
+        [179.14451599121094, 1774.2655029296875],
+        [179.14451599121094, 1803.0436033333333],
+        [905.3904418945312, 1803.0436033333333],
+        [905.3904418945312, 1774.2655029296875]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "parent_id": "b7dd8781e2218a79e0e55df26804e171",
+    "filename": "Removed Document (1).pdf",
+    "category": "NarrativeText",
+    "element_id": "2443c2138675fb082f8e0dec2b93e96f"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.8636661171913147,
+    "coordinates": {
+      "points": [
+        [171.1171417236328, 1829.368896484375],
+        [171.1171417236328, 1894.44921875],
+        [1468.6246342633333, 1894.44921875],
+        [1468.6246342633333, 1829.368896484375]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "links": [
+      {
+        "text": "https :// www . databricks . com / blog /",
+        "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm",
+        "start_index": 96
+      }
+    ],
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "parent_id": "b7dd8781e2218a79e0e55df26804e171",
+    "filename": "Removed Document (1).pdf",
+    "category": "ListItem",
+    "element_id": "c4b0fd227f18d39661075c31d276b6a5"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "coordinates": {
+      "points": [
+        [211.67500000000007, 1896.3587344444445],
+        [211.67500000000007, 1924.807492222222],
+        [794.1489278333336, 1924.807492222222],
+        [794.1489278333336, 1896.3587344444445]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "filename": "Removed Document (1).pdf",
+    "category": "Title",
+    "element_id": "6f8e49661e8ca03b165cbb4a32a925d3"
+  },
+  {
+    "source": "Removed Document (1).pdf",
+    "detection_class_prob": 0.3345518410205841,
+    "coordinates": {
+      "points": [
+        [806.5430908203125, 2013.9281788888886],
+        [806.5430908203125, 2041.6020677777778],
+        [837.9718017578125, 2041.6020677777778],
+        [837.9718017578125, 2013.9281788888886]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1700,
+      "layout_height": 2200
+    },
+    "last_modified": "2024-12-30T15:05:26",
+    "filetype": "application/pdf",
+    "languages": ["eng"],
+    "page_number": 11,
+    "filename": "Removed Document (1).pdf",
+    "category": "Footer",
+    "element_id": "4f13932ea02333f0caa326a13c937e8a"
+  }
+]

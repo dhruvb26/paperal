@@ -1,0 +1,24 @@
+{
+  "references": [
+    {
+      "index": 1,
+      "text": "Germini, https://gemini.google.com/.",
+      "url": "https://gemini.google.com/"
+    },
+    {
+      "index": 2,
+      "text": "Introducing meta llama 3: The most capable openly available llm to date, https://ai.meta.com/blog/meta- llama-3/.",
+      "url": "https://ai.meta.com/blog/meta-llama-3/"
+    },
+    {
+      "index": 3,
+      "text": "Openai, https://openai.com.",
+      "url": "https://openai.com/"
+    },
+    {
+      "index": 4,
+      "text": "Introducing dbrx: A new state-of-the-art open llm, https://www.databricks.com/blog/introducing- dbrx-new-state-art-open-llm.",
+      "url": "https://www.databricks.com/blog/introducing-dbrx-new-state-art-open-llm"
+    }
+  ]
+}

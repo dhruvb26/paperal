@@ -1,0 +1,196 @@
+publishability - Publishing papers in pure vs applied machine learning research - Academia Stack Exchange
+Skip to main content
+Stack Exchange Network
+						Stack Exchange network consists of 183 Q&A communities including Stack Overflow, the largest, most trusted online community for developers to learn, share their knowledge, and build their careers.
+Visit Stack Exchange
+Loading…
+                                Tour
+                                    Start here for a quick overview of the site
+                            Help Center
+                                Detailed answers to any questions you might have
+                                        Meta
+                                            Discuss the workings and policies of this site
+                                    About Us
+                                        Learn more about Stack Overflow the company, and our products
+current community
+            Academia
+help
+chat
+            Academia Meta
+your communities            
+Sign up or log in to customize your list.                
+more stack exchange communities
+company blog
+Log in
+Sign up
+ Home
+ Questions
+ Tags
+ Users
+ Unanswered
+Teams
+            Ask questions, find answers and collaborate at work with Stack Overflow for Teams.
+Try Teams for free
+Explore Teams
+Teams
+            Ask questions, find answers and collaborate at work with Stack Overflow for Teams.
+            Explore Teams
+Teams
+Q&A for work
+Connect and share knowledge within a single location that is structured and easy to search.
+                    Learn more about Teams
+Publishing papers in pure vs applied machine learning research [closed]
+        Ask Question
+Asked
+3 years, 11 months ago
+Modified
+3 years, 10 months ago
+Viewed
+                        897 times
+0        
+Closed. This question needs to be more focused. It is not currently accepting answers.
+Want to improve this question? Update the question so it focuses on one problem only by editing this post.
+Closed 3 years ago.
+                        Improve this question
+As far as I understand, in pure Artificial Intelligence (AI) research one is required to come up with a new/improved  algorithm and show that the  algorithm has competitive performance across a set of toy or real data. Thus, I find this  a well specified target for pure AI research. Such research would be usually published in journals such as: Journal of Artificial Intelligence Reseach, Journal of Machine Learning Research.
+I wonder how the target differs in applied AI research, such as machine learning (ML) applications in some domain, for instance,  Health or Finance. Some example of such journals include: Artificial Intelligence in Agriculture, Journal of Machine Learning in Finance, Artificial Intelligence in Medicine, Expert Systems with Applications.
+Do you have to come up with new/modified learning algorithms in order to publish in applied AI/ML journals?
+If the answer to the above is no, then what is the nature of the contribution? Would it suffice to apply existing ML methods to new domain data?
+Suppose some existing methods are applied to new domain data. Considering  the fact (model = algorithm + data).. would it be acceptable to state "this paper proposes a new model" instead of "a new learning algorithm"?
+What is the effective learning path that enables people to  publish to some hypothetical journal "Artificial Intelligence in X" (where X is some other domain e.g. Finance or Medicine)? Are the same people supposed to hold BSc/MSc in both AI and X? Finally, are they supposed to already have published papers in either pure AI journals or X journals, before starting interdisciplinary research?
+publishabilitymachine-learningartificial-intelligence
+Share
+Improve this question
+                        Follow
+edited Feb 14, 2021 at 14:01
+Rodrigo de Azevedo
+1
+            asked Jan 29, 2021 at 17:48
+Enk9456Enk9456
+17111 silver badge88 bronze badges
+4
+My Master's thesis, which also resulted in a publication, was applying an existing method to a dataset it hadn't been used on before.
+– Kathy
+Commented
+Jan 29, 2021 at 18:19
+thanks for sharing.. did you compare your method's performance with the performance of previous methods applied on the same data?
+– Enk9456
+Commented
+Jan 30, 2021 at 10:49
+Yes, I did. And a couple of other people have done the same since then.
+– Kathy
+Commented
+Feb 1, 2021 at 15:23
+Is it me, or this question seems to be 1) many questions, 2) domain specific to AI research (ie off-topic)?
+– Greg
+Commented
+Feb 15, 2021 at 2:10
+Add a comment
+ | 
+                                        1 Answer
+                                    1
+            Sorted by:
+            Reset to default
+                        Highest score (default)
+                        Date modified (newest first)
+                        Date created (oldest first)
+2        
+There are several questions in your post and it is really difficult to give a pin-pointed answer. So, I would go ahead and break your post into multiple segments and answer likewise:
+... In pure Artificial Intelligence (AI) research one is required to come up with a new/improved algorithm and show that the algorithm has competitive performance across a set of toy or real data.
+This premise is not entirely true. I work in AI (mostly in Machine Learning and Deep Learning) and we don't use the word like "pure" AI. It is just AI. If you really study history or inception of AI, it is more applied in some fashion. It is the fields like mathematics, probability and statistics that have helped in studies to be more focused around "purity" of it as such. In AI, you can come up with unique problems that cannot be solved using the present tools and techniques. That too is a great contribution. You don't always have to develop new algorithms.
+Thus, I find this a well-specified target for pure AI research. Such research would be usually published in journals such as the Journal of Artificial Intelligence Research, Journal of Machine Learning Research.
+These journals also publish applied research article, tools including software, and surveys. Of course, these journals and along with Machine Learning Journal by Springer are very well-known and oldest of their kinds and don't entertain papers which say "Here is the dataset, here is the method we used, and here are the findings"-type works. The contribution must be significant in so many different ways (be it a problem, a solution or a theory) that could be hugely contributing to the AI community.
+I wonder how the target differs in applied AI research, such as machine learning (ML) applications in some domain, for instance, Health or Finance. Some example of such journals include Artificial Intelligence in Agriculture, Journal of Machine Learning in Finance, Artificial Intelligence in Medicine, Expert Systems with Applications.
+The said journals are mainly problem or application-specific and they would like to see novel applications in their own fields. I don't have much experience with these journals. But, I certainly have reviewed papers for a few of these.
+Do you have to come up with new/modified learning algorithms in order to publish in applied AI/ML journals?
+As said earlier, not always.
+If the answer to the above is no, then what is the nature of the contribution? Would it suffice to apply existing ML methods to new domain data?
+My advice for you would be to read (and re-read) some papers from each of these journals and see what kind of works are valued there.
+Suppose some existing methods are applied to new domain data. Considering the fact (model = algorithm + data) would it be acceptable to state "this paper proposes a new model" instead of "a new learning algorithm"?
+"Model = Algorithm + Data" --- This is WRONG and whoever said this (even if it's not you) is WRONG!!! So your question does not stand. For your information, "Model = Structure + Parameters" (for starters, refer: Some papers from Bayesian ML)
+What is the effective learning path that enables people to publish to some hypothetical journal "Artificial Intelligence in X" (where X is some other domain e.g. Finance or Medicine)? Are the same people supposed to hold BSc/MSc in both AI and X? Finally, are they supposed to already have published papers in either pure AI journals or X journals, before starting interdisciplinary research?
+There are so many questions to answer. Please take my words with a bucket of salt: "You need to do some basic and then some moderately advanced courses in ML to make your base adequately strong. Alternatively, get your hands dirty by solving problems in a platform such as Kaggle. In parallel, you could read some easy papers from the journals that you are interested in. Also, find a mentor who could guide you in these directions.
+Share
+Improve this answer
+                        Follow
+            answered Feb 14, 2021 at 18:01
+CoderCoder
+13.1k88 gold badges5656 silver badges100100 bronze badges
+Add a comment
+ | 
+Not the answer you're looking for? Browse other questions tagged publishabilitymachine-learningartificial-intelligence.                                
+                            Featured on Meta
+Stack Overflow Jobs is expanding to more countries
+The December 2024 Community Asks Sprint has been moved to March 2025 (and...
+Related
+5
+Can novel findings be submitted rather than a novel methodology?
+0
+How to find a journal for publishing my method without applying it to specific real data?
+49
+Frustration with machine learning and deep learning research
+1
+Criteria to get machine learning benchmarking papers published in ACM
+            Hot Network Questions
+                    What does the MUX(4P2T) in this diagram of DRAM reading process actually do? Does it toggle between the read and write modes?
+                    Which other model is being used after one hits ChatGPT free plan's max hit rate?
+                    Why is AppleScript forcing `application "Mail"` to `application "MailQuickLookExtension.appex"` when Mail.app is not running?
+                    In Christie's The Adventure of Johnnie Waverly, why does Miss Collins lie?
+                    In Maoz Tzur, who are the seed who drowned in the sea with Pharaoh's army (2nd stanza)
+                    Correctly sum pixel values into bins of angle relative to center
+                    Does Noether's first theorem strictly require topological groups or Lie groups?
+                    Five diagonal determinant evaluation with floor function
+                    Why is the United Kingdom often considered a country, but the European Union isn't?
+                    Time's Square: A New Years Puzzle
+                    Why did the ChatGPT desktop app add these Windows Firewall entries?
+                    Can "Diese" sometimes be used as "she" in German sentences?
+                    How can we keep each pair of contours and removing others?
+                    A variation of a recurrent sequence related to the tangent function
+                    CircuiTikZ distance between ground symbol and the assosciated label
+                    Reordering a string using patterns
+                    How do you argue against animal cruelty if animals aren't moral agents?
+                    How does philosophy of religion deal with the fact that there are so many incompatible views out there?
+                    What is the meaning behind the names of the Barbapapa characters "Barbibul", "Barbouille" and "Barbotine"?
+                    AI Research vs. Industry
+                    Does subsampling the support set of a distribution to create new distribution necessarily increase entropy?
+                    How might I generalize rotations about the origin in higher dimensions?
+                    Why are the inputs and outputs of these common-mode chokes shorted and not connected?
+                    When are we morally responsible for our actions if we are tricked?
+            more hot questions
+Academia
+Tour
+Help
+Chat
+Contact
+Feedback
+Company
+Stack Overflow
+Teams
+Advertising
+Talent
+About
+Press
+Legal
+Privacy Policy
+Terms of Service
+Cookie Settings
+Cookie Policy
+Stack Exchange Network
+                                    Technology
+                                    Culture & recreation
+                                    Life & arts
+                                    Science
+                                    Professional
+                                    Business
+                                    API
+                                    Data
+Blog
+Facebook
+Twitter
+LinkedIn
+Instagram
+Site design / logo © 2025 Stack Exchange Inc; 
+user contributions licensed under 
+CC BY-SA
+. 
+rev 2024.12.20.20747

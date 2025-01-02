@@ -1,0 +1,144 @@
+Paper page - Specialized Language Models with Cheap Inference from Limited Domain
+  Data
+Hugging Face
+					Models
+					Datasets
+					Spaces
+					Posts
+					Docs
+					Enterprise
+Pricing
+Log In
+Sign Up
+			Papers
+arxiv:2402.01093
+Specialized Language Models with Cheap Inference from Limited Domain
+  Data
+Published on Feb 2, 2024
+·
+Submitted by
+							akhaliq
+on Feb 5, 2024
+#1 Paper of the day
+		Upvote
+		45
++37
+Authors:
+David Grangier
+					,
+Angelos Katharopoulos
+					,
+Pierre Ablin
+					,
+Awni Hannun
+Abstract
+Large language models have emerged as a versatile tool but are challenging to
+apply to tasks lacking large inference budgets and large in-domain training
+sets. This work formalizes these constraints and distinguishes four important
+variables: the pretraining budget (for training before the target domain is
+known), the specialization budget (for training after the target domain is
+known), the inference budget, and the in-domain training set size. Across these
+settings, we compare different approaches from the machine learning literature.
+Limited by inference cost, we find better alternatives to the standard practice
+of training very large vanilla transformer models. In particular, we show that
+hyper-networks and mixture of experts have better perplexity for large
+pretraining budgets, while small models trained on importance sampled datasets
+are attractive for large specialization budgets.
+View arXiv page
+View PDF
+			Add to collection
+Community
+IgorGanapolsky
+Feb 5, 2024
+Which companies are using this approach in production today?
++
+Reply
+librarian-bot
+Feb 6, 2024
+This is an automated message from the Librarian Bot. I found the following papers similar to this paper. 
+The following papers were recommended by the Semantic Scholar API 
+DeepSeekMoE: Towards Ultimate Expert Specialization in Mixture-of-Experts Language Models (2024)
+Rephrasing the Web: A Recipe for Compute and Data-Efficient Language Modeling (2024)
+Simple Domain Adaptation for Sparse Retrievers (2024)
+Non-Vacuous Generalization Bounds for Large Language Models (2023)
+Order Matters in the Presence of Dataset Imbalance for Multilingual Learning (2023)
+ Please give a thumbs up to this comment if you found it helpful!
+ If you want recommendations for any Paper on Hugging Face checkout this Space
+ You can directly ask Librarian Bot for paper recommendations by tagging it in a comment: 
+@librarian-bot
+ recommend
++
+Reply
+EditPreview
+Upload images, audio, and videos by dragging in the text input, pasting, or clicking here.
+Tap or paste here to upload images
+				Comment
+·
+Sign up or
+					log in to comment
+		Upvote
+		45
++33
+				Models citing this paper
+				0
+No model linking this paper
+Cite arxiv.org/abs/2402.01093 in a model README.md to link it from this page.
+				Datasets citing this paper
+				0
+No dataset linking this paper
+Cite arxiv.org/abs/2402.01093 in a dataset README.md to link it from this page.
+				Spaces citing this paper
+				0
+No Space linking this paper
+Cite arxiv.org/abs/2402.01093 in a Space README.md to link it from this page.
+				Collections including this paper
+				21
+MoE
+					Collection
+137 items
+• 
+Updated
+					Jul 9, 2024
+•
+					19
+LLM
+					Collection
+Multimodal LLM
+• 
+238 items
+• 
+Updated
+					Sep 26, 2024
+•
+					11
+Reading Papers
+					Collection
+219 items
+• 
+Updated
+					Nov 19, 2024
+•
+					10
+Empowering SLMs
+					Collection
+Collection of resources focusing on making Small Language Models (SLMs) better at various tasks
+• 
+6 items
+• 
+Updated
+					Apr 29, 2024
+•
+					2
+Browse 21 collections that include this paper
+			System theme
+Company
+TOS
+Privacy
+About
+Jobs
+Website
+Models
+Datasets
+Spaces
+Pricing
+Docs

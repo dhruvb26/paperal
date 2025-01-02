@@ -1,0 +1,422 @@
+Shifting machine learning for healthcare from development to deployment and from models to data | Nature Biomedical Engineering
+Skip to main content
+Thank you for visiting nature.com. You are using a browser version with limited support for CSS. To obtain
+            the best experience, we recommend you use a more up to date browser (or turn off compatibility mode in
+            Internet Explorer). In the meantime, to ensure continued support, we are displaying the site without styles
+            and JavaScript.
+Advertisement
+View all journals
+Search
+Log in
+Explore content
+About the journal
+Publish with us
+Subscribe
+Sign up for alerts
+RSS feed
+nature
+nature biomedical engineering
+review articles
+article
+Review Article
+Published: 04 July 2022
+Shifting machine learning for healthcare from development to deployment and from models to data
+Angela Zhang 
+            ORCID: orcid.org/0000-0003-0906-67701,2,3,4, Lei Xing 
+            ORCID: orcid.org/0000-0003-2536-53595, James Zou 
+            ORCID: orcid.org/0000-0001-8880-47644,6 & …Joseph C. Wu 
+            ORCID: orcid.org/0000-0002-6068-80411,3,7,8 Show authors
+Nature Biomedical Engineering
+volume 6, pages 1330–1345 (2022)Cite this article
+48k Accesses
+152 Citations
+211 Altmetric
+Metrics details
+Subjects
+Biomedical engineeringComputational scienceMachine learningMedical imagingTranslational research
+AbstractIn the past decade, the application of machine learning (ML) to healthcare has helped drive the automation of physician tasks as well as enhancements in clinical capabilities and access to care. This progress has emphasized that, from model development to model deployment, data play central roles. In this Review, we provide a data-centric view of the innovations and challenges that are defining ML for healthcare. We discuss deep generative models and federated learning as strategies to augment datasets for improved model performance, as well as the use of the more recent transformer models for handling larger datasets and enhancing the modelling of clinical text. We also discuss data-focused problems in the deployment of ML, emphasizing the need to efficiently deliver data to ML models for timely clinical predictions and to account for natural data shifts that can deteriorate model performance.
+Access through your institution
+Buy or subscribe
+This is a preview of subscription content, access via your institution
+Access options
+Access through your institution
+Access through your institution
+Change institution
+Buy or subscribe
+        Access Nature and 54 other Nature Portfolio journals
+        Get Nature+, our best-value online-access subscription
+$29.99 / 30 days
+cancel any time
+Learn more
+Subscribe to this journal
+        Receive 12 digital issues and online access to articles
+$119.00 per year
+only $9.92 per issue
+Learn more
+Buy this article
+Purchase on SpringerLink
+Instant access to full article PDF
+Buy now
+Prices may be subject to local taxes which are calculated during checkout
+Additional access options:
+Log in
+Learn about institutional subscriptions
+Read our FAQs
+Contact customer support
+Fig. 1: Roles of GANs in healthcare.Fig. 2: Cross-silo federated learning for healthcare.Fig. 3: Transformers.Fig. 4: Data pipeline.
+Similar content being viewed by others
+The future of digital health with federated learning
+Article
+Open access
+14 September 2020
+Automated clinical coding: what, why, and where we are?
+Article
+Open access
+22 October 2022
+Use of deep learning to develop continuous-risk models for adverse event prediction from electronic health records
+Article
+05 May 2021
+ReferencesTopol, E. J. High-performance medicine: the convergence of human and artificial intelligence. Nat. Med. 25, 44–56 (2019).Article 
+    CAS 
+                    Google Scholar 
+                Gulshan, V. et al. Development and validation of a deep learning algorithm for detection of diabetic retinopathy in retinal fundus photographs. JAMA 316, 2402–2410 (2016).Article 
+                    Google Scholar 
+                Esteva, A. et al. Dermatologist-level classification of skin cancer with deep neural networks. Nature 542, 115–118 (2017).Article 
+    CAS 
+                    Google Scholar 
+                Rajkomar, A. et al. Scalable and accurate deep learning with electronic health records. npj Digit. Med. 1, 18 (2018).Article 
+                    Google Scholar 
+                Rajkomar, A. et al. Automatically charting symptoms from patient-physician conversations using machine learning. JAMA Intern. Med. 179, 836–838 (2019).Article 
+                    Google Scholar 
+                Henry, K. E., Hager, D. N., Pronovost, P. J. & Saria, S. A targeted real-time early warning score (TREWScore) for septic shock. Sci. Transl. Med. 7, 299ra122 (2015).Article 
+                    Google Scholar 
+                Komorowski, M., Celi, L. A., Badawi, O., Gordon, A. C. & Faisal, A. A. The Artificial Intelligence Clinician learns optimal treatment strategies for sepsis in intensive care. Nat. Med. 24, 1716–1720 (2018).Article 
+    CAS 
+                    Google Scholar 
+                Abràmoff, M. D., Lavin, P. T., Birch, M., Shah, N. & Folk, J. C. Pivotal trial of an autonomous AI-based diagnostic system for detection of diabetic retinopathy in primary care offices. npj Digit. Med. 1, 39 (2018).Article 
+                    Google Scholar 
+                Iacobucci, G. Babylon Health holds talks with ‘significant’ number of NHS trusts. Brit. Med. J. 368, m266 (2020).Article 
+                    Google Scholar 
+                Hale, C. Medtronic to distribute Viz.ai’s stroke-spotting AI imaging software. Fierce Biotech (23 July 2019); https://www.fiercebiotech.com/medtech/medtronic-to-distribute-viz-ai-s-stroke-spotting-ai-imaging-softwareHassan, A. E. et al. Early experience utilizing artificial intelligence shows significant reduction in transfer times and length of stay in a hub and spoke model. Interv. Neuroradiol. 26, 615–622 (2020).Article 
+                    Google Scholar 
+                Ting, D. S. W. et al. Development and validation of a deep learning system for diabetic retinopathy and related eye diseases using retinal images from multiethnic populations with diabetes. JAMA 318, 2211–2223 (2017).Article 
+                    Google Scholar 
+                McKinney, S. M. et al. International evaluation of an AI system for breast cancer screening. Nature 577, 89–94 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Liu, Y. et al. A deep learning system for differential diagnosis of skin diseases. Nat. Med. 26, 900–908 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Seyyed-Kalantari, L., Liu, G., McDermott, M., Chen, I. Y. & Ghassemi, M. CheXclusion: fairness gaps in deep chest X-ray classifiers. Pac. Symp. Biocomput. 26, 232–243 (2021).
+                    Google Scholar 
+                Yu, K.-H., Beam, A. L. & Kohane, I. S. Artificial intelligence in healthcare. Nat. Biomed. Eng. 2, 719–731 (2018).Article 
+                    Google Scholar 
+                Esteva, A. et al. A guide to deep learning in healthcare. Nat. Med. 25, 24–29 (2019).Article 
+    CAS 
+                    Google Scholar 
+                Frid-Adar, M. et al. GAN-based synthetic medical image augmentation for increased CNN performance in liver lesion classification. Neurocomputing 321, 321–331 (2018).Article 
+                    Google Scholar 
+                Shin, H.-C. et al. Medical image synthesis for data augmentation and anonymization using generative adversarial networks. In Simulation and Synthesis in Medical Imaging SASHIMI 2018 (eds Gooya, A., Goksel, O., Oguz, I. & Burgos, N.) 1–11 (Springer Cham, 2018).Salehinejad, H., Valaee, S., Dowdell, T., Colak, E. & Barfett, J. Generalization of deep neural networks for chest pathology classification in X-rays using generative adversarial networks. In IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) 990–994 (ieeexplore.ieee.org, 2018).Zhang, Z., Yang, L. & Zheng, Y. Translating and segmenting multimodal medical volumes with cycle-and shape-consistency generative adversarial network. In Proceedings of IEEE/CVF Conference on Computer Vision and Pattern Recognition 9242–9251 (IEEE, 2018).Xu, F., Zhang, J., Shi, Y., Kang, K. & Yang, S. A fast low-rank matrix factorization method for dynamic magnetic resonance imaging restoration. In 5th International Conference on Big Data Computing and Communications (BIGCOM) 38–42 (2019).Goodfellow, I. J. et al. Generative adversarial networks. In Advances in Neural Information Processing Systems 27 (eds .Ghahramani, Z., Welling, M., Cortes, C., Lawrence, N. & Weinbergerm, K.Q.) Paper 1384 (Curran, 2014).Wang, Z., She, Q. & Ward, T. E. Generative adversarial networks in computer vision: a survey and taxonomy. ACM Comput. Surv. 54, 1–38 (2021).Article 
+                    Google Scholar 
+                Radford, A., Metz, L. & Chintala, S. Unsupervised representation learning with deep convolutional generative adversarial networks. Preprint at https://arxiv.org/abs/1511.06434v2 (2016).Denton, E. L., Chintala, S. & Fergus, R. Deep generative image models using a Laplacian pyramid of adversarial networks. In Advances in Neural Information Processing Systems 28 (eds Cortes, C., Lawrence, N., Lee, D., Sugiyama, M. & Garnett, R.) Paper 903 (Curran, 2015).Karras, T., Aila, T., Laine, S. & Lehtinen, J. Progressive growing of GANs for improved quality, stability, and variation. In International Conference on Learning Representations 2018 Paper 447 (ICLR, 2018).Mirza, M. & Osindero, S. Conditional generative adversarial nets. Preprint at https://arxiv.org/abs/1411.1784v1 (2014).Odena, A., Olah, C. & Shlens, J. Conditional image synthesis with auxiliary classifier GANs. In Proceedings of the 34th International Conference on Machine Learning (eds. Precup, D. & Teh, Y. W.) 2642–2651 (PMLR, 2017).Isola, P., Zhu, J.-Y., Zhou, T. & Efros, A. A. Image-to-image translation with conditional adversarial networks. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition 5967–5976 (2018).Zhang, H., Goodfellow, I., Metaxas, D. & Odena, A. Self-attention generative adversarial networks. In Proceedings of the 36th International Conference on Machine Learning (eds. Chaudhuri, K. & Salakhutdinov, R.) 7354–7363 (PMLR, 2019).Wu, Y., Ma, Y., Liu, J., Du, J. & Xing, L. Self-attention convolutional neural network for improved MR image reconstruction. Inf. Sci. 490, 317–328 (2019).Article 
+                    Google Scholar 
+                Brock, A., Donahue, J. & Simonyan, K. Large scale GAN training for high fidelity natural image synthesis. In International Conference on Learning Representations Paper 564 (ICLR, 2019).Arjovsky, M., Chintala, S. & Bottou, L. Wasserstein generative adversarial networks. In Proceedings of the 34th International Conference on Machine Learning (eds. Precup, D. & Teh, Y. W.) 214–223 (PMLR, 2017).Gulrajani, I., Ahmed, F., Arjovsky, M., Dumoulin, V. & Courville, A. C. Improved training of Wasserstein GANs. In Advances in Neural Information Processing Systems 30 (eds. Guyon, I. et al.) Paper 2945 (Curran, 2017).Hindupur, A. The-gan-zoo. https://github.com/hindupuravinash/the-gan-zoo (2018).Rajpurkar, P. et al. Deep learning for chest radiograph diagnosis: a retrospective comparison of the CheXNeXt algorithm to practicing radiologists. PLoS Med. 15, e1002686 (2018).Article 
+                    Google Scholar 
+                Ouyang, D. et al. Video-based AI for beat-to-beat assessment of cardiac function. Nature 580, 252–256 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Xue, Y., Xu, T., Zhang, H., Long, L. R. & Huang, X. SegAN: adversarial network with multi-scale L1 loss for medical image segmentation. Neuroinformatics 16, 383–392 (2018).Article 
+                    Google Scholar 
+                Haque, A., Milstein, A. & Fei-Fei, L. Illuminating the dark spaces of healthcare with ambient intelligence. Nature 585, 193–202 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Zech, J. R. et al. Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: a cross-sectional study. PLoS Med. 15, e1002683 (2018).Article 
+                    Google Scholar 
+                Zou, J. & Schiebinger, L. AI can be sexist and racist — it’s time to make it fair. Nature 559, 324–326 (2018).Article 
+    CAS 
+                    Google Scholar 
+                Perez, L. & Wang, J. The effectiveness of data augmentation in image classification using deep learning. Preprint at https://arxiv.org/abs/1712.04621v1 (2017).Madani, A., Moradi, M., Karargyris, A. & Syeda-Mahmood, T. Semi-supervised learning with generative adversarial networks for chest X-ray classification with ability of data domain adaptation. In IEEE 15th International Symposium on Biomedical Imaging (ISBI) 1038–1042 (IEEE, 2018).He, J. et al. The practical implementation of artificial intelligence technologies in medicine. Nat. Med. 25, 30–36 (2019).Article 
+    CAS 
+                    Google Scholar 
+                Kelly, C. J., Karthikesalingam, A., Suleyman, M., Corrado, G. & King, D. Key challenges for delivering clinical impact with artificial intelligence. BMC Med. 17, 195 (2019).Article 
+                    Google Scholar 
+                Rocher, L., Hendrickx, J. M. & de Montjoye, Y.-A. Estimating the success of re-identifications in incomplete datasets using generative models. Nat. Commun. 10, 3069 (2019).Article 
+                    Google Scholar 
+                Schwarz, C. G. et al. Identification of anonymous MRI research participants with face-recognition software. N. Engl. J. Med. 381, 1684–1686 (2019).Article 
+                    Google Scholar 
+                Chartsias, A., Joyce, T., Dharmakumar, R. & Tsaftaris, S. A. Adversarial image synthesis for unpaired multi-modal cardiac data. in Simulation and Synthesis in Medical Imaging (eds. Tsaftaris, S. A., Gooya, A., Frangi, A. F. & Prince, J. L.) 3–13 (Springer International Publishing, 2017).Emami, H., Dong, M., Nejad-Davarani, S. P. & Glide-Hurst, C. K. Generating synthetic CTs from magnetic resonance images using generative adversarial networks. Med. Phys. https://doi.org/10.1002/mp.13047 (2018).Jin, C.-B. et al. Deep CT to MR synthesis using paired and unpaired data. Sensors 19, 2361 (2019).Article 
+                    Google Scholar 
+                Bi, L., Kim, J., Kumar, A., Feng, D. & Fulham, M. In Molecular Imaging, Reconstruction and Analysis of Moving Body Organs, and Stroke Imaging and Treatment (eds. Cardoso, M. J. et al.) 43–51 (Springer International Publishing, 2017).Ben-Cohen, A. et al. Cross-modality synthesis from CT to PET using FCN and GAN networks for improved automated lesion detection. Eng. Appl. Artif. Intell. 78, 186–194 (2019).Armanious, K. et al. MedGAN: medical image translation using GANs. Comput. Med. Imaging Graph. 79, 101684 (2020).Article 
+                    Google Scholar 
+                Choi, H. & Lee, D. S. Alzheimer’s Disease Neuroimaging Initiative. Generation of structural MR images from amyloid PET: application to MR-less quantification. J. Nucl. Med. 59, 1111–1117 (2018).Article 
+    CAS 
+                    Google Scholar 
+                Wei, W. et al. Learning myelin content in multiple sclerosis from multimodal MRI through adversarial training. In Medical Image Computing and Computer Assisted Intervention — MICCAI 2018 (eds. Frangi, A. F., Schnabel, J. A., Davatzikos, C., Alberola-López, C. & Fichtinger, G.) 514–522 (Springer Cham, 2018).Pan, Y. et al. Synthesizing missing PET from MRI with cycle-consistent generative adversarial networks for Alzheimer’s disease diagnosis. In Medical Image Computing and Computer Assisted Intervention — MICCAI 2018 (eds. Frangi, A. F., Schnabel, J. A., Davatzikos, C., Alberola-López, C. & Fichtinger, G.) 455–463 (Springer Cham, 2018).Welander, P., Karlsson, S. & Eklund, A. Generative adversarial networks for image-to-image translation on multi-contrast MR images - a comparison of CycleGAN and UNIT. Preprint at https://arxiv.org/abs/1806.07777v1 (2018).Dar, S. U. H. et al. Image synthesis in multi-contrast MRI with conditional generative adversarial networks. IEEE Trans. Med. Imaging 38, 2375–2388 (2019).Zhu, J.-Y., Park, T., Isola, P. & Efros, A. A. Unpaired image-to-image translation using cycle-consistent adversarial networks. In 2017 IEEE International Conference on Computer Vision (ICCV) (IEEE, 2017); https://doi.org/10.1109/iccv.2017.244Maspero, M. et al. Dose evaluation of fast synthetic-CT generation using a generative adversarial network for general pelvis MR-only radiotherapy. Phys. Med. Biol. 63, 185001 (2018).Article 
+                    Google Scholar 
+                Olut, S., Sahin, Y.H., Demir, U., Unal, G. Generative adversarial training for MRA image synthesis using multi-contrast MRI. In PRedictive Intelligence in MEdicine. PRIME 2018. Lecture Notes in Computer Science (eds Rekik, I., Unal, G., Adeli, E. & Park, S.) (Springer Cham, 2018); https://doi.org/10.1007/978-3-030-00320-3_18Chen, R. J., Lu, M. Y., Chen, T. Y., Williamson, D. F. K. & Mahmood, F. Synthetic data in machine learning for medicine and healthcare. Nat. Biomed. Eng. 5, 493–497 (2021).Article 
+                    Google Scholar 
+                Kanakasabapathy, M. K. et al. Adaptive adversarial neural networks for the analysis of lossy and domain-shifted datasets of medical images. Nat. Biomed. Eng. 5, 571–585 (2021).Article 
+                    Google Scholar 
+                Bowles, C., Gunn, R., Hammers, A. & Rueckert, D. Modelling the progression of Alzheimer’s disease in MRI using generative adversarial networks. In Medical Imaging 2018: Image Processing (eds. Angelini, E. D. & Landman, B. A.) 397– 407 (International Society for Optics and Photonics, 2018).Ravi, D., Alexander, D.C., Oxtoby, N.P. & Alzheimer’s Disease Neuroimaging Initiative. Degenerative adversarial neuroImage nets: generating images that mimic disease progression. In Medical Image Computing and Computer Assisted Intervention — MICCAI 2019. Lecture Notes in Computer Science. (eds Shen, D. et al) 164–172 (Springer, 2019).Borji, A. Pros and cons of GAN evaluation measures. Comput. Vis. Image Underst. 179, 41–65 (2019).Article 
+                    Google Scholar 
+                Vincent, J. Nvidia uses AI to make it snow on streets that are always sunny. The Verge https://www.theverge.com/2017/12/5/16737260/ai-image-translation-nvidia-data-self-driving-cars (2017).Kairouz, P. et al. Advances and open problems in federated learning. Found. Trends Mach. Learn. https://doi.org/10.1561/2200000083 (2021)McMahan, B., Moore, E., Ramage, D., Hampson, S. & Aguera y Arcas, B. Communication-efficient learning of deep networks from decentralized data. In Proceedings of the 20th International Conference on Artificial Intelligence and Statistics (eds. Singh, A. & Zhu, J.) 1273–1282 (ML Research Press, 2017).Li, X. et al. Multi-site fMRI analysis using privacy-preserving federated learning and domain adaptation: ABIDE results. Med. Image Anal. 65, 101765 (2020).Article 
+                    Google Scholar 
+                Brisimi, T. S. et al. Federated learning of predictive models from federated Electronic Health Records. Int. J. Med. Inform. 112, 59–67 (2018).Article 
+                    Google Scholar 
+                Lee, J. et al. Privacy-preserving patient similarity learning in a federated environment: development and analysis. JMIR Med. Inform. 6, e20 (2018).Article 
+                    Google Scholar 
+                Dou, Q. et al. Federated deep learning for detecting COVID-19 lung abnormalities in CT: a privacy-preserving multinational validation study. npj Digit. Med. 4, 60 (2021).Article 
+                    Google Scholar 
+                Silva, S. et al. Federated learning in distributed medical databases: meta-analysis of large-scale subcortical brain data. In 2019 IEEE 16th International Symposium on Biomedical Imaging ISBI 2019 18822077 (IEEE, 2019).Sheller, M. J., Reina, G. A., Edwards, B., Martin, J. & Bakas, S. Multi-institutional deep learning modeling without sharing patient data: a feasibility study on brain tumor segmentation. Brainlesion 11383, 92–104 (2019).
+                    Google Scholar 
+                Sheller, M. J. et al. Federated learning in medicine: facilitating multi-institutional collaborations without sharing patient data. Sci. Rep. 10, 12598 (2020).Article 
+                    Google Scholar 
+                Sarma, K. V. et al. Federated learning improves site performance in multicenter deep learning without data sharing. J. Am. Med. Inform. Assoc. 28, 1259–1264 (2021).Article 
+                    Google Scholar 
+                Li, W. et al. Privacy-preserving federated brain tumour segmentation. In Machine Learning in Medical Imaging (eds. Suk, H.-I., Liu, M., Yan, P. & Lian, C.) 133–141 (Springer International Publishing, 2019).Shokri, R., Stronati, M., Song, C. & Shmatikov, V. Membership inference attacks against machine learning models. In IEEE Symposium on Security and Privacy SP 2017 3–18 (IEEE, 2017).Fredrikson, M., Jha, S. & Ristenpart, T. Model inversion attacks that exploit confidence information and basic countermeasures. In Proceedings of the 22nd ACM SIGSAC Conference on Computer and Communications Security 1322–1333 (Association for Computing Machinery, 2015).Zhang, C., Bengio, S., Hardt, M., Recht, B. & Vinyals, O. Understanding deep learning (still) requires rethinking generalization. Commun. ACM 64, 107–115 (2021).Article 
+                    Google Scholar 
+                Zhu, L., Liu, Z. & Han, S. Deep leakage from gradients. In Advances in Neural Information Processing Systems 32 (eds Wallach, H. et al.) Paper 8389 (Curran, 2019)Abadi, M. et al. Deep learning with differential privacy. In Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security 308–318 (Association for Computing Machinery, 2016).Brendan McMahan, H. et al. A general approach to adding differential privacy to iterative training procedures. Preprint at https://arxiv.org/abs/1812.06210v2 (2018).McMahan, H. B., Ramage, D., Talwar, K. & Zhang, L. Learning differentially private recurrent language models. In ICLR 2018 Sixth International Conference on Learning Representations Paper 504 (ICLR, 2018).Shokri, R. & Shmatikov, V. Privacy-preserving deep learning. In Proceedings of the 22nd ACM SIGSAC Conference on Computer and Communications Security 1310–1321 (Association for Computing Machinery, 2015).Lyu, M., Su, D. & Li, N. Understanding the sparse vector technique for differential privacy. Proc. VLDB Endow. 10, 637–648 (2017).Article 
+                    Google Scholar 
+                Hitaj, B., Ateniese, G. & Perez-Cruz, F. Deep models under the GAN: information leakage from collaborative deep learning. In Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security 603–618 (Association for Computing Machinery, 2017).Li, X., Huang, K., Yang, W., Wang, S. & Zhang, Z. On the convergence of FedAvg on Non-IID Data. In ICLR 2020 Eighth International Conference on Learning Representations Paper 261 (2020).Smith, V., Chiang, C.-K., Sanjabi, M. & Talwalkar, A. S. Federated multi-task learning. In Advances in Neural Information Processing Systems 30 (eds Guyon, I. et al.) Paper 2307 (NeuIPS, 2017).Xu, J. et al. Federated learning for healthcare informatics. J. Healthc. Inform. Res. 5, 1–19 (2021).Article 
+                    Google Scholar 
+                Huang, L. et al. LoAdaBoost: loss-based AdaBoost federated machine learning with reduced computational complexity on IID and non-IID intensive care data. PLoS ONE 15, e0230706 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Zhao, Y. et al. Federated learning with non-IID data. Preprint at https://arxiv.org/abs/1806.00582v1 (2018).Torres-Soto, J. & Ashley, E. A. Multi-task deep learning for cardiac rhythm detection in wearable devices. npj Digit. Med. 3, 116 (2020).Article 
+                    Google Scholar 
+                Turakhia, M. P. et al. Rationale and design of a large-scale, app-based study to identify cardiac arrhythmias using a smartwatch: The Apple Heart Study. Am. Heart J. 207, 66–75 (2019).Article 
+                    Google Scholar 
+                Synced. Apple reveals design of its on-device ML system for federated evaluation and tuning SyncedReview https://syncedreview.com/2021/02/19/apple-reveals-design-of-its-on-device-ml-system-for-federated-evaluation-and-tuning (2021).McMahan, B. & Ramage, D. Federated learning: collaborative machine learning without centralized training data Google AI Blog https://ai.googleblog.com/2017/04/federated-learning-collaborative.html (2017).Chen, Y., Qin, X., Wang, J., Yu, C. & Gao, W. FedHealth: a federated transfer learning framework for wearable healthcare. IEEE Intell. Syst. 35, 83–93 (2020).Article 
+                    Google Scholar 
+                Ramage, D. & Mazzocchi, S. Federated analytics: collaborative data science without data collection Google AI Blog https://ai.googleblog.com/2020/05/federated-analytics-collaborative-data.html (2020).Augenstein, S. et al. Generative models for effective ML on private, decentralized datasets. In ICLR 2020 Eighth International Conference on Learning Representations Paper 1448 (ICLR, 2020).Pati, S. et al. The federated tumor segmentation (FeTS) challenge. Preprint at https://arxiv.org/abs/2105.05874v2 (2021).Flores, M. Medical institutions collaborate to improve mammogram assessment AI with Nvidia Clara federated learning The AI Podcast https://blogs.nvidia.com/blog/2020/04/15/federated-learning-mammogram-assessment/ (2020).Kannan, A., Chen, K., Jaunzeikare, D. & Rajkomar, A. Semi-supervised learning for information extraction from dialogue. In Proc. Interspeech 2018 2077–2081 (ISCA, 2018); https://doi.org/10.21437/interspeech.2018-1318Chiu, C.-C. et al. Speech recognition for medical conversations. Preprint at https://arxiv.org/abs/1711.07274v2; https://doi.org/10.1093/jamia/ocx073 (2017).Si, Y., Wang, J., Xu, H. & Roberts, K. Enhancing clinical concept extraction with contextual embeddings. J. Am. Med. Inform. Assoc. 26, 1297–1304 (2019).Article 
+                    Google Scholar 
+                Shin, H.-C. et al. Learning to read chest X-rays: recurrent neural cascade model for automated image annotation. In 2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR) (IEEE, 2016); https://doi.org/10.1109/cvpr.2016.274Wang, X., Peng, Y., Lu, L., Lu, Z. & Summers, R. M. TieNet: text-image embedding network for common thorax disease classification and reporting in chest X-rays. In IEEE/CVF Conference on Computer Vision and Pattern Recognition 2018 (IEEE, 2018); https://doi.org/10.1109/cvpr.2018.00943Hochreiter, S. & Schmidhuber, J. Long short-term memory. Neural Comput. 9, 1735–1780 (1997).Article 
+    CAS 
+                    Google Scholar 
+                Cho, K. et al. Learning phrase representations using RNN encoder-decoder for statistical machine translation. In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP) (eds Moschitti, A., Pang, B. & Daelemans, W.) 1724–1734 (Association for Computational Linguistics, 2014).Lipton, Z. C., Kale, D. C., Elkan, C. & Wetzel, R. Learning to diagnose with LSTM recurrent neural networks. Preprint at https://arxiv.org/abs/1511.03677v7 (2015).Choi, E., Bahadori, M. T., Schuetz, A., Stewart, W. F. & Sun, J. Doctor AI: predicting clinical events via recurrent neural networks. JMLR Workshop Conf. Proc. 56, 301–318 (2016).
+                    Google Scholar 
+                Zhu, Paschalidis & Tahmasebi. Clinical concept extraction with contextual word embedding. Preprint at https://doi.org/10.48550/arXiv.1810.10566 (2018).Cho, K., van Merriënboer, B., Bahdanau, D. & Bengio, Y. On the properties of neural machine translation: encoder–decoder approaches. In Proceedings of SSST-8, Eighth Workshop on Syntax, Semantics and Structure in Statistical Translation (eds Wu, D., Carpuat, M., Carreras, X. & Vecchi, E. M.) 103–111 (Association for Computational Linguistics, 2014).Gehring, J., Auli, M., Grangier, D., Yarats, D. & Dauphin, Y. N. Convolutional sequence to sequence learning. In Proceedings of the 34th International Conference on Machine Learning (eds Precup, D. & Teh, Y. W.) 1243–1252 (PMLR, 2017).Vaswani, A. et al. Attention is all you need. In Advances in Neural Information Processing Systems 30 (eds Guyon, I. et al.) Paper 3058 (Curran, 2017).Bahdanau, D., Cho, K. H. & Bengio, Y. Neural machine translation by jointly learning to align and translate. In 3rd International Conference on Learning Representations ICLR 2015 (ICLR, 2015).Luong, T., Pham, H. & Manning, C. D. Effective approaches to attention-based neural machine translation. In Proceedings of the 2015 Conference on Empirical Methods in Natural Language Processing (eds Màrquez, L., Callison-Burch, C. & Su, J.) 1412–1421 (Association for Computational Linguistics, 2015); https://doi.org/10.18653/v1/d15-1166Sutskever, I., Vinyals, O. & Le, Q. V. Sequence to sequence learning with neural networks. In Advances in Neural Information Processing Systems 27 (eds Ghahramani, Z., Welling, M., Cortes, C., Lawrence, N. & Weinberger, K. Q.) Paper 1610 (Curran, 2014).Krizhevsky, A., Sutskever, I. & Hinton, G. E. in Advances in Neural Information Processing Systems 25 (eds Bartlett, P. et al.) 1097–1105 (Curran, 2012).Kiani, A. et al. Impact of a deep learning assistant on the histopathologic classification of liver cancer. npj Digit. Med. 3, 23 (2020).Article 
+                    Google Scholar 
+                Park, S.-M. et al. A mountable toilet system for personalized health monitoring via the analysis of excreta. Nat. Biomed. Eng. 4, 624–635 (2020).Article 
+                    Google Scholar 
+                Howard, J. & Ruder, S. Universal language model fine-tuning for text classification. In Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (eds Gurevych, I. & Miyao, Y.) 328–339 (Association for Computational Linguistics, 2018).Peters, M. E. et al. Deep contextualized word representations. In Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (eds Walker, M., Ji, H. & Stent, A.) 2227–2237 (Association for Computational Linguistics, 2018).Brown, T. et al. Language models are few-shot learners. In Advances in Neural Information Processing Systems 33 (eds. Larochelle, H., Ranzato, M., Hadsell, R., Balcan, M. F. & Lin, H.) 1877–1901 (Curran, 2020).Kenton, J. D. M.-W. C. & Toutanova, L. K. BERT: pre-training of deep bidirectional transformers for language understanding. in Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (eds Burstein, J., Doran, C. & Solorio, T.) 4171–4186 (Association for Computational Linguistics, 2019).Mikolov, T., Chen, K., Corrado, G. & Dean, J. Efficient estimation of word representations in vector space. Preprint at https://arxiv.org/abs/1301.3781v3 (2013).Pennington, J., Socher, R. & Manning, C. GloVe: global vectors for word representation. In Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (eds Moschitti, A., Pang, B., Daelemans, W.) 1532–1543 (Association for Computational Linguistics, 2014).Alsentzer, E. et al. Publicly available clinical BERT embeddings. In Proceedings of the 2nd Clinical Natural Language Processing Workshop (eds Rumshisky, A., Roberts, K., Bethard, S. & Naumann, T.) 72–78 (Association for Computational Linguistics, 2019).Huang, K., Altosaar, J. & Ranganath, R. ClinicalBERT: modeling clinical notes and predicting hospital readmission. Preprint at https://arxiv.org/abs/1904.05342v3 (2019).Peng, Y., Yan, S. & Lu, Z. Transfer learning in biomedical natural language processing: an evaluation of BERT and ELMo on ten benchmarking datasets. In Proceedings of the 18th BioNLP Workshop and Shared Task (eds Demner-Fushman, D., Bretonnel Cohen, K., Ananiadou, S. & Tsujii, J.) 58–65 (Association for Computational Linguistics, 2019).Johnson, A. E. W. et al. MIMIC-III, a freely accessible critical care database. Sci. Data 3, 160035 (2016).Article 
+    CAS 
+                    Google Scholar 
+                Sharir, O., Peleg, B. & Shoham, Y. The cost of training NLP models: a concise overview. Preprint at https://arxiv.org/abs/2004.08900v1 (2020).Lee, J. et al. BioBERT: a pre-trained biomedical language representation model for biomedical text mining. Bioinformatics 36, 1234–1240 (2020).CAS 
+                    Google Scholar 
+                Beltagy, I., Lo, K. & Cohan, A. SciBERT: A pretrained language model for scientific text. In Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (eds Inui, K., Jiang, J., Ng, V. & Wan, X.) 3615–3620 (Association for Computational Linguistics, 2019).Futoma, J., Morris, J. & Lucas, J. A comparison of models for predicting early hospital readmissions. J. Biomed. Inform. 56, 229–238 (2015).Article 
+                    Google Scholar 
+                Caruana, R. et al. Intelligible models for healthcare: predicting pneumonia risk and hospital 30-day readmission. In Proc. 21st ACM SIGKDD International Conference on Knowledge Discovery and Data Mining 1721–1730 (Association for Computing Machinery, 2015).Wagner, T. et al. Augmented curation of clinical notes from a massive EHR system reveals symptoms of impending COVID-19 diagnosis. Elife 9, e58227 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Eisman, A. S. et al. Extracting angina symptoms from clinical notes using pre-trained transformer architectures. AMIA Annu. Symp. Proc. 2020, 412–421 (American Medical Informatics Association, 2020).Smit, A. et al. Combining automatic labelers and expert annotations for accurate radiology report labeling using BERT. In Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (eds Webber, B., Cohn, T., He, Y. & Liu, Y.) 1500–1519 (Association for Computational Linguistics, 2020).Soni, S. & Roberts, K. Evaluation of dataset selection for pre-training and fine-tuning transformer language models for clinical question answering. In Proc. 12th Language Resources and Evaluation Conference 5532–5538 (European Language Resources Association, 2020).Sezgin, E., Huang, Y., Ramtekkar, U. & Lin, S. Readiness for voice assistants to support healthcare delivery during a health crisis and pandemic. npj Digit. Med. 3, 122 (2020).Article 
+                    Google Scholar 
+                Sakthive, V., Kesaven, M. P. V., William, J. M. & Kumar, S. K. M. Integrated platform and response system for healthcare using Alexa. Int. J. Commun. Computer Technol. 7, 14–22 (2019).
+                    Google Scholar 
+                Comstock, J. Buoy Health, CVS MinuteClinic partner to send patients from chatbot to care. mobihealthnews https://www.mobihealthnews.com/content/buoy-health-cvs-minuteclinic-partner-send-patients-chatbot-care (2018).Razzaki, S. et al. A comparative study of artificial intelligence and human doctors for the purpose of triage and diagnosis. Preprint at https://doi.org/10.48550/arXiv.1806.10698 (2018).Xiong, Y., Du, B. & Yan, P. Reinforced transformer for medical image captioning. In Machine Learning in Medical Imaging (eds. Suk, H.-I., Liu, M., Yan, P. & Lian, C.) 673–680 (Springer International Publishing, 2019).Meng, Y., Speier, W., Ong, M. K. & Arnold, C. W. Bidirectional representation learning from transformers using multimodal electronic health record data to predict depression. IEEE J. Biomed. Health Inform. 25, 3121–3129 (2021).Article 
+                    Google Scholar 
+                Choi, E. et al. Learning the graphical structure of electronic health records with graph convolutional transformer. Proc. Conf. AAAI Artif. Intell. 34, 606–613 (2020).
+                    Google Scholar 
+                Li, F. et al. Fine-tuning bidirectional encoder representations from transformers (BERT)–based models on large-scale electronic health record notes: an empirical study. JMIR Med. Inform. 7, e14830 (2019).Article 
+                    Google Scholar 
+                Rasmy, L., Xiang, Y., Xie, Z., Tao, C. & Zhi, D. Med-BERT: pretrained contextualized embeddings on large-scale structured electronic health records for disease prediction. npj Digital Medicine 4, 86 (2021).Article 
+                    Google Scholar 
+                Shang, J., Ma, T., Xiao, C. & Sun, J. Pre-training of graph augmented transformers for medication recommendation. in Proceedings of the Twenty-Eighth International Joint Conference on Artificial Intelligence (ed. Kraus, S.) 5953–5959 (International Joint Conferences on Artificial Intelligence Organization, 2019); https://doi.org/10.24963/ijcai.2019/825Li, Y. et al. BEHRT: transformer for electronic health records. Sci. Rep. 10, 7155 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Rao, S. et al. BEHRT-HF: an interpretable transformer-based, deep learning model for prediction of incident heart failure. Eur. Heart J. 41 (Suppl. 2), ehaa946.3553 (2020).Article 
+                    Google Scholar 
+                Qian, X. et al. Prospective assessment of breast cancer risk from multimodal multiview ultrasound images via clinically applicable deep learning. Nat. Biomed. Eng. 5, 522–532 (2021).Article 
+                    Google Scholar 
+                Xing, L., Giger, M. L. & Min, J. K. Artificial Intelligence in Medicine: Technical Basis and Clinical Applications (Academic Press, 2020).Reisman, M. EHRs: the challenge of making electronic data usable and interoperable. P. T. 42, 572–575 (2017).
+                    Google Scholar 
+                Cortés, R., Bonnaire, X., Marin, O. & Sens, P. Stream processing of healthcare sensor data: studying user traces to identify challenges from a big data perspective. Procedia Comput. Sci. 52, 1004–1009 (2015).Article 
+                    Google Scholar 
+                Zhang, F., Cao, J., Khan, S. U., Li, K. & Hwang, K. A task-level adaptive MapReduce framework for real-time streaming data in healthcare applications. Future Gener. Comput. Syst. 43–44, 149–160 (2015).Article 
+                    Google Scholar 
+                El Aboudi, N. & Benhlima, L. Big data management for healthcare systems: architecture, requirements, and implementation. Adv. Bioinformatics 2018, 4059018 (2018).Article 
+                    Google Scholar 
+                Ta, V.-D., Liu, C.-M. & Nkabinde, G. W. Big data stream computing in healthcare real-time analytics. In IEEE International Conference on Cloud Computing and Big Data Analysis (ICCCBDA) 37–42 (ieeexplore.ieee.org, 2016).Data-Driven Healthcare Organizations Use Big Data Analytics for Big Gains White Paper (IBM Software, 2017); https://silo.tips/download/ibm-software-white-paper-data-driven-healthcare-organizations-use-big-data-analyFutoma, J., Simons, M., Panch, T., Doshi-Velez, F. & Celi, L. A. The myth of generalisability in clinical research and machine learning in health care. Lancet Digit. Health 2, e489–e492 (2020).Article 
+                    Google Scholar 
+                Wang, X. et al. Inconsistent performance of deep learning models on mammogram classification. J. Am. Coll. Radiol. 17, 796–803 (2020).Article 
+                    Google Scholar 
+                Nestor, B., McDermott, M. B. A. & Boag, W. Feature robustness in non-stationary health records: caveats to deployable model performance in common clinical machine learning tasks. Preprint at https://doi.org/10.48550/arXiv.1908.00690 (2019).Wu, E. et al. How medical AI devices are evaluated: limitations and recommendations from an analysis of FDA approvals. Nat. Med. https://doi.org/10.1038/s41591-021-01312-x (2021).Barish, M., Bolourani, S., Lau, L. F., Shah, S. & Zanos, T. P. External validation demonstrates limited clinical utility of the interpretable mortality prediction model for patients with COVID-19. Nat. Mach. Intell. 3, 25–27 (2020).Article 
+                    Google Scholar 
+                Davis, S. E., Lasko, T. A., Chen, G., Siew, E. D. & Matheny, M. E. Calibration drift in regression and machine learning models for acute kidney injury. J. Am. Med. Inform. Assoc. 24, 1052–1061 (2017).Article 
+                    Google Scholar 
+                Wang, G. et al. A deep-learning pipeline for the diagnosis and discrimination of viral, non-viral and COVID-19 pneumonia from chest X-ray images. Nat. Biomed. Eng. 5, 509–521 (2021).Article 
+    CAS 
+                    Google Scholar 
+                Ning, W. et al. Open resource of clinical data from patients with pneumonia for the prediction of COVID-19 outcomes via deep learning. Nat. Biomed. Eng. 4, 1197–1207 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Koenecke, A. et al. Racial disparities in automated speech recognition. Proc. Natl Acad. Sci. USA 117, 7684–7689 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Abid, A., Farooqi, M. & Zou, J. Large language models associate muslims with violence. Nat. Mach. Intell. 3, 461–463 (2021).Article 
+                    Google Scholar 
+                Obermeyer, Z., Powers, B., Vogeli, C. & Mullainathan, S. Dissecting racial bias in an algorithm used to manage the health of populations. Science 366, 447–453 (2019).Article 
+    CAS 
+                    Google Scholar 
+                Adamson, A. S. & Smith, A. Machine learning and health care disparities in dermatology. JAMA Dermatol. 154, 1247–1248 (2018).Article 
+                    Google Scholar 
+                Han, S. S. et al. Classification of the clinical images for benign and malignant cutaneous tumors using a deep learning algorithm. J. Invest. Dermatol. 138, 1529–1538 (2018).Article 
+    CAS 
+                    Google Scholar 
+                Subbaswamy, A., Adams, R. & Saria, S. Evaluating model robustness and stability to dataset shift. In Proceedings of The 24th International Conference on Artificial Intelligence and Statistics (eds. Banerjee, A. & Fukumizu, K.) 2611–2619 (PMLR, 2021).Izzo, Z., Ying, L. & Zou, J. How to learn when data reacts to your model: performative gradient descent. In Proceedings of the 38th International Conference on Machine Learning (eds. Meila, M. & Zhang, T.) 4641–4650 (PMLR, 2021).Ghorbani, A., Kim, M. & Zou, J. A Distributional framework for data valuation. In Proceedings of the 37th International Conference on Machine Learning (eds. Iii, H. D. & Singh, A.) 3535–3544 (PMLR, 2020).Zhang, L., Deng, Z., Kawaguchi, K., Ghorbani, A. & Zou, J. How does mixup help with robustness and generalization? In International Conference on Learning Representations 2021 Paper 2273 (ICLR, 2021).Schulam, P. & Saria, S. Can you trust this prediction? Auditing pointwise reliability after learning. In Proceedings of the Twenty-Second International Conference on Artificial Intelligence and Statistics (eds. Chaudhuri, K. & Sugiyama, M.) 1022–1031 (PMLR, 2019).Liu, X. et al. Reporting guidelines for clinical trial reports for interventions involving artificial intelligence: the CONSORT-AI extension. Nat. Med. 26, 1364–1374 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Cruz Rivera, S. et al. Guidelines for clinical trial protocols for interventions involving artificial intelligence: the SPIRIT-AI extension. Nat. Med. 26, 1351–1363 (2020).Article 
+    CAS 
+                    Google Scholar 
+                Nayak, P. Understanding searches better than ever before. Google The Keyword https://blog.google/products/search/search-language-understanding-bert/ (2019).Baur, C., Albarqouni, S. & Navab, N. in OR 2.0 Context-Aware Operating Theaters, Computer Assisted Robotic Endoscopy, Clinical Image-Based Procedures, and Skin Image Analysis (eds Stoyanov, D. et al.) 260–267 (Springer International Publishing, 2018).Kang, E., Koo, H. J., Yang, D. H., Seo, J. B. & Ye, J. C. Cycle-consistent adversarial denoising network for multiphase coronary CT angiography. Med. Phys. 46, 550–562 (2019).Article 
+                    Google Scholar 
+                Vig, J. A multiscale visualization of attention in the transformer model. In Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics: System Demonstrations (Costa-jussà, M. R. & Alfonseca, E.) 37–42 (Association for Computational Linguistics, 2019).Download referencesAcknowledgementsThis work was supported in part by the National Institutes of Health via grants F30HL156478 (to A.Z.), R01CA227713 (to L.X.), R01CA256890 (to L.X.), P30AG059307 (to J.Z.), U01MH098953 (to J.Z.), P01HL141084 (to J.C.W), R01HL163680 (to J.C.W), R01HL130020 (to J.C.W), R01HL146690 (to J.C.W.) and R01HL126527 (to J.C.W.); by the National Science Foundation grant CAREER1942926 (to J.Z.); and by the American Heart Association grant 17MERIT3361009 (to J.C.W.). Figures were created with BioRender.com.Author informationAuthors and AffiliationsStanford Cardiovascular Institute, School of Medicine, Stanford University, Stanford, CA, USAAngela Zhang & Joseph C. WuDepartment of Genetics, School of Medicine, Stanford University, Stanford, CA, USAAngela ZhangGreenstone Biosciences, Palo Alto, CA, USAAngela Zhang & Joseph C. WuDepartment of Computer Science, Stanford University, Stanford, CA, USAAngela Zhang & James ZouDepartment of Radiation Oncology, School of Medicine, Stanford University, Stanford, CA, USALei XingDepartment of Biomedical Informatics, School of Medicine, Stanford University, Stanford, CA, USAJames ZouDepartments of Medicine, Division of Cardiovascular Medicine Stanford University, Stanford, CA, USAJoseph C. WuDepartment of Radiology, School of Medicine, Stanford University, Stanford, CA, USAJoseph C. WuAuthorsAngela ZhangView author publicationsYou can also search for this author in
+                        PubMed Google ScholarLei XingView author publicationsYou can also search for this author in
+                        PubMed Google ScholarJames ZouView author publicationsYou can also search for this author in
+                        PubMed Google ScholarJoseph C. WuView author publicationsYou can also search for this author in
+                        PubMed Google ScholarContributionsA.Z. and J.C.W. drafted the manuscript. All authors contributed to the conceptualization and editing of the manuscript.Corresponding authorsCorrespondence to
+                Angela Zhang or Joseph C. Wu.Ethics declarations
+Competing interests
+J.C.W. is a co-founder and scientific advisory board member of Greenstone Biosciences. The other authors declare no competing interests.
+Peer review
+Peer review information
+Nature Biomedical Engineering thanks Pearse Keane, Faisal Mahmood and Hadi Shafiee for their contribution to the peer review of this work.
+Additional informationPublisher’s note Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.Rights and permissionsReprints and permissionsAbout this articleCite this articleZhang, A., Xing, L., Zou, J. et al. Shifting machine learning for healthcare from development to deployment and from models to data.
+                    Nat. Biomed. Eng 6, 1330–1345 (2022). https://doi.org/10.1038/s41551-022-00898-yDownload citationReceived: 24 January 2021Accepted: 03 May 2022Published: 04 July 2022Issue Date: December 2022DOI: https://doi.org/10.1038/s41551-022-00898-yShare this articleAnyone you share the following link with will be able to read this content:Get shareable linkSorry, a shareable link is not currently available for this article.Copy to clipboard
+                            Provided by the Springer Nature SharedIt content-sharing initiative
+This article is cited by
+                                        DREAMER: a computational framework to evaluate readiness of datasets for machine learning
+Meysam AhangaranHanzhi ZhuVijaya B. Kolachalama
+BMC Medical Informatics and Decision Making (2024)
+                                        Predicting 3-month poor functional outcomes of acute ischemic stroke in young patients using machine learning
+Lamia MbarekSiding ChenYongjun Wang
+European Journal of Medical Research (2024)
+                                        Applying the UTAUT2 framework to patients’ attitudes toward healthcare task shifting with artificial intelligence
+Weiting HuangWen Chong OngJasper Tromp
+BMC Health Services Research (2024)
+                                        Leverage machine learning to identify key measures in hospital operations management: a retrospective study to explore feasibility and performance of four common algorithms
+Wantao ZhangYan ZhuHuajun Zhang
+BMC Medical Informatics and Decision Making (2024)
+                                        A multimodal machine learning model for the stratification of breast cancer risk
+Xuejun QianJing PeiDinggang Shen
+Nature Biomedical Engineering (2024)
+Access through your institution
+Buy or subscribe
+Access through your institution
+Change institution
+Buy or subscribe
+Associated content
+Collection
+Electrical Engineering
+Collection
+Machine learning in healthcare
+Advertisement
+Explore content
+                                    Research articles
+                                    Reviews & Analysis
+                                    News & Comment
+                                    Videos
+                                    Current issue
+                                    Collections
+Follow us on Facebook
+Follow us on Twitter
+Subscribe
+Sign up for alerts
+RSS feed
+About the journal
+                                    Aims & Scope
+                                    Journal Information
+                                    Journal Metrics
+                                    About the Editors
+                                    Research Cross-Journal Editorial Team
+                                    Reviews Cross-Journal Editorial Team
+                                    Our publishing models
+                                    Editorial Values Statement
+                                    Editorial Policies
+                                    Content Types
+                                    Contact
+Publish with us
+                                    Submission Guidelines
+                                    For Reviewers
+                                    Language editing services
+Submit manuscript
+Search
+Search articles by subject, keyword or author
+Show results from
+All journals
+This journal
+Search
+                Advanced search
+Quick links
+Explore articles by subject
+Find a job
+Guide to authors
+Editorial policies
+                    Nature Biomedical Engineering (Nat. Biomed. Eng)
+ISSN 2157-846X (online)
+nature.com sitemap
+About Nature Portfolio
+About us
+Press releases
+Press office
+Contact us
+Discover content
+Journals A-Z
+Articles by subject
+protocols.io
+Nature Index
+Publishing policies
+Nature portfolio policies
+Open access
+Author & Researcher services
+Reprints & permissions
+Research data
+Language editing
+Scientific editing
+Nature Masterclasses
+Research Solutions
+Libraries & institutions
+Librarian service & tools
+Librarian portal
+Open research
+Recommend to library
+Advertising & partnerships
+Advertising
+Partnerships & Services
+Media kits
+Branded
+                        content
+Professional development
+Nature Careers
+Nature 
+                        Conferences
+Regional websites
+Nature Africa
+Nature China
+Nature India
+Nature Italy
+Nature Japan
+Nature Middle East
+Privacy
+                Policy
+Use
+                of cookies
+Your privacy choices/Manage cookies
+Legal
+                notice
+Accessibility
+                statement
+Terms & Conditions
+Your US state privacy rights
+© 2025 Springer Nature Limited
+Close banner
+Close
+Sign up for the Nature Briefing: Translational Research newsletter — top stories in biotechnology, drug discovery and pharma.
+Email address
+Sign up
+I agree my information will be processed in accordance with the Nature and Springer Nature Limited Privacy Policy.
+Close banner
+Close
+Get what matters in translational research, free to your inbox weekly.
+Sign up for Nature Briefing: Translational Research

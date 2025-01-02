@@ -1,0 +1,21 @@
+ | ANLIzing the Adversarial Natural Language Inference Dataset
+    |Society for Computation in Linguistics 
+Paper
+ANLIzing the Adversarial Natural Language Inference Dataset
+    Authors:
+Adina Williams
+(Facebook Artificial Intelligence Research)
+, Tristan Thrush
+(Facebook Artificial Intelligence Research)
+, Douwe Kiela
+(Facebook Artificial Intelligence Research)
+Abstract
+We perform an in-depth error analysis of the Adversarial NLI (ANLI) dataset, a recently introduced large-scale human-and-model-in-the-loop natural language inference dataset collected dynamically over multiple rounds. We propose a fine-grained annotation scheme for the different aspects of inference responsible for the gold classification labels, and use it to hand-code the ANLI development sets in their entirety. We use these annotations to answer a variety of important questions: which models have the highest performance on each inference type, which inference types are most common, and which types are the most challenging for state-of-the-art models? We hope our annotations will enable more fine-grained evaluation of NLI models, and provide a deeper understanding of where models fail (and succeed). Both insights can guide us in training stronger models going forward.
+Keywords: natural language inference, natural language understanding, neural networks, corpora, machine learning, annotation, artificial neural networks
+How to Cite:
+    Williams, A.
+, Thrush, T.
+& Kiela, D.
+(2022) “ANLIzing the Adversarial Natural Language Inference Dataset”,
+Society for Computation in Linguistics. 5(1).
+doi: https://doi.org/10.7275/gatd-1283
