@@ -1,6 +1,6 @@
 "use client";
 import { Handle, Position } from "@xyflow/react";
-
+import ReactMarkdown from "react-markdown";
 import React from "react";
 
 const CustomNode = ({
@@ -8,6 +8,7 @@ const CustomNode = ({
   selected,
 }: {
   data: {
+    title?: string;
     label: string;
     backgroundColor?: string;
     borderColor?: string;
@@ -34,10 +35,33 @@ const CustomNode = ({
         <Handle type="target" position={Position.Top} className="w-2 h-2" />
         <div className="flex items-center">
           <div
-            className="w-full whitespace-pre-wrap break-words"
+            className="w-full whitespace-pre-wrap break-words flex flex-col gap-2"
             style={{ fontSize: data.fontSize || "0.5rem" }}
           >
-            {data.label}
+            {data.title && (
+              <span
+                className="font-semibold"
+                style={{ fontSize: data.fontSize || "0.5rem" }}
+              >
+                {data.title}
+              </span>
+            )}
+            <ReactMarkdown
+              components={{
+                a: ({ node, ...props }) => (
+                  <a
+                    {...props}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log("Clicked link:", props.href);
+                    }}
+                    className="text-blue-500 hover:underline"
+                  />
+                ),
+              }}
+            >
+              {data.label}
+            </ReactMarkdown>
           </div>
         </div>
         <Handle type="source" position={Position.Bottom} className="w-2 h-2" />

@@ -29,7 +29,7 @@ if __name__ == "__main__":
     # Loop through specified range of pages
     pages_dir = Path("pages_content")
     start_page = 1  # Define your start page
-    end_page = 11  # Define your end page
+    end_page = 1 # Define your end page
     
     for page_num in range(start_page, end_page + 1):
         page_file = pages_dir / f"page_{page_num}.json"

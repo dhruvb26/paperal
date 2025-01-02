@@ -1,16 +1,22 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { libraryTable } from "@/db/schema";
-import { eq, sql, and } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { auth } from "@clerk/nextjs/server";
 
-export async function POST(request: Request) {
+export async function GET(req: NextRequest) {
   try {
     const { userId } = await auth();
-    const { href } = (await request.json()) as { href: string };
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const pathname = req.nextUrl.pathname;
+    const fileUrl = decodeURIComponent(pathname.split("/").pop() || "");
 
     const document = await db.query.libraryTable.findFirst({
-      where: sql`${libraryTable.metadata}->>'fileUrl' = ${href}`,
+      where: eq(sql`${libraryTable.metadata}->>'fileUrl'`, fileUrl),
     });
 
     if (!document) {
@@ -19,13 +25,15 @@ export async function POST(request: Request) {
         { status: 404 }
       );
     }
-
     const isInLibrary = userId && document.userId === userId;
 
-    return NextResponse.json({
-      ...document,
-      isInLibrary,
-    });
+    return NextResponse.json(
+      {
+        ...document,
+        isInLibrary,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching document:", error);
     return NextResponse.json(

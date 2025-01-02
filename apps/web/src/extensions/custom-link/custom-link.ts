@@ -73,10 +73,8 @@ export const CustomLink = Link.extend({
               window.document.addEventListener("click", closePopover);
             }, 0);
 
-            // Fetch document data with the correct ID
-            fetch(`/api/library/documents/doc`, {
-              method: "POST",
-              body: JSON.stringify({ href: attrs.href }),
+            fetch(`/api/library/${encodeURIComponent(attrs.href)}`, {
+              method: "GET",
             })
               .then((response) => {
                 if (!response.ok) {

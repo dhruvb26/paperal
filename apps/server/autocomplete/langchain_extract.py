@@ -54,7 +54,41 @@ def render_page(doc_list: list, page_number: int, save_to_file=False) -> None:
     page_docs = [
         doc for doc in doc_list if doc.metadata.get("page_number") == page_number
     ]
+    
+    # Get the page as a PIL Image
+    pix = pdf_page.get_pixmap()
+    pil_image = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+
+    # Extract images from green boxes
+    if save_to_file:
+        os.makedirs("extracted_images", exist_ok=True)
+        for idx, doc in enumerate(page_docs):
+            if doc.metadata["category"] == "Image":
+                points = doc.metadata["coordinates"]["points"]
+                layout_width = doc.metadata["coordinates"]["layout_width"]
+                layout_height = doc.metadata["coordinates"]["layout_height"]
+                
+                # Scale the points to match the actual image dimensions
+                scaled_points = [
+                    (int(x * pix.width / layout_width), 
+                     int(y * pix.height / layout_height))
+                    for x, y in points
+                ]
+                
+                # Get bounding box coordinates
+                left = min(p[0] for p in scaled_points)
+                top = min(p[1] for p in scaled_points)
+                right = max(p[0] for p in scaled_points)
+                bottom = max(p[1] for p in scaled_points)
+                
+                # Crop the image
+                cropped_image = pil_image.crop((left, top, right, bottom))
+                # Save the cropped image
+                cropped_image.save(f"extracted_images/page_{page_number}_image_{idx}.png")
+
     segments = [doc.metadata for doc in page_docs]
+
+    plot_pdf_with_boxes(pdf_page, segments)
 
     if save_to_file:
         # Create directories if they don't exist
@@ -82,8 +116,10 @@ for page in loader.lazy_load():
     pages.append(page)
 
 # Replace single render_page call with loop through all pages
-for page_num in range(1, total_pages + 1):
-    render_page(pages, page_num, save_to_file=True)
+# for page_num in range(1, total_pages + 1):
+#     render_page(pages, page_num, save_to_file=True)
+
+render_page(pages, 2, save_to_file=True)
 
 end_time = time.time()
 execution_time = end_time - start_time

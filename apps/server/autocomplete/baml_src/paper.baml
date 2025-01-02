@@ -7,6 +7,7 @@ class Section {
     title string
     content string
     references CitationObject[]
+    is_finished bool
 }
 
 class Page {
@@ -18,13 +19,15 @@ function ExtractPaperContent(references: string, page_content: string[]) -> Page
 
     client "openai/gpt-4o"  
     prompt #"
-        Extract the sections and unique in-text references from the paper. Make sure to only include the unique references. Also, map the references to the full-citation index from the list below:
-
-        If a section has no title, understand the section and give it a title accordingly.
+        Extract the sections and unique in-text references that section from the content below. If the section is not finished, set the is_finished flag to false. Section
+        is considered finished if the title of the subsequent section is found. Also, map the references to the full-citation index from the list below:
 
         {{ references }}
   
-        Make sure to include the full content of the section in the output. 
+        Make sure to parse the entire content without changing or missing any information. 
+
+        The titles of the paper are Abstract, Introduction, Background and Baselines. 
+        If a title is not found, don't include it in the output. 
 
         {{ page_content }}
 

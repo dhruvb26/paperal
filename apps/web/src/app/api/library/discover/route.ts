@@ -16,7 +16,7 @@ export async function GET() {
     const documents = await db.query.libraryTable.findMany({
       where: or(eq(libraryTable.userId, userId), isNull(libraryTable.userId)),
     });
-    return NextResponse.json(documents);
+    return NextResponse.json({ documents }, { status: 200 });
   } catch (error) {
     console.error("Error fetching discover documents:", error);
     return NextResponse.json(

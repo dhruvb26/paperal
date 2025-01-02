@@ -50,6 +50,29 @@ class BamlAsyncClient:
 
 
     
+    async def ExtractNewPaperContent(
+        self,
+        previous_section: str,references: str,page_content: List[str],
+        baml_options: BamlCallOptions = {},
+    ) -> types.NewPage:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = await self.__runtime.call_function(
+        "ExtractNewPaperContent",
+        {
+          "previous_section": previous_section,"references": references,"page_content": page_content,
+        },
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+      return cast(types.NewPage, raw.cast_to(types, types))
+    
     async def ExtractPaper(
         self,
         paper: str,
@@ -129,6 +152,38 @@ class BamlStreamClient:
       self.__runtime = runtime
       self.__ctx_manager = ctx_manager
 
+    
+    def ExtractNewPaperContent(
+        self,
+        previous_section: str,references: str,page_content: List[str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[partial_types.NewPage, types.NewPage]:
+      __tb__ = baml_options.get("tb", None)
+      if __tb__ is not None:
+        tb = __tb__._tb # type: ignore (we know how to use this private attribute)
+      else:
+        tb = None
+      __cr__ = baml_options.get("client_registry", None)
+
+      raw = self.__runtime.stream_function(
+        "ExtractNewPaperContent",
+        {
+          "previous_section": previous_section,
+          "references": references,
+          "page_content": page_content,
+        },
+        None,
+        self.__ctx_manager.get(),
+        tb,
+        __cr__,
+      )
+
+      return baml_py.BamlStream[partial_types.NewPage, types.NewPage](
+        raw,
+        lambda x: cast(partial_types.NewPage, x.cast_to(types, partial_types)),
+        lambda x: cast(types.NewPage, x.cast_to(types, types)),
+        self.__ctx_manager.get(),
+      )
     
     def ExtractPaper(
         self,

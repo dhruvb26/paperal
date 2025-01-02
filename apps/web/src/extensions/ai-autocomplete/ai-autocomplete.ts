@@ -1,6 +1,7 @@
 import { Node } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
+import axios from "axios";
 
 function debounce<T extends (...args: any[]) => any>(
   callback: T,
@@ -71,14 +72,11 @@ export const AiAutocompleteExtension = Node.create<
         try {
           const pathDocumentId = window.location.pathname.split("/editor/")[1];
 
-          const suggestion = await fetch("/api/suggest", {
-            method: "POST",
-            body: JSON.stringify({
-              previousText,
-              documentId: pathDocumentId,
-            }),
+          const suggestion = await axios.post("/api/suggest", {
+            previousText,
+            documentId: pathDocumentId,
           });
-          const data = (await suggestion.json()) as CallbackInput;
+          const data = suggestion.data as CallbackInput;
           console.log(data);
           cb(data.text, data);
         } catch (error) {

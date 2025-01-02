@@ -10,6 +10,7 @@ import React, {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Loader } from "@/components/ui/loader";
 import { LibraryDocument } from "./index";
+import axios from "axios";
 
 interface MentionListProps {
   items: Array<LibraryDocument>;
@@ -100,9 +101,9 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
     const fetchDiscoverItems = async () => {
       setIsDiscoverLoading(true);
       try {
-        const response = await fetch("/api/library/discover");
-        const data = (await response.json()) as LibraryDocument[];
-        setDiscoverItems(data);
+        const response = await axios.get("/api/library/discover");
+        const { documents } = response.data;
+        setDiscoverItems(documents);
       } catch (error) {
         console.error("Error fetching discover items:", error);
       } finally {
@@ -113,9 +114,9 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
     const fetchLibraryItems = async () => {
       setIsLibraryLoading(true);
       try {
-        const response = await fetch("/api/library/documents");
-        const data = (await response.json()) as LibraryDocument[];
-        setLibraryItems(data);
+        const response = await axios.get("/api/library/all");
+        const { documents } = response.data;
+        setLibraryItems(documents);
       } catch (error) {
         console.error("Error fetching library items:", error);
       } finally {
