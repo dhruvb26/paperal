@@ -63,13 +63,13 @@ def getURL(research_sentence: str) -> list:
     url_list = []
 
     # Search parameters
-    query = f"peer reviewed papers on {research_topic}"
+    query = f"peer reviewed papers on {research_topic} filetype:pdf"
     search_params = {
         "query": query,
-        "max_results": 15,
+        "max_results": 20,
         "exclude_domains": ["reddit.com", "wikipedia.org", "ieeexplore.ieee.org/"],
         # some other good domains
-        "include_domains": ["arxiv.org", "aclanthology.org"],
+        # "include_domains": ["arxiv.org", "aclanthology.org"],
         "search_depth": "advanced",
         "filter_language": "en",
     }

@@ -22,7 +22,7 @@ function debounce<T extends (...args: any[]) => any>(
       }, delay);
     }).catch((error) => {
       console.error("Error in debounced function:", error);
-      throw error; // Re-throw the error if you want it to propagate
+      throw error;
     });
   };
 }
@@ -77,10 +77,8 @@ export const AiAutocompleteExtension = Node.create<
             documentId: pathDocumentId,
           });
           const data = suggestion.data as CallbackInput;
-          console.log(data);
           cb(data.text, data);
         } catch (error) {
-          console.error(error);
           cb(null);
         }
       },
@@ -96,7 +94,6 @@ export const AiAutocompleteExtension = Node.create<
           },
           apply(tr, oldValue) {
             if (tr.getMeta(pluginKey)) {
-              // Update the decoration state based on the async data
               const { decorations } = tr.getMeta(pluginKey);
               return decorations;
             }

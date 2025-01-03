@@ -1,0 +1,14 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "khoj-app"
+main = ".open-next/worker.js"
+
+compatibility_date = "2024-12-20"
+compatibility_flags = ["nodejs_compat"]
+
+# Assets used for files and cache priming.
+assets = { directory = ".open-next/assets", binding = "ASSETS" }
+
+# Add these for monorepo support
+[build]
+command = "pnpm build"  # or your build command
+watch_dir = "src"       # only watch the app source directory

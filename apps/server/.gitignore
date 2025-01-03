@@ -169,3 +169,8 @@ env/
 .env/
 
 load.py
+
+pages_content/
+pages_metadata/
+extracted_images/
+*.pdf

@@ -108,7 +108,7 @@ def render_page(doc_list: list, page_number: int, save_to_file=False) -> None:
             json.dump([doc.metadata for doc in page_docs], f)
 
 
-file_path = "Removed Document (1).pdf"
+file_path = "2104.10706.pdf"
 pdf_document = fitz.open(file_path)
 total_pages = pdf_document.page_count
 pdf_document.close()
@@ -125,7 +125,7 @@ for page in loader.lazy_load():
 # for page_num in range(1, total_pages + 1):
 #     render_page(pages, page_num, save_to_file=True)
 
-render_page(pages, 2, save_to_file=True)
+render_page(pages, 2, save_to_file=False)
 
 end_time = time.time()
 execution_time = end_time - start_time
