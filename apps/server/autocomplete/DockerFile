@@ -1,2 +1,2 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.12
-COPY ./autocomplete /app
+COPY ./src /app
