@@ -4,6 +4,10 @@ import logging
 from models.requests import SentenceRequest
 from utils.markdown import json_to_markdown
 from agents.generate import generate_ai_sentence, generate_referenced_sentence
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter()
 
@@ -35,7 +39,7 @@ async def generate_sentence(request: SentenceRequest):
     sentence = {}
     for doc in ai_generated.get("similar_documents", []):
 
-        if doc["score"] > 0.0196078431372549:
+        if doc["score"] > float(os.getenv("QUERY_THRESHOLD")):
             sentence = generate_referenced_sentence(
                 json_text, request.heading, doc["content"]
             )
