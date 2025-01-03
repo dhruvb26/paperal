@@ -7,6 +7,10 @@ from agents.generate import generate_ai_sentence, generate_referenced_sentence
 
 router = APIRouter()
 
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
 
 @router.post("/generate")
 async def generate_sentence(request: SentenceRequest):
@@ -30,8 +34,8 @@ async def generate_sentence(request: SentenceRequest):
 
     sentence = {}
     for doc in ai_generated.get("similar_documents", []):
-        print(doc["score"])
-        if doc["score"] > 0.0196078:
+
+        if doc["score"] > 0.0196078431372549:
             sentence = generate_referenced_sentence(
                 json_text, request.heading, doc["content"]
             )

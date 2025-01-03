@@ -6,7 +6,9 @@ from database import query_vector_store
 from utils.text import sanitize_text
 import baml_connect.baml_main as baml_main
 
-logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 async def ExtractPaperAgent(text: str) -> str:
@@ -80,7 +82,6 @@ async def find_similar_documents(
     """
 
     generated_question = await generate_question_for_RAG(generated_sentence)
-    print(generated_question)
     global last_used_document_source
 
     try:
@@ -264,7 +265,6 @@ def generate_referenced_sentence(
                     "role": "user",
                     "content": f"Here is the previous content of the paper:\n"
                     f"<previous_content>{previous_text}</previous_content>",
-                    
                 },
             ],
         )
