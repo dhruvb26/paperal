@@ -177,15 +177,23 @@ async def generate_ai_sentence(
     """
     try:
         context = f"""
-        You are an expert autocomplete writer, writing a paper on the topic - {heading}.
+        You are an expert academic writer tasked with generating the next sentence for a research paper. Your goal is to produce a single, coherent sentence that logically follows the previous content and fits seamlessly into the paper's structure.
 
-        Your task is to first analyze the text provided and 
-        then understand what section of the paper you are writing in.
+        Here is the heading of the paper:
+        <paper_heading>
+        {heading}
+        </paper_heading>
 
+        Please follow these steps to generate the next sentence:
 
-        Then, write a sentence that flows logically with the previous content given the user query.
-
-        The sentence should be between 20 to 25 words. It should be grammatically correct and make sense in the context of the current given text.
+        1. Analyze the paper heading and previous content to understand the context and current section of the paper.
+        2. Consider how the next sentence should logically flow from the existing content.
+        3. You will recieve the previous content of the paper in <previous_content> tags.
+        3. Generate a sentence that meets the following criteria:
+        - Contains between 20 to 25 words
+        - Is grammatically correct
+        - Fits coherently with the previous content and overall paper structure
+        - Advances the argument or discussion in a meaningful way
         """
 
         client = OpenAI()
@@ -195,7 +203,8 @@ async def generate_ai_sentence(
                 {"role": "system", "content": context},
                 {
                     "role": "user",
-                    "content": f"Here is the previous content of the paper: {previous_text}",
+                    "content": f"Here is the previous content of the paper:\n"
+                    f"<previous_content>{previous_text}</previous_content>",
                 },
             ],
         )
@@ -219,22 +228,31 @@ def generate_referenced_sentence(
     """
     try:
         logging.info("Generating referenced sentence...")
-        print(paper_content)
 
         prompt = f"""
-        You are an expert autocomplete writer, writing a paper on the topic - {heading}.
+        You are an expert academic writer tasked with generating the next sentence for a research paper. Your goal is to produce a single, coherent sentence that logically follows the previous content and fits seamlessly into the paper's structure.
 
-        Your task is to first analyze the previous text of the paper provided and 
-        then understand what section of the paper you are writing in.
+        Here is the heading of the paper:
+        <paper_heading>
+        {heading}
+        </paper_heading>
 
-        Here is the previous text of the paper: {previous_text}
+        Here is the context to use: 
+        <context>
+        {paper_content}
+        </context>
 
-        Then, write a complete sentence that flows logically with the previous content.
+        Please follow these steps to generate the next sentence:
 
-        Use the information from the context provided to generate the sentence. Only use this information to take insights from the context.
-        Here is the context: {paper_content}
-
-        The sentence should be between 20 to 25 words. It should be grammatically correct and make sense in the context of the current given text.
+        1. Analyze the paper heading and previous content to understand the context and current section of the paper.
+        2. Consider how the next sentence should logically flow from the existing content.
+        3. You will recieve the previous content of the paper in <previous_content> tags.
+        4. If the <context> includes an in-text citation, don't include it in the final response.
+        3. Generate a sentence that meets the following criteria:
+        - Contains between 20 to 25 words
+        - Is grammatically correct
+        - Fits coherently with the previous content and overall paper structure
+        - Advances the argument or discussion in a meaningful way
         """
 
         client = OpenAI()
@@ -244,7 +262,9 @@ def generate_referenced_sentence(
                 {"role": "system", "content": prompt},
                 {
                     "role": "user",
-                    "content": f"Here is the previous text of the paper: {previous_text}",
+                    "content": f"Here is the previous content of the paper:\n"
+                    f"<previous_content>{previous_text}</previous_content>",
+                    
                 },
             ],
         )

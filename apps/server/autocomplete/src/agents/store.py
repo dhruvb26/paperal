@@ -59,7 +59,7 @@ async def StoreResearchPaperAgent(
                         page_count = check_pdf_pages(pdf_content)
 
                         # Skip if PDF is invalid or too long
-                        if not (0 < page_count < 30):
+                        if not (0 < page_count <= 30):
                             logging.warning(
                                 f"Skipping PDF with {page_count} pages: {url}"
                             )
