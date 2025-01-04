@@ -1,14 +1,11 @@
-import asyncio
 import io
 import logging
 import os
 from typing import Optional
 from functools import lru_cache
-import aiohttp
 from utils.pdf_pages import check_pdf_pages
 import fitz
 from langchain.schema import Document
-from langchain_openai import OpenAIEmbeddings
 from supabase.client import create_client
 import database
 from agents.generate import ExtractPaperAgent, generate_in_text_citation

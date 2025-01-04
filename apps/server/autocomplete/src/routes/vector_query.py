@@ -4,8 +4,7 @@ import os
 from supabase.client import create_client
 import logging
 from openai import OpenAI
-from typing import List
-from langchain.schema import Document
+
 
 router = APIRouter()
 

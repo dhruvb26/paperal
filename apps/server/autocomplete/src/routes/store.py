@@ -2,7 +2,6 @@ from models.requests import StoreResearchRequest
 from agents.store import StoreResearchPaperAgent
 from fastapi import APIRouter, BackgroundTasks
 import logging
-import asyncio
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True
