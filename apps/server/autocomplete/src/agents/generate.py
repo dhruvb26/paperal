@@ -139,7 +139,7 @@ async def generate_question_for_RAG(text: str, heading: str):
     """
     client = OpenAI()
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": context},
             {
@@ -186,7 +186,7 @@ async def generate_ai_sentence(
 
         client = OpenAI()
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": context},
                 {
@@ -245,7 +245,7 @@ def generate_referenced_sentence(
 
         client = OpenAI()
         response = client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": prompt},
                 {
