@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-import json
+import orjson as json
 import logging
 from models.requests import SentenceRequest
 from utils.markdown import json_to_markdown
@@ -12,7 +12,7 @@ load_dotenv()
 router = APIRouter()
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True
 )
 
 
@@ -38,7 +38,6 @@ async def generate_sentence(request: SentenceRequest):
 
     sentence = {}
     for doc in ai_generated.get("similar_documents", []):
-
         if doc["score"] > float(os.getenv("QUERY_THRESHOLD")):
             sentence = generate_referenced_sentence(
                 json_text, request.heading, doc["content"]

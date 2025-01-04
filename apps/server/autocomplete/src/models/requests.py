@@ -12,3 +12,4 @@ class SentenceRequest(BaseModel):
 class StoreResearchRequest(BaseModel):
     research_urls: list[str]
     user_id: Optional[str] = None
+    is_public: Optional[bool] = False

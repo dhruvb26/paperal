@@ -3,12 +3,17 @@ from typing import Optional
 import tiktoken
 from openai import OpenAI
 from database import query_vector_store
-from utils.text import sanitize_text
 import baml_connect.baml_main as baml_main
+from functools import lru_cache
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
+
+@lru_cache(maxsize=1)
+def get_tokenizer():
+    return tiktoken.get_encoding("cl100k_base")
 
 
 async def ExtractPaperAgent(text: str) -> str:
@@ -16,15 +21,13 @@ async def ExtractPaperAgent(text: str) -> str:
     Extracts text from a PDF file and processes it for further use.
     """
     try:
-        logging.info("Extracting text from PDF...")
-        tokenizer = tiktoken.get_encoding("cl100k_base")
+        tokenizer = get_tokenizer()
 
         tokens = tokenizer.encode(text)
         truncated_tokens = tokens[:1000]
         truncated_text = tokenizer.decode(truncated_tokens)
-        sanitized_text = sanitize_text(truncated_text)
         logging.info("Getting response from baml_main...")
-        response = baml_main.example(sanitized_text)
+        response = baml_main.example(truncated_text)
         return response
     except Exception as e:
         logging.error(f"Error in ExtractPaperAgent: {e}")
@@ -75,80 +78,63 @@ last_used_document_source = None
 
 
 async def find_similar_documents(
-    generated_sentence: str, user_id: Optional[str] = None
+    generated_sentence: str, heading: str, user_id: Optional[str] = None
 ) -> list:
     """
     Queries the vector database to find documents similar to the generated sentence.
     """
-
-    generated_question = await generate_question_for_RAG(generated_sentence)
     global last_used_document_source
 
     try:
-
+        generated_question = await generate_question_for_RAG(
+            generated_sentence, heading
+        )
         matched_docs = query_vector_store(generated_question)
-        # Filter documents based on user_id and last used document
-        if user_id:
-            filtered_docs = [
-                doc
-                for doc in matched_docs.data
-                if doc.get("metadata").get("user_id") in {user_id, None}
-                and doc.get("metadata").get("library_id") != last_used_document_source
-            ]
-        else:
-            filtered_docs = [
-                doc
-                for doc in matched_docs.data
-                if doc.get("metadata").get("user_id") is None
-                and doc.get("metadata").get("library_id") != last_used_document_source
-            ]
+        # Early return if no matches
+        if not matched_docs.data:
+            return []
 
-        # If no documents found after filtering, remove the last_used_document constraint
-        if not filtered_docs:
-            if user_id:
-                filtered_docs = [
-                    doc
-                    for doc in matched_docs.data
-                    if doc.get("metadata").get("user_id") in {user_id, None}
-                ]
-            else:
-                filtered_docs = [
-                    doc
-                    for doc in matched_docs.data
-                    if doc.get("metadata").get("user_id") is None
-                ]
+        # Use list comprehension instead of multiple loops
+        filtered_docs = [
+            doc
+            for doc in matched_docs.data
+            if (user_id is None and doc.get("metadata", {}).get("user_id") is None)
+            or (user_id and doc.get("metadata", {}).get("user_id") in {user_id, None})
+        ]
 
-        results = []
-        for doc in filtered_docs:
-            results.append(
-                {
-                    "content": str(doc["content"]),
-                    "score": float(doc["similarity"]),
-                    "metadata": {
-                        "author": str(doc["metadata"]["author"]),
-                        "title": str(doc["metadata"]["title"]),
-                        "url": str(doc["metadata"]["source"]),
-                        "library_id": str(doc["metadata"]["library_id"]),
-                    },
-                }
-            )
+        # Update last used document if we have results
+        if filtered_docs:
+            last_used_document_source = filtered_docs[0]["metadata"]["library_id"]
 
-        if results:
-            last_used_document_source = results[0]["metadata"]["library_id"]
+        # Create results in a single pass
+        results = [
+            {
+                "content": str(doc["content"]),
+                "score": float(doc["similarity"]),
+                "metadata": {
+                    "author": str(doc["metadata"]["author"]),
+                    "title": str(doc["metadata"]["title"]),
+                    "url": str(doc["metadata"]["source"]),
+                    "library_id": str(doc["metadata"]["library_id"]),
+                },
+            }
+            for doc in filtered_docs
+        ]
 
         return results
+
     except Exception as e:
         logging.error(f"Error in find_similar_documents: {e}")
         return []
 
 
-async def generate_question_for_RAG(text: str):
+async def generate_question_for_RAG(text: str, heading: str):
     context = """
-        You are an expert question generator.
-        You are give a text and you need to generate a question from the text which can be used to generate a RAG.
+        You are an expert keyword generator.
+        You are give a text and you need to generate keywords from the text which can be used to generate a RAG.
 
-        The question should be a single sentence and should be a good question for a RAG.
-        Only return the question, no other text.
+        Generate 3  very trivial keywords.
+        Only return the keywords separated by commas, no other text.
     """
     client = OpenAI()
     response = client.chat.completions.create(
@@ -157,13 +143,13 @@ async def generate_question_for_RAG(text: str):
             {"role": "system", "content": context},
             {
                 "role": "user",
-                "content": f"Here is the text to generate the question from: {text}",
+                "content": f"Here is the text to generate the question from: {text} and the heading of the paper is: {heading}",
             },
         ],
     )
 
     generated_question = response.choices[0].message.content.strip()
-
+    logging.info(f"Generated keywords: {generated_question}")
     return generated_question
 
 
@@ -210,10 +196,10 @@ async def generate_ai_sentence(
             ],
         )
 
-        generated_sentence = (
-            response.choices[0].message.content.strip().split("\n\n")[-1]
+        generated_sentence = response.choices[0].message.content.strip()
+        similar_docs = await find_similar_documents(
+            previous_text[:100] + generated_sentence, heading, user_id
         )
-        similar_docs = await find_similar_documents(generated_sentence, user_id)
 
         return {"sentence": generated_sentence, "similar_documents": similar_docs}
     except Exception as e:
