@@ -4,7 +4,7 @@ import logging
 
 router = APIRouter()
 
-logging = logging.basicConfig(
+logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True
 )
 
@@ -13,5 +13,9 @@ logging = logging.basicConfig(
 async def search_tavily(query: str):
     """Endpoint to search Tavily database."""
     logging.info("Received search request.")
-    results = TavilySearchAgent(query)
-    return {"results": results}
+    try:
+        results = TavilySearchAgent(query)
+        return {"results": results}
+    except Exception as e:
+        logging.error(f"Error in search_tavily: {str(e)}", exc_info=True)
+        raise e

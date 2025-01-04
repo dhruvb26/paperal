@@ -16,7 +16,7 @@ def get_tokenizer():
     return tiktoken.get_encoding("cl100k_base")
 
 
-async def ExtractPaperAgent(text: str) -> str:
+def ExtractPaperAgent(text: str) -> str:
     """
     Extracts text from a PDF file and processes it for further use.
     """
@@ -89,6 +89,7 @@ async def find_similar_documents(
         generated_question = await generate_question_for_RAG(
             generated_sentence, heading
         )
+        print(generated_question)
         matched_docs = query_vector_store(generated_question)
         # Early return if no matches
         if not matched_docs.data:
@@ -133,7 +134,7 @@ async def generate_question_for_RAG(text: str, heading: str):
         You are an expert keyword generator.
         You are give a text and you need to generate keywords from the text which can be used to generate a RAG.
 
-        Generate 3  very trivial keywords.
+        Generate 3 very trivial keywords.
         Only return the keywords separated by commas, no other text.
     """
     client = OpenAI()
@@ -185,7 +186,7 @@ async def generate_ai_sentence(
 
         client = OpenAI()
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": context},
                 {
@@ -244,7 +245,7 @@ def generate_referenced_sentence(
 
         client = OpenAI()
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": prompt},
                 {

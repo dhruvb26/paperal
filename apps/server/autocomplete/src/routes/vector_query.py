@@ -9,7 +9,7 @@ from langchain.schema import Document
 
 router = APIRouter()
 
-logging = logging.basicConfig(
+logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True
 )
 
@@ -39,7 +39,7 @@ def _cached_client_openai():
 
 
 @router.get("/vector_query")
-async def vector_query(query: str) -> List[Document]:
+async def vector_query(query: str, num_results: int = 2) -> dict:
     """
     Optimized vector store query with reranking and caching.
     """
@@ -61,11 +61,17 @@ async def vector_query(query: str) -> List[Document]:
             {
                 "query_text": query,
                 "query_embedding": embedding,
-                "match_count": 2,
+                "match_count": num_results,
+                "semantic_weight": 2,
+                "full_text_weight": 1,
                 # "rrf_k": 0,
             },
         ).execute()
-        return documents
+        results = {}
+        for doc in documents.data:
+            print(doc["similarity"])
+            results[doc["id"]] = [doc["content"], doc["similarity"]]
+        return results
 
     except Exception as e:
         logging.error(f"Error in query_vector_store: {str(e)}", exc_info=True)

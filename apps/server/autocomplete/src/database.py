@@ -43,7 +43,7 @@ def add_metadata(
     year: int,
     user_id: Optional[str] = None,
     library_id: Optional[str] = None,
-    is_public: Optional[bool] = False,
+    is_public: Optional[bool] = True,
 ):
     logging.info("Adding metadata to documents...")
     for doc in docs:
@@ -106,7 +106,9 @@ def query_vector_store(query: str) -> List[Document]:
             {
                 "query_text": query,
                 "query_embedding": embedding,
-                "match_count": 2,
+                "match_count": 10,
+                "semantic_weight": 2,
+                "full_text_weight": 1,
                 # "rrf_k": 0,
             },
         ).execute()

@@ -38,6 +38,8 @@ async def generate_sentence(request: SentenceRequest):
 
     sentence = {}
     for doc in ai_generated.get("similar_documents", []):
+        logging.info(f"Similar document score: {doc['score']}")
+        print(doc["content"])
         if doc["score"] > float(os.getenv("QUERY_THRESHOLD")):
             sentence = generate_referenced_sentence(
                 json_text, request.heading, doc["content"]
