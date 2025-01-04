@@ -16,6 +16,8 @@ export const env = createEnv({
     DATABASE_USER: z.string().min(1),
     NPM_TOKEN: z.string().min(1),
     TRIGGER_SECRET_KEY: z.string().min(1),
+    SUPABASE_URL: z.string().url(),
+    SUPABASE_ANON_KEY: z.string().min(1),
     DATABASE_PASSWORD: z.string().min(1),
   },
   /*
@@ -42,6 +44,8 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_SIGN_IN_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
     NEXT_PUBLIC_CLERK_SIGN_UP_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
     NODE_ENV: process.env.NODE_ENV,
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
     NPM_TOKEN: process.env.NPM_TOKEN,
     API_URL: process.env.API_URL,
     UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,

@@ -124,7 +124,7 @@ export function AppSidebar({
         title: "Document deleted",
         description: "The document has been deleted successfully.",
       });
-      router.push("/editor");
+      router.refresh();
     } catch (error) {
       console.error("Failed to delete document:", error);
     }
