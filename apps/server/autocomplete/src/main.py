@@ -6,8 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from apps.server.autocomplete.src.routes import search
-from routes import generate, store, vector_query
+from routes import generate, store, vector_query, search
 
 
 # Load environment variables
