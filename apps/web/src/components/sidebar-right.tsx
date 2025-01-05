@@ -16,14 +16,18 @@ import {
   StopCircle,
 } from "@phosphor-icons/react";
 import ReactMarkdown from "react-markdown";
+import { useUser } from "@clerk/nextjs";
 
 export function SidebarRight({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const { user, isLoaded } = useUser();
   const { isRightSidebarOpen, edgeData } = useSidebarStore();
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       body: {
+        userId: user?.id,
+        threadId: "d8b3c1a2-f5e7-4f9d-b6c8-a9e2d4f3b5c8",
         edgeData: {
           sourceNode: edgeData?.sourceNode?.data?.label,
           targetNode: edgeData?.targetNode?.data?.label,
@@ -47,6 +51,13 @@ export function SidebarRight({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  if (!isLoaded)
+    return (
+      <div className="flex justify-center items-center h-full">
+        <Loader />
+      </div>
+    );
+
   return (
     <Sidebar
       collapsible="none"
@@ -65,10 +76,10 @@ export function SidebarRight({
         <h2 className="text-sm font-medium text-foreground">ChatGraph</h2>
       </SidebarHeader>
       <SidebarContent className="flex flex-col px-6 py-0">
-        <span className="text-xs text-muted-foreground">
+        {/* <span className="text-xs text-muted-foreground">
           Chat with your graph coming soon.
-        </span>
-        {/* <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+        </span> */}
+        <div className="flex-1 overflow-y-auto space-y-4 mb-4">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -92,9 +103,9 @@ export function SidebarRight({
             </div>
           ))}
           <div ref={messagesEndRef} />
-        </div> */}
+        </div>
 
-        {/* <form
+        <form
           onSubmit={handleSubmit}
           className="flex w-full items-end justify-center flex-row gap-2 py-4"
         >
@@ -111,7 +122,7 @@ export function SidebarRight({
             onInput={(e) => {
               const target = e.target as HTMLTextAreaElement;
               target.style.height = "auto";
-              target.style.height = `${Math.min(target.scrollHeight, 128)}px`; // 128px = 8rem = 32 (max-h-32)
+              target.style.height = `${Math.min(target.scrollHeight, 128)}px`;
             }}
           />
           {isLoading ? (
@@ -128,7 +139,7 @@ export function SidebarRight({
               <PaperPlaneRight size={16} />
             </Button>
           )}
-        </form> */}
+        </form>
       </SidebarContent>
     </Sidebar>
   );

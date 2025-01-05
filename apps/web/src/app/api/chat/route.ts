@@ -8,8 +8,6 @@ import { z } from "zod";
 import { tool } from "@langchain/core/tools";
 import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres";
 import {
-  AIMessage,
-  HumanMessage,
   RemoveMessage,
   SystemMessage,
   ToolMessage,
@@ -17,9 +15,56 @@ import {
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
 import { MessagesAnnotation } from "@langchain/langgraph";
-import { BaseMessage, isAIMessage } from "@langchain/core/messages";
+import { isAIMessage } from "@langchain/core/messages";
 import { prettyPrint } from "@/utils/graph";
 import { env } from "@/env";
+import { StreamTextResult } from "ai";
+import { LangChainAdapter } from "ai";
+import { streamText } from "ai";
+import type { Message } from "ai";
+import {
+  AIMessage,
+  BaseMessage,
+  ChatMessage,
+  HumanMessage,
+} from "@langchain/core/messages";
+
+/**
+ * Converts a Vercel message to a LangChain message.
+ * @param message - The message to convert.
+ * @returns The converted LangChain message.
+ */
+const convertVercelMessageToLangChainMessage = (
+  message: Message
+): BaseMessage => {
+  switch (message.role) {
+    case "user":
+      return new HumanMessage({ content: message.content });
+    case "assistant":
+      return new AIMessage({ content: message.content });
+    default:
+      return new ChatMessage({ content: message.content, role: message.role });
+  }
+};
+/**
+ * Converts a LangChain message to a Vercel message.
+ * @param message - The message to convert.
+ * @returns The converted Vercel message.
+ */
+const convertLangChainMessageToVercelMessage = (message: BaseMessage) => {
+  switch (message.getType()) {
+    case "human":
+      return { content: message.content, role: "user" };
+    case "ai":
+      return {
+        content: message.content,
+        role: "assistant",
+        tool_calls: (message as AIMessage).tool_calls,
+      };
+    default:
+      return { content: message.content, role: message._getType() };
+  }
+};
 
 const GraphAnnotation = Annotation.Root({
   ...MessagesAnnotation.spec,
@@ -31,6 +76,8 @@ const GraphAnnotation = Annotation.Root({
 const retrieveSchema = z.object({ query: z.string() });
 
 export async function POST(req: Request) {
+  const { messages } = (await req.json()) as any;
+
   // Define the pre-requisites
   const supabaseClient = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
   const embeddings = new OpenAIEmbeddings();
@@ -218,25 +265,43 @@ export async function POST(req: Request) {
     checkpointer: checkpointerFromConnString,
   });
 
-  // ** Uncomment to generate graph image
-  // const image = await (await graph.getGraphAsync()).drawMermaidPng();
-  // await fs.promises.writeFile(
-  //   "graph.png",
-  //   Buffer.from(await image.arrayBuffer())
-  // );
+  // Convert incoming messages to LangChain format
+  const history = messages
+    .slice(0, -1)
+    .filter(
+      (message: Message) =>
+        message.role === "user" || message.role === "assistant"
+    )
+    .map(convertVercelMessageToLangChainMessage);
 
-  let inputs = {
-    messages: [new HumanMessage("what is my name?")],
-  };
+  const userInput = messages[messages.length - 1].content;
 
-  for await (const step of await graph.stream(inputs, {
-    streamMode: "values",
-    configurable: config.configurable,
-  })) {
-    const lastMessage = step.messages[step.messages.length - 1];
-    prettyPrint(lastMessage);
-    console.log("-----\n");
-  }
+  // Create streaming response
+  const transformStream = new ReadableStream({
+    async start(controller) {
+      let lastContent = ""; // Track the last content to avoid duplicates
 
-  return NextResponse.json({ status: 200 });
+      for await (const step of await graph.stream(
+        { messages: [...history, new HumanMessage(userInput)] },
+        {
+          streamMode: "messages",
+          configurable: config.configurable,
+        }
+      )) {
+        const lastMessage = step.messages[step.messages.length - 1];
+        if (isAIMessage(lastMessage)) {
+          // Only send if content is different from last message
+          if (lastMessage.content !== lastContent) {
+            const vercelMessage =
+              convertLangChainMessageToVercelMessage(lastMessage);
+            controller.enqueue(vercelMessage);
+            lastContent = lastMessage.content as string;
+          }
+        }
+      }
+      controller.close();
+    },
+  });
+
+  return LangChainAdapter.toDataStreamResponse(transformStream);
 }
