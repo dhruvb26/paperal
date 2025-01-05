@@ -1,38 +1,39 @@
 import logging
 import os
 from typing import List, Optional
-from functools import lru_cache
 import time
 
-import dotenv
 from langchain.schema import Document
 from langchain_community.vectorstores import SupabaseVectorStore
 from langchain_openai import OpenAIEmbeddings
 from openai import OpenAI
 from supabase.client import Client, create_client
 from utils.docs import split_documents, load_documents
+from dotenv import load_dotenv
 
-
-@lru_cache
-def _cached_client_supabase():
-    supabase_url = os.getenv("SUPABASE_URL")
-    supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
-    logging.info(f"Creating Supabase client for {supabase_url}...")
-    client = create_client(supabase_url, supabase_key)
-    logging.info("Supabase client created successfully.")
-    return client
-
-
-@lru_cache
-def _cached_client_openai():
-    return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
+load_dotenv()
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True
 )
-dotenv.load_dotenv()
+
+
+try:
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
+    supabase_client = create_client(supabase_url, supabase_key)
+    logging.info("Supabase client created successfully.")
+except Exception as e:
+    logging.error(f"Error creating Supabase client: {e}")
+
+
+try:
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    openai_client = OpenAI(api_key=openai_api_key)
+    logging.info("OpenAI client created successfully.")
+except Exception as e:
+    logging.error(f"Error creating OpenAI client: {e}")
 
 
 def add_metadata(
@@ -89,7 +90,6 @@ def query_vector_store(query: str) -> List[Document]:
     try:
         # Use cached embedding
         start_time = time.time()
-        openai_client = _cached_client_openai()
         embedding_response = openai_client.embeddings.create(
             model="text-embedding-3-large", input=query, dimensions=1536
         )
@@ -100,7 +100,6 @@ def query_vector_store(query: str) -> List[Document]:
         # Call hybrid_search function via RPC with all required parameters
         # score is between 0 and 0.0392
         start_time = time.time()
-        supabase_client = _cached_client_supabase()
         documents = supabase_client.rpc(
             "hybrid_search",
             {
@@ -149,7 +148,6 @@ if __name__ == "__main__":
             add_metadata(
                 docs, "Attention url", "John Doe", "Attention is all you need", 2021
             )
-            supabase_client = _cached_client_supabase()
             vector_store = create_vector_store(supabase_client)
             vector_store.add_documents(docs)
         except Exception as e:

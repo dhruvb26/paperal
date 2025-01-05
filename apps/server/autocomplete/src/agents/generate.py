@@ -1,19 +1,22 @@
 import logging
-from typing import Optional
+from typing import Optional, Tuple
 import tiktoken
 from openai import OpenAI
 from database import query_vector_store
 import baml_connect.baml_main as baml_main
-from functools import lru_cache
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+client = OpenAI()
 
-@lru_cache(maxsize=1)
-def get_tokenizer():
-    return tiktoken.get_encoding("cl100k_base")
+try:
+    tokenizer = tiktoken.get_encoding("cl100k_base")
+    logging.info("Tokenizer created successfully.")
+except Exception as e:
+    logging.error(f"Error creating tokenizer: {e}")
+    tokenizer = None
 
 
 def ExtractPaperAgent(text: str) -> str:
@@ -21,12 +24,10 @@ def ExtractPaperAgent(text: str) -> str:
     Extracts text from a PDF file and processes it for further use.
     """
     try:
-        tokenizer = get_tokenizer()
 
         tokens = tokenizer.encode(text)
         truncated_tokens = tokens[:1000]
         truncated_text = tokenizer.decode(truncated_tokens)
-        logging.info("Getting response from baml_main...")
         response = baml_main.example(truncated_text)
         return response
     except Exception as e:
@@ -55,7 +56,7 @@ def generate_in_text_citation(
 
         Only return the in-text citation, no other text.
         """
-        client = OpenAI()
+
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -89,7 +90,6 @@ async def find_similar_documents(
         generated_question = await generate_question_for_RAG(
             generated_sentence, heading
         )
-        print(generated_question)
         matched_docs = query_vector_store(generated_question)
         # Early return if no matches
         if not matched_docs.data:
@@ -129,15 +129,18 @@ async def find_similar_documents(
         return []
 
 
-async def generate_question_for_RAG(text: str, heading: str):
-    context = """
-        You are an expert keyword generator.
-        You are give a text and you need to generate keywords from the text which can be used to generate a RAG.
+_RAG_SYSTEM_PROMPT = """
+You are an expert keyword generator.
+You are give a text and you need to generate keywords from the text which can be used to generate a RAG.
 
-        Generate 3 trivial keywords.
-        Only return the keywords separated by commas, no other text.
-    """
-    client = OpenAI()
+Generate 3 trivial keywords.
+Only return the keywords separated by commas, no other text.
+"""
+
+
+async def generate_question_for_RAG(text: str, heading: str):
+    context = _RAG_SYSTEM_PROMPT
+
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -150,7 +153,6 @@ async def generate_question_for_RAG(text: str, heading: str):
     )
 
     generated_question = response.choices[0].message.content.strip()
-    logging.info(f"Generated keywords: {generated_question}")
     return generated_question
 
 
@@ -184,7 +186,6 @@ async def generate_ai_sentence(
         - Advances the argument or discussion in a meaningful way
         """
 
-        client = OpenAI()
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -215,7 +216,6 @@ def generate_referenced_sentence(
     Generates a sentence using referenced materials from the vector store.
     """
     try:
-        logging.info("Generating referenced sentence...")
 
         prompt = f"""
         You are an expert academic writer tasked with generating the next sentence for a research paper. Your goal is to produce a single, coherent sentence that logically follows the previous content and fits seamlessly into the paper's structure.
@@ -244,7 +244,6 @@ def generate_referenced_sentence(
         - Advances the argument or discussion in a meaningful way
         """
 
-        client = OpenAI()
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[

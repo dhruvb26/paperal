@@ -22,54 +22,62 @@ logging.basicConfig(
 async def generate_sentence(request: SentenceRequest):
     """Endpoint to generate a sentence based on the given context."""
     logging.info("Received request to generate sentence.")
-    ai_generated = {}
-    sentence = {}
-    ai_generated_opening = None
+
+    # Early return for empty previous_text
     if request.previous_text == "":
         ai_generated_opening = suggest_opening_statement(request.heading)
-    else:
-        try:
-            parsed_text = json.loads(request.previous_text)
-            json_text = json_to_markdown(parsed_text)
-        except json.JSONDecodeError:
-            logging.warning("Failed to parse JSON, using raw text")
-            json_text = request.previous_text
+        return {
+            "ai_sentence": ai_generated_opening,
+            "referenced_sentence": None,
+            "is_referenced": False,
+            "author": None,
+            "url": None,
+            "title": None,
+            "library_id": None,
+        }
 
-        # Generate non-referenced sentence
-        ai_generated = await generate_ai_sentence(
-            json_text, request.heading, request.subheading, request.user_id
+    # Parse JSON once and handle error early
+    try:
+        json_text = json_to_markdown(json.loads(request.previous_text))
+    except json.JSONDecodeError:
+        logging.warning("Failed to parse JSON, using raw text")
+        json_text = request.previous_text
+
+    # Generate non-referenced sentence
+    ai_generated = await generate_ai_sentence(
+        json_text, request.heading, request.subheading, request.user_id
+    )
+
+    # Only process similar documents if they exist and have valid scores
+    similar_docs = ai_generated.get("similar_documents", [])
+    for doc in similar_docs:
+        if doc["score"] <= 0.039:
+            continue
+
+        sentence = generate_referenced_sentence(
+            json_text, request.heading, doc["content"]
         )
 
-        sentence = None
-        for doc in ai_generated.get("similar_documents", []):
-            logging.info(f"Similar document score: {doc['score']}")
-            if doc["score"] > 0.039:
+        if sentence and select_most_relevant_sentence(
+            json_text, ai_generated.get("sentence"), sentence.get("sentence")
+        ) != ai_generated.get("sentence"):
+            return {
+                "ai_sentence": ai_generated.get("sentence"),
+                "referenced_sentence": sentence.get("sentence"),
+                "is_referenced": True,
+                "author": doc["metadata"].get("author"),
+                "url": doc["metadata"].get("url"),
+                "title": doc["metadata"].get("title"),
+                "library_id": doc["metadata"].get("library_id"),
+            }
 
-                sentence = generate_referenced_sentence(
-                    json_text, request.heading, doc["content"]
-                )
-                print("referenced sentence", sentence)
-
-                relavance_sentence = select_most_relevant_sentence(
-                    json_text,
-                    ai_generated.get("sentence", None),
-                    sentence.get("sentence", None),
-                )
-                print(relavance_sentence)
-                if relavance_sentence == ai_generated.get("sentence", None):
-                    sentence = None
-                break
-
+    # Return non-referenced sentence if no suitable reference found
     return {
-        "ai_sentence": (
-            ai_generated.get("sentence", None)
-            if ai_generated.get("sentence", None)
-            else ai_generated_opening
-        ),
-        "referenced_sentence": sentence.get("sentence", None) if sentence else None,
-        "is_referenced": True if sentence else False,
-        "author": doc["metadata"].get("author", None) if sentence else None,
-        "url": doc["metadata"].get("url", None) if sentence else None,
-        "title": doc["metadata"].get("title", None) if sentence else None,
-        "library_id": doc["metadata"].get("library_id", None) if sentence else None,
+        "ai_sentence": ai_generated.get("sentence"),
+        "referenced_sentence": None,
+        "is_referenced": False,
+        "author": None,
+        "url": None,
+        "title": None,
+        "library_id": None,
     }

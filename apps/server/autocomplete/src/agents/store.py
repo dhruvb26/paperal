@@ -2,7 +2,6 @@ import io
 import logging
 import os
 from typing import Optional
-from functools import lru_cache
 from utils.pdf_pages import check_pdf_pages
 import fitz
 from langchain.schema import Document
@@ -18,23 +17,19 @@ logging.basicConfig(
 )
 
 
-@lru_cache
-def _cached_client_supabase():
-    try:
-        logging.info("Creating Supabase client...")
-        supabase_url = os.getenv("SUPABASE_URL")
-        supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
-        if not supabase_url or not supabase_key:
-            logging.error(
-                "Supabase URL or Service Key is missing in environment variables."
-            )
-            raise ValueError("Supabase URL or Service Key is not set.")
-        supabase_client = create_client(supabase_url, supabase_key)
-        logging.info("Supabase client created successfully.")
-        return supabase_client
-
-    except Exception as e:
-        logging.error(f"Error creating Supabase client: {e}")
+try:
+    logging.info("Creating Supabase client...")
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
+    if not supabase_url or not supabase_key:
+        logging.error(
+            "Supabase URL or Service Key is missing in environment variables."
+        )
+        raise ValueError("Supabase URL or Service Key is not set.")
+    supabase_client = create_client(supabase_url, supabase_key)
+    logging.info("Supabase client created successfully.")
+except Exception as e:
+    logging.error(f"Error creating Supabase client: {e}")
 
 
 def StoreResearchPaperAgent(
@@ -70,7 +65,7 @@ def StoreResearchPaperAgent(
 
                 # Check if already stored
                 checker = database.query_metadata(
-                    "fileUrl", url, _cached_client_supabase(), user_id
+                    "fileUrl", url, supabase_client, user_id
                 )
                 if len(checker.data) != 0:
                     logging.warning(f"Research paper already stored: {url}")
@@ -106,7 +101,7 @@ def StoreResearchPaperAgent(
                 }
 
                 library_response = (
-                    _cached_client_supabase().table("library").insert(data).execute()
+                    supabase_client.table("library").insert(data).execute()
                 )
                 library_id = library_response.data[0]["id"]
 
@@ -122,7 +117,7 @@ def StoreResearchPaperAgent(
                     is_public,
                 )
 
-                vector_store = database.create_vector_store(_cached_client_supabase())
+                vector_store = database.create_vector_store(supabase_client)
                 vector_store.add_documents(docs)
 
                 logging.info(f"Successfully stored paper: {url}")
