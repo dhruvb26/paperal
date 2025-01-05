@@ -11,6 +11,7 @@ from supabase.client import Client, create_client
 from utils.docs import split_documents, load_documents
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 # Configure logging
@@ -88,7 +89,6 @@ def query_vector_store(query: str) -> List[Document]:
     logging.info(f"Querying vector store for: {query}")
 
     try:
-        # Use cached embedding
         start_time = time.time()
         embedding_response = openai_client.embeddings.create(
             model="text-embedding-3-large", input=query, dimensions=1536
@@ -121,7 +121,6 @@ def query_vector_store(query: str) -> List[Document]:
 
 
 def create_vector_store(supabase: Client) -> SupabaseVectorStore:
-    logging.info("Creating vector store...")
     embeddings = OpenAIEmbeddings(
         model="text-embedding-3-large",
         dimensions=1536,
@@ -134,9 +133,14 @@ def create_vector_store(supabase: Client) -> SupabaseVectorStore:
         table_name="embeddings",
         query_name="hybrid_search",
     )
-    logging.info("Vector store created successfully.")
     return vector_store
 
+
+try:
+    vector_store = create_vector_store(supabase_client)
+    logging.info("Vector store created successfully.")
+except Exception as e:
+    logging.error(f"Error creating vector store: {e}")
 
 if __name__ == "__main__":
 

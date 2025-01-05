@@ -9,7 +9,7 @@ class Paper {
 
 function ExtractPaper(paper: string) -> Paper {
 
-    client "openai/gpt-4o"  
+    client "openai/gpt-3.5-turbo"  
     prompt #"
         Extract the authors,title,the year of publication and abstract from the following content:
         {{ paper }}

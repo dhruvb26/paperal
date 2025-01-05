@@ -8,7 +8,7 @@ class References {
 }
 
 function ExtractReferences(paper: string[]) -> References {
-    client "openai/gpt-4o"
+    client "openai/gpt-3.5-turbo"
     prompt #"
         Extract all citations/references, inlcuding the author names from the given text.
 

@@ -3,7 +3,11 @@ import orjson as json
 import logging
 from models.requests import SentenceRequest
 from utils.markdown import json_to_markdown
-from agents.generate import generate_ai_sentence, generate_referenced_sentence
+from agents.generate import (
+    generate_ai_sentence,
+    generate_referenced_sentence,
+    find_similar_documents,
+)
 from agents.relavance import select_most_relevant_sentence
 from agents.introduction import suggest_opening_statement
 import os
@@ -37,41 +41,46 @@ async def generate_sentence(request: SentenceRequest):
         }
 
     # Parse JSON once and handle error early
-    try:
-        json_text = json_to_markdown(json.loads(request.previous_text))
-    except json.JSONDecodeError:
-        logging.warning("Failed to parse JSON, using raw text")
-        json_text = request.previous_text
+    # try:
+    #     json_text = json_to_markdown(json.loads(request.previous_text))
+    # except json.JSONDecodeError:
+    #     logging.warning("Failed to parse JSON, using raw text")
+    #     json_text = request.previous_text
 
     # Generate non-referenced sentence
-    ai_generated = await generate_ai_sentence(
-        json_text, request.heading, request.subheading, request.user_id
-    )
 
+    similar_docs = await find_similar_documents(request.previous_text, request.heading)
     # Only process similar documents if they exist and have valid scores
-    similar_docs = ai_generated.get("similar_documents", [])
     for doc in similar_docs:
         if doc["score"] <= 0.039:
             continue
 
         sentence = generate_referenced_sentence(
-            json_text, request.heading, doc["content"]
+            request.previous_text, request.heading, doc["content"]
         )
 
-        if sentence and select_most_relevant_sentence(
-            json_text, ai_generated.get("sentence"), sentence.get("sentence")
-        ) != ai_generated.get("sentence"):
+        if (
+            sentence
+            and select_most_relevant_sentence(doc["content"], sentence.get("sentence"))
+            == True
+        ):
+
             return {
-                "ai_sentence": ai_generated.get("sentence"),
+                "ai_sentence": None,
                 "referenced_sentence": sentence.get("sentence"),
                 "is_referenced": True,
                 "author": doc["metadata"].get("author"),
                 "url": doc["metadata"].get("url"),
                 "title": doc["metadata"].get("title"),
                 "library_id": doc["metadata"].get("library_id"),
+                "context": doc["content"],
+                "score": doc["score"],
             }
 
     # Return non-referenced sentence if no suitable reference found
+    ai_generated = await generate_ai_sentence(
+        request.previous_text, request.heading, request.user_id
+    )
     return {
         "ai_sentence": ai_generated.get("sentence"),
         "referenced_sentence": None,
@@ -80,4 +89,6 @@ async def generate_sentence(request: SentenceRequest):
         "url": None,
         "title": None,
         "library_id": None,
+        "context": None,
+        "score": None,
     }

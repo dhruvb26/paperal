@@ -26,8 +26,7 @@ def ExtractPaperAgent(text: str) -> str:
     try:
 
         tokens = tokenizer.encode(text)
-        truncated_tokens = tokens[:1000]
-        truncated_text = tokenizer.decode(truncated_tokens)
+        truncated_text = tokenizer.decode(tokens)
         response = baml_main.example(truncated_text)
         return response
     except Exception as e:
@@ -87,10 +86,13 @@ async def find_similar_documents(
     global last_used_document_source
 
     try:
-        generated_question = await generate_question_for_RAG(
-            generated_sentence, heading
-        )
-        matched_docs = query_vector_store(generated_question)
+        # logging.info(f"Time start keyword generation")
+        # # generated_question = await generate_question_for_RAG(
+        # #     generated_sentence, heading
+        # # )
+        # logging.info(f"Time end keyword generation")
+        # logging.info(f"keyword: {generated_question}")
+        matched_docs = query_vector_store("Urban Heat Island, vegetation, design")
         # Early return if no matches
         if not matched_docs.data:
             return []
@@ -159,7 +161,6 @@ async def generate_question_for_RAG(text: str, heading: str):
 async def generate_ai_sentence(
     previous_text: str,
     heading: str,
-    subheading: Optional[str] = None,
     user_id: Optional[str] = None,
 ) -> dict:
     """
@@ -187,7 +188,7 @@ async def generate_ai_sentence(
         """
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": context},
                 {
@@ -199,11 +200,11 @@ async def generate_ai_sentence(
         )
 
         generated_sentence = response.choices[0].message.content.strip()
-        similar_docs = await find_similar_documents(
-            previous_text[:100] + generated_sentence, heading, user_id
-        )
+        # similar_docs = await find_similar_documents(
+        #     previous_text[:100] + generated_sentence, heading, user_id
+        # )
 
-        return {"sentence": generated_sentence, "similar_documents": similar_docs}
+        return {"sentence": generated_sentence}
     except Exception as e:
         logging.error(f"Error in generate_ai_sentence: {e}")
         return {}
@@ -245,7 +246,7 @@ def generate_referenced_sentence(
         """
 
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": prompt},
                 {
