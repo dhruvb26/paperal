@@ -48,3 +48,4 @@ coverage
 packages/*/dist
 packages/*/.next
 packages/*/build
+.vercel

@@ -23,6 +23,8 @@
         "NEXT_PUBLIC_CLERK_SIGN_UP_URL",
         "DATABASE_USER",
         "DATABASE_PASSWORD",
+        "SUPABASE_URL",
+        "SUPABASE_ANON_KEY",
         "NPM_TOKEN",
         "TRIGGER_SECRET_KEY",
         "OPENAI_API_KEY",
