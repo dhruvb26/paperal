@@ -134,7 +134,7 @@ async def generate_question_for_RAG(text: str, heading: str):
         You are an expert keyword generator.
         You are give a text and you need to generate keywords from the text which can be used to generate a RAG.
 
-        Generate 3 very trivial keywords.
+        Generate 3 trivial keywords.
         Only return the keywords separated by commas, no other text.
     """
     client = OpenAI()
@@ -219,6 +219,7 @@ def generate_referenced_sentence(
 
         prompt = f"""
         You are an expert academic writer tasked with generating the next sentence for a research paper. Your goal is to produce a single, coherent sentence that logically follows the previous content and fits seamlessly into the paper's structure.
+        Only use the context provided to generate the sentence.
 
         Here is the heading of the paper:
         <paper_heading>
