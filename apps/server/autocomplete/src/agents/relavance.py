@@ -22,7 +22,8 @@ def select_most_relevant_sentence(context: str, sentence1: str, sentence2: str) 
     """
     client = OpenAI(api_key=api_key)
 
-    prompt = f"""Given the following context, compare these two sentences and determine which one is more relevant to the context.
+    prompt = f"""Given the following context, compare these two sentences and determine which one follows the context better.
+    If the sentences are similar, return "1".
     Only respond with "1" or "2" to indicate which sentence is more relevant.
 
     Context: {context}
@@ -30,10 +31,10 @@ def select_most_relevant_sentence(context: str, sentence1: str, sentence2: str) 
     Sentence 1: {sentence1}
     Sentence 2: {sentence2}
 
-    Which sentence (1 or 2) is more relevant to the context?"""
+    Which sentence (1 or 2) follows the context better?"""
 
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,
         max_tokens=1,
