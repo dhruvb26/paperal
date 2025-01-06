@@ -25,31 +25,49 @@ def ExtractPaperAgent(text: str) -> str:
         return ""
 
 
+# Global variable to track the last used document
+last_used_document_source = None
+
+
 async def find_similar_documents(
     generated_sentence: str, heading: str, user_id: Optional[str] = None
 ) -> list:
     """
     Queries the vector database to find documents similar to the generated sentence.
     """
+    global last_used_document_source
 
     try:
         similar_keywords = await generate_question_for_RAG(generated_sentence, heading)
         matched_docs = query_vector_store(similar_keywords)
-        # Early return if no matches
         if not matched_docs.data:
             return []
 
-        # Use list comprehension instead of multiple loops
-        filtered_docs = [
+        # First filter by user_id
+        user_filtered_docs = [
             doc
             for doc in matched_docs.data
             if (user_id is None and doc.get("metadata", {}).get("user_id") is None)
             or (user_id and doc.get("metadata", {}).get("user_id") in {user_id, None})
         ]
 
-        # Update last used document if we have results
+        if not user_filtered_docs:
+            return []
 
-        # Create results in a single pass
+        # Find the first document that's different from the last used one
+        filtered_docs = []
+        for doc in user_filtered_docs:
+            if doc["metadata"]["library_id"] != last_used_document_source:
+                filtered_docs = [doc]
+                last_used_document_source = doc["metadata"]["library_id"]
+                break
+
+        # If no different document found, return empty list
+        if not filtered_docs:
+            return []
+        print(filtered_docs)
+
+        # Create results for the selected document
         results = [
             {
                 "content": str(doc["content"]),
@@ -89,7 +107,7 @@ async def generate_question_for_RAG(text: str, heading: str):
             {"role": "system", "content": context},
             {
                 "role": "user",
-                "content": f"Here is the text to generate the question from: {text} and the heading of the paper is: {heading}",
+                "content": f"Here is the text to generate the keywords from: {text} and the heading of the paper is: {heading}",
             },
         ],
     )

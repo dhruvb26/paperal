@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 class SentenceRequest(BaseModel):
     previous_text: str
-    heading: str
+    document_id: str
     subheading: Optional[str] = None
     user_id: Optional[str] = None
 

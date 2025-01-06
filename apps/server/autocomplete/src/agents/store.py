@@ -38,6 +38,8 @@ def generate_in_text_citation(authors: list[str], year: str) -> str:
     """
     if not authors or not year:
         return ""
+    if not year.isdigit() or len(year) != 4:
+        year = ""
 
     if len(authors) == 1:
         return f"({authors[0]},{year})"

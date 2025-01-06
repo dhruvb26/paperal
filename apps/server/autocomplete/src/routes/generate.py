@@ -12,6 +12,8 @@ from agents.relavance import select_most_relevant_sentence
 from agents.introduction import suggest_opening_statement
 import os
 from dotenv import load_dotenv
+import database
+import asyncio
 
 load_dotenv()
 
@@ -26,10 +28,19 @@ logging.basicConfig(
 async def generate_sentence(request: SentenceRequest):
     """Endpoint to generate a sentence based on the given context."""
     logging.info("Received request to generate sentence.")
-
+    # get heading from table documents
+    heading = (
+        database.supabase_client.table("documents")
+        .select("*")
+        .eq("id", request.document_id)
+        .execute()
+    )
+    heading = heading.data[0]["prompt"]
+    print(request.previous_text)
+    print(heading)
     # Early return for empty previous_text
-    if request.previous_text == "":
-        ai_generated_opening = suggest_opening_statement(request.heading)
+    if request.previous_text == heading.strip():
+        ai_generated_opening = suggest_opening_statement(heading)
         return {
             "ai_sentence": ai_generated_opening,
             "referenced_sentence": None,
@@ -47,50 +58,45 @@ async def generate_sentence(request: SentenceRequest):
     #     logging.warning("Failed to parse JSON, using raw text")
     #     json_text = request.previous_text
 
-    # Generate non-referenced sentence
-    ai_generated = await generate_ai_sentence(
-        request.previous_text, request.heading, request.user_id
-    )
-    similar_docs = await find_similar_documents(request.previous_text, request.heading)
+    similar_docs = await find_similar_documents(request.previous_text, heading)
     # Only process similar documents if they exist and have valid scores
-    if similar_docs[0]["score"] >= 0.039:
-
+    if len(similar_docs) > 0:
+        print(similar_docs[0]["score"])
         sentence = generate_referenced_sentence(
-            request.previous_text, request.heading, similar_docs[0]["content"]
+            request.previous_text, heading, similar_docs[0]["content"]
         )
 
         if (
             sentence
             and select_most_relevant_sentence(
-                request.previous_text,
+                similar_docs[0]["content"],
                 sentence.get("sentence"),
-                ai_generated.get("sentence"),
             )
-            == 1
+            == True
         ):
+            # query library table for citation
+            citation = (
+                database.supabase_client.table("library")
+                .select("*")
+                .eq("id", similar_docs[0]["metadata"].get("library_id"))
+                .execute()
+            )
 
             return {
-                "ai_sentence": None,
-                "referenced_sentence": sentence.get("sentence"),
+                "text": sentence.get("sentence"),
                 "is_referenced": True,
-                "author": similar_docs[0]["metadata"].get("author"),
-                "url": similar_docs[0]["metadata"].get("url"),
-                "title": similar_docs[0]["metadata"].get("title"),
-                "library_id": similar_docs[0]["metadata"].get("library_id"),
-                "context": similar_docs[0]["content"],
-                "score": similar_docs[0]["score"],
+                "citations": similar_docs[0]["metadata"].get(
+                    "citations",
+                    {
+                        "in-text": citation.data[0]["metadata"]["citations"]["in-text"],
+                    },
+                ),
+                "href": similar_docs[0]["metadata"].get("url"),
             }
+    # Generate non-referenced sentence
+    ai_generated = await generate_ai_sentence(
+        request.previous_text, heading, request.user_id
+    )
 
     # Return non-referenced sentence if no suitable reference found
-
-    return {
-        "ai_sentence": ai_generated.get("sentence"),
-        "referenced_sentence": None,
-        "is_referenced": False,
-        "author": None,
-        "url": None,
-        "title": None,
-        "library_id": None,
-        "context": None,
-        "score": None,
-    }
+    return {"text": ai_generated.get("sentence"), "is_referenced": False, "href": None}
