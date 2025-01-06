@@ -48,7 +48,9 @@ async def generate_sentence(request: SentenceRequest):
     #     json_text = request.previous_text
 
     # Generate non-referenced sentence
-
+    ai_generated = await generate_ai_sentence(
+        request.previous_text, request.heading, request.user_id
+    )
     similar_docs = await find_similar_documents(request.previous_text, request.heading)
     # Only process similar documents if they exist and have valid scores
     if similar_docs[0]["score"] >= 0.039:
@@ -60,9 +62,11 @@ async def generate_sentence(request: SentenceRequest):
         if (
             sentence
             and select_most_relevant_sentence(
-                similar_docs[0]["content"], sentence.get("sentence")
+                request.previous_text,
+                sentence.get("sentence"),
+                ai_generated.get("sentence"),
             )
-            == True
+            == 1
         ):
 
             return {
@@ -78,9 +82,7 @@ async def generate_sentence(request: SentenceRequest):
             }
 
     # Return non-referenced sentence if no suitable reference found
-    ai_generated = await generate_ai_sentence(
-        request.previous_text, request.heading, request.user_id
-    )
+
     return {
         "ai_sentence": ai_generated.get("sentence"),
         "referenced_sentence": None,

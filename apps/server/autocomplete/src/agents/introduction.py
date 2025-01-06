@@ -30,7 +30,7 @@ def suggest_opening_statement(heading: str, client: Optional[OpenAI] = None) -> 
     """
 
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=[
             {
                 "role": "system",
