@@ -11,13 +11,6 @@ logging.basicConfig(
 
 client = OpenAI()
 
-try:
-    tokenizer = tiktoken.get_encoding("cl100k_base")
-    logging.info("Tokenizer created successfully.")
-except Exception as e:
-    logging.error(f"Error creating tokenizer: {e}")
-    tokenizer = None
-
 
 def ExtractPaperAgent(text: str) -> str:
     """
@@ -25,56 +18,11 @@ def ExtractPaperAgent(text: str) -> str:
     """
     try:
 
-        tokens = tokenizer.encode(text)
-        truncated_text = tokenizer.decode(tokens)
-        response = baml_main.example(truncated_text)
+        response = baml_main.example(text)
         return response
     except Exception as e:
         logging.error(f"Error in ExtractPaperAgent: {e}")
         return ""
-
-
-def generate_in_text_citation(
-    author: str,
-    year: Optional[str] = None,
-) -> dict:
-    """
-    Generates a citation for the research paper.
-    """
-    try:
-        prompt = f"""
-        Generate in-text citiation for the following research paper:
-        Author: {author}
-        Year: {year}
-
-        The citation should follow the following format:
-        If one author is provided, the citation should be: (Author(last name), Year)
-        if two authors are provided, the citation should be: (Author1(last name) & Author2(last name), Year)
-        If multiple authors are provided, the citation should be: (Author1(last name) et al., Year)
-        If no author is provided, the citation should be: (Year)
-
-        Only return the in-text citation, no other text.
-        """
-
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are a research paper writing assistant.",
-                },
-                {"role": "user", "content": prompt},
-            ],
-            temperature=0.9,
-        )
-        return response.choices[0].message.content.strip()
-    except Exception as e:
-        logging.error(f"Error in generate_citation: {e}")
-        return {}
-
-
-# Global variable to track the last used document
-last_used_document_source = None
 
 
 async def find_similar_documents(
@@ -83,16 +31,10 @@ async def find_similar_documents(
     """
     Queries the vector database to find documents similar to the generated sentence.
     """
-    global last_used_document_source
 
     try:
-        # logging.info(f"Time start keyword generation")
-        # # generated_question = await generate_question_for_RAG(
-        # #     generated_sentence, heading
-        # # )
-        # logging.info(f"Time end keyword generation")
-        # logging.info(f"keyword: {generated_question}")
-        matched_docs = query_vector_store("Urban Heat Island, vegetation, design")
+        similar_keywords = await generate_question_for_RAG(generated_sentence, heading)
+        matched_docs = query_vector_store(similar_keywords)
         # Early return if no matches
         if not matched_docs.data:
             return []
@@ -106,8 +48,6 @@ async def find_similar_documents(
         ]
 
         # Update last used document if we have results
-        if filtered_docs:
-            last_used_document_source = filtered_docs[0]["metadata"]["library_id"]
 
         # Create results in a single pass
         results = [
@@ -188,7 +128,7 @@ async def generate_ai_sentence(
         """
 
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": context},
                 {
@@ -200,9 +140,6 @@ async def generate_ai_sentence(
         )
 
         generated_sentence = response.choices[0].message.content.strip()
-        # similar_docs = await find_similar_documents(
-        #     previous_text[:100] + generated_sentence, heading, user_id
-        # )
 
         return {"sentence": generated_sentence}
     except Exception as e:
@@ -246,7 +183,7 @@ def generate_referenced_sentence(
         """
 
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": prompt},
                 {

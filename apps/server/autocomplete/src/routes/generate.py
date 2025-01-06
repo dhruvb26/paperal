@@ -51,17 +51,17 @@ async def generate_sentence(request: SentenceRequest):
 
     similar_docs = await find_similar_documents(request.previous_text, request.heading)
     # Only process similar documents if they exist and have valid scores
-    for doc in similar_docs:
-        if doc["score"] <= 0.039:
-            continue
+    if similar_docs[0]["score"] >= 0.039:
 
         sentence = generate_referenced_sentence(
-            request.previous_text, request.heading, doc["content"]
+            request.previous_text, request.heading, similar_docs[0]["content"]
         )
 
         if (
             sentence
-            and select_most_relevant_sentence(doc["content"], sentence.get("sentence"))
+            and select_most_relevant_sentence(
+                similar_docs[0]["content"], sentence.get("sentence")
+            )
             == True
         ):
 
@@ -69,12 +69,12 @@ async def generate_sentence(request: SentenceRequest):
                 "ai_sentence": None,
                 "referenced_sentence": sentence.get("sentence"),
                 "is_referenced": True,
-                "author": doc["metadata"].get("author"),
-                "url": doc["metadata"].get("url"),
-                "title": doc["metadata"].get("title"),
-                "library_id": doc["metadata"].get("library_id"),
-                "context": doc["content"],
-                "score": doc["score"],
+                "author": similar_docs[0]["metadata"].get("author"),
+                "url": similar_docs[0]["metadata"].get("url"),
+                "title": similar_docs[0]["metadata"].get("title"),
+                "library_id": similar_docs[0]["metadata"].get("library_id"),
+                "context": similar_docs[0]["content"],
+                "score": similar_docs[0]["score"],
             }
 
     # Return non-referenced sentence if no suitable reference found

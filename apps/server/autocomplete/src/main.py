@@ -1,6 +1,6 @@
 import logging
 
-
+import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -42,10 +42,11 @@ async def root():
     return {"message": "Hello World"}
 
 
-# Example usage
 if __name__ == "__main__":
-    logging.info("Starting example usage.")
-
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(
+        "main:app",
+        host="127.0.0.1",
+        port=8000,
+        workers=4,
+        loop="uvloop",
+    )
