@@ -8,14 +8,14 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
 
-def select_most_relevant_sentence(context: str, sentence: str) -> str:
+def select_most_relevant_sentence(context: str, sentence: str) -> bool:
     """
     Uses OpenAI to determine which of two sentences is more relevant given the context.
 
     Args:
         context: The preceding text/context
         sentence1: First sentence option
-        sentence2: Second sentence option
+
 
     Returns:
         The more relevant sentence between the two options
@@ -33,7 +33,7 @@ def select_most_relevant_sentence(context: str, sentence: str) -> str:
     Is the sentence relevant to the context?"""
 
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,
         max_tokens=1,

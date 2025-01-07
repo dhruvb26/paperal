@@ -1,8 +1,6 @@
 from fastapi import APIRouter
-import orjson as json
 import logging
 from models.requests import SentenceRequest
-from utils.markdown import json_to_markdown
 from agents.generate import (
     generate_ai_sentence,
     generate_referenced_sentence,

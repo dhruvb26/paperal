@@ -1,0 +1,2768 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{natbib}
+\usepackage{geometry}
+\usepackage{bm}
+\usepackage{textbf}
+\geometry{margin=1in}
+
+\title{Converted PDF Document}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+4
+2
+0
+2
+
+
+4
+2
+0
+2
+
+
+t
+c
+O
+8
+1
+
+
+t
+c
+O
+8
+1
+
+
+]
+I
+
+
+]
+I
+
+
+1
+v
+8
+6
+3
+4
+1
+.
+0
+1
+4
+2
+:
+v
+i
+X
+r
+a
+
+
+1
+v
+8
+6
+3
+4
+1
+.
+0
+1
+4
+2
+:
+v
+i
+X
+r
+a
+
+
+CoMAL: Collaborative Multi-Agent Large Language Models for
+Mixed-Autonomy Traffic
+
+
+CoMAL: Collaborative Multi-Agent Large Language Models for
+Mixed-Autonomy Traffic
+
+
+Huaiyuan Yao1, Longchao Da1, Vishnu Nandam1, Justin Turnau1,
+Zhiwei Liu2, Linsey Pang2, Hua Wei1
+1Arizona State University, 2Salesforce
+
+
+Huaiyuan Yao1, Longchao Da1, Vishnu Nandam1, Justin Turnau1,
+Zhiwei Liu2, Linsey Pang2, Hua Wei1
+1Arizona State University, 2Salesforce
+
+
+\section{Abstract}
+
+
+The integration of autonomous vehicles into urban traffic has
+great potential to improve efficiency by reducing congestion
+and optimizing traffic flow systematically. In this paper, we
+introduce CoMAL (Collaborative Multi-Agent LLMs), a
+framework designed to address the mixed-autonomy traffic
+problem by collaboration among autonomous vehicles to op-
+timize traffic flow. CoMAL is built upon large language
+models, operating in an interactive traffic simulation envi-
+ronment.
+It utilizes a Perception Module to observe sur-
+rounding agents and a Memory Module to store strategies
+for each agent. The overall workflow includes a Collabo-
+ration Module that encourages autonomous vehicles to dis-
+cuss the effective strategy and allocate roles, a reasoning
+engine to determine optimal behaviors based on assigned
+roles, and an Execution Module that controls vehicle ac-
+tions using a hybrid approach combining rule-based mod-
+els. Experimental results demonstrate that CoMAL achieves
+superior performance on the Flow benchmark. Addition-
+ally, we evaluate the impact of different language models
+and compare our framework with reinforcement learning ap-
+proaches.
+It highlights the strong cooperative capability
+of LLM agents and presents a promising solution to the
+mixed-autonomy traffic challenge. The code is available at
+https://github.com/Hyan-Yao/CoMAL
+
+
+The integration of autonomous vehicles into urban traffic has
+great potential to improve efficiency by reducing congestion
+and optimizing traffic flow systematically. In this paper, we
+introduce CoMAL (Collaborative Multi-Agent LLMs), a
+framework designed to address the mixed-autonomy traffic
+problem by collaboration among autonomous vehicles to op-
+timize traffic flow. CoMAL is built upon large language
+models, operating in an interactive traffic simulation envi-
+ronment.
+It utilizes a Perception Module to observe sur-
+rounding agents and a Memory Module to store strategies
+for each agent. The overall workflow includes a Collabo-
+ration Module that encourages autonomous vehicles to dis-
+cuss the effective strategy and allocate roles, a reasoning
+engine to determine optimal behaviors based on assigned
+roles, and an Execution Module that controls vehicle ac-
+tions using a hybrid approach combining rule-based mod-
+els. Experimental results demonstrate that CoMAL achieves
+superior performance on the Flow benchmark. Addition-
+ally, we evaluate the impact of different language models
+and compare our framework with reinforcement learning ap-
+proaches.
+It highlights the strong cooperative capability
+of LLM agents and presents a promising solution to the
+mixed-autonomy traffic challenge. The code is available at
+https://github.com/Hyan-Yao/CoMAL
+
+
+1
+
+
+1
+
+
+\section{Introduction}
+
+
+Recently, there has been significant growth in end-to-
+end autonomous driving systems [1]. The integration
+of large language models (LLMs) [2, 3] enhances the
+ability to generalize to unseen traffic scenarios with
+embedded common-sense knowledge. These models [4,
+5, 6] primarily focus on optimizing the performance of
+it also matters to
+individual ego vehicles. However,
+study the problem of mixed-autonomy traffic to better
+deploy autonomous vehicles in society [7]. In this article,
+we enable connected autonomous vehicles (CAVs) to
+collaborate with human-driven vehicles across the traffic
+network, aiming to optimize overall traffic flow and
+system-wide efficiency.
+
+
+Recently, there has been significant growth in end-to-
+end autonomous driving systems [1]. The integration
+of large language models (LLMs) [2, 3] enhances the
+ability to generalize to unseen traffic scenarios with
+embedded common-sense knowledge. These models [4,
+5, 6] primarily focus on optimizing the performance of
+it also matters to
+individual ego vehicles. However,
+study the problem of mixed-autonomy traffic to better
+deploy autonomous vehicles in society [7]. In this article,
+we enable connected autonomous vehicles (CAVs) to
+collaborate with human-driven vehicles across the traffic
+network, aiming to optimize overall traffic flow and
+system-wide efficiency.
+
+
+Traffic dynamics are extremely complex and chaotic
+dynamical systems [8]. Pioneering researchers [9, 10]
+typically trade away the complexity of the model for de-
+sirable provable properties. To this end, they propose
+a series of hand-designed control rules [11, 12] to direct
+a fleet of vehicles to form a desired stable motion pat-
+tern. The experiments [13, 14] suggest that autonomous
+vehicles can enhance traffic throughput, which high-
+lights the potential of mixed-autonomy systems. To
+model the complex interactions between autonomous
+and human-driven vehicles in mixed-autonomy traffic
+systems, simulation-based numerical methods like the
+Flow benchmark [7, 15] have proven to be effective tools.
+Flow, a deep reinforcement learning (RL) framework,
+enables the systematic design of RL tasks to improve
+overall traffic flow, including the control of autonomous
+vehicles and traffic signals. With its ability to simu-
+late dynamic multi-agent environments, Flow has fa-
+cilitated the rise of multi-agent RL, which has gained
+popularity for modeling emergent behaviors in mixed-
+autonomy traffic systems [16]. By allowing autonomous
+vehicles to learn cooperative strategies, multi-agent RL
+enables interaction with both human-driven and other
+autonomous vehicles, optimizing traffic flow. These RL-
+based models demonstrate strong performance in spe-
+cific traffic scenarios, effectively learning control policies
+for coordinating mixed-autonomy traffic [17, 18]. How-
+ever, human behaviors in real-world settings are highly
+varied and unpredictable, while road networks are more
+complex and diverse. Deep RL performs well in specific
+and controlled environments but struggles to generalize
+across different scenarios [19] due to its reliance on large
+amounts of specific training data. Meanwhile, it is dif-
+ficult to understand the decision-making process of RL,
+which limits its interpretability.
+
+
+Traffic dynamics are extremely complex and chaotic
+dynamical systems [8]. Pioneering researchers [9, 10]
+typically trade away the complexity of the model for de-
+sirable provable properties. To this end, they propose
+a series of hand-designed control rules [11, 12] to direct
+a fleet of vehicles to form a desired stable motion pat-
+tern. The experiments [13, 14] suggest that autonomous
+vehicles can enhance traffic throughput, which high-
+lights the potential of mixed-autonomy systems. To
+model the complex interactions between autonomous
+and human-driven vehicles in mixed-autonomy traffic
+systems, simulation-based numerical methods like the
+Flow benchmark [7, 15] have proven to be effective tools.
+Flow, a deep reinforcement learning (RL) framework,
+enables the systematic design of RL tasks to improve
+overall traffic flow, including the control of autonomous
+vehicles and traffic signals. With its ability to simu-
+late dynamic multi-agent environments, Flow has fa-
+cilitated the rise of multi-agent RL, which has gained
+popularity for modeling emergent behaviors in mixed-
+autonomy traffic systems [16]. By allowing autonomous
+vehicles to learn cooperative strategies, multi-agent RL
+enables interaction with both human-driven and other
+autonomous vehicles, optimizing traffic flow. These RL-
+based models demonstrate strong performance in spe-
+cific traffic scenarios, effectively learning control policies
+for coordinating mixed-autonomy traffic [17, 18]. How-
+ever, human behaviors in real-world settings are highly
+varied and unpredictable, while road networks are more
+complex and diverse. Deep RL performs well in specific
+and controlled environments but struggles to generalize
+across different scenarios [19] due to its reliance on large
+amounts of specific training data. Meanwhile, it is dif-
+ficult to understand the decision-making process of RL,
+which limits its interpretability.
+
+
+Rethinking human behavioral patterns, adolescents
+can learn to drive in just 20 hours and handle unfa-
+miliar situations [20], while young children can sponta-
+neously cooperate to enhance work efficiency [21]. Hu-
+man decision-making and cooperation are inherently
+
+
+Rethinking human behavioral patterns, adolescents
+can learn to drive in just 20 hours and handle unfa-
+miliar situations [20], while young children can sponta-
+neously cooperate to enhance work efficiency [21]. Hu-
+man decision-making and cooperation are inherently
+
+
+Figure 1: The overall framework of CoMAL. (a) Single-Agent Pipeline: The prompt generator integrates scenario
+descriptions, few-shot experiences, and shared messages, which are then fed into the LLM. The LLM subsequently
+allocates tasks and generates planners. (b) Multi-Agent Workflow comprises three modules: the Collaboration
+Module, the Reason Engine, and the Execution Module. (c) The three Benchmarks Scenarios for CoMAL Ring:
+The ring road network consists of a closed-loop road where vehicles continuously travel in a circular fashion.
+Figure Eight (FE): is an extension of the ring road, consisting of two circular loops connected by an intersection.
+Merge: The merged network simulates how vehicles entering from an on-ramp cause disturbances.
+
+
+Figure 1: The overall framework of CoMAL. (a) Single-Agent Pipeline: The prompt generator integrates scenario
+descriptions, few-shot experiences, and shared messages, which are then fed into the LLM. The LLM subsequently
+allocates tasks and generates planners. (b) Multi-Agent Workflow comprises three modules: the Collaboration
+Module, the Reason Engine, and the Execution Module. (c) The three Benchmarks Scenarios for CoMAL Ring:
+The ring road network consists of a closed-loop road where vehicles continuously travel in a circular fashion.
+Figure Eight (FE): is an extension of the ring road, consisting of two circular loops connected by an intersection.
+Merge: The merged network simulates how vehicles entering from an on-ramp cause disturbances.
+
+
+knowledge-driven, relying on common sense, verbal
+communication, and reasoning [22]. This is in con-
+trast to data-driven methods that require vast amounts
+of training data and often struggle with generaliza-
+tion. Recent advancements in LLMs [23] offer promising
+knowledge-driven solutions for addressing the mixed-
+autonomy traffic problem. LLMs can emulate human-
+like knowledge, including the ability to make decisions,
+form agreements, analyze road situations, and collabo-
+rate in real-time. By leveraging this embodied human
+knowledge, multiple intelligent LLM agents with dis-
+tinct roles and attributes can work together to handle
+complex tasks more efficiently [24], offering new avenues
+for improving traffic systems through cooperation and
+common-sense reasoning.
+
+
+knowledge-driven, relying on common sense, verbal
+communication, and reasoning [22]. This is in con-
+trast to data-driven methods that require vast amounts
+of training data and often struggle with generaliza-
+tion. Recent advancements in LLMs [23] offer promising
+knowledge-driven solutions for addressing the mixed-
+autonomy traffic problem. LLMs can emulate human-
+like knowledge, including the ability to make decisions,
+form agreements, analyze road situations, and collabo-
+rate in real-time. By leveraging this embodied human
+knowledge, multiple intelligent LLM agents with dis-
+tinct roles and attributes can work together to handle
+complex tasks more efficiently [24], offering new avenues
+for improving traffic systems through cooperation and
+common-sense reasoning.
+
+
+Building upon these insights and recognizing the
+limitations of RL in generalizing to new traffic situa-
+tions, we propose leveraging LLMs for their common-
+sense reasoning and adaptability. LLMs offer better
+generalization by drawing on embedded knowledge, al-
+lowing them to manage complex and unpredictable traf-
+fic dynamics more effectively. We developed an innova-
+tive framework named CoMAL specifically designed to
+address mixed-autonomy traffic challenges, as depicted
+in Figure 1. CoMAL comprises a simulation environ-
+ment that enables the interaction of individual LLM
+agents and allows agents to collect perceptual data from
+
+
+Building upon these insights and recognizing the
+limitations of RL in generalizing to new traffic situa-
+tions, we propose leveraging LLMs for their common-
+sense reasoning and adaptability. LLMs offer better
+generalization by drawing on embedded knowledge, al-
+lowing them to manage complex and unpredictable traf-
+fic dynamics more effectively. We developed an innova-
+tive framework named CoMAL specifically designed to
+address mixed-autonomy traffic challenges, as depicted
+in Figure 1. CoMAL comprises a simulation environ-
+ment that enables the interaction of individual LLM
+agents and allows agents to collect perceptual data from
+
+
+the traffic system. Leveraging the stored experiences
+within the Memory Module, the agents participate in
+a brainstorming session in the Collaboration Module,
+where they allocate tasks and establish their specific
+roles. Subsequently, each agent develops driving plans
+according to its designated role through the Reason En-
+gine. Then Reason Engine generates a rule-based driv-
+ing planner grounded in the Intelligent Driver Model
+(IDM), which is then implemented in the Execution
+Module to compensate for the inherent limitations of
+LLMs in control performance.
+
+
+the traffic system. Leveraging the stored experiences
+within the Memory Module, the agents participate in
+a brainstorming session in the Collaboration Module,
+where they allocate tasks and establish their specific
+roles. Subsequently, each agent develops driving plans
+according to its designated role through the Reason En-
+gine. Then Reason Engine generates a rule-based driv-
+ing planner grounded in the Intelligent Driver Model
+(IDM), which is then implemented in the Execution
+Module to compensate for the inherent limitations of
+LLMs in control performance.
+
+
+Our primary contributions are as follows:
+
+
+Our primary contributions are as follows:
+
+
+1) To the best of our knowledge, we are the first to in-
+tegrate the collaborative capability of multi-agent
+language models in autonomous driving. The Col-
+laboration Module effectively establishes a session
+for multiple agents to engage in brainstorming and
+task allocation.
+
+
+1) To the best of our knowledge, we are the first to in-
+tegrate the collaborative capability of multi-agent
+language models in autonomous driving. The Col-
+laboration Module effectively establishes a session
+for multiple agents to engage in brainstorming and
+task allocation.
+
+
+2) We propose CoMAL, a multi-agent framework de-
+signed to address mixed-autonomy traffic chal-
+lenges. CoMAL integrates rule-based planners to
+enhance control mechanisms while leveraging the
+cooperative and reasoning ability of LLM.
+
+
+2) We propose CoMAL, a multi-agent framework de-
+signed to address mixed-autonomy traffic chal-
+lenges. CoMAL integrates rule-based planners to
+enhance control mechanisms while leveraging the
+cooperative and reasoning ability of LLM.
+
+
+3) We evaluate CoMAL on Flow benchmark in three
+classical traffic scenarios (Figure 1 (c)) and com-
+
+
+3) We evaluate CoMAL on Flow benchmark in three
+classical traffic scenarios (Figure 1 (c)) and com-
+
+
+Collaboration ModuleShared Message PoolReason EngineMultiple Agents on CAVs(a) Single-Agent PipelineEnvironmentCAV-1CAV-2CAV-3CAV-4CAV-n......CAVHuman(b) Multi-Agent WorkflowSystem promptExecution ModuleFew-shot ExperiencesMemory ModuleScenarioDescriptionTaskAllocationPlanner GenerationPrompt GeneratorShared MessagesLLM AgentUpdatesObsActionsRingFigure EightMerge(c) Scenariospare its performance against RL methods. Exten-
+sive experimental results demonstrate significant
+performance improvements in terms of average ve-
+locity and driving smoothness across various LLMs.
+
+
+Collaboration ModuleShared Message PoolReason EngineMultiple Agents on CAVs(a) Single-Agent PipelineEnvironmentCAV-1CAV-2CAV-3CAV-4CAV-n......CAVHuman(b) Multi-Agent WorkflowSystem promptExecution ModuleFew-shot ExperiencesMemory ModuleScenarioDescriptionTaskAllocationPlanner GenerationPrompt GeneratorShared MessagesLLM AgentUpdatesObsActionsRingFigure EightMerge(c) Scenariospare its performance against RL methods. Exten-
+sive experimental results demonstrate significant
+performance improvements in terms of average ve-
+locity and driving smoothness across various LLMs.
+
+
+4) We conduct experiments using the latest LLM
+and Qwen-
+including GPT-4o-mini
+models,
+72B/32B/7B,
+showcasing the adaptability of
+CoMAL across a diverse range of LLMs and
+demonstrating
+over
+state-of-the-art RL approaches in mixed-autonomy
+traffic scenarios.
+
+
+4) We conduct experiments using the latest LLM
+and Qwen-
+including GPT-4o-mini
+models,
+72B/32B/7B,
+showcasing the adaptability of
+CoMAL across a diverse range of LLMs and
+demonstrating
+over
+state-of-the-art RL approaches in mixed-autonomy
+traffic scenarios.
+
+
+superior performance
+
+
+superior performance
+
+
+its
+
+
+its
+
+
+\section{2 Related Work}
+
+
+\subsection{2.1 Mixed-Autonomy Traffic}
+
+Mixed-autonomy traffic, where connected autonomous
+vehicles (CAVs) along with human-driven vehicles exist
+in a system [7], presents a significant challenge in
+traffic dynamics modeling and control. A control
+strategy named the “slow-in, fast-out” approach [13]
+has demonstrated improvements in traffic throughput
+with a minimal percentage of autonomous vehicles.
+Reinforcement learning (RL) offers a more dynamic
+and adaptable solution. Benchmarks in RL [25] like
+Mujoco and the Arcade Learning Environment [26]
+provide systematic evaluation and comparison of algo-
+rithms. And especially for Mixed-Autonomy, bench-
+mark Flow [7] proposes four traffic scenarios to il-
+lustrate distinct RL problems including shockwave
+inflow management, efficient merging,
+minimization,
+and intersection control.
+It evaluates and compares
+RL algorithms like Trust Region Policy Optimiza-
+tion (TRPO) [15, 27], Proximal Policy Optimization
+(PPO) [28], Evolutionary Strategies (ES) [29], and Aug-
+mented Random Search (ARS) [30] in traffic scenar-
+ios. [31] also explores the mixed-autonomy scenario in a
+multi-agent traffic signal control system [32].
+
+
+Reinforcement learning (RL) offers a more dynamic
+and adaptable solution. Benchmarks in RL [25] like
+Mujoco and the Arcade Learning Environment [26]
+provide systematic evaluation and comparison of algo-
+rithms. And especially for Mixed-Autonomy, bench-
+mark Flow [7] proposes four traffic scenarios to il-
+lustrate distinct RL problems including shockwave
+inflow management, efficient merging,
+minimization,
+and intersection control.
+It evaluates and compares
+RL algorithms like Trust Region Policy Optimiza-
+tion (TRPO) [15, 27], Proximal Policy Optimization
+(PPO) [28], Evolutionary Strategies (ES) [29], and Aug-
+mented Random Search (ARS) [30] in traffic scenar-
+ios. [31] also explores the mixed-autonomy scenario in a
+multi-agent traffic signal control system [32].
+
+
+\subsection{2.2 Large Language Model-based Multi-Agents}
+
+Large Language models (LLMs) have become integral
+to multi-agent systems [23] due to their capabilities
+in generalization and common-sense reasoning. LLM-
+based multi-agent systems leverage these strengths to
+enhance decision-making and communication among
+agents [33]. This approach is particularly beneficial in
+complex scenarios like mixed-autonomy traffic, where it
+is essential to have effective interaction between human
+drivers and autonomous systems.
+The communication structure of LLM-based multi-
+agent systems varies across different studies to ad-
+dress specific challenges
+[23, 34, 24]. For example,
+research [24] has explored both centralized and de-
+centralized communication structures for LLM-based
+
+
+The communication structure of LLM-based multi-
+agent systems varies across different studies to ad-
+dress specific challenges
+[23, 34, 24]. For example,
+research [24] has explored both centralized and de-
+centralized communication structures for LLM-based
+
+
+In traffic control, LLMs facili-
+multi-agent systems.
+tate human-machine interaction and improve decision-
+making processes. The survey [23] discusses how LLMs
+can be integrated into multi-agent systems to enhance
+communication and coordination among agents in traf-
+fic environments. And the study DiLu [22] explores
+a knowledge-driven approach using LLMs, while LLM-
+Light [35] utilizes LLMs as decision-making agents for
+traffic signal control. A pioneering model Open-TI [36]
+that integrates LLMs with external traffic analysis tools
+to perform comprehensive traffic simulations and task-
+specific operations. Their findings suggest that incorpo-
+rating domain-specific knowledge into LLMs can signifi-
+cantly enhance the performance and reliability of multi-
+agent systems in complex scenarios. This involves not
+only improving the performance of individual agents but
+also fostering effective communication and coordination
+among the agents.
+
+
+In traffic control, LLMs facili-
+multi-agent systems.
+tate human-machine interaction and improve decision-
+making processes. The survey [23] discusses how LLMs
+can be integrated into multi-agent systems to enhance
+communication and coordination among agents in traf-
+fic environments. And the study DiLu [22] explores
+a knowledge-driven approach using LLMs, while LLM-
+Light [35] utilizes LLMs as decision-making agents for
+traffic signal control. A pioneering model Open-TI [36]
+that integrates LLMs with external traffic analysis tools
+to perform comprehensive traffic simulations and task-
+specific operations. Their findings suggest that incorpo-
+rating domain-specific knowledge into LLMs can signifi-
+cantly enhance the performance and reliability of multi-
+agent systems in complex scenarios. This involves not
+only improving the performance of individual agents but
+also fostering effective communication and coordination
+among the agents.
+
+
+\section{3 Methodology}
+
+We introduce CoMAL, a framework designed for LLM
+agents integrated into connected autonomous vehicles
+(CAVs) to collaborate and enhance the overall velocity
+and driving smoothness of traffic flow. As illustrated
+in Figure 1, we delineate CoMAL at two distinct levels:
+the single-agent pipeline and the multi-agent workflow.
+At the single-agent level, the LLM-based agents
+make decisions based on prompts that include few-shot
+experiences stored in memory, as well as scenario de-
+scriptions derived from environmental perception. The
+agents operate in two modes: task allocation within the
+Collaboration Module and planner generation within
+the Reason Engine. The multi-agent workflow consists
+of three modules: the Collaboration Module, the Rea-
+son Engine, and the Execution Module.
+In the Col-
+laboration Module, CoMAL establishes a shared mes-
+sage pool that facilitates brainstorming and collabora-
+tive decision-making among agents. Within this shared
+space, agents collectively allocate tasks, define their re-
+spective roles, and formulate individual driving plans.
+Each agent then generates a rule-based driving plan-
+ner in Reason Engine, which is subsequently executed
+within the Execution Module to ensure coordinated
+driving behavior and smooth traffic flow.
+\subsection{3.1 Single-Agent Pipeline}
+
+The quality of prompts significantly influences the out-
+put quality of LLM. CoMAL utilizes a prompt gener-
+ator that integrates all essential information for effec-
+tive decision-making. The workflow for each individ-
+(1) encode the sce-
+ual agent involves several steps:
+nario into a textual description within the Perception
+Module; (2) recall relevant driving experiences from the
+Figure 2: (a) Left: A detailed prompt example for CoMAL, consisting of a system prompt that specifies the
+driving task, along with map description and motion state provided by the Perception Module. (b) Right: A case
+of the collaboration and reasoning process. Following task allocation during brainstorming, a hierarchical chain
+of thought breaks down the driving plan into incremental steps, ensuring consistency in decision-making. This
+process includes role clarification, scene understanding, motion instruction, and planner generation.
+
+
+Figure 2: (a) Left: A detailed prompt example for CoMAL, consisting of a system prompt that specifies the
+driving task, along with map description and motion state provided by the Perception Module. (b) Right: A case
+of the collaboration and reasoning process. Following task allocation during brainstorming, a hierarchical chain
+of thought breaks down the driving plan into incremental steps, ensuring consistency in decision-making. This
+process includes role clarification, scene understanding, motion instruction, and planner generation.
+
+
+Memory Module; (3) receive shared messages from other
+agents through the Collaboration Module; (4) gener-
+ate prompts and feed it into the LLM; (5) decode the
+LLM response for task allocation or planning purposes.
+In this section, we detail the Environment Perception
+Module and Memory Module.
+
+
+Memory Module; (3) receive shared messages from other
+agents through the Collaboration Module; (4) gener-
+ate prompts and feed it into the LLM; (5) decode the
+LLM response for task allocation or planning purposes.
+In this section, we detail the Environment Perception
+Module and Memory Module.
+
+
+3.1.1 Environment Perception Module To effi-
+ciently extract prompts from complex environmental
+data and enhance the scene understanding of LLMs, we
+design an Environment Perception Module. This mod-
+ule extracts key information from the simulation envi-
+ronment and constructs a textual scenario description.
+The description follows a set of standard rules to gener-
+ate a thorough representation in natural language. The
+scene information is divided into two parts: static map
+and dynamic agents, as shown in Figure 2.
+
+
+3.1.1 Environment Perception Module To effi-
+ciently extract prompts from complex environmental
+data and enhance the scene understanding of LLMs, we
+design an Environment Perception Module. This mod-
+ule extracts key information from the simulation envi-
+ronment and constructs a textual scenario description.
+The description follows a set of standard rules to gener-
+ate a thorough representation in natural language. The
+scene information is divided into two parts: static map
+and dynamic agents, as shown in Figure 2.
+
+
+The static map information represents the scenario
+type, providing semantic priors for vehicle motion plan-
+ning. The description of the map helps the LLM in-
+tuitively understand the scenario’s geometry. The dy-
+namic information describes the motion of the ego ve-
+
+
+The static map information represents the scenario
+type, providing semantic priors for vehicle motion plan-
+ning. The description of the map helps the LLM in-
+tuitively understand the scenario’s geometry. The dy-
+namic information describes the motion of the ego ve-
+
+
+hicle and surrounding agents, which directly influences
+the planning of vehicles’ movement.
+
+
+hicle and surrounding agents, which directly influences
+the planning of vehicles’ movement.
+
+
+3.1.2 Memory Module Similar to human drivers,
+the agent must make decisions based on reasoning
+processes that are informed by past driving experiences.
+To achieve this, we employ a Memory Module that
+stores experiences from previous driving scenarios and
+handmade instructions. Initially, the agent is provided
+with a set of predefined experiences, which the LLM
+then updates continuously as it engages in reasoning
+during new situations. This approach allows the agent
+to refine its decision-making over time, improving its
+performance in diverse driving contexts.
+
+
+3.1.2 Memory Module Similar to human drivers,
+the agent must make decisions based on reasoning
+processes that are informed by past driving experiences.
+To achieve this, we employ a Memory Module that
+stores experiences from previous driving scenarios and
+handmade instructions. Initially, the agent is provided
+with a set of predefined experiences, which the LLM
+then updates continuously as it engages in reasoning
+during new situations. This approach allows the agent
+to refine its decision-making over time, improving its
+performance in diverse driving contexts.
+
+
+\subsection{3.2 Multi-Agent Workflow In a mixed-autonomy}
+
+traffic setting, where CAVs operate alongside human
+drivers, the main objective is to optimize overall traffic
+flow. To achieve this, we propose a three-stage decision-
+making workflow. In the Collaboration Module, agents
+first discuss and allocate tasks within a public message
+pool. In Reason Engine, each agent then independently
+Collaboration ModuleThank you all for your cooperation. Since everyone has confirmed their positions and roles, I will lead the queue, setting a consistent speed to maintain safe distances. Let's proceed safely and ensure we avoid collisions while maintaining optimal speed. Drive safely, everyone!My Role Decision: "Leader"Driving TaskYou are the brain of an autonomous vehicle in the road. Your vehicle ID is CAV_01. You can connect all the autonomous vehicles in the scenario. Please make the decision to optimize the average velocity of all the vehicles. Try your best to avoid collisions with other objects.Map descriptionThe merge map consists of two straight single lanes. One is the main highway where all vehicles drive, and another is the merge branch to intersect with main highy way. The perturbations caused by the vehicles entering through the ramp leads to the formation of congested waves downstream in the main highway.Motion stateYour speed is 3.80 m/s, and lane position is 11.75 m. There are other vehicles driving around you, and below is their basic information:- Vehicle CAV_02 is driving on the same lane as you. The speed of it is 4.51 m/s, and lane position is 15.64 m. .........Reason EngineStep 1. Role ClarificationAfter reviewing the positions the consensus shown by other vehicles, I am ready to take on the role of the leader.Step 2. Scene UnderstandingMy position at 27.26m provides a good overview ahead and control over initiating movement through the intersection.Step 3. Motion InstructionI propose we start moving slowly and steadily to ensure all vehicles can follow safely.Step 4. Planner GenerationLet’s use the planner: driving_planner(a_max = 0.2, v_target = 6.0, min_headway = 2.0)Figure 3: Demonstration of the interaction process of agents in the scenario Figure Eight 1. The agents decide
+to form a queue and subsequently allocate the roles of leader and follower.
+
+
+\begin{equation}
+Collaboration ModuleThank you all for your cooperation. Since everyone has confirmed their positions and roles, I will lead the queue, setting a consistent speed to maintain safe distances. Let's proceed safely and ensure we avoid collisions while maintaining optimal speed. Drive safely, everyone!My Role Decision: "Leader"Driving TaskYou are the brain of an autonomous vehicle in the road. Your vehicle ID is CAV\_01. You can connect all the autonomous vehicles in the scenario. Please make the decision to optimize the average velocity of all the vehicles. Try your best to avoid collisions with other objects.Map descriptionThe merge map consists of two straight single lanes. One is the main highway where all vehicles drive, and another is the merge branch to intersect with main highy way. The perturbations caused by the vehicles entering through the ramp leads to the formation of congested waves downstream in the main highway.Motion stateYour speed is 3.80 m/s, and lane position is 11.75 m. There are other vehicles driving around you, and below is their basic information:- Vehicle CAV\_02 is driving on the same lane as you. The speed of it is 4.51 m/s, and lane position is 15.64 m. .........Reason EngineStep 1. Role ClarificationAfter reviewing the positions the consensus shown by other vehicles, I am ready to take on the role of the leader.Step 2. Scene UnderstandingMy position at 27.26m provides a good overview ahead and control over initiating movement through the intersection.Step 3. Motion InstructionI propose we start moving slowly and steadily to ensure all vehicles can follow safely.Step 4. Planner GenerationLet’s use the planner: driving\_planner(a\_max = 0.2, v\_target = 6.0, min\_headway = 2.0)Figure 3: Demonstration of the interaction process of agents in the scenario Figure Eight 1. The agents decide
+to form a queue and subsequently allocate the roles of leader and follower.
+\end{equation}
+
+
+determines its driving plan based on its assigned role
+and generates a driving planner. Finally, the driving
+planner is executed in the Execution Module.
+
+
+determines its driving plan based on its assigned role
+and generates a driving planner. Finally, the driving
+planner is executed in the Execution Module.
+
+
+3.2.1 Collaboration Module Collaborative agents
+work together towards a shared objective, typically ex-
+changing information to enhance the collective solution.
+In the Collaboration Module, all CAVs participate in-
+teractively by forming a queue for brainstorming and
+communication. In the brainstorming session, the vehi-
+cles take turns subsequently speaking in a public chan-
+nel to propose strategies and assign tasks among them-
+selves. This collaborative effort ensures that each CAV
+understands its specific role in the traffic system.
+
+
+3.2.1 Collaboration Module Collaborative agents
+work together towards a shared objective, typically ex-
+changing information to enhance the collective solution.
+In the Collaboration Module, all CAVs participate in-
+teractively by forming a queue for brainstorming and
+communication. In the brainstorming session, the vehi-
+cles take turns subsequently speaking in a public chan-
+nel to propose strategies and assign tasks among them-
+selves. This collaborative effort ensures that each CAV
+understands its specific role in the traffic system.
+
+
+Communication Structure Here, we introduce a
+shared message pool to boost communication efficiency,
+as shown in Figure 3. This communication structure
+maintains a shared message pool where agents can
+publish messages and subscribe to the latest messages
+from one another. Agents will take turns to speak one
+at a time until the strategy is fully developed and each
+agent’s role is clearly defined.
+
+
+Communication Structure Here, we introduce a
+shared message pool to boost communication efficiency,
+as shown in Figure 3. This communication structure
+maintains a shared message pool where agents can
+publish messages and subscribe to the latest messages
+from one another. Agents will take turns to speak one
+at a time until the strategy is fully developed and each
+agent’s role is clearly defined.
+
+
+3.2.2 Reason Engine During team brainstorming,
+each agent determines its role and formulates a strat-
+egy to collaborate with other vehicles. Based on these
+defined roles, the Reason Engine generates an appro-
+priate driving planner to effectively control the vehi-
+cle. The Reason Engine takes scenario description and
+predefined system prompts as inputs. Subsequently,
+the LLM generates the driving planner based on IDM
+through reasoning guided by a hierarchical chain-of-
+thought prompt.
+
+
+3.2.2 Reason Engine During team brainstorming,
+each agent determines its role and formulates a strat-
+egy to collaborate with other vehicles. Based on these
+defined roles, the Reason Engine generates an appro-
+priate driving planner to effectively control the vehi-
+cle. The Reason Engine takes scenario description and
+predefined system prompts as inputs. Subsequently,
+the LLM generates the driving planner based on IDM
+through reasoning guided by a hierarchical chain-of-
+thought prompt.
+
+
+System Prompt The system prompt defines the
+planning task and associated driving knowledge. Its pri-
+mary goal is to standardize the format of both input and
+output data, as well as clarify the objectives of planner
+generation. Specifically, it ensures a clear understanding
+of the physical meaning of each parameter in the IDM
+planner, such as speed limit (v0), maximum accelera-
+tion (am), and minimum headway (s0). This provides a
+structured foundation for the decision-making process.
+Hierarchical Chain-of-thougts The hierarchical
+chain-of-thought process involves four critical compo-
+nents: role clarification, scene understanding, motion
+instruction, and planner generation. Initially, it is cru-
+cial to clarify the role and task of the ego vehicle within
+a collaborative context. Then the LLM is directed to
+focus on key information in the scenario, such as head-
+way distance and lead vehicles. Based on the scenario
+analysis, the LLM is then prompted to provide motion
+instructions for the ego vehicle. Finally, each agent uti-
+lizes scenario analysis and motion instructions to gen-
+erate a driving planner, parameterized by IDM model.
+
+
+System Prompt The system prompt defines the
+planning task and associated driving knowledge. Its pri-
+mary goal is to standardize the format of both input and
+output data, as well as clarify the objectives of planner
+generation. Specifically, it ensures a clear understanding
+of the physical meaning of each parameter in the IDM
+planner, such as speed limit (v0), maximum accelera-
+tion (am), and minimum headway (s0). This provides a
+structured foundation for the decision-making process.
+Hierarchical Chain-of-thougts The hierarchical
+chain-of-thought process involves four critical compo-
+nents: role clarification, scene understanding, motion
+instruction, and planner generation. Initially, it is cru-
+cial to clarify the role and task of the ego vehicle within
+a collaborative context. Then the LLM is directed to
+focus on key information in the scenario, such as head-
+way distance and lead vehicles. Based on the scenario
+analysis, the LLM is then prompted to provide motion
+instructions for the ego vehicle. Finally, each agent uti-
+lizes scenario analysis and motion instructions to gen-
+erate a driving planner, parameterized by IDM model.
+
+
+3.2.3 Execution Module We utilize the rule-based
+IDM model as a planner to execute driving strategies by
+adjusting its parameters. IDM is a car-following model
+to compute longitudinal dynamics. In this model, the
+acceleration ak for vehicle k is defined by its bumper-
+to-bumper headway sk (distance to preceding vehicle),
+velocity vk, and relative velocity ∆vk, via the following
+equation:
+
+
+3.2.3 Execution Module We utilize the rule-based
+IDM model as a planner to execute driving strategies by
+adjusting its parameters. IDM is a car-following model
+to compute longitudinal dynamics. In this model, the
+acceleration ak for vehicle k is defined by its bumper-
+to-bumper headway sk (distance to preceding vehicle),
+velocity vk, and relative velocity ∆vk, via the following
+equation:
+
+
+Good day, fellow vehicles! This is Vehicle 01. In order to form an efficient queue that allows us all to pass quickly and safely, I propose the following initial order according to our current positions: Vehicle 1, Vehicle 2, Vehicle 3, Vehicle 4 ......   Each vehicle should maintain a safe following distance from the vehicle in front. Please confirm your agreement or suggest adjustments. Let's ensure we avoid collisions and maintain optimal speed!My Role Decision: "Not decided yet"Hello everyone, this is Vehicle 02. I agree with Vehicle 01's proposed order since it reflects our current positions accurately. If no one has any objections, I suggest we move forward with this plan and start adjusting our speeds to maintain safe distances. Waiting for confirmation from the rest. Thank you!My Role Decision: "Follower"Thank you all for your cooperation. Since everyone has confirmed their positions and roles, I will lead the queue, setting a consistent speed to maintain safe distances.  Here's the final order and role assignment: 1. Vehicle 1 (Leader) 2. Vehicle 2 (Leading Follower) 3. Vehicle 3 (Follower)....  Let's proceed safely and ensure we avoid collisions while maintaining optimal speed. Drive safely, everyone!My Role Decision: "Leader"......CAV-01CAV-02CAV-01(3.1)
+
+
+Good day, fellow vehicles! This is Vehicle 01. In order to form an efficient queue that allows us all to pass quickly and safely, I propose the following initial order according to our current positions: Vehicle 1, Vehicle 2, Vehicle 3, Vehicle 4 ......   Each vehicle should maintain a safe following distance from the vehicle in front. Please confirm your agreement or suggest adjustments. Let's ensure we avoid collisions and maintain optimal speed!My Role Decision: "Not decided yet"Hello everyone, this is Vehicle 02. I agree with Vehicle 01's proposed order since it reflects our current positions accurately. If no one has any objections, I suggest we move forward with this plan and start adjusting our speeds to maintain safe distances. Waiting for confirmation from the rest. Thank you!My Role Decision: "Follower"Thank you all for your cooperation. Since everyone has confirmed their positions and roles, I will lead the queue, setting a consistent speed to maintain safe distances.  Here's the final order and role assignment: 1. Vehicle 1 (Leader) 2. Vehicle 2 (Leading Follower) 3. Vehicle 3 (Follower)....  Let's proceed safely and ensure we avoid collisions while maintaining optimal speed. Drive safely, everyone!My Role Decision: "Leader"......CAV-01CAV-02CAV-01(3.1)
+
+
+ak =
+
+
+\begin{equation}
+ak =
+\end{equation}
+
+
+dvk
+dt
+
+
+dvk
+dt
+
+
+= amax[1 − (
+
+
+\begin{equation}
+= amax[1 − (
+\end{equation}
+
+
+vk
+v0
+
+
+vk
+v0
+
+
+)δ − (
+
+
+)δ − (
+
+
+s∗(vk, ∆vk)
+sk
+
+
+s∗(vk, ∆vk)
+sk
+
+
+)2]
+
+
+)2]
+
+
+where s∗ is the desired headway of the vehicle,
+
+
+where s∗ is the desired headway of the vehicle,
+
+
+denoted by:
+
+
+denoted by:
+
+
+(3.2)
+
+
+(3.2)
+
+
+s∗(vk, ∆vk) = s0 + max(0, vkT +
+
+
+\begin{equation}
+s∗(vk, ∆vk) = s0 + max(0, vkT +
+\end{equation}
+
+
+vk∆vk
+√
+2
+
+
+vk∆vk
+√
+2
+
+
+amaxb
+
+
+amaxb
+
+
+)
+
+
+)
+
+
+where s0, v0, T, δ, amax, b are given parameters. We
+set the desired time headway T , the comfortable braking
+deceleration b, and the acceleration exponent δ as
+constants while adjusting the desired velocity v0, the
+minimum spacing s0, and the maximum acceleration
+amax to tailor the driving planners. Thus Reason
+Engine generates a driving planner by customizing
+IDM’s parameters (v0, amax, s0).
+
+
+where s0, v0, T, δ, amax, b are given parameters. We
+set the desired time headway T , the comfortable braking
+deceleration b, and the acceleration exponent δ as
+constants while adjusting the desired velocity v0, the
+minimum spacing s0, and the maximum acceleration
+amax to tailor the driving planners. Thus Reason
+Engine generates a driving planner by customizing
+IDM’s parameters (v0, amax, s0).
+
+
+\section{4 Experiments}
+
+
+In a mixed-autonomy setting, a subset of vehicles are
+tasked with the objective of improving overall traffic
+flow and mitigating the formation and propagation of
+stop-and-go waves. Thus, in our experiments, we aim
+to address several key questions:
+
+
+In a mixed-autonomy setting, a subset of vehicles are
+tasked with the objective of improving overall traffic
+flow and mitigating the formation and propagation of
+stop-and-go waves. Thus, in our experiments, we aim
+to address several key questions:
+
+
+• How can CAVs enhance traffic flow and eliminate
+
+
+• How can CAVs enhance traffic flow and eliminate
+
+
+stop-and-go shockwaves?
+
+
+stop-and-go shockwaves?
+
+
+• How do multiple LLM-based agents collaborate to
+
+
+• How do multiple LLM-based agents collaborate to
+
+
+achieve this goal?
+
+
+achieve this goal?
+
+
+• Do different LLM models influence the results?
+
+
+• Do different LLM models influence the results?
+
+
+Implementation Details The experiments are
+4.1
+conducted in Flow [15] with SUMO [37], a microscopic
+simulator for traffic and vehicle dynamics. For details
+on the architecture and on training autonomous vehicles
+to maximize system-level velocity, we refer the readers
+to [15]. The environment offers several driving models
+to simulate human driver and a realistic interaction
+between vehicles. We adopt OpenAI GPT-4o-mini,
+Qwen-72B/32B/7B in this paper.
+
+
+Implementation Details The experiments are
+4.1
+conducted in Flow [15] with SUMO [37], a microscopic
+simulator for traffic and vehicle dynamics. For details
+on the architecture and on training autonomous vehicles
+to maximize system-level velocity, we refer the readers
+to [15]. The environment offers several driving models
+to simulate human driver and a realistic interaction
+between vehicles. We adopt OpenAI GPT-4o-mini,
+Qwen-72B/32B/7B in this paper.
+
+
+\subsection{4.2 Scenarios We evaluate our model on the Figure}
+
+Eight (FE), Ring, and Merge scenarios from the Flow
+benchmark. Further details are provided below and
+illustrated in Figure 1 (c).
+Ring The ring road network consists of a circu-
+lar lane where vehicles continuously travel in a loop.
+It is commonly used to study traffic dynamics, as dis-
+turbances can cause stop-and-go waves.
+In mixed-
+autonomy scenarios, CAVs are deployed to reduce these
+waves and enhance traffic flow stability.
+
+
+Ring The ring road network consists of a circu-
+lar lane where vehicles continuously travel in a loop.
+It is commonly used to study traffic dynamics, as dis-
+turbances can cause stop-and-go waves.
+In mixed-
+autonomy scenarios, CAVs are deployed to reduce these
+waves and enhance traffic flow stability.
+
+
+Figure Eight (FE) The FE network builds on
+the ring road by connecting two circular loops via an
+intersection.
+In mixed-autonomy scenarios, CAVs are
+introduced to smooth traffic and prevent stop-and-go
+waves.
+
+
+Figure Eight (FE) The FE network builds on
+the ring road by connecting two circular loops via an
+intersection.
+In mixed-autonomy scenarios, CAVs are
+introduced to smooth traffic and prevent stop-and-go
+waves.
+
+
+Merge The merged network simulates highway
+disturbances caused by vehicles entering from an on-
+ramp, which creates stop-and-go waves.
+In mixed-
+autonomy scenarios, CAVs are tasked with mitigating
+these waves based on local observations and adjusting
+to fluctuating vehicle numbers in the open network.
+
+
+Merge The merged network simulates highway
+disturbances caused by vehicles entering from an on-
+ramp, which creates stop-and-go waves.
+In mixed-
+autonomy scenarios, CAVs are tasked with mitigating
+these waves based on local observations and adjusting
+to fluctuating vehicle numbers in the open network.
+
+
+We investigate different levels of difficulty for each
+proposed benchmark by adjusting their scenario-specific
+meta-parameters. Table 1 provides detailed descriptions
+of the selected meta-parameters for each benchmark.
+
+
+We investigate different levels of difficulty for each
+proposed benchmark by adjusting their scenario-specific
+meta-parameters. Table 1 provides detailed descriptions
+of the selected meta-parameters for each benchmark.
+
+
+Table 1: Configurations of Benchmarks
+
+
+Table 1: Configurations of Benchmarks
+
+
+Scenario Name Time(s)
+
+
+Scenario Name Time(s)
+
+
+Vehicles Distribution
+
+
+Vehicles Distribution
+
+
+150
+150
+150
+150
+150
+150
+75
+75
+75
+75
+75
+
+
+150
+150
+150
+150
+150
+150
+75
+75
+75
+75
+75
+
+
+13 humans, 1 CAV
+7 humans, 7 CAVs
+0 humans, 14 CAVs
+21 humans, 1 CAV
+19 humans, 3 CAVs
+11 humans, 11 CAVs
+10.0% CAV penetration rate
+25.0% CAV penetration rate
+33.3% CAV penetration rate
+50.0% CAV penetration rate
+90.0% CAV penetration rate
+
+
+13 humans, 1 CAV
+7 humans, 7 CAVs
+0 humans, 14 CAVs
+21 humans, 1 CAV
+19 humans, 3 CAVs
+11 humans, 11 CAVs
+10.0\% CAV penetration rate
+25.0\% CAV penetration rate
+33.3\% CAV penetration rate
+50.0\% CAV penetration rate
+90.0\% CAV penetration rate
+
+
+\subsection{4.3 Metrics To provide a comprehensive assessment}
+
+of traffic flow and mitigate the occurrence of shock-
+waves, we utilize two metrics:
+• Average vehicle speed in the network (m/s). Higher
+
+
+• Average vehicle speed in the network (m/s). Higher
+
+
+values indicate better overall traffic flow.
+
+
+values indicate better overall traffic flow.
+
+
+• Standard deviation of vehicle speed (m/s). The
+smaller is more stable. Lower values reflect greater
+stability and consistency in traffic movement.
+
+
+• Standard deviation of vehicle speed (m/s). The
+smaller is more stable. Lower values reflect greater
+stability and consistency in traffic movement.
+
+
+\subsection{4.4 Specification on Communication In this sec-}
+
+tion, we focus on the interactive process among agents
+as they work to solve the mixed-traffic problem. In the
+FE scenario, the agents recognize the need to form a
+queue, identify a leader, and designate the remaining
+agents as followers. The process of task allocation and
+leader selection is illustrated in Figure 3. Additionally,
+in the ring and merge scenarios, agents aim to elimi-
+nate shockwaves. Their reasoning is as follows: if there
+is relative traffic congestion ahead of the ego vehicle, the
+agent approaches the lead vehicle slowly; otherwise, it
+accelerates to follow the lead vehicle closely.
+Metric
+
+
+Metric
+
+
+Model
+
+
+Model
+
+
+FE 0 FE 1 FE 2 Ring 0 Ring 1 Ring 2 Merge 0 Merge 1 Merge 2 Merge 3 Merge 4
+
+
+FE 0 FE 1 FE 2 Ring 0 Ring 1 Ring 2 Merge 0 Merge 1 Merge 2 Merge 3 Merge 4
+
+
+Table 2: Quantitative Evaluation of CoMAL on Flow Benchmarks
+
+
+Table 2: Quantitative Evaluation of CoMAL on Flow Benchmarks
+
+
+Avg
+
+
+Avg
+
+
+Std
+
+
+Std
+
+
+Human Driver 5.61 5.61 5.61
+6.40 6.47 6.29
+
+
+Human Driver 5.61 5.61 5.61
+6.40 6.47 6.29
+
+
+CoMAL
+
+
+CoMAL
+
+
+2.88
+2.86
+
+
+2.88
+2.86
+
+
+Human Driver 4.55 4.55 4.55
+
+
+Human Driver 4.55 4.55 4.55
+
+
+0.79
+1.74 1.77 2.24 0.29
+
+
+0.79
+1.74 1.77 2.24 0.29
+
+
+CoMAL
+
+
+CoMAL
+
+
+2.88
+2.85
+
+
+2.88
+2.85
+
+
+0.79
+0.26
+
+
+0.79
+0.26
+
+
+2.88
+2.87
+
+
+2.88
+2.87
+
+
+0.79
+0.31
+
+
+0.79
+0.31
+
+
+6.40
+6.59
+
+
+6.40
+6.59
+
+
+3.12
+2.88
+
+
+3.12
+2.88
+
+
+6.40
+7.40
+
+
+6.40
+7.40
+
+
+3.12
+2.91
+
+
+3.12
+2.91
+
+
+6.40
+7.42
+
+
+6.40
+7.42
+
+
+3.12
+2.61
+
+
+3.12
+2.61
+
+
+6.40
+7.86
+
+
+6.40
+7.86
+
+
+3.12
+2.47
+
+
+3.12
+2.47
+
+
+6.40
+8.83
+
+
+6.40
+8.83
+
+
+3.12
+2.70
+
+
+3.12
+2.70
+
+
+Figure 4: Visualization of vehicle trajectories in Ring 0 setting. The ring road has a total length of 230 meters
+and contains 22 vehicles. Each line in the space-time diagrams shows the position of a specific vehicle over time.
+When a vehicle completes a full lap of the ring, its position resets to zero. Left: In the absence of automated
+vehicles, human-driven vehicles exhibit stop-and-go shockwaves due to inherent instability. Right: With three
+connected autonomous vehicles using the CoMAL framework, the unstable vehicles are stabilized.
+
+
+Figure 4: Visualization of vehicle trajectories in Ring 0 setting. The ring road has a total length of 230 meters
+and contains 22 vehicles. Each line in the space-time diagrams shows the position of a specific vehicle over time.
+When a vehicle completes a full lap of the ring, its position resets to zero. Left: In the absence of automated
+vehicles, human-driven vehicles exhibit stop-and-go shockwaves due to inherent instability. Right: With three
+connected autonomous vehicles using the CoMAL framework, the unstable vehicles are stabilized.
+
+
+Table 3: Ablation Study
+No. Perception Memory Collaboration FE 1 Merge 1
+
+
+Table 3: Ablation Study
+No. Perception Memory Collaboration FE 1 Merge 1
+
+
+1
+2
+3
+4
+5
+
+
+1
+2
+3
+4
+5
+
+
+×
+×
+✓
+✓
+✓
+
+
+×
+×
+✓
+✓
+✓
+
+
+×
+✓
+×
+✓
+✓
+
+
+×
+✓
+×
+✓
+✓
+
+
+×
+✓
+✓
+×
+✓
+
+
+×
+✓
+✓
+×
+✓
+
+
+5.61 6.40
+5.81 6.51
+5.17 6.72
+5.18 6.88
+6.47 7.40
+
+
+5.61 6.40
+5.81 6.51
+5.17 6.72
+5.18 6.88
+6.47 7.40
+
+
+\subsection{4.5 Quantitative Results We evaluated our model}
+
+on the aforementioned benchmarks, varying the number
+or percentage of CAVs across different settings.
+As shown in Table 2, we compared the performance
+of CoMAL with that of human drivers. The results in-
+dicate that as the number of CAVs increases, CoMAL’s
+performance generally improves and surpasses that of
+human drivers. This highlights the strong capability of
+LLM agents in achieving effective cooperation. A visu-
+alization of the vehicle trajectories in Ring 0 setting is
+shown in Figure 4. We can see that the proposed Co-
+MAL framework can stabilize the unstable vehicle flow.
+
+
+As shown in Table 2, we compared the performance
+of CoMAL with that of human drivers. The results in-
+dicate that as the number of CAVs increases, CoMAL’s
+performance generally improves and surpasses that of
+human drivers. This highlights the strong capability of
+LLM agents in achieving effective cooperation. A visu-
+alization of the vehicle trajectories in Ring 0 setting is
+shown in Figure 4. We can see that the proposed Co-
+MAL framework can stabilize the unstable vehicle flow.
+
+
+\subsection{4.6 Ablation Studies We conducted a detailed}
+
+analysis of the effectiveness of each component of Co-
+MAL in the FE 1 and Merge 1 scenarios, as presented
+in Table 3.
+Ablation on Perception The comparisons in the
+second and fifth rows of Table 3 demonstrate the
+effectiveness of incorporating textual descriptions of
+the map and agents’ motion states in the Perception
+Module. Once perception information is lost, agents are
+no longer able to comprehend the spatial relationships
+between the ego vehicle and surrounding agents. As
+a result, their capacity for effective collaboration and
+reasoning is significantly impaired.
+
+
+Ablation on Perception The comparisons in the
+second and fifth rows of Table 3 demonstrate the
+effectiveness of incorporating textual descriptions of
+the map and agents’ motion states in the Perception
+Module. Once perception information is lost, agents are
+no longer able to comprehend the spatial relationships
+between the ego vehicle and surrounding agents. As
+a result, their capacity for effective collaboration and
+reasoning is significantly impaired.
+
+
+Ablation on Memory The comparisons in the
+third and fifth rows of Table 3 illustrate the impact
+of the Memory Module, in which specific experiences
+are allocated for each scenario.
+In the absence of
+high-quality experiences, agents are more susceptible to
+errors in both discussion and reasoning.
+
+
+Ablation on Memory The comparisons in the
+third and fifth rows of Table 3 illustrate the impact
+of the Memory Module, in which specific experiences
+are allocated for each scenario.
+In the absence of
+high-quality experiences, agents are more susceptible to
+errors in both discussion and reasoning.
+
+
+Ablation on Collaboration The comparison pre-
+sented in the fourth and fifth rows of Table 3, as well as
+in the first row, highlights the effectiveness of the Col-
+laboration Module. The absence of a collaboration mod-
+
+
+Ablation on Collaboration The comparison pre-
+sented in the fourth and fifth rows of Table 3, as well as
+in the first row, highlights the effectiveness of the Col-
+laboration Module. The absence of a collaboration mod-
+
+
+Table 4: Quantitative Experiment of Different LLMs: Average Velocity and Standard Deviation Analysis
+
+
+Table 4: Quantitative Experiment of Different LLMs: Average Velocity and Standard Deviation Analysis
+
+
+Model
+
+
+Model
+
+
+Average Velocity (m/s)
+
+
+Average Velocity (m/s)
+
+
+FE 0 FE 1 FE 2 Ring 0 Ring 1 Ring 2 Merge 0 Merge 1 Merge 2 Merge 3 Merge 4
+
+
+FE 0 FE 1 FE 2 Ring 0 Ring 1 Ring 2 Merge 0 Merge 1 Merge 2 Merge 3 Merge 4
+
+
+Human Driver
+GPT-4o-mini
+Qwen-72B
+Qwen-32B
+Qwen-7B
+
+
+Human Driver
+GPT-4o-mini
+Qwen-72B
+Qwen-32B
+Qwen-7B
+
+
+5.61
+5.61
+5.61
+6.40 6.47 6.29
+6.07
+5.96
+6.37
+6.11
+5.73
+6.39
+4.80
+5.17
+5.60
+
+
+5.61
+5.61
+5.61
+6.40 6.47 6.29
+6.07
+5.96
+6.37
+6.11
+5.73
+6.39
+4.80
+5.17
+5.60
+
+
+2.88
+2.86
+2.86
+2.84
+2.82
+
+
+2.88
+2.86
+2.86
+2.84
+2.82
+
+
+2.88
+2.85
+2.83
+2.86
+2.84
+
+
+2.88
+2.85
+2.83
+2.86
+2.84
+
+
+2.88
+2.87
+2.85
+2.81
+2.83
+
+
+2.88
+2.87
+2.85
+2.81
+2.83
+
+
+6.40
+6.59
+6.66
+6.58
+6.55
+
+
+6.40
+6.59
+6.66
+6.58
+6.55
+
+
+6.40
+7.40
+7.38
+7.12
+6.87
+
+
+6.40
+7.40
+7.38
+7.12
+6.87
+
+
+6.40
+7.42
+7.46
+7.39
+7.05
+
+
+6.40
+7.42
+7.46
+7.39
+7.05
+
+
+6.40
+7.86
+8.07
+7.73
+7.47
+
+
+6.40
+7.86
+8.07
+7.73
+7.47
+
+
+6.40
+8.83
+8.75
+8.54
+8.53
+
+
+6.40
+8.83
+8.75
+8.54
+8.53
+
+
+Model
+
+
+Model
+
+
+Standard Deviation (m/s)
+
+
+Standard Deviation (m/s)
+
+
+FE 0 FE 1 FE 2 Ring 0 Ring 1 Ring 2 Merge 0 Merge 1 Merge 2 Merge 3 Merge 4
+
+
+FE 0 FE 1 FE 2 Ring 0 Ring 1 Ring 2 Merge 0 Merge 1 Merge 2 Merge 3 Merge 4
+
+
+Human Driver
+GPT-4o-mini
+Qwen-72B
+Qwen-32B
+Qwen-7B
+
+
+Human Driver
+GPT-4o-mini
+Qwen-72B
+Qwen-32B
+Qwen-7B
+
+
+4.55
+1.74
+1.73
+1.74
+4.51
+
+
+4.55
+1.74
+1.73
+1.74
+4.51
+
+
+4.55
+1.77
+2.76
+2.37
+1.89
+
+
+4.55
+1.77
+2.76
+2.37
+1.89
+
+
+4.55
+2.24
+1.92
+2.64
+1.76
+
+
+4.55
+2.24
+1.92
+2.64
+1.76
+
+
+0.79
+0.29
+0.32
+0.33
+0.49
+
+
+0.79
+0.29
+0.32
+0.33
+0.49
+
+
+0.79
+0.26
+0.32
+0.37
+0.61
+
+
+0.79
+0.26
+0.32
+0.37
+0.61
+
+
+0.79
+0.31
+0.30
+0.33
+0.48
+
+
+0.79
+0.31
+0.30
+0.33
+0.48
+
+
+3.12
+2.88
+2.82
+2.81
+3.02
+
+
+3.12
+2.88
+2.82
+2.81
+3.02
+
+
+3.12
+2.91
+2.71
+2.99
+2.88
+
+
+3.12
+2.91
+2.71
+2.99
+2.88
+
+
+3.12
+2.61
+2.54
+2.62
+2.74
+
+
+3.12
+2.61
+2.54
+2.62
+2.74
+
+
+3.12
+2.47
+2.61
+2.57
+2.71
+
+
+3.12
+2.47
+2.61
+2.57
+2.71
+
+
+3.12
+2.70
+2.78
+2.50
+2.64
+
+
+3.12
+2.70
+2.78
+2.50
+2.64
+
+
+Table 5: Comparison to RL Benchmark
+
+
+Table 5: Comparison to RL Benchmark
+
+
+Model
+
+
+Model
+
+
+FE 0 FE 1 FE 2 Merge 0 Merge 1 Merge 2
+
+
+FE 0 FE 1 FE 2 Merge 0 Merge 1 Merge 2
+
+
+6.40
+11.30
+13.31
+14.95
+13.66
+6.59
+
+
+6.40
+11.30
+13.31
+14.95
+13.66
+6.59
+
+
+6.40
+11.06
+17.29
+13.74
+14.61
+7.40
+
+
+6.40
+11.06
+17.29
+13.74
+14.61
+7.40
+
+
+6.40
+11.50
+17.36
+14.14
+14.54
+7.42
+
+
+6.40
+11.50
+17.36
+14.14
+14.54
+7.42
+
+
+ule causes all agents to adopt nearly identical strategies,
+which in turn leads to conflicts and duplicated efforts.
+The absence of collaboration results in performance that
+can be even worse than that of the simple rule-based
+model shown in the first row.
+
+
+ule causes all agents to adopt nearly identical strategies,
+which in turn leads to conflicts and duplicated efforts.
+The absence of collaboration results in performance that
+can be even worse than that of the simple rule-based
+model shown in the first row.
+
+
+\subsection{4.7 Discussion}
+
+
+Compared to RL method We conducted exper-
+iments on FE and the Merge scenarios by comparing
+them to RL methods developed in [7]. The results
+are shown in Table 5. The Ring is not included in
+this experiment because the adopted RL benchmark
+doesn’t have the Ring scenario embedded.
+In the FE
+scenario, CoMAL demonstrates robust global collabo-
+ration, whereas multi-agent RL models struggle to dif-
+ferentiate roles, hindering effective cooperation. Con-
+sequently, CoMAL outperforms RL-based approaches.
+However, in the Merge scenario, CoMAL performs less
+effectively than RL, indicating that the collaboration is
+not global. This finding highlights the critical impor-
+tance of cooperation in enhancing performance.
+
+
+Compared to RL method We conducted exper-
+iments on FE and the Merge scenarios by comparing
+them to RL methods developed in [7]. The results
+are shown in Table 5. The Ring is not included in
+this experiment because the adopted RL benchmark
+doesn’t have the Ring scenario embedded.
+In the FE
+scenario, CoMAL demonstrates robust global collabo-
+ration, whereas multi-agent RL models struggle to dif-
+ferentiate roles, hindering effective cooperation. Con-
+sequently, CoMAL outperforms RL-based approaches.
+However, in the Merge scenario, CoMAL performs less
+effectively than RL, indicating that the collaboration is
+not global. This finding highlights the critical impor-
+tance of cooperation in enhancing performance.
+
+
+Comparison of various LLM models We eval-
+uate performance across LLM models of varying sizes
+(see Table 4). The GPT-4o-mini achieves the highest
+performance among these. Among open-source models,
+the Qwen 72B has a similar level with the GPT-4o-mini,
+while the Qwen 32B shows slightly lower performance,
+and the Qwen 7B performs significantly worse. Notably,
+we observe that in scenarios requiring extensive collab-
+oration, the performance of smaller models deteriorates
+more rapidly. This finding suggests that collaboration
+is a more challenging task than reasoning within the
+CoMAL framework.
+
+
+Comparison of various LLM models We eval-
+uate performance across LLM models of varying sizes
+(see Table 4). The GPT-4o-mini achieves the highest
+performance among these. Among open-source models,
+the Qwen 72B has a similar level with the GPT-4o-mini,
+while the Qwen 32B shows slightly lower performance,
+and the Qwen 7B performs significantly worse. Notably,
+we observe that in scenarios requiring extensive collab-
+oration, the performance of smaller models deteriorates
+more rapidly. This finding suggests that collaboration
+is a more challenging task than reasoning within the
+CoMAL framework.
+
+
+\section{5 Conclusion}
+
+
+In this paper, we present CoMAL, an effective
+LLM-based multi-agent framework to address mixed-
+autonomy traffic challenges. By prompt-tuning LLMs
+with a hierarchical LLM-based planner, CoMAL is able
+to handle complex vehicle driving tasks towards a col-
+laborative goal under mixed-autonomy traffic. The
+LLM agent does so by serving primarily as a high-level
+commander, coordinating with lower-level controllers
+to execute detailed operations. Extensive experiments
+demonstrate the significant potential of multi-agent sys-
+tems driven by LLMs to make informed decisions and
+collaborate effectively in driving scenarios.
+
+
+In this paper, we present CoMAL, an effective
+LLM-based multi-agent framework to address mixed-
+autonomy traffic challenges. By prompt-tuning LLMs
+with a hierarchical LLM-based planner, CoMAL is able
+to handle complex vehicle driving tasks towards a col-
+laborative goal under mixed-autonomy traffic. The
+LLM agent does so by serving primarily as a high-level
+commander, coordinating with lower-level controllers
+to execute detailed operations. Extensive experiments
+demonstrate the significant potential of multi-agent sys-
+tems driven by LLMs to make informed decisions and
+collaborate effectively in driving scenarios.
+
+
+We also acknowledge the limitations of our current
+work and would like to point out several important fu-
+ture directions. First, we can extend the experimental
+current settings to more agents and improve their col-
+laboration to see if there would be emerging behaviors
+formed like in RL methods. Second, our paper addresses
+a simplified use of LLMs alone, whereas the combina-
+
+
+We also acknowledge the limitations of our current
+work and would like to point out several important fu-
+ture directions. First, we can extend the experimental
+current settings to more agents and improve their col-
+laboration to see if there would be emerging behaviors
+formed like in RL methods. Second, our paper addresses
+a simplified use of LLMs alone, whereas the combina-
+
+
+tion of RL with LLM might be helpful in improving
+the performance of LLMs. In the future, more sophis-
+ticated scenarios will be explored to test the possibility
+of LLM’s behavior in complex tasks.
+
+
+tion of RL with LLM might be helpful in improving
+the performance of LLMs. In the future, more sophis-
+ticated scenarios will be explored to test the possibility
+of LLM’s behavior in complex tasks.
+
+
+Acknowledgements
+
+
+Acknowledgements
+
+
+We thank OpenAI for providing us with API credits
+under the Researcher Access program.
+
+
+We thank OpenAI for providing us with API credits
+under the Researcher Access program.
+
+
+\section{References}
+
+
+[1] P. S. Chib and P. Singh, ”Recent Advancements in
+End-to-End Autonomous Driving Using Deep Learn-
+ing: A Survey,” in IEEE Transactions on Intelligent
+Vehicles, vol. 9, no. 1, pp. 103-118, Jan. 2024, doi:
+10.1109/TIV.2023.3318070.
+
+
+[1] P. S. Chib and P. Singh, ”Recent Advancements in
+End-to-End Autonomous Driving Using Deep Learn-
+ing: A Survey,” in IEEE Transactions on Intelligent
+Vehicles, vol. 9, no. 1, pp. 103-118, Jan. 2024, doi:
+10.1109/TIV.2023.3318070.
+
+
+[2] Hallgarten, M., Zapata, J., Stoll, M., Renz, K., Zell,
+A. (2024). Can Vehicle Motion Planning General-
+ize to Realistic Long-tail Scenarios?. arXiv preprint
+arXiv:2404.07569.
+
+
+[2] Hallgarten, M., Zapata, J., Stoll, M., Renz, K., Zell,
+A. (2024). Can Vehicle Motion Planning General-
+ize to Realistic Long-tail Scenarios?. arXiv preprint
+arXiv:2404.07569.
+
+
+[3] Da, L., Gao, M., Mei, H., Wei, H. (2024). Prompt
+to Transfer: Sim-to-Real Transfer for Traffic Signal
+Control with Prompt Learning. Proceedings of the
+AAAI Conference on Artificial Intelligence, 38(1), 82-
+90. https://doi.org/10.1609/aaai.v38i1.27758
+
+
+[3] Da, L., Gao, M., Mei, H., Wei, H. (2024). Prompt
+to Transfer: Sim-to-Real Transfer for Traffic Signal
+Control with Prompt Learning. Proceedings of the
+AAAI Conference on Artificial Intelligence, 38(1), 82-
+90. https://doi.org/10.1609/aaai.v38i1.27758
+
+
+[4] Y. Hu et al., ”Planning-oriented Autonomous Driv-
+ing,” 2023 IEEE/CVF Conference on Computer
+Vision and Pattern Recognition (CVPR), Vancou-
+ver, BC, Canada,
+2023, pp. 17853-17862, doi:
+10.1109/CVPR52729.2023.01712.
+
+
+[4] Y. Hu et al., ”Planning-oriented Autonomous Driv-
+ing,” 2023 IEEE/CVF Conference on Computer
+Vision and Pattern Recognition (CVPR), Vancou-
+ver, BC, Canada,
+2023, pp. 17853-17862, doi:
+10.1109/CVPR52729.2023.01712.
+
+
+[5] Dauner, D., Hallgarten, M., Geiger, A., Chitta, K.
+(2023, December). Parting with misconceptions about
+learning-based vehicle motion planning. In Conference
+on Robot Learning (pp. 1268-1281). PMLR.
+
+
+[5] Dauner, D., Hallgarten, M., Geiger, A., Chitta, K.
+(2023, December). Parting with misconceptions about
+learning-based vehicle motion planning. In Conference
+on Robot Learning (pp. 1268-1281). PMLR.
+
+
+[6] Mao, J., Qian, Y., Ye, J., Zhao, H., Wang, Y. (2023).
+Gpt-driver: Learning to drive with gpt. arXiv preprint
+arXiv:2310.01415.
+
+
+[6] Mao, J., Qian, Y., Ye, J., Zhao, H., Wang, Y. (2023).
+Gpt-driver: Learning to drive with gpt. arXiv preprint
+arXiv:2310.01415.
+
+
+[7] Vinitsky, E., Kreidieh, A., Flem, L.L., Kheterpal,
+N., Jang, K., Wu, C., Wu, F., Liaw, R., Liang, E.
+Bayen, A.M.. (2018). Benchmarks for reinforcement
+learning in mixed-autonomy traffic. Proceedings of The
+2nd Conference on Robot Learning, in Proceedings of
+Machine Learning Research 87:399-409 Available from
+https://proceedings.mlr.press/v87/vinitsky18a.html.
+[8] Chang, T., Lai, I. (1997). Analysis of characteristics of
+mixed traffic flow of autopilot vehicles and manual ve-
+hicles. Transportation Research Part C-emerging Tech-
+nologies, 5, 333-348.
+
+
+[7] Vinitsky, E., Kreidieh, A., Flem, L.L., Kheterpal,
+N., Jang, K., Wu, C., Wu, F., Liaw, R., Liang, E.
+Bayen, A.M.. (2018). Benchmarks for reinforcement
+learning in mixed-autonomy traffic. Proceedings of The
+2nd Conference on Robot Learning, in Proceedings of
+Machine Learning Research 87:399-409 Available from
+https://proceedings.mlr.press/v87/vinitsky18a.html.
+[8] Chang, T., Lai, I. (1997). Analysis of characteristics of
+mixed traffic flow of autopilot vehicles and manual ve-
+hicles. Transportation Research Part C-emerging Tech-
+nologies, 5, 333-348.
+
+
+[9] C. Wu, A. M. Bayen and A. Mehta, ”Stabilizing
+Traffic with Autonomous Vehicles,” 2018 IEEE In-
+ternational Conference on Robotics and Automation
+(ICRA), Brisbane, QLD, Australia, 2018, pp. 6012-
+6018, doi: 10.1109/ICRA.2018.8460567.
+
+
+[9] C. Wu, A. M. Bayen and A. Mehta, ”Stabilizing
+Traffic with Autonomous Vehicles,” 2018 IEEE In-
+ternational Conference on Robotics and Automation
+(ICRA), Brisbane, QLD, Australia, 2018, pp. 6012-
+6018, doi: 10.1109/ICRA.2018.8460567.
+
+
+[10] M. Papageorgiou, C. Diakaki, V. Dinopoulou, A.
+Kotsialos and Yibing Wang, ”Review of road traf-
+fic control strategies,” in Proceedings of the IEEE,
+
+
+[10] M. Papageorgiou, C. Diakaki, V. Dinopoulou, A.
+Kotsialos and Yibing Wang, ”Review of road traf-
+fic control strategies,” in Proceedings of the IEEE,
+
+
+vol. 91, no. 12, pp. 2043-2067, Dec. 2003, doi:
+10.1109/JPROC.2003.819610.
+
+
+vol. 91, no. 12, pp. 2043-2067, Dec. 2003, doi:
+10.1109/JPROC.2003.819610.
+
+
+[11] B. Besselink and K. H. Johansson, ”String Stability
+and a Delay-Based Spacing Policy for Vehicle Platoons
+Subject to Disturbances,” in IEEE Transactions on
+Automatic Control, vol. 62, no. 9, pp. 4376-4391, Sept.
+2017, doi: 10.1109/TAC.2017.2682421.
+
+
+[11] B. Besselink and K. H. Johansson, ”String Stability
+and a Delay-Based Spacing Policy for Vehicle Platoons
+Subject to Disturbances,” in IEEE Transactions on
+Automatic Control, vol. 62, no. 9, pp. 4376-4391, Sept.
+2017, doi: 10.1109/TAC.2017.2682421.
+
+
+[12] SHLADOVER, STEVEN E. 1995. “Review of the State
+of Development of Advanced Vehicle Control Systems
+(AVCS).” Vehicle System Dynamics 24 (6–7): 551–95.
+doi:10.1080/00423119508969108.
+
+
+[12] SHLADOVER, STEVEN E. 1995. “Review of the State
+of Development of Advanced Vehicle Control Systems
+(AVCS).” Vehicle System Dynamics 24 (6–7): 551–95.
+doi:10.1080/00423119508969108.
+
+
+[13] Taniguchi, Y., Nishi, R., Tomoeda, A., Shimura, K.,
+Ezaki, T., Nishinari, K. (2015). A Demonstration Ex-
+periment of a Theory of Jam-Absorption Driving. In:
+Chraibi, M., Boltes, M., Schadschneider, A., Seyfried,
+A. (eds) Traffic and Granular Flow ’13. Springer,
+Cham. https://doi.org/10.1007/978-3-319-10629-853
+
+
+[13] Taniguchi, Y., Nishi, R., Tomoeda, A., Shimura, K.,
+Ezaki, T., Nishinari, K. (2015). A Demonstration Ex-
+periment of a Theory of Jam-Absorption Driving. In:
+Chraibi, M., Boltes, M., Schadschneider, A., Seyfried,
+A. (eds) Traffic and Granular Flow ’13. Springer,
+Cham. https://doi.org/10.1007/978-3-319-10629-853
+
+
+[14] S. Mosharafian and J. M. Velni, ”Cooperative Adaptive
+Cruise Control in a Mixed-Autonomy Traffic System:
+A Hybrid Stochastic Predictive Approach Incorporat-
+ing Lane Change,” in IEEE Transactions on Vehicular
+Technology, vol. 72, no. 1, pp. 136-148, Jan. 2023, doi:
+10.1109/TVT.2022.3202084.
+
+
+[14] S. Mosharafian and J. M. Velni, ”Cooperative Adaptive
+Cruise Control in a Mixed-Autonomy Traffic System:
+A Hybrid Stochastic Predictive Approach Incorporat-
+ing Lane Change,” in IEEE Transactions on Vehicular
+Technology, vol. 72, no. 1, pp. 136-148, Jan. 2023, doi:
+10.1109/TVT.2022.3202084.
+
+
+[15] C. Wu, A. R. Kreidieh, K. Parvate, E. Vinitsky and
+A. M. Bayen, ”Flow: A Modular Learning Framework
+for Mixed Autonomy Traffic,” in IEEE Transactions on
+Robotics, vol. 38, no. 2, pp. 1270-1286, April 2022, doi:
+10.1109/TRO.2021.3087314.
+
+
+[15] C. Wu, A. R. Kreidieh, K. Parvate, E. Vinitsky and
+A. M. Bayen, ”Flow: A Modular Learning Framework
+for Mixed Autonomy Traffic,” in IEEE Transactions on
+Robotics, vol. 38, no. 2, pp. 1270-1286, April 2022, doi:
+10.1109/TRO.2021.3087314.
+
+
+[16] Wu, C., Kreidieh, A., Vinitsky, E. Bayen, A.M.
+in Mixed-Autonomy
+(2017). Emergent Behaviors
+the 1st Annual Confer-
+Traffic. Proceedings of
+ence on Robot Learning,
+in Proceedings of Ma-
+chine Learning Research 78:398-407 Available from
+https://proceedings.mlr.press/v78/wu17a.html.
+[17] R. Valiente, B. Toghi, R. Pedarsani and Y. P. Fal-
+lah, ”Robustness and Adaptability of Reinforcement
+Learning-Based Cooperative Autonomous Driving in
+Mixed-Autonomy Traffic,” in IEEE Open Journal of
+Intelligent Transportation Systems, vol. 3, pp. 397-410,
+2022, doi: 10.1109/OJITS.2022.3172981.
+
+
+[16] Wu, C., Kreidieh, A., Vinitsky, E. Bayen, A.M.
+in Mixed-Autonomy
+(2017). Emergent Behaviors
+the 1st Annual Confer-
+Traffic. Proceedings of
+ence on Robot Learning,
+in Proceedings of Ma-
+chine Learning Research 78:398-407 Available from
+https://proceedings.mlr.press/v78/wu17a.html.
+[17] R. Valiente, B. Toghi, R. Pedarsani and Y. P. Fal-
+lah, ”Robustness and Adaptability of Reinforcement
+Learning-Based Cooperative Autonomous Driving in
+Mixed-Autonomy Traffic,” in IEEE Open Journal of
+Intelligent Transportation Systems, vol. 3, pp. 397-410,
+2022, doi: 10.1109/OJITS.2022.3172981.
+
+
+[18] Liu, Lu, Maonan Wang, Man-On Pun and Xi Xiong.
+“A Multi-Agent Rollout Approach for Highway Bot-
+tleneck Decongenston in Mixed Autonomy.” ArXiv
+abs/2405.03132 (2024): n. pag.
+
+
+[18] Liu, Lu, Maonan Wang, Man-On Pun and Xi Xiong.
+“A Multi-Agent Rollout Approach for Highway Bot-
+tleneck Decongenston in Mixed Autonomy.” ArXiv
+abs/2405.03132 (2024): n. pag.
+
+
+[19] Glanois, C., Weng, P., Zimmer, M. et al. A survey on
+interpretable reinforcement learning. Mach Learn 113,
+5847–5890
+(2024). https://doi.org/10.1007/s10994-
+024-06543-w
+
+
+[19] Glanois, C., Weng, P., Zimmer, M. et al. A survey on
+interpretable reinforcement learning. Mach Learn 113,
+5847–5890
+(2024). https://doi.org/10.1007/s10994-
+024-06543-w
+
+
+[20] LeCun, Yann and Courant. “A Path Towards Au-
+tonomous Machine Intelligence Version 0.9.2, 2022-06-
+27.” (2022).
+
+
+[20] LeCun, Yann and Courant. “A Path Towards Au-
+tonomous Machine Intelligence Version 0.9.2, 2022-06-
+27.” (2022).
+
+
+[21] M.A. Veldman, S. Doolaard, R.J. Bosker, T.A.B.
+Snijders, Young children working together. Cooper-
+ative learning effects on group work of children in
+Grade 1 of primary education, Learning and In-
+struction, Volume 67, 2020, 101308, ISSN 0959-4752,
+https://doi.org/10.1016/j.learninstruc.2020.101308.
+[22] Wen, L., D. Fu, X. Li, X. Cai, T. Ma, P. Cai, M. Dou,
+
+
+[21] M.A. Veldman, S. Doolaard, R.J. Bosker, T.A.B.
+Snijders, Young children working together. Cooper-
+ative learning effects on group work of children in
+Grade 1 of primary education, Learning and In-
+struction, Volume 67, 2020, 101308, ISSN 0959-4752,
+https://doi.org/10.1016/j.learninstruc.2020.101308.
+[22] Wen, L., D. Fu, X. Li, X. Cai, T. Ma, P. Cai, M. Dou,
+
+
+B. Shi, L. He, and Y. Qiao. “DILU: A KNOWLEDGE-
+DRIVEN APPROACH TO AUTONOMOUS DRIV-
+ING WITH LARGE LANGUAGE MODELS.” In 12th
+International Conference on Learning Representations,
+ICLR 2024, 2024.
+
+
+B. Shi, L. He, and Y. Qiao. “DILU: A KNOWLEDGE-
+DRIVEN APPROACH TO AUTONOMOUS DRIV-
+ING WITH LARGE LANGUAGE MODELS.” In 12th
+International Conference on Learning Representations,
+ICLR 2024, 2024.
+
+
+[23] Guo, Taicheng, Xiuying Chen, Yaqi Wang, Ruidi
+Chang, Shichao Pei, N. Chawla, Olaf Wiest and Xi-
+angliang Zhang. “Large Language Model based Multi-
+Agents: A Survey of Progress and Challenges.” ArXiv
+abs/2402.01680 (2024): n. pag.
+
+
+[23] Guo, Taicheng, Xiuying Chen, Yaqi Wang, Ruidi
+Chang, Shichao Pei, N. Chawla, Olaf Wiest and Xi-
+angliang Zhang. “Large Language Model based Multi-
+Agents: A Survey of Progress and Challenges.” ArXiv
+abs/2402.01680 (2024): n. pag.
+
+
+[24] Talebirad, Yashar and Amirhossein Nadiri. “Multi-
+Agent Collaboration: Harnessing the Power of Intel-
+ligent LLM Agents.” ArXiv abs/2306.03314 (2023): n.
+pag.
+
+
+[24] Talebirad, Yashar and Amirhossein Nadiri. “Multi-
+Agent Collaboration: Harnessing the Power of Intel-
+ligent LLM Agents.” ArXiv abs/2306.03314 (2023): n.
+pag.
+
+
+arXiv:2404.11584, 2024.
+
+
+arXiv:2404.11584, 2024.
+
+
+[35] Lai S, Xu Z, Zhang W, et al. Large language models
+as traffic signal control agents: Capacity and opportu-
+nity[J]. arXiv preprint arXiv:2312.16044, 2023.
+
+
+[35] Lai S, Xu Z, Zhang W, et al. Large language models
+as traffic signal control agents: Capacity and opportu-
+nity[J]. arXiv preprint arXiv:2312.16044, 2023.
+
+
+[36] Da L, Liou K, Chen T, et al. Open-ti: Open traffic
+intelligence with augmented language model[J]. Inter-
+national Journal of Machine Learning and Cybernetics,
+2024: 1-26.
+
+
+[36] Da L, Liou K, Chen T, et al. Open-ti: Open traffic
+intelligence with augmented language model[J]. Inter-
+national Journal of Machine Learning and Cybernetics,
+2024: 1-26.
+
+
+[37] Lopez P A, Behrisch M, Bieker-Walz L, et al. Mi-
+croscopic traffic simulation using sumo[C]//2018 21st
+international conference on intelligent transportation
+systems (ITSC). IEEE, 2018: 2575-2582.
+
+
+[37] Lopez P A, Behrisch M, Bieker-Walz L, et al. Mi-
+croscopic traffic simulation using sumo[C]//2018 21st
+international conference on intelligent transportation
+systems (ITSC). IEEE, 2018: 2575-2582.
+
+
+Learning
+
+
+Learning
+
+
+[25] Duan, Y., Chen, X., Houthooft, R., Schulman,
+(2016). Benchmarking Deep Re-
+J. Abbeel, P.
+inforcement
+for Continuous Control.
+Proceedings of The 33rd International Conference
+in Proceedings of Machine
+on Machine Learning,
+Learning Research
+from
+https://proceedings.mlr.press/v48/duan16.html.
+[26] Bellemare M G, Naddaf Y, Veness J, et al. The
+arcade learning environment: An evaluation platform
+for general agents[J]. Journal of Artificial Intelligence
+Research, 2013, 47: 253-279.
+
+
+[25] Duan, Y., Chen, X., Houthooft, R., Schulman,
+(2016). Benchmarking Deep Re-
+J. Abbeel, P.
+inforcement
+for Continuous Control.
+Proceedings of The 33rd International Conference
+in Proceedings of Machine
+on Machine Learning,
+Learning Research
+from
+https://proceedings.mlr.press/v48/duan16.html.
+[26] Bellemare M G, Naddaf Y, Veness J, et al. The
+arcade learning environment: An evaluation platform
+for general agents[J]. Journal of Artificial Intelligence
+Research, 2013, 47: 253-279.
+
+
+48:1329-1338 Available
+
+
+48:1329-1338 Available
+
+
+[27] John Schulman, Sergey Levine, Philipp Moritz,
+Michael Jordan, and Pieter Abbeel. 2015. Trust re-
+gion policy optimization. In Proceedings of the 32nd In-
+ternational Conference on International Conference on
+Machine Learning - Volume 37 (ICML’15). JMLR.org,
+1889–1897.
+
+
+[27] John Schulman, Sergey Levine, Philipp Moritz,
+Michael Jordan, and Pieter Abbeel. 2015. Trust re-
+gion policy optimization. In Proceedings of the 32nd In-
+ternational Conference on International Conference on
+Machine Learning - Volume 37 (ICML’15). JMLR.org,
+1889–1897.
+
+
+[28] Schulman J, Wolski F, Dhariwal P, et al. Proxi-
+mal policy optimization algorithms[J]. arXiv preprint
+arXiv:1707.06347, 2017.
+
+
+[28] Schulman J, Wolski F, Dhariwal P, et al. Proxi-
+mal policy optimization algorithms[J]. arXiv preprint
+arXiv:1707.06347, 2017.
+
+
+[29] Salimans T, Ho J, Chen X, et al. Evolution strategies
+as a scalable alternative to reinforcement learning[J].
+arXiv preprint arXiv:1703.03864, 2017.
+
+
+[29] Salimans T, Ho J, Chen X, et al. Evolution strategies
+as a scalable alternative to reinforcement learning[J].
+arXiv preprint arXiv:1703.03864, 2017.
+
+
+[30] Mania H, Guy A, Recht B. Simple random search pro-
+vides a competitive approach to reinforcement learn-
+ing[J]. arXiv preprint arXiv:1803.07055, 2018.
+
+
+[30] Mania H, Guy A, Recht B. Simple random search pro-
+vides a competitive approach to reinforcement learn-
+ing[J]. arXiv preprint arXiv:1803.07055, 2018.
+
+
+[31] Hao Mei, Junxian Li, Bin Shi, and Hua Wei, Reinforce-
+ment learning approaches for traffic signal control un-
+der missing data, Proceedings of the Thirty-Second In-
+ternational Joint Conference on Artificial Intelligence,
+pp. 2261–2269, 2023.
+
+
+[31] Hao Mei, Junxian Li, Bin Shi, and Hua Wei, Reinforce-
+ment learning approaches for traffic signal control un-
+der missing data, Proceedings of the Thirty-Second In-
+ternational Joint Conference on Artificial Intelligence,
+pp. 2261–2269, 2023.
+
+
+[32] Mei, H., Lei, X., Da, L. et al. Libsignal: an open library
+for traffic signal control. Mach Learn 113, 5235–5271
+(2024). https://doi.org/10.1007/s10994-023-06412-y
+
+
+[32] Mei, H., Lei, X., Da, L. et al. Libsignal: an open library
+for traffic signal control. Mach Learn 113, 5235–5271
+(2024). https://doi.org/10.1007/s10994-023-06412-y
+
+
+[33] Lei Wang, Chen Ma, Xueyang Feng, Zeyu Zhang,
+Hao Yang, Jingsen Zhang, Zhiyuan Chen, Jiakai Tang,
+Xu Chen, Yankai Lin, Wayne Xin Zhao, Zhewei Wei,
+and Jirong Wen. 2024. A survey on large language
+model based autonomous agents. Front. Comput. Sci.
+18, 6 (Dec 2024). https://doi.org/10.1007/s11704-024-
+40231-1
+
+
+[33] Lei Wang, Chen Ma, Xueyang Feng, Zeyu Zhang,
+Hao Yang, Jingsen Zhang, Zhiyuan Chen, Jiakai Tang,
+Xu Chen, Yankai Lin, Wayne Xin Zhao, Zhewei Wei,
+and Jirong Wen. 2024. A survey on large language
+model based autonomous agents. Front. Comput. Sci.
+18, 6 (Dec 2024). https://doi.org/10.1007/s11704-024-
+40231-1
+
+
+[34] Masterman T, Besen S, Sawtell M, et al. The land-
+scape of emerging ai agent architectures for reasoning,
+planning, and tool calling: A survey[J]. arXiv preprint
+
+
+[34] Masterman T, Besen S, Sawtell M, et al. The land-
+scape of emerging ai agent architectures for reasoning,
+planning, and tool calling: A survey[J]. arXiv preprint
+
+
+\end{document}
