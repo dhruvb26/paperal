@@ -12,15 +12,10 @@ def pdf_to_latex(pdf_path, output_path):
     for page_layout in extract_pages(pdf_path):
         for element in page_layout:
             if isinstance(element, LTTextContainer):
-                line_text = element.get_text().strip()
-                has_bold = False
-                for char in element:
-                    if isinstance(char, LTChar) and "Bold" in char.fontname:
-                        has_bold = True
+                for text_line in element:
+                    if isinstance(text_line, LTChar) and "Bold" in text_line.fontname:
+                        bold_lines.add(element.get_text().strip())
                         break
-                if has_bold:
-                    print(f"Found bold text: {line_text}")  # Debug print
-                    bold_lines.add(line_text)
 
     # Basic cleanup
     text = text.strip()
@@ -87,7 +82,6 @@ def pdf_to_latex(pdf_path, output_path):
             ):
                 if re.match(r"^[0-9]+\.[0-9]+\s+[A-Z]", title):
                     # This is a subsection
-
                     if current_section:
                         if "subsections" not in sections_dict[current_section]:
                             sections_dict[current_section]["subsections"] = {}
