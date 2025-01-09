@@ -7,6 +7,7 @@ from PIL import Image
 import json
 import os
 import time
+import re
 
 start_time = time.time()
 
@@ -22,6 +23,7 @@ def plot_pdf_with_boxes(pdf_page, segments):
         "Title": "orchid",
         "Image": "forestgreen",
         "Table": "tomato",
+        "Equation": "gold",
     }
     for segment in segments:
         points = segment["coordinates"]["points"]
@@ -40,7 +42,7 @@ def plot_pdf_with_boxes(pdf_page, segments):
 
     # Make legend
     legend_handles = [patches.Patch(color="deepskyblue", label="Text")]
-    for category in ["Title", "Image", "Table"]:
+    for category in ["Title", "Image", "Table", "Equation"]:
         if category in categories:
             legend_handles.append(
                 patches.Patch(color=category_to_color[category], label=category)
@@ -49,6 +51,58 @@ def plot_pdf_with_boxes(pdf_page, segments):
     ax.legend(handles=legend_handles, loc="upper right")
     plt.tight_layout()
     plt.show()
+
+
+def is_likely_heading(text):
+    text = text.strip()
+    
+    # Pattern 1: All caps with numbers before them (e.g., "1. INTRODUCTION", "2.1 METHODS")
+    pattern1 = r'^\d+(?:\.\d+)*\s+[A-Z][A-Z\s\d]+$'
+    
+    # Pattern 2: All caps with Roman numerals (e.g., "III. STATISTICALLY UNSOUND TRAINING DATA PROOFS")
+    pattern2 = r'^(?:I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)\.?\s+[A-Z][A-Z\s\d]+$'
+    
+    # Pattern 3: Title case starting with numbers (e.g., "1.2 Machine Learning Methods")
+    pattern3 = r'^\d+(?:\.\d+)*\s+(?:[A-Z][a-z\d]+\s*)+$'
+    
+    # Pattern 4: Short all-caps phrases (e.g., "INTRODUCTION", "METHODS AND RESULTS")
+    pattern4 = r'^[A-Z][A-Z\s\d]{2,30}$'
+    
+    # Pattern 5: Title case phrases without numbers (e.g., "Machine Learning Methods")
+    pattern5 = r'^(?:[A-Z][a-z\d]+\s*){2,}$'
+    
+    # Pattern 6: Mixed case with common title words
+    common_title_words = r'(?:Introduction|Abstract|Conclusion|Discussion|Results|Methods|Background|References)'
+    pattern6 = f'^{common_title_words}(?:\s+|$)'
+    
+    return bool(
+        re.match(pattern1, text) or 
+        re.match(pattern2, text) or 
+        re.match(pattern3, text) or
+        re.match(pattern4, text) or
+        re.match(pattern5, text) or
+        re.search(pattern6, text, re.IGNORECASE)
+    )
+
+
+def is_likely_equation(text):
+    # Common mathematical symbols and patterns
+    math_symbols = r'[+\-=×÷∫∑∏√∆∇∈∉≠≈≤≥±∞∂]'
+    greek_letters = r'[αβγδεζηθικλμνξπρστυφχψω]'
+    
+    # Patterns that suggest equations:
+    # 1. Contains multiple mathematical symbols
+    # 2. Contains numbers and variables with subscripts/superscripts
+    # 3. Contains Greek letters
+    patterns = [
+        r'.*' + math_symbols + r'.*' + math_symbols + r'.*',  # Multiple math symbols
+        r'\d+[a-zA-Z]',  # Numbers followed by variables
+        r'.*' + greek_letters + r'.*',  # Contains Greek letters
+        r'.*[_\^]\{.*\}.*',  # LaTeX-style subscripts/superscripts
+        r'\$.*\$'  # LaTeX equation delimiters
+    ]
+    
+    return any(re.search(pattern, text, re.IGNORECASE) for pattern in patterns)
 
 
 def render_page(doc_list: list, page_number: int, save_to_file=False) -> None:
@@ -92,7 +146,22 @@ def render_page(doc_list: list, page_number: int, save_to_file=False) -> None:
                     f"extracted_images/page_{page_number}_image_{idx}.png"
                 )
 
+    # Update segments with new heading and equation detection
+    for doc in page_docs:
+        if doc.metadata.get('category') == 'Text':
+            if is_likely_heading(doc.page_content):
+                doc.metadata['category'] = 'Title'
+            elif is_likely_equation(doc.page_content):
+                doc.metadata['category'] = 'Equation'
+    
     segments = [doc.metadata for doc in page_docs]
+
+    # Add this section to print titles
+    titles = [doc.page_content for doc in page_docs if doc.metadata["category"] == "Title"]
+    if titles:
+        print(f"\nTitles found on page {page_number}:")
+        for title in titles:
+            print(f"- {title}")
 
     plot_pdf_with_boxes(pdf_page, segments)
 
@@ -108,7 +177,7 @@ def render_page(doc_list: list, page_number: int, save_to_file=False) -> None:
             json.dump([doc.metadata for doc in page_docs], f)
 
 
-file_path = "2104.10706.pdf"
+file_path = "2310.17623 Paper_removed.pdf"
 pdf_document = fitz.open(file_path)
 total_pages = pdf_document.page_count
 pdf_document.close()
@@ -122,10 +191,10 @@ for page in loader.lazy_load():
     pages.append(page)
 
 # Replace single render_page call with loop through all pages
-# for page_num in range(1, total_pages + 1):
-#     render_page(pages, page_num, save_to_file=True)
+for page_num in range(1, total_pages + 1):
+    render_page(pages, page_num, save_to_file=True)
 
-render_page(pages, 2, save_to_file=False)
+# render_page(pages, 2, save_to_file=False)
 
 end_time = time.time()
 execution_time = end_time - start_time

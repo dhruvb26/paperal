@@ -12,6 +12,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { createDocument } from "@/app/actions/documents";
 import * as React from "react";
+import { useLoadingToast } from "@/hooks/use-loading-toast";
 import { cn } from "@/lib/utils";
 
 interface NewDocumentDialogProps {
@@ -26,15 +27,26 @@ export function NewDocumentDialog({
   const [newDocPrompt, setNewDocPrompt] = React.useState("");
   const [isCreating, setIsCreating] = React.useState(false);
   const router = useRouter();
+  const { startLoadingToast, endLoadingToast } = useLoadingToast();
   const handleCreateDocument = async () => {
     if (!newDocPrompt.trim() || isCreating) return;
 
     try {
       setIsCreating(true);
+      startLoadingToast({
+        id: "create-document",
+        message: "Creating Document",
+        description: "Your document is being created.",
+      });
       const newDoc = await createDocument(newDocPrompt);
       setNewDocPrompt("");
       onOpenChange(false);
       router.push(`/editor/${newDoc}`);
+      endLoadingToast({
+        id: "create-document",
+        message: "Document Created",
+        description: "Your document is ready to use.",
+      });
     } catch (error) {
       console.error("Error creating document:", error);
     } finally {

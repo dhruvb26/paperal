@@ -9,6 +9,7 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { getDocuments } from "@/app/actions/documents";
 import { getLibraries } from "./actions/library";
+import { SWRConfig } from "swr";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -25,29 +26,25 @@ export default async function RootLayout({
   const libraries = await getLibraries();
 
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className} suppressHydrationWarning>
-          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-          <SidebarProvider
-            defaultOpen={false}
-            style={
-              {
-                "--sidebar-width": "350px",
-              } as React.CSSProperties
-            }
-          >
-            <AppSidebar
-              documents={documents}
-              libraries={libraries.map((lib) => ({
-                ...lib,
-                isPublic: lib.isPublic ?? false,
-              }))}
-            />
-            {children}
-          </SidebarProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+    <SWRConfig value={{ revalidateOnFocus: false }}>
+      <ClerkProvider>
+        <html lang="en" suppressHydrationWarning>
+          <body className={inter.className} suppressHydrationWarning>
+            <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+            <SidebarProvider
+              defaultOpen={false}
+              style={
+                {
+                  "--sidebar-width": "350px",
+                } as React.CSSProperties
+              }
+            >
+              <AppSidebar documents={documents} libraries={libraries} />
+              {children}
+            </SidebarProvider>
+          </body>
+        </html>
+      </ClerkProvider>
+    </SWRConfig>
   );
 }

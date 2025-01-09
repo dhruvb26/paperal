@@ -5,6 +5,7 @@ import {
   CaretUpDown,
   CreditCard,
   Sparkle,
+  SignOut,
 } from "@phosphor-icons/react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,6 +24,13 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { SignOutButton } from "@clerk/nextjs";
+import { LogOut } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 export function NavUser({
   user,
@@ -37,7 +45,17 @@ export function NavUser({
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
+      <SidebarMenuButton
+        tooltip={{
+          children: "Logout",
+          hidden: false,
+        }}
+      >
+        <SignOutButton>
+          <SignOut size={16} />
+        </SignOutButton>
+      </SidebarMenuButton>
+      {/* <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
@@ -78,13 +96,11 @@ export function NavUser({
                 Billing
               </DropdownMenuItem>
             </DropdownMenuGroup> */}
-            {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>
+      {/* <DropdownMenuSeparator /> */}
+      {/* <DropdownMenuItem>
               <SignOutButton>Log out</SignOutButton>
             </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
+          </DropdownMenuContent> */}
     </SidebarMenu>
   );
 }

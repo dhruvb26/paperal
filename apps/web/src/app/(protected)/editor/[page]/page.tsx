@@ -27,7 +27,7 @@ export default function EditorPage() {
   }, [documentId]);
 
   return (
-    <div className="flex flex-col items-start justify-center p-40">
+    <div className="flex flex-col items-start justify-center sm:p-32 p-0">
       {!document ? (
         <div className="w-full h-[200px] flex items-center justify-center">
           <Loader />

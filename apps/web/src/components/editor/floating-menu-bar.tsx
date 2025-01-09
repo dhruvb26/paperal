@@ -142,7 +142,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
   return (
     <TooltipProvider delayDuration={0}>
       <BubbleMenu
-        className="flex flex-nowrap gap-1 p-1 rounded-md bg-white shadow-sm border w-fit"
+        className="flex flex-nowrap gap-1 p-1 rounded-md bg-background shadow-sm border w-fit"
         editor={editor}
         tippyOptions={{ duration: 100, placement: "top" }}
         shouldShow={({ editor, view, state, oldState, from, to }) => {
@@ -153,7 +153,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                className="flex items-center gap-1 p-2 text-xs hover:bg-gray-100 rounded-sm min-w-[9rem] cursor-pointer"
+                className="flex items-center gap-1 p-2 text-xs hover:bg-muted rounded-sm min-w-[9rem] cursor-pointer"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 {activeStyle?.icon}
@@ -170,7 +170,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
                 {textStyles.map((style) => (
                   <button
                     key={style.value}
-                    className={`relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-xs outline-none hover:bg-gray-100 ${
+                    className={`relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-xs outline-none hover:bg-muted ${
                       editor.isActive(style.value) ? "bg-accent" : ""
                     }`}
                     onClick={() => {
@@ -189,8 +189,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
-                editor.isActive("bold") ? "bg-gray-100" : ""
+              className={`p-2 rounded hover:bg-muted cursor-pointer ${
+                editor.isActive("bold") ? "bg-accent" : ""
               }`}
               onClick={() => editor.chain().focus().toggleBold().run()}
             >
@@ -202,8 +202,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
-                editor.isActive("italic") ? "bg-gray-100" : ""
+              className={`p-2 rounded hover:bg-muted cursor-pointer ${
+                editor.isActive("italic") ? "bg-accent" : ""
               }`}
               onClick={() => editor.chain().focus().toggleItalic().run()}
             >
@@ -215,8 +215,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
-                editor.isActive("underline") ? "bg-gray-100" : ""
+              className={`p-2 rounded hover:bg-muted cursor-pointer ${
+                editor.isActive("underline") ? "bg-accent" : ""
               }`}
               onClick={() => editor.chain().focus().toggleUnderline().run()}
             >
@@ -228,8 +228,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
-                editor.isActive("strike") ? "bg-gray-100" : ""
+              className={`p-2 rounded hover:bg-muted cursor-pointer ${
+                editor.isActive("strike") ? "bg-accent" : ""
               }`}
               onClick={() => editor.chain().focus().toggleStrike().run()}
             >
@@ -241,8 +241,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
-                editor.isActive("highlight") ? "bg-gray-100" : ""
+              className={`p-2 rounded hover:bg-muted cursor-pointer ${
+                editor.isActive("highlight") ? "bg-accent" : ""
               }`}
               onClick={() => editor.chain().focus().toggleHighlight().run()}
             >
@@ -254,8 +254,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
-                editor.isActive("code") ? "bg-gray-100" : ""
+              className={`p-2 rounded hover:bg-muted cursor-pointer ${
+                editor.isActive("code") ? "bg-accent" : ""
               }`}
               onClick={() => editor.chain().focus().toggleCode().run()}
             >
@@ -267,8 +267,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
-                editor.isActive("blockquote") ? "bg-gray-100" : ""
+              className={`p-2 rounded hover:bg-muted cursor-pointer ${
+                editor.isActive("blockquote") ? "bg-accent" : ""
               }`}
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
             >
@@ -280,8 +280,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Popover open={isLinkOpen} onOpenChange={setIsLinkOpen}>
           <PopoverTrigger asChild>
             <button
-              className={`p-2 rounded hover:bg-gray-200 cursor-pointer ${
-                editor.isActive("link") ? "bg-gray-100" : ""
+              className={`p-2 rounded hover:bg-muted cursor-pointer ${
+                editor.isActive("link") ? "bg-accent" : ""
               }`}
               onClick={setLink}
             >
@@ -303,7 +303,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <button
-                className="p-2 rounded hover:bg-gray-200 cursor-pointer"
+                className="p-2 rounded hover:bg-muted cursor-pointer"
                 onClick={() => editor.chain().focus().unsetLink().run()}
               >
                 <X size={16} className="text-red-500" />

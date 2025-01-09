@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { CustomEdge } from "@/components/flow/custom-edge";
 import { useSidebarStore } from "@/store/sidebar-store";
 import { Chats } from "@phosphor-icons/react";
+import dagre from "@dagrejs/dagre";
 
 const edgeTypes = {
   animatedSvg: AnimatedEdge,
@@ -27,16 +28,23 @@ const initialNodes = [
     id: "1",
     position: { x: 250, y: 150 },
     data: {
-      label: "Some content.",
+      title: "Purpose of Computing",
+      label: `<h3><span style="color: black">The purpose of computing is insight, not numbers. </span><span style="color: #DAA520">To discover insights from a system, we need to first model the system.</span></h3>
+      <ul>
+        <li>Real-world systems may be more complex, but they all share the same general anatomy: an <span style="color: #DAA520">independent variable</span> (such as time), a <span style="color: #DAA520">structure</span> (such as an algorithm), and a <span style="color: #DAA520">dataset</span> (such as an environment).</li>
+        <li>For many systems, that <span style="color: #DAA520">input data comes from some sort of environment</span>.</li>
+      </ul>
+      `,
     },
     type: "custom",
     selected: false,
   },
   {
     id: "2",
-    position: { x: 250, y: 300 },
+    position: { x: 250, y: 500 },
     data: {
-      label: `Some Text`,
+      title: "Introduction",
+      label: "Node 2",
     },
     type: "custom",
     selected: false,
@@ -71,6 +79,49 @@ const initialEdges = [
 
 let id = 3;
 const getId = () => `${id++}`;
+
+// Adjust these constants for larger nodes and more spacing
+const nodeWidth = 500; // Increased from 172
+const nodeHeight = 200; // Increased from 36
+const PADDING = 100; // Add padding between nodes
+
+// Add the layout utility function before the Flow component
+const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
+
+const getLayoutedElements = (nodes: any[], edges: any[], direction = "TB") => {
+  const isHorizontal = direction === "LR";
+  dagreGraph.setGraph({
+    rankdir: direction,
+    nodesep: 100, // Minimum horizontal separation between nodes
+    ranksep: 150, // Minimum vertical separation between nodes
+    edgesep: 50, // Minimum edge separation
+  });
+
+  nodes.forEach((node) => {
+    dagreGraph.setNode(node.id, { width: nodeWidth, height: nodeHeight });
+  });
+
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target);
+  });
+
+  dagre.layout(dagreGraph);
+
+  const newNodes = nodes.map((node) => {
+    const nodeWithPosition = dagreGraph.node(node.id);
+    return {
+      ...node,
+      targetPosition: isHorizontal ? "left" : "top",
+      sourcePosition: isHorizontal ? "right" : "bottom",
+      position: {
+        x: nodeWithPosition.x - nodeWidth / 2,
+        y: nodeWithPosition.y - nodeHeight / 2,
+      },
+    };
+  });
+
+  return { nodes: newNodes, edges };
+};
 
 function Flow() {
   const reactFlowWrapper = useRef(null);
@@ -140,10 +191,10 @@ function Flow() {
             y: clientY,
           }),
           data: {
+            title: ``,
             label: `Node ${id}`,
           },
           type: "custom",
-          fontSize: "0.5rem",
           selected: false,
         };
 
@@ -165,13 +216,40 @@ function Flow() {
     [screenToFlowPosition]
   );
 
+  // Add layout function
+  const onLayout = useCallback(
+    (direction: "TB" | "LR") => {
+      const { nodes: layoutedNodes, edges: layoutedEdges } =
+        getLayoutedElements(nodes, edges, direction);
+      setNodes([...layoutedNodes]);
+      setEdges([...layoutedEdges]);
+
+      // Adjust the fitView parameters
+      window.requestAnimationFrame(() =>
+        fitView({
+          padding: PADDING,
+          maxZoom: 1.5, // Limit maximum zoom
+          minZoom: 0.5, // Limit minimum zoom
+          duration: 500, // Animation duration in ms
+        })
+      );
+    },
+    [nodes, edges, fitView]
+  );
+
   return (
     <div className="w-full h-full relative" ref={reactFlowWrapper}>
-      <div className="absolute bottom-4 right-4 z-10">
+      <div className="absolute bottom-4 right-4 z-10 flex gap-2">
+        <Button variant="outline" onClick={() => onLayout("TB")}>
+          Vertical Layout
+        </Button>
+        <Button variant="outline" onClick={() => onLayout("LR")}>
+          Horizontal Layout
+        </Button>
         <Button
           variant="outline"
           onClick={toggleRightSidebar}
-          className="bg-white font-normal"
+          className="font-normal"
         >
           <Chats size={16} />
           Chat

@@ -17,7 +17,7 @@ import {
   TerminalWindow,
   File,
   Archive,
-  House,
+  HouseSimple,
 } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -29,14 +29,16 @@ import { DocumentList } from "@/components/document/document-list";
 import { DeleteDocumentDialog } from "@/components/document/delete-document-dialog";
 import { LibraryList } from "@/components/document/library-list";
 import { deleteLibrary } from "@/app/actions/library";
-import { CustomUploadDropzone } from "./uploadthing/custom-upload-dropzone";
-
+import { CustomUploadButton } from "./uploadthing/custom-upload-button";
+import { SidebarSkeleton } from "@/components/sidebar-skeleton";
+import { LibraryDocument } from "@/types/models/library";
+import { Document } from "@/types/models/document";
 const data = {
   navMain: [
     {
       title: "Home",
       url: "/",
-      icon: <House weight="fill" size={24} />,
+      icon: <HouseSimple size={24} />,
     },
     {
       title: "Documents",
@@ -61,27 +63,9 @@ const data = {
   ],
 };
 
-interface Document {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-  content: any | "";
-  userId: string | null;
-}
-
-interface Library {
-  id: string;
-  title: string;
-  description: string;
-  isPublic: boolean;
-  createdAt: Date;
-  updatedAt: Date | null;
-  metadata: any;
-}
-
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   documents?: Document[];
-  libraries?: Library[];
+  libraries?: LibraryDocument[];
 }
 
 export function AppSidebar({
@@ -105,7 +89,11 @@ export function AppSidebar({
   const router = useRouter();
   const [showLibraryList, setShowLibraryList] = React.useState(false);
 
-  if (!isLoaded || !isSignedIn) {
+  if (!isLoaded) {
+    return <SidebarSkeleton />;
+  }
+
+  if (!isSignedIn) {
     return null;
   }
 
@@ -118,13 +106,12 @@ export function AppSidebar({
   const handleDeleteDocument = async (documentId: string) => {
     try {
       await deleteDocument(documentId);
-
       setDocumentToDelete(null);
+      router.refresh();
       toast({
         title: "Document deleted",
         description: "The document has been deleted successfully.",
       });
-      router.refresh();
     } catch (error) {
       console.error("Failed to delete document:", error);
     }
@@ -136,10 +123,9 @@ export function AppSidebar({
 
       setLibraryToDelete(null);
       toast({
-        title: "Library deleted",
-        description: "The library has been deleted successfully.",
+        title: "Document Deleted",
+        description: "The library document has been deleted successfully.",
       });
-      router.refresh();
     } catch (error) {
       console.error("Failed to delete library:", error);
     }
@@ -183,7 +169,7 @@ export function AppSidebar({
         </Sidebar>
 
         <Sidebar collapsible="none" className="hidden flex-1 md:flex">
-          <SidebarHeader className="border-b p-2 flex justify-between flex-row">
+          <SidebarHeader className="border-b flex justify-between flex-row">
             <SidebarInput
               className="rounded-sm"
               placeholder="Search"
@@ -192,7 +178,7 @@ export function AppSidebar({
             />
           </SidebarHeader>
 
-          <SidebarHeader className="border-b py-1 flex justify-between flex-row w-full">
+          <SidebarHeader className="border-b flex justify-between flex-row w-full">
             {showLibraryList ? (
               <>
                 <Button
@@ -203,7 +189,7 @@ export function AppSidebar({
                 >
                   Sort {sortDesc ? "↓" : "↑"}
                 </Button>
-                <CustomUploadDropzone />
+                <CustomUploadButton />
               </>
             ) : (
               <>

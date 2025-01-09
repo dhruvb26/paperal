@@ -9,13 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { DotsThreeVertical } from "@phosphor-icons/react";
 import { getDocContent, getDocDate, getDocHeading } from "@/utils/render-doc";
-
-interface Document {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-  content: any | "";
-}
+import { Document } from "@/types/models/document";
 
 interface DocumentListProps {
   documents: Document[];
@@ -55,7 +49,7 @@ export const DocumentList: React.FC<DocumentListProps> = ({
           key={document.id}
           className={`flex flex-col items-start gap-2 whitespace-nowrap border-b p-2 text-sm leading-tight ${
             pathname === `/editor/${document.id}`
-              ? "bg-white text-sidebar-accent-foreground"
+              ? "bg-background text-sidebar-accent-foreground"
               : ""
           }`}
         >

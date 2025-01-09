@@ -8,19 +8,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { DotsThreeVertical } from "@phosphor-icons/react";
-
-interface Library {
-  id: string;
-  title: string;
-  description: string;
-  isPublic: boolean;
-  createdAt: Date;
-  updatedAt: Date | null;
-  metadata: any;
-}
+import { LibraryDocument } from "@/types/models/library";
 
 interface LibraryListProps {
-  libraries: Library[];
+  libraries: LibraryDocument[];
   searchQuery: string;
   sortDesc: boolean;
   pathname: string;
@@ -65,13 +56,13 @@ export const LibraryList: React.FC<LibraryListProps> = ({
           key={library.id}
           className={`flex flex-col items-start gap-2 whitespace-nowrap border-b p-2 text-sm leading-tight ${
             pathname === `/library/${library.id}`
-              ? "bg-white text-sidebar-accent-foreground"
+              ? "bg-background text-sidebar-accent-foreground"
               : ""
           }`}
         >
           <div className="flex w-full items-center">
             <Link
-              href={`${library.metadata.fileUrl}`}
+              href={`${library.metadata?.fileUrl}`}
               target="_blank"
               className="flex-1 truncate"
             >
@@ -91,6 +82,9 @@ export const LibraryList: React.FC<LibraryListProps> = ({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href={`/chat/${library.id}`}>Chat</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-destructive"
                   onClick={() => setLibraryToDelete(library.id)}

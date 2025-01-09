@@ -289,9 +289,9 @@ const SidebarTrigger = React.forwardRef<
     <Button
       ref={ref}
       data-sidebar="trigger"
-      variant="ghost"
+      variant="outline"
       size="icon"
-      className={cn("h-7 w-7 transition-transform duration-200", className)}
+      className={cn("transition-transform duration-200", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
@@ -299,9 +299,9 @@ const SidebarTrigger = React.forwardRef<
       {...props}
     >
       {state === "collapsed" ? (
-        <SidebarSimple size={20} />
+        <SidebarSimple className="text-sidebar-foreground" size={20} />
       ) : (
-        <CaretLeft size={20} />
+        <CaretLeft className="text-sidebar-foreground" size={20} />
       )}
       <span className="sr-only">Toggle Sidebar</span>
       {children}
@@ -365,7 +365,7 @@ const SidebarInput = React.forwardRef<
     <Input
       ref={ref}
       data-sidebar="input"
-      className={cn("h-8 w-full bg-background shadow-none", className)}
+      className={cn("h-9 w-full bg-background shadow-none", className)}
       {...props}
     />
   );

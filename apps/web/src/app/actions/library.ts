@@ -25,6 +25,7 @@ export async function createLibrary(
     description,
     userId,
     isPublic,
+    metadata: {},
   });
 
   return libraryId;

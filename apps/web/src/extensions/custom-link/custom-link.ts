@@ -30,8 +30,8 @@ export const CustomLink = Link.extend({
               position: absolute;
               left: ${event.pageX}px;
               top: ${event.pageY + 20}px;
-              background: white; 
-              border: 1px solid #ddd;
+              background: hsl(var(--background)); 
+              border: 1px solid hsl(var(--border));
               border-radius: 4px;
               padding: 8px;
               z-index: 1000;
@@ -216,7 +216,7 @@ export const CustomLink = Link.extend({
               .catch((error) => {
                 popover.innerHTML = `
                   <div class="flex flex-col items-start gap-2 p-2">
-                    <span class="text-xs text-red-500">Error loading document details</span>
+                    <span class="text-xs text-destructive">Error loading document details</span>
                     <button 
                       class="flex text-xs items-center gap-1 hover:underline text-foreground"
                       onclick="window.open('${attrs.href}', '${

@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { BoxArrowUp } from "@phosphor-icons/react";
 import { useToast } from "@/hooks/use-toast";
+import { twMerge } from "tailwind-merge";
 
 export const CustomUploadDropzone = () => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -20,6 +21,7 @@ export const CustomUploadDropzone = () => {
       </DialogTrigger>
       <DialogContent className="p-0 border-none" hideCloseButton>
         <UploadDropzone
+          config={{ cn: twMerge }}
           onClientUploadComplete={(res) => {
             toast({
               title: "Upload Complete",
@@ -52,14 +54,14 @@ export const CustomUploadDropzone = () => {
           appearance={{
             container({ isDragActive }) {
               return {
-                backgroundColor: "#ffffff",
+                backgroundColor: "hsl(var(--background))",
                 ...(isDragActive && {
-                  backgroundColor: "#f0f0f0",
+                  backgroundColor: "hsl(var(--muted))",
                 }),
               };
             },
           }}
-          className="bg-background ut-button:h-8 ut-button:gap-2 mt-0 ut-allowed-content:text-muted-foreground ut-label:text-accent-foreground ut-label:font-medium ut-button:bg-primary ut-button:ut-uploading:bg-primary ut-button:ut-uploading:after:bg-primary/50 ut-button:text-xs ut-button:font-normal ut-button:px-3 ut-button:py-2 ut-button:focus-visible:outline-none ut-button:outline-none ut-button:ring-0 ut-button:focus:ring-0"
+          className="ut-button:h-8 ut-button:gap-2 mt-0 ut-allowed-content:text-muted-foreground ut-label:text-accent-foreground ut-label:font-medium ut-button:bg-primary ut-button:ut-uploading:bg-primary ut-button:ut-uploading:after:bg-primary/50 ut-button:text-xs ut-button:font-normal ut-button:px-3 ut-button:py-2 ut-button:focus-visible:outline-none ut-button:outline-none ut-button:ring-0 ut-button:focus:ring-0"
           endpoint="pdfUploader"
         />
       </DialogContent>

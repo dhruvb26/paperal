@@ -284,7 +284,7 @@ export async function POST(req: Request) {
       for await (const step of await graph.stream(
         { messages: [...history, new HumanMessage(userInput)] },
         {
-          streamMode: "messages",
+          streamMode: "values",
           configurable: config.configurable,
         }
       )) {

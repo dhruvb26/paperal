@@ -37,7 +37,7 @@ export const CommandButton = forwardRef<HTMLButtonElement, CommandButtonProps>(
           isActive && "bg-accent"
         )}
       >
-        <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-white text-foreground border">
+        <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-background text-foreground border">
           {icon}
         </div>
         <div className="flex flex-col items-start justify-start w-full">

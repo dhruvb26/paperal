@@ -181,14 +181,14 @@ export default ({ documentId, initialContent }: TiptapProps) => {
         <DragHandle editor={editor}>
           <button
             onClick={handlePlusClick}
-            className="p-1.5 text-base hover:bg-muted rounded-sm mr-[3.25rem] text-black/50"
+            className="p-1.5 text-base hover:bg-muted rounded-sm mr-[3.25rem]"
           >
-            <Plus weight="bold" size={12} />
+            <Plus weight="bold" size={12} className="text-foreground" />
           </button>
         </DragHandle>
       </div>
 
-      <EditorContent editor={editor} className="text-sm min-w-full" />
+      <EditorContent editor={editor} className="text-base min-w-full" />
     </>
   );
 };

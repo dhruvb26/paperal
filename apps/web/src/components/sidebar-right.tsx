@@ -52,11 +52,7 @@ export function SidebarRight({
   }, [messages]);
 
   if (!isLoaded)
-    return (
-      <div className="flex justify-center items-center h-full">
-        <Loader />
-      </div>
-    );
+    return <div className="flex justify-center items-center h-full"></div>;
 
   return (
     <Sidebar

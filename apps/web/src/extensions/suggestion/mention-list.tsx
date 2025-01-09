@@ -9,8 +9,8 @@ import React, {
 } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Loader } from "@/components/ui/loader";
-import { LibraryDocument } from "./index";
 import axios from "axios";
+import { LibraryDocument } from "@/types/models/library";
 
 interface MentionListProps {
   items: Array<LibraryDocument>;
@@ -132,7 +132,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
     return (
       <Tabs
         defaultValue="library"
-        className="border border-muted rounded-md p-1 bg-white"
+        className="border border-muted rounded-md p-1 bg-background"
       >
         <TabsList>
           <TabsTrigger value="library">Library</TabsTrigger>
@@ -158,7 +158,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
               >
                 {libraryItems.map((item, index) => (
                   <React.Fragment key={index}>
-                    <div className="flex flex-col items-start gap-2 p-2 citation-div">
+                    <div className="flex flex-col items-start gap-2 p-2 citation-div bg-background">
                       <div className="flex flex-col space-y-1 items-start text-xs">
                         <span className="text-xs line-clamp-2">
                           {item.title}

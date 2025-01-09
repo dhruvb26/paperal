@@ -24,7 +24,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().setParagraph().run();
         },
-        icon: <TextT />,
+        icon: <TextT className="text-foreground" />,
       },
       {
         name: "heading1",
@@ -35,7 +35,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().setHeading({ level: 1 }).run();
         },
-        icon: <TextHOne />,
+        icon: <TextHOne className="text-foreground" />,
       },
       {
         name: "heading2",
@@ -46,7 +46,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().setHeading({ level: 2 }).run();
         },
-        icon: <TextHTwo />,
+        icon: <TextHTwo className="text-foreground" />,
       },
       {
         name: "heading3",
@@ -57,7 +57,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().setHeading({ level: 3 }).run();
         },
-        icon: <TextHThree />,
+        icon: <TextHThree className="text-foreground" />,
       },
       {
         name: "bulletList",
@@ -68,7 +68,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().toggleBulletList().run();
         },
-        icon: <ListBullets />,
+        icon: <ListBullets className="text-foreground" />,
       },
       {
         name: "numberedList",
@@ -79,7 +79,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().toggleOrderedList().run();
         },
-        icon: <ListNumbers />,
+        icon: <ListNumbers className="text-foreground" />,
       },
       {
         name: "blockquote",
@@ -89,7 +89,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().setBlockquote().run();
         },
-        icon: <Quotes />,
+        icon: <Quotes className="text-foreground" />,
       },
       {
         name: "codeBlock",
@@ -99,7 +99,7 @@ export const GROUPS: Group[] = [
         action: (editor) => {
           editor.chain().focus().setCodeBlock().run();
         },
-        icon: <CodeSimple />,
+        icon: <CodeSimple className="text-foreground" />,
       },
     ],
   },

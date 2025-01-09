@@ -29,6 +29,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
     NEXT_PUBLIC_CLERK_SIGN_IN_URL: z.string().min(1),
     NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string().min(1),
+    NEXT_PUBLIC_API_URL: z.string().url(),
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -53,5 +54,6 @@ export const env = createEnv({
     DATABASE_USER: process.env.DATABASE_USER,
     DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
     TRIGGER_SECRET_KEY: process.env.TRIGGER_SECRET_KEY,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 });

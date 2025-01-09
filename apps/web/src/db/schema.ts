@@ -23,9 +23,9 @@ export const usersTable = pgTable("users", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 }).$onUpdate(
-    () => new Date()
-  ),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+    .$onUpdate(() => new Date())
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 const tsvector = customType<{ data: string }>({
@@ -47,26 +47,26 @@ export const embeddingsTable = pgTable("embeddings", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .$onUpdate(() => new Date()),
+    .$onUpdate(() => new Date())
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const documentsTable = pgTable("documents", {
   id: uuid()
     .primaryKey()
     .default(sql`uuid_generate_v4()`),
-  content: jsonb("content"),
-  title: text("title"),
-  prompt: text("prompt"),
+  content: jsonb("content").notNull(),
+  title: text("title").notNull(),
+  prompt: text("prompt").notNull(),
   userId: varchar("user_id")
     .references(() => usersTable.id, { onDelete: "cascade" })
     .notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 }).$onUpdate(
-    () => new Date()
-  ),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+    .$onUpdate(() => new Date())
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const libraryTable = pgTable("library", {
@@ -78,14 +78,14 @@ export const libraryTable = pgTable("library", {
   userId: varchar("user_id").references(() => usersTable.id, {
     onDelete: "cascade",
   }),
-  isPublic: boolean("is_public").default(true),
-  metadata: json("metadata").$type<Record<string, any>>(),
+  isPublic: boolean("is_public").default(true).notNull(),
+  metadata: json("metadata").$type<Record<string, any>>().notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .$onUpdate(() => new Date()),
+    .$onUpdate(() => new Date())
+    .default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const usersRelations = relations(usersTable, ({ many }) => ({

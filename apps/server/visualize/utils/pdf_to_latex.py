@@ -135,7 +135,6 @@ def pdf_to_latex(pdf_path, output_path):
 
 if __name__ == "__main__":
     # Example usage
-    input_pdf = "coMAL.pdf"
+    input_pdf = "../2402.pdf"
     output_latex = "output.tex"
     sections = pdf_to_latex(input_pdf, output_latex)
-    print(sections)

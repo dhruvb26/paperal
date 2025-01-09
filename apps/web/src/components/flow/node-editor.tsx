@@ -89,7 +89,7 @@ export default function NodeEditor({
               </TooltipProvider>
               <DropdownMenuContent className="w-[300px]" side="left">
                 <div className="space-y-4 p-2">
-                  <div className="flex flex-col gap-2">
+                  {/* <div className="flex flex-col gap-2">
                     <Label className="text-xs font-normal">Font Size</Label>
                     <Select
                       value={
@@ -114,7 +114,7 @@ export default function NodeEditor({
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
+                  </div> */}
                   <div className="flex flex-col gap-2">
                     <Label className="text-xs font-normal">Node</Label>
                     <div className="flex flex-row gap-2">
@@ -136,7 +136,7 @@ export default function NodeEditor({
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col gap-2">
+                  {/* <div className="flex flex-col gap-2">
                     <Label className="text-xs font-normal">Text</Label>
                     <ColorPicker
                       value={selectedNodeData?.textColor || "#000000"}
@@ -146,7 +146,7 @@ export default function NodeEditor({
                         })
                       }
                     />
-                  </div>
+                  </div> */}
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>

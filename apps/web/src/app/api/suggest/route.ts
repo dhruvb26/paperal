@@ -69,6 +69,15 @@ export async function POST(request: Request) {
       },
       { status: 200 }
     );
+    // return NextResponse.json({
+    //   text: "Here is some sentence",
+    //   is_referenced: true,
+    //   citations: {
+    //     "in-text": "(Dhruv et al., 2024)",
+    //     "after-text": "(Dhruv et al., 2024)",
+    //   },
+    //   href: "https://www.google.com",
+    // });
   } catch (error) {
     console.error("Error generating suggestion:", error);
     return NextResponse.json(
