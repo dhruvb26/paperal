@@ -1,6 +1,5 @@
 import logging
 from typing import Optional, Tuple
-import tiktoken
 from openai import OpenAI
 from database import query_vector_store
 import baml_connect.baml_main as baml_main
@@ -65,7 +64,6 @@ async def find_similar_documents(
         # If no different document found, return empty list
         if not filtered_docs:
             return []
-        print(filtered_docs)
 
         # Create results for the selected document
         results = [

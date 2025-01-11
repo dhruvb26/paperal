@@ -20,36 +20,56 @@ def extract_pdf_sections(pdf_url: str, headings: list[str]) -> dict[str, str]:
     heading_contents = {}
     total_content = ""
 
-    # Process each page
+    # Process each page first
     for page in pages:
         page_content = page.page_content.strip()
-        total_content += page_content + "\n"  # Add newline between pages
+        total_content += page_content + "\n"
 
+    remaining_content = total_content
     # Process each heading
     for i, heading in enumerate(headings):
-        start_index = total_content.find(heading)
+        # Look for both numbered and non-numbered versions of the heading
+        # Pattern: optional number (e.g., "3", "3.2", etc.) followed by heading
+        start_index = -1
+        heading_variations = [
+            heading,  # Original heading
+            r"\d+\s*" + heading,  # Single number (e.g., "3 Introduction")
+            r"\d+\.\d+\s*" + heading,  # Decimal number (e.g., "3.2 Introduction")
+        ]
+
+        for variation in heading_variations:
+            found_index = remaining_content.find(variation)
+            if found_index != -1:
+                start_index = found_index
+                break
 
         if start_index != -1:
-            content_start = start_index + len(heading)
+            # Skip content before the heading
+            remaining_content = remaining_content[start_index:]
 
-            # Get content until next heading or end of document
-            if i == len(headings) - 1:
-                content = total_content[content_start:]
+            # Extract content after heading
+            content_start = len(heading)
+
+            # Find next heading if it exists
+            next_start = -1
+            for next_heading in headings[i + 1 :]:
+                next_start = remaining_content.find(next_heading)
+                if next_start != -1:
+                    break
+
+            # Extract content
+            if next_start != -1:
+                content = remaining_content[content_start:next_start]
+                # Update remaining content for next iteration
+                remaining_content = remaining_content[next_start:]
             else:
-                next_heading = headings[i + 1]
-                end_index = total_content.find(next_heading, start_index + len(heading))
-                content = (
-                    total_content[content_start:]
-                    if end_index == -1
-                    else total_content[content_start:end_index]
-                )
+                content = remaining_content[content_start:]
+                remaining_content = ""
 
             # Clean and store the content
             content = content.strip()
             if content:
-                if heading not in heading_contents:
-                    heading_contents[heading] = ""
-                heading_contents[heading] += content + " "
+                heading_contents[heading] = content
 
     return heading_contents
 

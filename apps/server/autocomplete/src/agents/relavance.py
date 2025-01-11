@@ -8,7 +8,9 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
 
-def select_most_relevant_sentence(context: str, sentence: str) -> bool:
+def select_most_relevant_sentence(
+    context: str, sentence: str, previous_text: str
+) -> bool:
     """
     Uses OpenAI to determine which of two sentences is more relevant given the context.
 
@@ -23,12 +25,14 @@ def select_most_relevant_sentence(context: str, sentence: str) -> bool:
     client = OpenAI(api_key=api_key)
 
     prompt = f"""Given the following context and the sentence generated using the context,
-    Determine if the sentence is relevant to the context.
-    Only respond with "Yes" or "No" to indicate your choice.
+    Determine if the sentence is relevant to the context and the previous text.
+    If the sentence is not relevant, return "No".
+    If the sentence is relevant, return "Yes".
 
     Context: {context}
 
     Sentence: {sentence}
+    Previous Text: {previous_text}
 
     Is the sentence relevant to the context?"""
 

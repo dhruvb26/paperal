@@ -34,8 +34,7 @@ async def generate_sentence(request: SentenceRequest):
         .execute()
     )
     heading = heading.data[0]["prompt"]
-    print(request.previous_text)
-    print(heading)
+
     # Early return for empty previous_text
     if request.previous_text == heading.strip():
         ai_generated_opening = suggest_opening_statement(heading)
@@ -59,7 +58,6 @@ async def generate_sentence(request: SentenceRequest):
     similar_docs = await find_similar_documents(request.previous_text, heading)
     # Only process similar documents if they exist and have valid scores
     if len(similar_docs) > 0:
-        print(similar_docs[0]["score"])
         sentence = generate_referenced_sentence(
             request.previous_text, heading, similar_docs[0]["content"]
         )
@@ -69,6 +67,7 @@ async def generate_sentence(request: SentenceRequest):
             and select_most_relevant_sentence(
                 similar_docs[0]["content"],
                 sentence.get("sentence"),
+                request.previous_text[:500],
             )
             == True
         ):
@@ -90,6 +89,7 @@ async def generate_sentence(request: SentenceRequest):
                     },
                 ),
                 "href": similar_docs[0]["metadata"].get("url"),
+                "context": similar_docs[0]["content"],
             }
     # Generate non-referenced sentence
     ai_generated = await generate_ai_sentence(

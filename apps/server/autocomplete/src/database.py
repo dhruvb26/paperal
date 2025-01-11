@@ -100,22 +100,26 @@ def query_vector_store(query: str) -> List[Document]:
         # Call hybrid_search function via RPC with all required parameters
         # score is between 0 and 0.0392
         start_time = time.time()
-        documents = supabase_client.rpc(
-            "hybrid_search",
-            {
-                "query_text": query,
-                "query_embedding": embedding,
-                "match_count": 10,
-                "semantic_weight": 2,
-                "full_text_weight": 1,
-                # "rrf_k": 0,
-            },
-        ).execute()
+        try:
+            documents = supabase_client.rpc(
+                "hybrid_search",
+                {
+                    "query_text": query,
+                    "query_embedding": embedding,
+                    "match_count": 10,
+                    "semantic_weight": 2,
+                    "full_text_weight": 1,
+                },
+            ).execute()
+        except Exception as e:
+            logging.error(f"Error in query_vector_store: {str(e)}", exc_info=True)
+            return []
         end_time = time.time()
         logging.info(f"Hybrid search took {end_time - start_time} seconds")
         return documents
 
     except Exception as e:
+
         logging.error(f"Error in query_vector_store: {str(e)}", exc_info=True)
         raise e
 

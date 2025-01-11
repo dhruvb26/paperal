@@ -53,28 +53,28 @@ def generate_content_summary(content: str) -> Optional[str]:
 
 if __name__ == "__main__":
     content = extract_pdf_sections(
-        "https://arxiv.org/pdf/2406.06443",
+        "https://arxiv.org/pdf/1706.03762",
         [
             "Introduction",
-            "Background and Baselines",
-            "Metrics for LLM Membership Inference",
-            "Problem Setup",
-            "Failure of Membership Inference",
-            "LLM Dataset Inference",
-            "Procedure for the LLM Dataset Inference",
-            "Assumptions for Dataset Inference",
-            "Experimental Details",
-            "Analysis and Results with Dataset Inference",
-            "Discussions",
-            "Acknowledgements",
-            "Broader Impact",
-            "Compute",
-            "Additional Experiments",
+            "Background",
+            "Model Architecture",
+            "Encoder and Decoder Stacks",
+            "Attention",
+            "Scaled Dot-Product Attention",
+            "Multi-Head Attention",
+            "Application of Attention in our Model",
+            "Position-wise Feed-Forward Networks",
+            "Embeddings and Softmax",
+            "Positional Encoding",
+            # "Acknowledgements",
+            # "Broader Impact",
+            # "Compute",
+            # "Additional Experiments",
         ],
     )
     for heading, content in content.items():
-        if heading == "Acknowledgements":
-            continue
         summary = generate_content_summary(content[:2000])
         print(f"\n=== {heading} ===")
+        # summary = summary.split("<body>")[1]
+        # summary = summary.split("</body>")[0]
         print(summary.strip())
