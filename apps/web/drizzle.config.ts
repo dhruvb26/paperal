@@ -12,5 +12,8 @@ export default defineConfig({
     host: "aws-0-us-west-1.pooler.supabase.com",
     password: env.DATABASE_PASSWORD,
     user: env.DATABASE_USER,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   },
 });

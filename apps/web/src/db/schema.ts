@@ -10,6 +10,7 @@ import {
   boolean,
   doublePrecision,
   json,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import { relations } from "drizzle-orm";
@@ -79,7 +80,7 @@ export const libraryTable = pgTable("library", {
     onDelete: "cascade",
   }),
   isPublic: boolean("is_public").default(true).notNull(),
-  metadata: json("metadata").$type<Record<string, any>>().notNull(),
+  metadata: jsonb("metadata").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -106,3 +107,97 @@ export const libraryRelations = relations(libraryTable, ({ one }) => ({
     references: [usersTable.id],
   }),
 }));
+
+export const citationsTable = pgTable("citations", {
+  id: uuid()
+    .primaryKey()
+    .default(sql`uuid_generate_v4()`),
+  documentId: uuid()
+    .references(() => documentsTable.id, { onDelete: "cascade" })
+    .notNull(),
+  sentence: text("sentence").notNull(),
+  citation: text("citation").notNull(),
+  context: text("context").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date", precision: 3 })
+    .$onUpdate(() => new Date())
+    .default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const checkpointsTable = pgTable(
+  "checkpoints",
+  {
+    id: uuid()
+      .primaryKey()
+      .default(sql`uuid_generate_v4()`),
+    threadId: text("thread_id").notNull(),
+    checkpointNs: text("checkpoint_ns").notNull(),
+    checkpointId: text("checkpoint_id").notNull(),
+    parentCheckpointId: text("parent_checkpoint_id"),
+    type: text("type"),
+    checkpoint: jsonb("checkpoint"),
+    metadata: jsonb("metadata"),
+  },
+  (table) => {
+    return {
+      unq: uniqueIndex("checkpoint_unique_idx").on(
+        table.threadId,
+        table.checkpointNs,
+        table.checkpointId
+      ),
+    };
+  }
+);
+const bytea = customType<{ data: Buffer }>({
+  dataType() {
+    return "bytea";
+  },
+});
+export const checkpointBlobsTable = pgTable(
+  "checkpoint_blobs",
+  {
+    threadId: text("thread_id").notNull(),
+    checkpointNs: text("checkpoint_ns").notNull(),
+    channel: text("channel").notNull(),
+    version: text("version").notNull(),
+    type: text("type"),
+    blob: bytea("blob"),
+  },
+  (table) => {
+    return {
+      unq: uniqueIndex("checkpoint_blobs_unique_idx").on(
+        table.threadId,
+        table.checkpointNs,
+        table.channel,
+        table.version
+      ),
+    };
+  }
+);
+
+export const checkpointWritesTable = pgTable(
+  "checkpoint_writes",
+  {
+    threadId: text("thread_id").notNull(),
+    checkpointNs: text("checkpoint_ns").notNull(),
+    checkpointId: text("checkpoint_id").notNull(),
+    taskId: text("task_id").notNull(),
+    idx: integer("idx").notNull(),
+    channel: text("channel"),
+    type: text("type"),
+    blob: bytea("blob"),
+  },
+  (table) => {
+    return {
+      unq: uniqueIndex("checkpoint_writes_unique_idx").on(
+        table.threadId,
+        table.checkpointNs,
+        table.checkpointId,
+        table.taskId,
+        table.idx
+      ),
+    };
+  }
+);

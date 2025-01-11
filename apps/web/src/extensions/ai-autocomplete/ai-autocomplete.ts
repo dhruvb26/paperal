@@ -1,3 +1,4 @@
+import { storeCitation } from "@/app/actions/citation";
 import { env } from "@/env";
 import { Node } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
@@ -35,6 +36,7 @@ interface CallbackInput {
     "in-text"?: string;
     "after-text"?: string;
   };
+  context?: string;
   href?: string;
 }
 
@@ -80,6 +82,7 @@ export const AiAutocompleteExtension = Node.create<
               document_id: pathDocumentId,
             }
           );
+
           const data = suggestion.data as CallbackInput;
           cb(data.text, data);
         } catch (error) {
@@ -108,31 +111,20 @@ export const AiAutocompleteExtension = Node.create<
           return {
             update(view, prevState) {
               if (view.state.doc.textContent.trim().length === 0) {
+                console.log("Empty document, returning");
                 return;
               }
 
               // Add check for @ and / triggers
               const lastChar = view.state.doc.textContent.slice(-1);
               if (lastChar === "@" || lastChar === "/") {
+                console.log("Trigger character detected, returning");
                 return;
               }
 
               const selection = view.state.selection;
               const cursorPos = selection.$head.pos;
               const nextNode = view.state.doc.nodeAt(cursorPos);
-
-              // If the cursor is not at the end of the block and we have a suggestion => hide the suggestion
-              if (
-                nextNode &&
-                !nextNode.isBlock &&
-                pluginKey.getState(view.state)?.find().length
-              ) {
-                const tr = view.state.tr;
-                tr.setMeta("addToHistory", false);
-                tr.setMeta(pluginKey, { decorations: DecorationSet.empty });
-                view.dispatch(tr);
-                return;
-              }
 
               // If the document didn't change, do nothing
               if (prevState && prevState.doc.eq(view.state.doc)) {
@@ -382,7 +374,7 @@ function createAndDispatchSuggestion(
   view.dispatch(tr);
 }
 
-function handleSuggestionAcceptance(
+async function handleSuggestionAcceptance(
   view: any,
   suggestionEl: HTMLElement,
   pluginKey: PluginKey
@@ -392,6 +384,7 @@ function handleSuggestionAcceptance(
     suggestionEl.getAttribute("data-response-data") || "{}"
   );
 
+  const pathDocumentId = window.location.pathname.split("/editor/")[1];
   if (responseData.citations?.["in-text"]) {
     const schema = view.state.schema;
     const text = responseData.text.replace(/\.$/, "");
@@ -406,6 +399,17 @@ function handleSuggestionAcceptance(
       ]),
       schema.text(". "),
     ]);
+
+    try {
+      await storeCitation({
+        documentId: pathDocumentId,
+        sentence: text,
+        citation: citationText,
+        context: responseData.context || "",
+      });
+    } catch (error) {
+      console.error("Failed to store citation:", error);
+    }
   } else {
     tr.insertText((suggestionEl.textContent || "") + " ");
   }

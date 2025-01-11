@@ -5,39 +5,61 @@ import { getDocument } from "@/app/actions/documents";
 import { useEffect, useState } from "react";
 import Tiptap from "@/components/editor/tip-tap";
 import { Loader } from "@/components/ui/loader";
-type Document = {
-  content: unknown;
-  id: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-  userId: string | null;
-};
+import { SidebarRight } from "@/components/sidebar-right";
+import { Document } from "@/types/models/document";
+import { Button } from "@/components/ui/button";
+import { Chats } from "@phosphor-icons/react";
+import { useSidebarStore } from "@/store/sidebar-store";
 
 export default function EditorPage() {
   const params = useParams();
   const documentId = params.page;
   const [document, setDocument] = useState<Document[] | null>(null);
+  const toggleRightSidebar = useSidebarStore(
+    (state) => state.toggleRightSidebar
+  );
+  const isRightSidebarOpen = useSidebarStore(
+    (state) => state.isRightSidebarOpen
+  );
 
   useEffect(() => {
     const fetchDocument = async () => {
       const doc = await getDocument(documentId as string);
-      setDocument(doc);
+      setDocument(doc as Document[]);
     };
     fetchDocument();
   }, [documentId]);
 
   return (
-    <div className="flex flex-col items-start justify-center sm:p-32 p-0">
+    <>
       {!document ? (
-        <div className="w-full h-[200px] flex items-center justify-center">
+        <div className="w-full flex h-screen items-center justify-center">
           <Loader />
         </div>
       ) : (
-        <Tiptap
-          documentId={documentId as string}
-          initialContent={document[0].content}
-        />
+        <div className="flex h-full relative overflow-x-hidden">
+          <div className="flex-1 overflow-auto p-20">
+            <Tiptap
+              documentId={documentId as string}
+              initialContent={document[0].content}
+            />
+          </div>
+
+          <SidebarRight />
+          {/* <Button
+            variant="outline"
+            onClick={toggleRightSidebar}
+            className={`fixed bottom-3 font-normal transition-all duration-300 ${
+              isRightSidebarOpen
+                ? "right-[calc(384px+1rem)]"
+                : "right-4 sm:right-8"
+            }`}
+          >
+            <Chats size={16} />
+            <span className="hidden sm:inline">Chat</span>
+          </Button> */}
+        </div>
       )}
-    </div>
+    </>
   );
 }

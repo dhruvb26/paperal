@@ -17,7 +17,7 @@ export default function ProtectedLayout({
       disableTransitionOnChange
     >
       <SidebarInset className="flex flex-col h-screen">
-        <header className="sticky top-0 flex justify-between shrink-0 items-center border-b bg-background gap-2 px-4 py-2 z-50">
+        <header className="sticky top-0 flex justify-between shrink-0 items-center border-b bg-background gap-2 px-4 py-2 z-[50]">
           <SidebarTrigger />
           <ModeToggle />
         </header>

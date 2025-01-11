@@ -15,10 +15,10 @@ import {
 import {
   GearSix,
   TerminalWindow,
-  File,
   Archive,
   HouseSimple,
 } from "@phosphor-icons/react";
+import File from "@/components/icons/file";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
@@ -33,32 +33,31 @@ import { CustomUploadButton } from "./uploadthing/custom-upload-button";
 import { SidebarSkeleton } from "@/components/sidebar-skeleton";
 import { LibraryDocument } from "@/types/models/library";
 import { Document } from "@/types/models/document";
+import House2 from "@/components/icons/house-2";
+import BookOpen from "@/components/icons/book";
+import Gear2 from "@/components/icons/gear-2";
 const data = {
   navMain: [
     {
       title: "Home",
       url: "/",
-      icon: <HouseSimple size={24} />,
+      icon: <House2 />,
     },
     {
       title: "Documents",
       url: "/editor",
-      icon: <File size={24} />,
+      icon: <File />,
     },
-    {
-      title: "Playground",
-      url: "/playground",
-      icon: <TerminalWindow size={24} />,
-    },
+
     {
       title: "Library",
       url: "/library",
-      icon: <Archive size={24} />,
+      icon: <BookOpen />,
     },
     {
       title: "Settings",
       url: "/settings",
-      icon: <GearSix size={24} />,
+      icon: <Gear2 />,
     },
   ],
 };

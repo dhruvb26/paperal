@@ -1,6 +1,7 @@
 import Link from "@tiptap/extension-link";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { EditorView } from "@tiptap/pm/view";
+import { useSidebarStore } from "@/store/sidebar-store";
 
 export const CustomLink = Link.extend({
   addProseMirrorPlugins() {
@@ -26,10 +27,21 @@ export const CustomLink = Link.extend({
             // Create and show popover
             const popover = window.document.createElement("div");
             popover.className = "link-popover";
+
+            // Calculate position
+            const viewportHeight = window.innerHeight;
+            const popoverHeight = 200; // Approximate height of popover
+            let topPosition = event.pageY + 20;
+
+            // If popover would overflow bottom of screen, show it above the link instead
+            if (topPosition + popoverHeight > viewportHeight) {
+              topPosition = event.pageY - popoverHeight - 10;
+            }
+
             popover.style.cssText = `
               position: absolute;
               left: ${event.pageX}px;
-              top: ${event.pageY + 20}px;
+              top: ${topPosition}px;
               background: hsl(var(--background)); 
               border: 1px solid hsl(var(--border));
               border-radius: 4px;
@@ -72,6 +84,62 @@ export const CustomLink = Link.extend({
             setTimeout(() => {
               window.document.addEventListener("click", closePopover);
             }, 0);
+
+            const doc = view.state.doc;
+            const linkPos = pos;
+            let sentenceStartPos = linkPos;
+            let sentenceEndPos = linkPos;
+
+            // Find the start of the sentence containing the link
+            while (sentenceStartPos > 0) {
+              const prevChar = doc.textBetween(
+                sentenceStartPos - 1,
+                sentenceStartPos
+              );
+              const prevPrevChar =
+                sentenceStartPos > 1
+                  ? doc.textBetween(sentenceStartPos - 2, sentenceStartPos - 1)
+                  : "";
+              const textBefore = doc.textBetween(
+                Math.max(0, sentenceStartPos - 20),
+                sentenceStartPos
+              );
+
+              // Look for sentence starters like "Additionally, ", "Moreover, ", "Furthermore, " etc.
+              if (
+                (prevChar === "." && /\.\s+[A-Z]/.test(textBefore)) ||
+                (prevChar === " " && /\.\s+$/.test(textBefore)) ||
+                sentenceStartPos === 1
+              ) {
+                break;
+              }
+              sentenceStartPos--;
+            }
+
+            // Find the end of the sentence by looking specifically for the citation's end
+            while (sentenceEndPos < doc.content.size) {
+              const textAhead = doc.textBetween(
+                sentenceEndPos,
+                Math.min(sentenceEndPos + 50, doc.content.size)
+              );
+
+              // Look for citation pattern and stop right after it
+              if (/\([^)]+\)\.\s*/.test(textAhead)) {
+                const match = textAhead.match(/\([^)]+\)\.\s*/);
+                if (match) {
+                  sentenceEndPos += match[0].length;
+                  break;
+                }
+              }
+              sentenceEndPos++;
+            }
+
+            // Get the complete sentence containing the link and clean it up
+            const sentence = doc
+              .textBetween(sentenceStartPos, sentenceEndPos)
+              .trim()
+              .replace(/^\s*[.!?]\s*/, "") // Remove leading punctuation and spaces
+              .replace(/\s+/g, " "); // Normalize whitespace
 
             fetch(`/api/library/${encodeURIComponent(attrs.href)}`, {
               method: "GET",
@@ -142,6 +210,14 @@ export const CustomLink = Link.extend({
                           </svg>
                           View
                         </button>
+                        <button 
+                          class="explain-btn flex text-xs items-center gap-1 hover:underline text-foreground"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 256 256">
+                            <path fill="currentColor" d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Zm0 192a88 88 0 1 1 88-88a88.1 88.1 0 0 1-88 88Zm16-40a8 8 0 0 1-8 8h-8a8 8 0 0 1-8-8v-48a8 8 0 0 1 0-16h8a8 8 0 0 1 8 8v48a8 8 0 0 1 8 8Zm-24-84a12 12 0 1 1 12 12a12 12 0 0 1-12-12Z"/>
+                          </svg>
+                          Explain
+                        </button>
                       </div>
                       <div class="flex items-center gap-2 text-muted-foreground">
                           <span class="text-xs italic">
@@ -210,6 +286,33 @@ export const CustomLink = Link.extend({
                     replaceCitation(newText);
                     currentCitationTypeSpan.textContent =
                       newType === "in-text" ? "In-text" : "After-text";
+                  });
+                }
+
+                // After setting up the popover HTML, add the explain button click handler:
+                const explainButton = popover.querySelector(".explain-btn");
+                if (explainButton) {
+                  explainButton.addEventListener("click", () => {
+                    // Store the selected link data with the complete sentence
+                    const linkData = {
+                      href: attrs.href,
+                      title: document.title,
+                      description: document.description,
+                      authors: document.metadata?.authors,
+                      year: document.metadata?.year,
+                      sentence: sentence, // Use the complete sentence here
+                    };
+
+                    // Update the store
+                    const sidebarStore = useSidebarStore.getState();
+                    sidebarStore.setSelectedLink(linkData);
+                    if (!sidebarStore.isRightSidebarOpen) {
+                      sidebarStore.toggleRightSidebar();
+                    }
+
+                    // Close the popover
+                    popover.remove();
+                    window.document.removeEventListener("click", closePopover);
                   });
                 }
               })

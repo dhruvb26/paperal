@@ -17,21 +17,22 @@ import {
 } from "@phosphor-icons/react";
 import ReactMarkdown from "react-markdown";
 import { useUser } from "@clerk/nextjs";
+import { useParams } from "next/navigation";
 
 export function SidebarRight({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   const { user, isLoaded } = useUser();
-  const { isRightSidebarOpen, edgeData } = useSidebarStore();
+  const { isRightSidebarOpen, selectedLink } = useSidebarStore();
+  const params = useParams();
+  const documentId = params.page;
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       body: {
         userId: user?.id,
-        threadId: "d8b3c1a2-f5e7-4f9d-b6c8-a9e2d4f3b5c8",
-        edgeData: {
-          sourceNode: edgeData?.sourceNode?.data?.label,
-          targetNode: edgeData?.targetNode?.data?.label,
-        },
+        userSentence: selectedLink?.sentence,
+        documentId,
+        title: selectedLink?.title,
       },
       onResponse: (response) => {
         if (!response.ok) {
@@ -39,11 +40,6 @@ export function SidebarRight({
         }
       },
     });
-
-  const edgeDataForAi = {
-    sourceNode: edgeData?.sourceNode?.data?.label,
-    targetNode: edgeData?.targetNode?.data?.label,
-  };
 
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
@@ -57,31 +53,19 @@ export function SidebarRight({
   return (
     <Sidebar
       collapsible="none"
-      className={`sticky hidden text-center lg:flex top-0  ${
-        isRightSidebarOpen ? "border-l transition-all" : ""
-      }`}
-      style={
-        {
-          "--sidebar-width": "28rem",
-        } as React.CSSProperties
-      }
+      className={`h-full text-center sticky top-0 right-0 transition-transform duration-300 w-96 
+        ${isRightSidebarOpen ? "" : "hidden"} border-l`}
       open={isRightSidebarOpen}
       {...props}
     >
-      <SidebarHeader className="p-4">
-        <h2 className="text-sm font-medium text-foreground">ChatGraph</h2>
-      </SidebarHeader>
-      <SidebarContent className="flex flex-col px-6 py-0">
-        {/* <span className="text-xs text-muted-foreground">
-          Chat with your graph coming soon.
-        </span> */}
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+      <SidebarContent className="flex flex-col px-6 ">
+        <div className="flex-1 overflow-y-auto space-y-4 mb-4 p-4">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex text-xs ${
                 message.role === "user"
-                  ? "justify-end text-right"
+                  ? "justify-end text-left"
                   : "justify-start text-left"
               }`}
             >
@@ -122,7 +106,12 @@ export function SidebarRight({
             }}
           />
           {isLoading ? (
-            <Button size="sm" className="h-8" onClick={() => stop()}>
+            <Button
+              size="sm"
+              variant={"ghost"}
+              className="h-8"
+              onClick={() => stop()}
+            >
               <Loader className="w-4 h-4" />
             </Button>
           ) : (

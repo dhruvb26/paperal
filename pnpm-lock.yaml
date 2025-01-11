@@ -128,7 +128,7 @@ importers:
         specifier: ^2.16.3
         version: 2.17.0(@tiptap-pro/extension-drag-handle@2.17.0(@tiptap-pro/extension-node-range@2.17.0(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4))(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/extension-collaboration@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(y-prosemirror@1.2.15(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(yjs@13.6.21))(yjs@13.6.21)))(@tiptap/pm@2.10.4)(y-prosemirror@1.2.15(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.1)(y-protocols@1.0.6(yjs@13.6.21))(yjs@13.6.21)))(@tiptap/pm@2.10.4)(@tiptap/react@2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tiptap/core':
-        specifier: ^2.10.3
+        specifier: ^2.10.4
         version: 2.10.4(@tiptap/pm@2.10.4)
       '@tiptap/extension-code-block-lowlight':
         specifier: ^2.10.3
@@ -154,6 +154,9 @@ importers:
       '@tiptap/extension-underline':
         specifier: ^2.10.3
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
+      '@tiptap/html':
+        specifier: ^2.11.2
+        version: 2.11.2(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/pm':
         specifier: ^2.10.3
         version: 2.10.4
@@ -161,7 +164,7 @@ importers:
         specifier: ^2.10.3
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tiptap/starter-kit':
-        specifier: ^2.10.3
+        specifier: ^2.10.4
         version: 2.10.4
       '@tiptap/suggestion':
         specifier: ^2.10.3
@@ -244,6 +247,9 @@ importers:
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@18.3.1)
+      markdown-it:
+        specifier: ^14.1.0
+        version: 14.1.0
       ml-kmeans:
         specifier: ^6.0.0
         version: 6.0.0
@@ -262,6 +268,12 @@ importers:
       postgres:
         specifier: ^3.4.5
         version: 3.4.5
+      prosemirror-markdown:
+        specifier: ^1.13.1
+        version: 1.13.1
+      prosemirror-model:
+        specifier: ^1.24.1
+        version: 1.24.1
       react:
         specifier: ^18
         version: 18.3.1
@@ -3957,6 +3969,12 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
+  '@tiptap/html@2.11.2':
+    resolution: {integrity: sha512-yheiEw8Sk9PiRN6tcwY1mahru354NHylwzZIXlCgSrOeyKIIJYv/41Z/gMil1cBBisdWUQFy7mLlsZ9o64hOPg==}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+      '@tiptap/pm': ^2.7.0
+
   '@tiptap/pm@2.10.4':
     resolution: {integrity: sha512-pZ4NEkRtYoDLe0spARvXZ1N3hNv/5u6vfPdPtEbmNpoOSjSNqDC1kVM+qJY0iaCYpxbxcv7cxn3kBumcFLQpJQ==}
 
@@ -5381,6 +5399,10 @@ packages:
 
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
+    engines: {node: '>=0.12'}
+
+  entities@5.0.0:
+    resolution: {integrity: sha512-BeJFvFRJddxobhvEdm5GqHzRV/X+ACeuw0/BuuxsCh1EUZcAIz8+kYmBp/LrQuloy6K1f3a0M7+IhmZ7QnkISA==}
     engines: {node: '>=0.12'}
 
   env-paths@2.2.1:
@@ -9383,6 +9405,10 @@ packages:
   youch@3.3.4:
     resolution: {integrity: sha512-UeVBXie8cA35DS6+nBkls68xaBBXCye0CNznrhszZjTbRVnJKQuNsyLKBTTL4ln1o1rh2PKtv35twV7irj5SEg==}
 
+  zeed-dom@0.15.1:
+    resolution: {integrity: sha512-dtZ0aQSFyZmoJS0m06/xBN1SazUBPL5HpzlAcs/KcRW0rzadYw12deQBjeMhGKMMeGEp7bA9vmikMLaO4exBcg==}
+    engines: {node: '>=14.13.1'}
+
   zeromq@6.2.0:
     resolution: {integrity: sha512-vJndlRoHZ6ix7meuIXZRIQqHlCINRTfxsoVTfYNX8B7nzT9IVRLrKBKOVeFwl3Oxuut0fGUBcCUtFza1qrw6kw==}
     engines: {node: '>= 10', pnpm: '>= 9'}
@@ -13052,6 +13078,12 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
 
+  '@tiptap/html@2.11.2(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)':
+    dependencies:
+      '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
+      '@tiptap/pm': 2.10.4
+      zeed-dom: 0.15.1
+
   '@tiptap/pm@2.10.4':
     dependencies:
       prosemirror-changeset: 2.2.1
@@ -14634,6 +14666,8 @@ snapshots:
   entities@2.2.0: {}
 
   entities@4.5.0: {}
+
+  entities@5.0.0: {}
 
   env-paths@2.2.1: {}
 
@@ -19566,6 +19600,11 @@ snapshots:
       cookie: 0.7.2
       mustache: 4.2.0
       stacktracey: 2.1.8
+
+  zeed-dom@0.15.1:
+    dependencies:
+      css-what: 6.1.0
+      entities: 5.0.0
 
   zeromq@6.2.0:
     dependencies:
