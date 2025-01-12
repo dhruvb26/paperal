@@ -36,7 +36,8 @@ async def generate_sentence(request: SentenceRequest):
     heading = heading.data[0]["prompt"]
 
     # Early return for empty previous_text
-    if request.previous_text == heading.strip():
+
+    if request.previous_text.strip() == heading.strip():
         ai_generated_opening = suggest_opening_statement(heading)
         return {
             "ai_sentence": ai_generated_opening,
@@ -56,6 +57,7 @@ async def generate_sentence(request: SentenceRequest):
     #     json_text = request.previous_text
 
     similar_docs = await find_similar_documents(request.previous_text, heading)
+    ai_generated = await generate_ai_sentence(request.previous_text, heading)
     # Only process similar documents if they exist and have valid scores
     if len(similar_docs) > 0:
         sentence = generate_referenced_sentence(
@@ -65,12 +67,14 @@ async def generate_sentence(request: SentenceRequest):
         if (
             sentence
             and select_most_relevant_sentence(
-                similar_docs[0]["content"],
+                # similar_docs[0]["content"],
+                ai_generated.get("sentence"),
                 sentence.get("sentence"),
                 request.previous_text[:500],
             )
             == True
         ):
+            print(similar_docs[0]["score"])
             # query library table for citation
             citation = (
                 database.supabase_client.table("library")
@@ -92,9 +96,9 @@ async def generate_sentence(request: SentenceRequest):
                 "context": similar_docs[0]["content"],
             }
     # Generate non-referenced sentence
-    ai_generated = await generate_ai_sentence(
-        request.previous_text, heading, request.user_id
-    )
+    # ai_generated = await generate_ai_sentence(
+    #     request.previous_text, heading, request.user_id
+    # )
 
     # Return non-referenced sentence if no suitable reference found
     return {"text": ai_generated.get("sentence"), "is_referenced": False, "href": None}

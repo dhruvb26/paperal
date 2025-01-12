@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Tuple
+from typing import Optional
 from openai import OpenAI
 from database import query_vector_store
 import baml_connect.baml_main as baml_main
@@ -117,7 +117,6 @@ async def generate_question_for_RAG(text: str, heading: str):
 async def generate_ai_sentence(
     previous_text: str,
     heading: str,
-    user_id: Optional[str] = None,
 ) -> dict:
     """
     Generates a sentence using AI without referencing external materials.

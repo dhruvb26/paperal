@@ -92,7 +92,7 @@ def StoreResearchPaperAgent(
                 pdf_document = fitz.open(stream=pdf_data, filetype="pdf")
                 text = "".join(page.get_text() for page in pdf_document)
                 # Extract and store document
-                extracted_info = ExtractPaperAgent(text[:800])
+                extracted_info = ExtractPaperAgent(text[:1000])
                 docum = Document(page_content=text)
                 logging.info("Created document")
                 docs = database.split_documents([docum])
