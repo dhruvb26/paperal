@@ -406,6 +406,6 @@ export async function POST(req: Request) {
       }
     },
   });
-
+  console.log("---TRANSFORM STREAM---", transformStream);
   return LangChainAdapter.toDataStreamResponse(transformStream);
 }
