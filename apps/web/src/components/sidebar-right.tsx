@@ -11,6 +11,8 @@ import { useChat } from "ai/react";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/ui/loader";
 import {
+  ArrowBendRightUp,
+  ArrowRight,
   PaperPlaneRight,
   PaperPlaneTilt,
   StopCircle,
@@ -18,6 +20,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export function SidebarRight({
   ...props
@@ -53,13 +56,16 @@ export function SidebarRight({
   return (
     <Sidebar
       collapsible="none"
-      className={`h-full text-center sticky top-0 right-0 transition-transform duration-300 w-96 
-        ${isRightSidebarOpen ? "" : "hidden"} border-l`}
+      variant="floating"
+      className={cn(
+        "max-h-full text-center relative transition-[width] duration-300 ease-in-out w-96 bg-background p-2",
+        isRightSidebarOpen ? "w-96" : "w-0 overflow-hidden"
+      )}
       open={isRightSidebarOpen}
       {...props}
     >
-      <SidebarContent className="flex flex-col px-6 ">
-        <div className="flex-1 overflow-y-auto space-y-4 mb-4 p-4">
+      <SidebarContent className="flex flex-col rounded-lg border">
+        <div className="flex-1 overflow-y-auto space-y-2 mb-4 p-4 m-4">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -72,8 +78,8 @@ export function SidebarRight({
               <div
                 className={`max-w-[80%] break-words overflow-wrap-anywhere px-4 py-2 ${
                   message.role === "user"
-                    ? "bg-primary text-primary-foreground rounded-t-2xl rounded-l-2xl rounded-br"
-                    : "bg-muted text-foreground rounded-t-2xl rounded-r-2xl rounded-bl"
+                    ? "bg-primary text-primary-foreground rounded-md"
+                    : "bg-accent text-accent-foreground rounded-md"
                 }`}
               >
                 <ReactMarkdown className="overflow-hidden [&_p]:mb-4 last:[&_p]:mb-0">
@@ -87,43 +93,44 @@ export function SidebarRight({
 
         <form
           onSubmit={handleSubmit}
-          className="flex w-full items-end justify-center flex-row gap-2 py-4"
+          className="flex w-full items-end justify-center flex-row p-4 relative"
         >
-          <Textarea
-            value={input}
-            onChange={handleInputChange}
-            placeholder=""
-            style={{
-              fontSize: "12px",
-            }}
-            disabled={isLoading}
-            className="text-xs placeholder:text-xs min-h-8 py-1 px-3"
-            rows={1}
-            onInput={(e) => {
-              const target = e.target as HTMLTextAreaElement;
-              target.style.height = "auto";
-              target.style.height = `${Math.min(target.scrollHeight, 128)}px`;
-            }}
-          />
-          {isLoading ? (
+          <div className="relative w-full">
+            <Textarea
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Ask a question..."
+              style={{
+                fontSize: "12px",
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                backdropFilter: "blur(10px)",
+              }}
+              disabled={isLoading}
+              rows={1}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(e as any);
+                }
+              }}
+              onInput={(e) => {
+                const target = e.target as HTMLTextAreaElement;
+                target.style.height = "auto";
+                target.style.height = `${Math.min(target.scrollHeight, 128)}px`;
+              }}
+            />
+
             <Button
-              size="sm"
-              variant={"ghost"}
-              className="h-8"
-              onClick={() => stop()}
-            >
-              <Loader className="w-4 h-4" />
-            </Button>
-          ) : (
-            <Button
+              isLoading={isLoading}
               type="submit"
+              className="absolute bottom-2 right-2 h-6 w-6 text-muted-foreground"
               size={"icon"}
-              className="h-8"
               variant={"ghost"}
+              onClick={isLoading ? () => stop() : () => {}}
             >
-              <PaperPlaneRight size={16} />
+              {isLoading ? null : <PaperPlaneTilt size={8} />}
             </Button>
-          )}
+          </div>
         </form>
       </SidebarContent>
     </Sidebar>

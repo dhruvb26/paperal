@@ -151,42 +151,49 @@
 
 .autocomplete-shortcuts {
   position: absolute;
-  bottom: -58px;
+  bottom: -32px;
   left: 0;
-  background-color: hsl(var(--popover));
-  border: 1px solid hsl(var(--border));
   border-radius: 8px;
-  padding: 0.5rem;
+  background-color: #ffffff;
+  border: 1px solid hsl(var(--accent));
+  border-bottom-width: 4px;
+  transform: translateY(0);
+  transition: transform 200ms ease;
+  padding: 0.25rem;
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: white;
   white-space: nowrap;
   z-index: 20;
   display: flex;
   gap: 0.5rem;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .shortcut-button {
   all: unset;
   cursor: pointer;
-  padding: 0.35rem 1rem;
+  padding: 0.4rem 1rem;
   border-radius: 6px;
   font-weight: 400;
   transition: all 0.2s ease;
+  color: white;
 
   &:first-child {
-    background-color: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    background-color: #1d4ed8;
 
     &:hover {
-      background-color: hsl(var(--primary) / 0.9);
+      background-color: #2563eb;
     }
   }
 
   &:last-child {
-    color: hsl(var(--foreground));
+    color: hsl(var(--accent-foreground));
 
     &:hover {
-      background-color: hsl(var(--accent));
+      background-color: hsl(var(--muted));
       color: hsl(var(--accent-foreground));
     }
   }

@@ -6,5 +6,5 @@ export interface LibraryDocument {
   isPublic: boolean;
   createdAt: Date;
   updatedAt: Date | null;
-  metadata?: Record<string, any>;
+  metadata?: any;
 }

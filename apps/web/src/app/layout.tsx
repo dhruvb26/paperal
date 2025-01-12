@@ -9,7 +9,9 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { getDocuments } from "@/app/actions/documents";
 import { getLibraries } from "./actions/library";
+import { ThemeProvider } from "@/components/theme-provider";
 import { SWRConfig } from "swr";
+import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,26 +24,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const documents = await getDocuments();
-  const libraries = await getLibraries();
-
   return (
     <SWRConfig value={{ revalidateOnFocus: false }}>
       <ClerkProvider>
         <html lang="en" suppressHydrationWarning>
           <body className={inter.className} suppressHydrationWarning>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-            <SidebarProvider
-              defaultOpen={false}
-              style={
-                {
-                  "--sidebar-width": "350px",
-                } as React.CSSProperties
-              }
-            >
-              <AppSidebar documents={documents} libraries={libraries} />
-              {children}
-            </SidebarProvider>
+
+            {children}
+
+            <Toaster />
           </body>
         </html>
       </ClerkProvider>

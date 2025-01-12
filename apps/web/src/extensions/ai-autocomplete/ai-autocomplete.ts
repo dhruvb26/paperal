@@ -107,24 +107,49 @@ export const AiAutocompleteExtension = Node.create<
             return tr.docChanged ? oldValue.map(tr.mapping, tr.doc) : oldValue;
           },
         },
-        view() {
+        view(editorView) {
+          setTimeout(() => {
+            const previousText = editorView.state.doc
+              .textBetween(0, editorView.state.doc.content.size, " ")
+              .slice(-4000);
+
+            getSuggestion(previousText, (suggestion, data) => {
+              if (!suggestion || !data) return;
+              createAndDispatchSuggestion(
+                editorView,
+                suggestion,
+                data,
+                pluginKey,
+                getSuggestion
+              );
+            });
+          }, 1000);
+
           return {
             update(view, prevState) {
-              if (view.state.doc.textContent.trim().length === 0) {
-                console.log("Empty document, returning");
-                return;
-              }
-
               // Add check for @ and / triggers
               const lastChar = view.state.doc.textContent.slice(-1);
               if (lastChar === "@" || lastChar === "/") {
-                console.log("Trigger character detected, returning");
                 return;
               }
 
               const selection = view.state.selection;
               const cursorPos = selection.$head.pos;
               const nextNode = view.state.doc.nodeAt(cursorPos);
+
+              if (
+                nextNode &&
+                !nextNode.isBlock &&
+                pluginKey.getState(view.state)?.find().length &&
+                prevState &&
+                !prevState.selection.eq(view.state.selection) // Only clear if selection changed
+              ) {
+                const tr = view.state.tr;
+                tr.setMeta("addToHistory", false);
+                tr.setMeta(pluginKey, { decorations: DecorationSet.empty });
+                view.dispatch(tr);
+                return;
+              }
 
               // If the document didn't change, do nothing
               if (prevState && prevState.doc.eq(view.state.doc)) {
@@ -134,7 +159,7 @@ export const AiAutocompleteExtension = Node.create<
               // reset the suggestion before fetching a new one
               setTimeout(() => {
                 const tr = view.state.tr;
-                tr.setMeta("addToHistory", false);
+                tr.setMeta("addToHistory", true);
                 tr.setMeta(pluginKey, { decorations: DecorationSet.empty });
                 view.dispatch(tr);
               }, 0);
@@ -310,7 +335,7 @@ function createAndDispatchSuggestion(
       container.classList.add("autocomplete-suggestion-container");
 
       const suggestionSpan = document.createElement("span");
-      const addSpace = nextNode && nextNode.isText ? " " : "";
+      const addSpace = nextNode && nextNode.isText ? "" : "";
       if (data.citations?.["in-text"]) {
         const text = suggestion.replace(/\.$/, "");
         suggestionSpan.innerHTML = `${addSpace}${text} ${data.citations["in-text"]}.`;

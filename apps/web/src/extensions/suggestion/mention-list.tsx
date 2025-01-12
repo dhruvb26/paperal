@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Loader } from "@/components/ui/loader";
 import axios from "axios";
 import { LibraryDocument } from "@/types/models/library";
+import { Button } from "@/components/ui/button";
 
 interface MentionListProps {
   items: Array<LibraryDocument>;
@@ -132,9 +133,9 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
     return (
       <Tabs
         defaultValue="library"
-        className="border border-muted rounded-md p-1 bg-background"
+        className="border border-b-4 border-accent rounded-lg p-1 bg-background"
       >
-        <TabsList>
+        <TabsList className="w-full flex justify-start">
           <TabsTrigger value="library">Library</TabsTrigger>
           <TabsTrigger value="discover">Discover</TabsTrigger>
         </TabsList>
@@ -178,24 +179,28 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                       </div>
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-2">
-                          <button
-                            className="flex text-xs items-center gap-1 hover:underline text-foreground"
+                          <Button
+                            variant="link"
+                            size="sm"
+                            className="p-0 text-accent-foreground"
                             onClick={() => handleCite(item)}
                           >
-                            <Plus size={12} weight="bold" />
+                            <Plus size={16} weight="thin" />
                             Cite
-                          </button>
-                          <button
-                            className="flex text-xs items-center gap-1 hover:underline text-foreground"
+                          </Button>
+                          <Button
+                            variant="link"
+                            size="sm"
+                            className="p-0 text-accent-foreground"
                             onClick={() => handleView(item)}
                           >
-                            <ArrowUpRight size={12} weight="bold" />
+                            <ArrowUpRight size={16} weight="thin" />
                             View
-                          </button>
+                          </Button>
                         </div>
-                        <div className="flex items-center gap-2 text-muted-foreground">
+                        {/* <div className="flex items-center gap-2 text-muted-foreground">
                           <span className="text-xs italic">Library</span>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <Separator
@@ -261,23 +266,28 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-2">
                           <button
-                            className="flex text-xs items-center gap-1 hover:underline text-foreground"
+                            className="flex text-xs items-center gap-1 hover:underline text-blue-700"
                             onClick={() => handleCite(item)}
                           >
                             <Plus size={12} weight="bold" />
                             Cite
                           </button>
                           <button
-                            className="flex text-xs items-center gap-1 hover:underline text-foreground"
+                            className="flex text-xs items-center gap-1 hover:underline text-muted-foreground"
                             onClick={() => handleView(item)}
                           >
-                            <ArrowUpRight size={12} weight="bold" />
+                            <svg width="12" height="12" viewBox="0 0 256 256">
+                              <path
+                                fill="currentColor"
+                                d="M200 64v104a8 8 0 0 1-16 0V83.31L69.66 197.66a8 8 0 0 1-11.32-11.32L172.69 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8Z"
+                              />
+                            </svg>
                             View
                           </button>
                         </div>
-                        <div className="flex items-center gap-2 text-muted-foreground">
+                        {/* <div className="flex items-center gap-2 text-muted-foreground">
                           <span className="text-xs italic">Discover</span>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <Separator

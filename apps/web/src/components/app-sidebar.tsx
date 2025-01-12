@@ -10,15 +10,23 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarInput,
+  SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
   GearSix,
   TerminalWindow,
   Archive,
-  HouseSimple,
+  File,
+  BookOpen,
+  Plus,
+  ArrowsLeftRight,
+  ArrowDown,
+  ArrowUp,
+  CaretRight,
+  Pencil,
 } from "@phosphor-icons/react";
-import File from "@/components/icons/file";
+
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
@@ -33,31 +41,20 @@ import { CustomUploadButton } from "./uploadthing/custom-upload-button";
 import { SidebarSkeleton } from "@/components/sidebar-skeleton";
 import { LibraryDocument } from "@/types/models/library";
 import { Document } from "@/types/models/document";
-import House2 from "@/components/icons/house-2";
-import BookOpen from "@/components/icons/book";
-import Gear2 from "@/components/icons/gear-2";
+import { ArrowRightLeft } from "lucide-react";
+
 const data = {
   navMain: [
     {
-      title: "Home",
-      url: "/",
-      icon: <House2 />,
-    },
-    {
       title: "Documents",
       url: "/editor",
-      icon: <File />,
+      icon: <File weight="duotone" />,
     },
 
     {
       title: "Library",
       url: "/library",
-      icon: <BookOpen />,
-    },
-    {
-      title: "Settings",
-      url: "/settings",
-      icon: <Gear2 />,
+      icon: <BookOpen weight="duotone" />,
     },
   ],
 };
@@ -147,13 +144,14 @@ export function AppSidebar({
   return (
     <>
       <Sidebar
-        collapsible="icon"
-        className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row"
+        variant="floating"
+        collapsible="offcanvas"
+        className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row " // Add border-0 class
         {...props}
       >
-        <Sidebar
+        {/* <Sidebar
           collapsible="none"
-          className="!w-[calc(var(--sidebar-width-icon)_+_1px)] border-r group-data-[collapsible=icon]:border-r-0 transition-all duration-300"
+          className="!w-[calc(var(--sidebar-width-icon)_+_1px)] text-white bg-blue-700 border-l-0 border-blue-900 rounded-tl-lg rounded-bl-lg group-data-[state=collapsed]:rounded-tr-lg group-data-[state=collapsed]:rounded-br-lg  group-data-[collapsible=icon]:border-l-0 transition-all duration-300"
         >
           <SidebarContent>
             <NavMain
@@ -165,48 +163,56 @@ export function AppSidebar({
           <SidebarFooter>
             <NavUser user={userData} />
           </SidebarFooter>
-        </Sidebar>
+        </Sidebar> */}
 
-        <Sidebar collapsible="none" className="hidden flex-1 md:flex">
-          <SidebarHeader className="border-b flex justify-between flex-row">
+        <Sidebar
+          collapsible="offcanvas"
+          variant="floating"
+          className="hidden flex-1 md:flex rounded-lg "
+        >
+          <SidebarHeader className=" flex justify-between flex-row">
             <SidebarInput
-              className="rounded-sm"
+              className="rounded-md"
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </SidebarHeader>
 
-          <SidebarHeader className="border-b flex justify-between flex-row w-full">
+          <SidebarHeader className="flex justify-between flex-row w-full">
             {showLibraryList ? (
               <>
                 <Button
                   size="sm"
-                  variant="ghost"
+                  variant="outline"
                   className="h-8"
                   onClick={() => setSortDesc(!sortDesc)}
                 >
-                  Sort {sortDesc ? "↓" : "↑"}
+                  Sort{" "}
+                  {sortDesc ? <ArrowDown size={12} /> : <ArrowUp size={12} />}
                 </Button>
+
                 <CustomUploadButton />
               </>
             ) : (
               <>
                 <Button
                   size="sm"
-                  variant="ghost"
+                  variant="outline"
                   className="h-8"
                   onClick={() => setSortDesc(!sortDesc)}
                 >
-                  Sort {sortDesc ? "↓" : "↑"}
+                  Sort{" "}
+                  {sortDesc ? <ArrowDown size={12} /> : <ArrowUp size={12} />}
                 </Button>
+
                 <Button
-                  size="sm"
+                  size="icon"
                   variant="outline"
-                  className="h-8 shadow-none"
+                  className="h-8 w-8"
                   onClick={() => setIsNewDocOpen(true)}
                 >
-                  New
+                  <Pencil size={16} weight="regular" />
                 </Button>
               </>
             )}
@@ -216,7 +222,7 @@ export function AppSidebar({
               onOpenChange={setIsNewDocOpen}
             />
           </SidebarHeader>
-          <SidebarContent>
+          <SidebarContent className=" rounded-lg">
             {showLibraryList ? (
               <LibraryList
                 libraries={libraries}
@@ -237,7 +243,26 @@ export function AppSidebar({
           </SidebarContent>
         </Sidebar>
       </Sidebar>
+      <div className="flex flex-col items-center max-h-fit justify-start gap-2 p-2 rounded-lg  relative left-8 top-8">
+        <SidebarTrigger className=" z-10 bg-blue-600 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300" />
 
+        <Button
+          className="bg-blue-600  z-10 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300"
+          size="icon"
+          variant="outline"
+          onClick={() => handleEditorClick()}
+        >
+          <File size={16} />
+        </Button>
+        <Button
+          className="bg-blue-600  z-10 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300"
+          size="icon"
+          variant="outline"
+          onClick={() => handleLibraryClick()}
+        >
+          <BookOpen size={16} />
+        </Button>
+      </div>
       <DeleteDocumentDialog
         documentToDelete={documentToDelete}
         onDelete={handleDeleteDocument}

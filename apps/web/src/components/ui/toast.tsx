@@ -12,6 +12,7 @@ import {
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import { Loader } from "@/components/ui/loader";
+import { Spinner } from "@phosphor-icons/react";
 
 const ToastProvider = ToastPrimitives.Provider;
 
@@ -142,7 +143,11 @@ const ToastIcon = React.forwardRef<
 
   return (
     <div ref={ref} className="flex-shrink-0">
-      {loading ? <Loader className="h-5 w-5" /> : icon}
+      {loading ? (
+        <Spinner weight="light" className="h-5 w-5 animate-spin" />
+      ) : (
+        icon
+      )}
     </div>
   );
 });

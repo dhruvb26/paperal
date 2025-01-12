@@ -1,30 +1,29 @@
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { ThemeProvider } from "@/components/theme-provider";
-import { SidebarInset } from "@/components/ui/sidebar";
-import { Toaster } from "@/components/ui/toaster";
-import { ModeToggle } from "@/components/mode-toggle";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { getDocuments } from "@/app/actions/documents";
+import { getLibraries } from "@/app/actions/library";
 
-export default function ProtectedLayout({
+export default async function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-    >
-      <SidebarInset className="flex flex-col h-screen">
-        <header className="sticky top-0 flex justify-between shrink-0 items-center border-b bg-background gap-2 px-4 py-2 z-[50]">
-          <SidebarTrigger />
-          <ModeToggle />
-        </header>
+  const documents = await getDocuments();
+  const libraries = await getLibraries();
 
-        <main className="flex flex-col flex-1 overflow-auto">{children}</main>
-      </SidebarInset>
-      <Toaster />
-    </ThemeProvider>
+  return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "350px",
+        } as React.CSSProperties
+      }
+      defaultOpen={false}
+    >
+      <div className="flex h-screen w-full">
+        <AppSidebar documents={documents} libraries={libraries} />
+        <main className="flex-1 overflow-auto">{children}</main>
+      </div>
+    </SidebarProvider>
   );
 }

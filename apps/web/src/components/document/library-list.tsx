@@ -100,7 +100,7 @@ export const LibraryList: React.FC<LibraryListProps> = ({
           </span>
           <div className="flex w-full justify-between text-xs text-muted-foreground italic">
             <span>{formatDate(library.createdAt)}</span>
-            <span>{library.isPublic ? "Discover" : "Library"}</span>
+            <span>Library</span>
           </div>
         </div>
       ))}

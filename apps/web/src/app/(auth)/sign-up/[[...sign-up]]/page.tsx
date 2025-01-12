@@ -10,15 +10,9 @@ export default function SignUpPage() {
       <SignUp.Root>
         <SignUp.Step
           name="start"
-          className="w-full space-y-6 rounded-md border border-input px-4 py-10 sm:w-96 sm:px-8"
+          className="w-full space-y-6 rounded-md  px-4 py-10 sm:w-96 sm:px-8"
         >
           <header className="text-center flex flex-col items-center">
-            <Image
-              src="/icons/feather.svg"
-              alt="Feather Logo"
-              width={50}
-              height={50}
-            />
             <h1 className="mt-4 text-lg font-medium text-foreground">
               Create your account
             </h1>

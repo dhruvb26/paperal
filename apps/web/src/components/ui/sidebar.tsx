@@ -7,6 +7,7 @@ import { PanelLeft } from "lucide-react";
 import {
   CaretDoubleLeft,
   CaretDoubleRight,
+  CaretRight,
   List,
   SidebarSimple,
 } from "@phosphor-icons/react";
@@ -299,9 +300,9 @@ const SidebarTrigger = React.forwardRef<
       {...props}
     >
       {state === "collapsed" ? (
-        <SidebarSimple className="text-sidebar-foreground" size={20} />
+        <CaretRight size={20} />
       ) : (
-        <CaretLeft className="text-sidebar-foreground" size={20} />
+        <CaretLeft size={20} />
       )}
       <span className="sr-only">Toggle Sidebar</span>
       {children}

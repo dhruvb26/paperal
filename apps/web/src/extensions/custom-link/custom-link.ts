@@ -30,21 +30,31 @@ export const CustomLink = Link.extend({
 
             // Calculate position
             const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
             const popoverHeight = 200; // Approximate height of popover
+            const popoverWidth = 450; // Width of popover
+
             let topPosition = event.pageY + 20;
+            let leftPosition = event.pageX;
 
             // If popover would overflow bottom of screen, show it above the link instead
             if (topPosition + popoverHeight > viewportHeight) {
               topPosition = event.pageY - popoverHeight - 10;
             }
 
+            // If popover would overflow right side of screen, align it to the right
+            if (leftPosition + popoverWidth > viewportWidth) {
+              leftPosition = viewportWidth - popoverWidth - 20;
+            }
+
             popover.style.cssText = `
               position: absolute;
-              left: ${event.pageX}px;
+              left: ${leftPosition}px;
               top: ${topPosition}px;
               background: hsl(var(--background)); 
-              border: 1px solid hsl(var(--border));
-              border-radius: 4px;
+              border: 1px solid hsl(var(--accent));
+              border-bottom-width: 4px;
+              border-radius: 0.5rem;
               padding: 8px;
               z-index: 1000;
               width: 450px;
@@ -60,16 +70,12 @@ export const CustomLink = Link.extend({
 
             // Show skeleton loading state
             popover.innerHTML = `
-              <div class="flex flex-col items-start gap-2 p-2">
-                <div class="flex flex-col space-y-1 items-start w-full">
-                  <div class="animate-pulse rounded-md bg-primary/10 h-4 w-3/4"></div>
-                  <div class="animate-pulse rounded-md bg-primary/10 h-4 w-1/2"></div>
-                  <div class="animate-pulse rounded-md bg-primary/10 h-4 w-1/4"></div>
-                </div>
-                <div class="flex items-center justify-between w-full mt-2">
-                  <div class="animate-pulse rounded-md bg-primary/10 h-4 w-16"></div>
-                  <div class="animate-pulse rounded-md bg-primary/10 h-4 w-16"></div>
-                </div>
+             <div class="flex flex-col items-start gap-2 p-2">
+                  <div class="animate-pulse rounded-md bg-accent h-8 w-full"></div>
+                  <div class="animate-pulse rounded-md bg-accent h-4 w-full"></div>
+                  <div class="animate-pulse rounded-md bg-accent h-4 w-3/4"></div>
+                  <div class="animate-pulse rounded-md bg-accent h-8 mt-1 w-full"></div>
+                  <div class="animate-pulse rounded-md bg-accent h-9 w-full"></div>
               </div>
             `;
 
@@ -167,7 +173,7 @@ export const CustomLink = Link.extend({
                 // Add both citation formats to the popover with a toggle switch
                 popover.innerHTML = `
                   <div class="flex flex-col items-start gap-2 p-2 citation-div">
-                    <div class="flex flex-col space-y-1 items-start text-xs w-full">
+                    <div class="flex flex-col space-y-1 items-start text-xs w-full h-fit">
                       <span class="text-xs whitespace-break-spaces w-full truncate text-ellipsis line-clamp-2">${
                         document.title
                       }</span>
@@ -177,47 +183,32 @@ export const CustomLink = Link.extend({
                       <span class="text-xs text-muted-foreground italic">
                         ${document.metadata?.year || ""}
                       </span>
-                      <span class="text-xs line-clamp-2 text-muted-foreground mt-2">
-                        ${document.description || ""}
-                         <span className="text-xs text-muted-foreground font-medium">
-                            see more
-                          </span>
-                      </span>
+                      <div class="text-xs text-muted-foreground p-2 px-4 relative">
+                      
+                        <div class="line-clamp-2">
+                          ${document.description || ""}
+                        </div>
+                        ${document.description?.length > 100 ? "" : ""}
+                      </div>
                     </div>
                     <div class="flex items-center justify-between w-full">
                       <div class="flex items-center gap-2">
                         <button 
-                          disabled={true}
-                          class="citation-toggle flex items-center gap-2 px-2 py-1 rounded-md bg-muted hover:bg-muted/80"
+                          class="explain-btn h-8 rounded-md px-3 text-xs inline-flex items-center justify-center gap-1 bg-primary text-primary-foreground hover:bg-primary/90"
                         >
-                          <span class="text-xs current-citation-type">
-                            ${
-                              initialCitationType === "in-text"
-                                ? "After-text"
-                                : "In-text"
-                            }
-                          </span>
-                          
+                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#FFFFFF" viewBox="0 0 256 256"><path d="M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z"></path></svg>
+                          Explain
                         </button>
                         <button 
-                          class="flex text-xs items-center gap-1 hover:underline text-foreground"
+                          class="inline-flex items-center justify-center gap-1 whitespace-nowrap transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 underline-offset-4 hover:underline h-8 rounded-md text-xs p-0 text-accent-foreground"
                           onclick="window.open('${attrs.href}', '${
                   attrs.target || "_blank"
                 }')"
                         >
-                          <svg width="12" height="12" viewBox="0 0 256 256">
-                            <path fill="currentColor" d="M200 64v104a8 8 0 0 1-16 0V83.31L69.66 197.66a8 8 0 0 1-11.32-11.32L172.69 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8Z"/>
-                          </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 256 256"><path d="M196,64V168a4,4,0,0,1-8,0V73.66L66.83,194.83a4,4,0,0,1-5.66-5.66L182.34,68H88a4,4,0,0,1,0-8H192A4,4,0,0,1,196,64Z"/></svg>
                           View
                         </button>
-                        <button 
-                          class="explain-btn flex text-xs items-center gap-1 hover:underline text-foreground"
-                        >
-                          <svg width="12" height="12" viewBox="0 0 256 256">
-                            <path fill="currentColor" d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24Zm0 192a88 88 0 1 1 88-88a88.1 88.1 0 0 1-88 88Zm16-40a8 8 0 0 1-8 8h-8a8 8 0 0 1-8-8v-48a8 8 0 0 1 0-16h8a8 8 0 0 1 8 8v48a8 8 0 0 1 8 8Zm-24-84a12 12 0 1 1 12 12a12 12 0 0 1-12-12Z"/>
-                          </svg>
-                          Explain
-                        </button>
+                       
                       </div>
                       <div class="flex items-center gap-2 text-muted-foreground">
                           <span class="text-xs italic">

@@ -34,30 +34,28 @@ export default function EditorPage() {
     <>
       {!document ? (
         <div className="w-full flex h-screen items-center justify-center">
-          <Loader />
+          <Loader className="text-muted-foreground" />
         </div>
       ) : (
-        <div className="flex h-full relative overflow-x-hidden">
-          <div className="flex-1 overflow-auto p-20">
+        <div className="flex h-screen relative overflow-x-hidden">
+          <div className="flex-1 overflow-y-scroll p-20">
             <Tiptap
               documentId={documentId as string}
               initialContent={document[0].content}
             />
           </div>
-
           <SidebarRight />
-          {/* <Button
-            variant="outline"
+          <Button
             onClick={toggleRightSidebar}
-            className={`fixed bottom-3 font-normal transition-all duration-300 ${
+            className={`fixed bottom-3 border bg-blue-700 hover:bg-blue-600 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white  transition-all duration-300 ${
               isRightSidebarOpen
-                ? "right-[calc(384px+1rem)]"
+                ? "right-[calc(384px+2rem)]"
                 : "right-4 sm:right-8"
             }`}
+            size="icon"
           >
             <Chats size={16} />
-            <span className="hidden sm:inline">Chat</span>
-          </Button> */}
+          </Button>
         </div>
       )}
     </>

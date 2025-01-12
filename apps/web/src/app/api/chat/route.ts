@@ -89,10 +89,6 @@ const convertLangChainMessageToVercelMessage = (message: BaseMessage) => {
 
 const GraphAnnotation = Annotation.Root({
   ...MessagesAnnotation.spec,
-  summary: Annotation<string>({
-    reducer: (_, action) => action,
-    default: () => "",
-  }),
 });
 // const retrieveSchema = z.object({ query: z.string() });
 
@@ -101,7 +97,7 @@ export async function POST(req: Request) {
     (await req.json()) as any;
 
   console.log("---MESSAGES---", messages);
-  console.log("---USER SENTENCE---", userSentence.split("(")[0]);
+  // console.log("---USER SENTENCE---", userSentence.split("(")[0]);
 
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 });
@@ -144,26 +140,26 @@ export async function POST(req: Request) {
 
   console.log("---USER SENTENCE---", userSentence);
 
-  console.log("---USER SENTENCE SPLIT---", userSentence.split("(")[0]);
+  // console.log("---USER SENTENCE SPLIT---", userSentence.split("(")[0]);
 
-  const citedEmbedding = await db.query.citationsTable.findFirst({
-    where: eq(citationsTable.sentence, userSentence.split("(")[0].trim()),
-  });
+  // const citedEmbedding = await db.query.citationsTable.findFirst({
+  //   where: eq(citationsTable.sentence, userSentence.split("(")[0].trim()),
+  // });
 
-  console.log("---CITED EMBEDDING---", citedEmbedding);
+  // console.log("---CITED EMBEDDING---", citedEmbedding);
 
-  const sentence_embedding = await db
-    .select({
-      id: embeddingsTable.id,
-      embedding: embeddingsTable.embedding,
-      content: embeddingsTable.content,
-    })
-    .from(embeddingsTable)
-    .where(eq(embeddingsTable.content, citedEmbedding?.context as string));
+  // const sentence_embedding = await db
+  //   .select({
+  //     id: embeddingsTable.id,
+  //     embedding: embeddingsTable.embedding,
+  //     content: embeddingsTable.content,
+  //   })
+  //   .from(embeddingsTable)
+  //   .where(eq(embeddingsTable.content, citedEmbedding?.context as string));
 
-  if (!sentence_embedding) {
-    return new NextResponse("Sentence embedding is required", { status: 400 });
-  }
+  // if (!sentence_embedding) {
+  //   return new NextResponse("Sentence embedding is required", { status: 400 });
+  // }
 
   console.log("---RESULT---", result);
 
@@ -179,152 +175,40 @@ export async function POST(req: Request) {
 
   // ** Define nodes for the graph
 
-  console.log("---SENTENCE EMBEDDING---", sentence_embedding[0].content);
+  // console.log("---SENTENCE EMBEDDING---", sentence_embedding[0].content);
 
   // agent node
   async function queryOrRespond(
     state: typeof GraphAnnotation.State
   ): Promise<Partial<typeof GraphAnnotation.State>> {
-    console.log("---CALLING FROM QUERY OR RESPOND---");
-    const { summary } = state;
-    let { messages } = state;
+    const { messages } = state;
 
     const systemMessageContent =
       "You are an AI assistant helping users understand their documents and citations. " +
       "When users ask about citations, explain how they relate to the document content. " +
       "If asked about a specific citation, explain its context and relevance to the main document. " +
-      (result ? `\n\nHere is the main document content:\n\n${result}` : "") +
-      (sentence_embedding && userSentence
-        ? `\n\nThe user is asking about this citation: "${userSentence}"\n\nHere is the original context that was used to generate this citation:\n\n${sentence_embedding[0].content}`
-        : "") +
-      (summary ? `\n\nPrevious conversation summary: ${summary}` : "") +
+      // (result ? `\n\nHere is the main document content:\n\n${result}` : "") +
+      // (sentence_embedding && userSentence
+      //   ? `\n\nThe user is asking about this citation: "${userSentence}"\n\nHere is the original context that was used to generate this citation:\n\n${sentence_embedding[0].content}`
+      //   : "") +
       "\n\nWhen explaining citations:\n" +
       "1. Compare the citation to the original context\n" +
       "2. Explain how it relates to the main document\n" +
       "3. Clarify if the citation accurately represents the source material";
 
-    if (summary) {
-      const systemMessage = new SystemMessage({
-        id: uuidv4(),
-        content: systemMessageContent,
-      });
-      messages = [systemMessage, ...messages];
-    }
-    // const lastMessage = messages[messages.length - 1];
-    // const query = lastMessage instanceof HumanMessage ? lastMessage.content : "";
-    // const [docsContent] = await retrieve.invoke({ query:query as any });
-
-    // const contextMessage = new SystemMessage({
-    //   id: uuidv4(),
-    //   content: `Here is the relevant document context:\n\n${docsContent}`,
-    // });
-    // messages = [contextMessage, ...messages];
-
-    // const modelWithTools = model.bindTools([retrieve]);
     const response = await model.invoke(messages);
-
-    return { messages: [response] };
-  }
-
-  // summarize conversation node
-  async function summarizeConversation(state: typeof GraphAnnotation.State) {
-    console.log("---CALLING FROM SUMMARIZE CONVERSATION---");
-    const { summary, messages } = state;
-
-    let summaryMessage: string;
-
-    if (summary) {
-      console.log("---SUMMARY EXISTS---");
-      summaryMessage =
-        `This is the summary of the conversation to date: ${summary}\n\n` +
-        "Extend the summary by taking into accocunt the new messages above:";
-    } else {
-      console.log("---SUMMARY DOES NOT EXIST---");
-      summaryMessage = "Create a summary of the conversation above:";
-    }
-
-    console.log("---SUMMARY MESSAGE---", summaryMessage);
-
-    const allMessages = [
-      ...messages,
-      new HumanMessage({
-        id: uuidv4(),
-        content: summaryMessage,
-      }),
-    ];
-
-    const response = await model.invoke(allMessages);
-
-    if (typeof response.content !== "string") {
-      throw new Error("Expected a string response from the model");
-    }
-
-    return { summary: response.content };
-  }
-
-  // generate node
-  async function generate(state: typeof GraphAnnotation.State) {
-    console.log("---CALLING FROM GENERATE---");
-    // Get recent tool messages
-    let recentToolMessages = [];
-    for (let i = state["messages"].length - 1; i >= 0; i--) {
-      let message = state["messages"][i];
-      if (message instanceof ToolMessage) {
-        recentToolMessages.push(message);
-      } else {
-        break;
-      }
-    }
-    let toolMessages = recentToolMessages.reverse();
-
-    const docsContent = toolMessages.map((doc) => doc.content).join("\n");
-
-    // Include summary in system message if it exists
-    const summaryContext = state.summary
-      ? `Previous conversation summary: ${state.summary}\n\n`
-      : "";
-
-    console.log("---SUMMARY CONTEXT FROM GENERATE---", summaryContext);
-
-    const systemMessageContent =
-      "You are an assistant for question-answering tasks. " +
-      "Use the following pieces of retrieved context and conversation summary to answer " +
-      "the question. If the context is not relevant, say that you " +
-      "don't know. Use three sentences maximum and keep the " +
-      "answer concise." +
-      "\n\n" +
-      summaryContext +
-      `Retrieved context: ${docsContent}`;
-
-    // Rest of the function remains the same
-    const conversationMessages = state.messages.filter(
-      (message) =>
-        message instanceof HumanMessage ||
-        message instanceof SystemMessage ||
-        (message instanceof AIMessage && message.tool_calls?.length === 0)
-    );
-
-    const prompt = [
-      new SystemMessage(systemMessageContent),
-      ...conversationMessages,
-    ];
-
-    const response = await model.invoke(prompt);
     return { messages: [response] };
   }
 
   // conditional edge node
   async function shouldContinue(
     state: typeof GraphAnnotation.State
-  ): Promise<"summarize_conversation" | "tools" | "__end__"> {
-    console.log("---CALLING FROM SHOULD CONTINUE---");
+  ): Promise<"tools" | "__end__"> {
     const lastMessage = state.messages[state.messages.length - 1];
     if (isAIMessage(lastMessage) && (lastMessage.tool_calls?.length ?? 0) > 0) {
-      console.log("---USING TOOLS---");
       return "tools";
     }
-    console.log("---NOT USING TOOLS---");
-    return state.messages.length > 6 ? "summarize_conversation" : "__end__";
+    return "__end__";
   }
 
   // ** Define tools
@@ -350,16 +234,10 @@ export async function POST(req: Request) {
 
   const graphBuilder = new StateGraph(GraphAnnotation)
     .addNode("queryOrRespond", queryOrRespond)
-    .addNode("summarize_conversation", summarizeConversation)
-    // .addNode("tools", tools)
-    // .addNode("generate", generate)
     .addEdge("__start__", "queryOrRespond")
     .addConditionalEdges("queryOrRespond", shouldContinue, {
-      // tools: "tools",
-      summarize_conversation: "summarize_conversation",
       __end__: "__end__",
-    })
-    .addEdge("summarize_conversation", "__end__");
+    });
   // .addEdge("tools", "generate")
   // .addEdge("generate", "__end__");
 

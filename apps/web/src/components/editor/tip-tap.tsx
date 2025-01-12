@@ -9,7 +9,7 @@ import DragHandle from "@tiptap-pro/extension-drag-handle-react";
 import Placeholder from "@tiptap/extension-placeholder";
 import { Mention } from "@tiptap/extension-mention";
 import { FloatingMenuBar } from "./floating-menu-bar";
-import { Plus } from "@phosphor-icons/react";
+import { CaretRight, Plus } from "@phosphor-icons/react";
 import { useToast } from "@/hooks/use-toast";
 import suggestion from "@/extensions/suggestion/suggestion";
 import { saveDocument } from "@/app/actions/documents";
@@ -18,6 +18,8 @@ import { CustomLink } from "@/extensions/custom-link/custom-link";
 import { Highlight } from "@tiptap/extension-highlight";
 import debounce from "lodash/debounce";
 import { useSettingsStore } from "@/stores/settings-store";
+import { SidebarTrigger } from "../ui/sidebar";
+import { Button } from "../ui/button";
 
 interface TiptapProps {
   documentId: string;
@@ -175,7 +177,11 @@ export default ({ documentId, initialContent }: TiptapProps) => {
 
   return (
     <>
-      {editor && <FloatingMenuBar editor={editor} />}
+      {editor && (
+        <div className="max-w-fit flex justify-center items-center fixed left-1/2 -translate-x-1/2 top-0 z-10 py-6">
+          <FloatingMenuBar editor={editor} />
+        </div>
+      )}
 
       <div className="flex items-center">
         <DragHandle editor={editor}>

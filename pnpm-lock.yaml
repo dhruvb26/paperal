@@ -170,11 +170,11 @@ importers:
         specifier: ^2.10.3
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@trigger.dev/cli':
-        specifier: ^3.3.7
-        version: 3.3.7(encoding@0.1.13)(typescript@5.7.2)
+        specifier: 3.3.10
+        version: 3.3.10(encoding@0.1.13)(typescript@5.7.2)
       '@trigger.dev/sdk':
-        specifier: ^3.3.7
-        version: 3.3.7(zod@3.24.1)
+        specifier: 3.3.10
+        version: 3.3.10(zod@3.24.1)
       '@types/dagre':
         specifier: ^0.7.52
         version: 0.7.52
@@ -221,7 +221,7 @@ importers:
         specifier: ^0.38.2
         version: 0.38.2(@cloudflare/workers-types@4.20241230.0)(@opentelemetry/api@1.9.0)(@types/pg@8.11.10)(@types/react@18.3.18)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
       framer-motion:
-        specifier: ^11.13.3
+        specifier: ^11.15.0
         version: 11.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       graceful-fs:
         specifier: ^4.2.11
@@ -256,6 +256,9 @@ importers:
       ml-kmeans:
         specifier: ^6.0.0
         version: 6.0.0
+      motion:
+        specifier: ^11.17.0
+        version: 11.17.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next:
         specifier: 14.2.5
         version: 14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.83.0)
@@ -334,6 +337,9 @@ importers:
       uploadthing:
         specifier: ^7.4.1
         version: 7.4.1(next@14.2.5(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.49.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.83.0))(tailwindcss@3.4.17)
+      usehooks-ts:
+        specifier: ^3.1.0
+        version: 3.1.0(react@18.3.1)
       uuid:
         specifier: ^11.0.3
         version: 11.0.3
@@ -360,8 +366,8 @@ importers:
         specifier: ^0.3.3
         version: 0.3.3(wrangler@3.99.0(@cloudflare/workers-types@4.20241230.0))
       '@trigger.dev/build':
-        specifier: ^3.3.7
-        version: 3.3.7(typescript@5.7.2)
+        specifier: 3.3.10
+        version: 3.3.10(typescript@5.7.2)
       '@types/lodash':
         specifier: ^4.17.13
         version: 4.17.13
@@ -4380,27 +4386,31 @@ packages:
   '@tootallnate/quickjs-emscripten@0.23.0':
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
 
-  '@trigger.dev/build@3.3.7':
-    resolution: {integrity: sha512-WtbcnHUpIyHziOcUOyjgqFtEGQBtRg5UDVJEywyhuKdifsRP5I+JOIxD4kDY1ShLPwhaS/0EGV+MUisdLY13Rw==}
+  '@trigger.dev/build@3.3.10':
+    resolution: {integrity: sha512-CtDYSxunxGNWt80Aya1qxgNfVom5AMZMIHVcCDB1mnz4RtqqAjiwpZsbR83D79ElAjWvVLcigbiFGNbU5J5Ltw==}
     engines: {node: '>=18.20.0'}
 
-  '@trigger.dev/cli@3.3.7':
-    resolution: {integrity: sha512-oMxKFqqnsnOyTeSvJs8yjnX8yxvnCeGQTwgDTxA7qZzZZRq1T46tDrOoOGT2guyUT5YAci5IAWiWEA+H7W7lNw==}
+  '@trigger.dev/cli@3.3.10':
+    resolution: {integrity: sha512-u7h0e1GBV9cyEsPUzncR8po5yzm524ZVdtjhL5lRb8EZkYF3E45qTXxJzZspT9Yn0XS0f886M0GsEIIsAc2IgQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
+
+  '@trigger.dev/core@3.3.10':
+    resolution: {integrity: sha512-LwOIE69aQKHFIbUyx4jaTksGAwHX8CUpVl0y/VlXqXChjUr6uHlAqgIRYGGOYy2S8zr61BWiXLdncisZnSQ8xA==}
+    engines: {node: '>=18.20.0'}
 
   '@trigger.dev/core@3.3.7':
     resolution: {integrity: sha512-K5mAYXYbhSi8TP57VorfTlbNcbR4WIhUfjCsuSwL5tl6rVIM88ZJDdTN034XlZBh0FhAKIIIp8MUG1wt3bRjkA==}
     engines: {node: '>=18.20.0'}
 
-  '@trigger.dev/sdk@3.3.7':
-    resolution: {integrity: sha512-PoEp6BMuC2UA6s8AgBaBth8w0GEgKvGfdbGPb5hxuUojm0ejSkQ9pFTNaV/R0l4FyfHzc1sTrC06GQuBXnoA8g==}
+  '@trigger.dev/sdk@3.3.10':
+    resolution: {integrity: sha512-Rcro3OH96FtNyy7VmxiSz2A+QHkm4SURUiba92xVUrHMgF8o6aAdp1QCiec5yQzRcs6YNEdLfFbHULMsz8oNrA==}
     engines: {node: '>=18.20.0'}
     peerDependencies:
       zod: ^3.0.0
 
-  '@trigger.dev/yalt@3.3.7':
-    resolution: {integrity: sha512-MwDOIOL9IYZJEgY0+xATsaIPjDG1W8gnOcYHH7WVBtpGCkypDS/PYW+LZ0KcdUZcVyB0EAgA0BsbUhhg2TTqdQ==}
+  '@trigger.dev/yalt@3.3.10':
+    resolution: {integrity: sha512-/+bvTbiv3FbcE3yFxXCmsw0kVoqCR+YmsKxgiX0MGsSIi1SQL1pJzImTcPxW7j3TdRWeWFsYHX3w96xUUKPfAw==}
     engines: {node: '>=18.0.0'}
 
   '@ts-morph/common@0.24.0':
@@ -6396,6 +6406,20 @@ packages:
       react-dom:
         optional: true
 
+  framer-motion@11.17.0:
+    resolution: {integrity: sha512-uTNLH9JPMD3ad14WBt3KYRTR+If4tGPLgKTKTIIPaEBMkvazs6EkWNcmCh65qA/tyinOqIbQiuCorXX0qQsNoQ==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fs-constants@1.0.0:
     resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
 
@@ -7433,6 +7457,9 @@ packages:
   lodash.clonedeep@4.5.0:
     resolution: {integrity: sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==}
 
+  lodash.debounce@4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+
   lodash.includes@4.3.0:
     resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==}
 
@@ -7901,8 +7928,28 @@ packages:
   motion-dom@11.14.3:
     resolution: {integrity: sha512-lW+D2wBy5vxLJi6aCP0xyxTxlTfiu+b+zcpVbGVFUxotwThqhdpPRSmX8xztAgtZMPMeU0WGVn/k1w4I+TbPqA==}
 
+  motion-dom@11.16.4:
+    resolution: {integrity: sha512-2wuCie206pCiP2K23uvwJeci4pMFfyQKpWI0Vy6HrCTDzDCer4TsYtT7IVnuGbDeoIV37UuZiUr6SZMHEc1Vww==}
+
   motion-utils@11.14.3:
     resolution: {integrity: sha512-Xg+8xnqIJTpr0L/cidfTTBFkvRw26ZtGGuIhA94J9PQ2p4mEa06Xx7QVYZH0BP+EpMSaDlu+q0I0mmvwADPsaQ==}
+
+  motion-utils@11.16.0:
+    resolution: {integrity: sha512-ngdWPjg31rD4WGXFi0eZ00DQQqKKu04QExyv/ymlC+3k+WIgYVFbt6gS5JsFPbJODTF/r8XiE/X+SsoT9c0ocw==}
+
+  motion@11.17.0:
+    resolution: {integrity: sha512-mWZhIOWH2slNXPUWhr6cEu98bl9NMX7u9r7vdNI+Bm3/jrOEa3e44GmyUuwXr9hWR+rWII27YTnKb6CDD1vU2g==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -10037,6 +10084,12 @@ packages:
     resolution: {integrity: sha512-9WXSPC5fMv61vaupRkCKCxsPxBocVnwakBEkMIHHpkTTg6icbJtg6jzgtLDm4bl3cSHAca52rYWih0k4K3PfHw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  usehooks-ts@3.1.0:
+    resolution: {integrity: sha512-bBIa7yUyPhE1BCc0GmR96VU/15l/9gP1Ch5mYdLcFBaFGQsdmXkvjV0TtOqW1yUd6VjIwDunm+flSciCQXujiw==}
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      react: ^16.8.0  || ^17 || ^18
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -15183,9 +15236,9 @@ snapshots:
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}
 
-  '@trigger.dev/build@3.3.7(typescript@5.7.2)':
+  '@trigger.dev/build@3.3.10(typescript@5.7.2)':
     dependencies:
-      '@trigger.dev/core': 3.3.7
+      '@trigger.dev/core': 3.3.10
       pkg-types: 1.2.1
       tinyglobby: 0.2.10
       tsconfck: 3.1.3(typescript@5.7.2)
@@ -15195,10 +15248,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@trigger.dev/cli@3.3.7(encoding@0.1.13)(typescript@5.7.2)':
+  '@trigger.dev/cli@3.3.10(encoding@0.1.13)(typescript@5.7.2)':
     dependencies:
       '@trigger.dev/core': 3.3.7
-      '@trigger.dev/yalt': 3.3.7
+      '@trigger.dev/yalt': 3.3.10
       '@types/degit': 2.8.6
       boxen: 7.1.1
       chalk: 5.4.1
@@ -15239,6 +15292,38 @@ snapshots:
       - typescript
       - utf-8-validate
 
+  '@trigger.dev/core@3.3.10':
+    dependencies:
+      '@electric-sql/client': 1.0.0-beta.1
+      '@google-cloud/precise-date': 4.0.0
+      '@jsonhero/path': 1.0.21
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/api-logs': 0.52.1
+      '@opentelemetry/exporter-logs-otlp-http': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/exporter-trace-otlp-http': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/resources': 1.25.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-logs': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-node': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-base': 1.25.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-node': 1.25.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/semantic-conventions': 1.25.1
+      dequal: 2.0.3
+      eventsource-parser: 3.0.0
+      execa: 8.0.1
+      humanize-duration: 3.32.1
+      jose: 5.9.6
+      nanoid: 3.3.8
+      socket.io-client: 4.7.5
+      superjson: 2.2.2
+      zod: 3.23.8
+      zod-error: 1.5.0
+      zod-validation-error: 1.5.0(zod@3.23.8)
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
   '@trigger.dev/core@3.3.7':
     dependencies:
       '@electric-sql/client': 1.0.0-beta.1
@@ -15271,12 +15356,12 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@trigger.dev/sdk@3.3.7(zod@3.24.1)':
+  '@trigger.dev/sdk@3.3.10(zod@3.24.1)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/api-logs': 0.52.1
       '@opentelemetry/semantic-conventions': 1.25.1
-      '@trigger.dev/core': 3.3.7
+      '@trigger.dev/core': 3.3.10
       chalk: 5.4.1
       cronstrue: 2.52.0
       debug: 4.4.0
@@ -15292,7 +15377,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@trigger.dev/yalt@3.3.7':
+  '@trigger.dev/yalt@3.3.10':
     dependencies:
       https: 1.0.0
       node-fetch: 3.3.2
@@ -15884,7 +15969,7 @@ snapshots:
 
   axios@1.7.9:
     dependencies:
-      follow-redirects: 1.15.9(debug@4.3.2)
+      follow-redirects: 1.15.9(debug@4.4.0)
       form-data: 4.0.1
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -17171,7 +17256,7 @@ snapshots:
       '@typescript-eslint/parser': 7.2.0(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.2(eslint@8.57.1)
@@ -17191,7 +17276,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
@@ -17207,14 +17292,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 7.2.0(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -17229,7 +17314,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -17617,7 +17702,21 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
+<<<<<<< HEAD
   fs-constants@1.0.0: {}
+=======
+  framer-motion@11.17.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      motion-dom: 11.16.4
+      motion-utils: 11.16.0
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  fs-constants@1.0.0:
+    optional: true
+>>>>>>> 19525dd (edit: ui)
 
   fs-extra@10.1.0:
     dependencies:
@@ -18867,6 +18966,8 @@ snapshots:
 
   lodash.clonedeep@4.5.0: {}
 
+  lodash.debounce@4.0.8: {}
+
   lodash.includes@4.3.0: {}
 
   lodash.isboolean@3.0.3: {}
@@ -19485,7 +19586,21 @@ snapshots:
 
   motion-dom@11.14.3: {}
 
+  motion-dom@11.16.4:
+    dependencies:
+      motion-utils: 11.16.0
+
   motion-utils@11.14.3: {}
+
+  motion-utils@11.16.0: {}
+
+  motion@11.17.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      framer-motion: 11.17.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   mri@1.2.0: {}
 
@@ -22051,6 +22166,11 @@ snapshots:
 
   use-sync-external-store@1.4.0(react@18.3.1):
     dependencies:
+      react: 18.3.1
+
+  usehooks-ts@3.1.0(react@18.3.1):
+    dependencies:
+      lodash.debounce: 4.0.8
       react: 18.3.1
 
   util-deprecate@1.0.2: {}

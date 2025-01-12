@@ -32,9 +32,10 @@ export function NavMain({
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton
+              className="hover:bg-blue-600 hover:text-white "
               tooltip={{
                 children: item.title,
-                hidden: false,
+                hidden: true,
               }}
               isActive={item.isActive}
               asChild

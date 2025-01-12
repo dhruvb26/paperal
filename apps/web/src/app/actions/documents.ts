@@ -17,9 +17,9 @@ export async function createDocument(prompt: string) {
     throw new Error("User not found");
   }
 
-  // await tasks.trigger<typeof createEmbeddings>("create-embeddings", {
-  //   prompt,
-  // });
+  await tasks.trigger<typeof createEmbeddings>("create-embeddings", {
+    prompt,
+  });
 
   const defaultContent = {
     type: "doc",
@@ -50,7 +50,7 @@ export async function createDocument(prompt: string) {
     userId: userId,
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 10000));
 
   return docId;
 }

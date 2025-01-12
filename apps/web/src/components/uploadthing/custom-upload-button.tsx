@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { Loader } from "../ui/loader";
 import { Plus } from "@phosphor-icons/react";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
+import { Spinner } from "@phosphor-icons/react";
 
 export const CustomUploadButton = () => {
   const { toast } = useToast();
@@ -19,7 +20,7 @@ export const CustomUploadButton = () => {
             if (ready)
               return (
                 <div className="flex items-center text-foreground gap-2">
-                  <Plus weight="bold" />
+                  <Plus weight="regular" />
                 </div>
               );
             return (
