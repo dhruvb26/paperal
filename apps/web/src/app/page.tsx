@@ -12,6 +12,7 @@ import { TextShimmer } from "@/components/ui/text-shimmer";
 import { useLoadingToast } from "@/hooks/use-loading-toast";
 import { createDocument } from "@/app/actions/documents";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import {
   UserButton,
   SignedIn,
@@ -22,6 +23,7 @@ import {
 
 export default function Home() {
   const router = useRouter();
+  const { user } = useUser();
   const [isOverlayActive, setIsOverlayActive] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [inputValue, setInputValue] = useState("");
@@ -53,6 +55,13 @@ export default function Home() {
 
   const handleSearchClick = async () => {
     if (!inputValue.trim()) return;
+
+    // TODO: check if user is signed in
+    const userId = user?.id;
+    if (!userId) {
+      router.push("/sign-up");
+      return;
+    }
 
     setIsOverlayActive(true);
     try {
