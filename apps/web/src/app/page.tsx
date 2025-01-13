@@ -94,8 +94,8 @@ export default function Home() {
           </SignOutButton>
         </SignedIn>
       </header>
-      <main className="flex-1 flex flex-col items-center justify-center p-12 relative">
-        <div className="flex flex-col items-center gap-6">
+      <main className="flex-1 flex flex-col items-center justify-center relative">
+        <div className="flex flex-col items-center w-full -mt-48">
           <RotatingText />
           <form
             onSubmit={onSubmit}
