@@ -59,14 +59,22 @@ export async function POST(req: Request) {
 
     const fullName = `${first_name} ${last_name}`;
 
-    await db.insert(usersTable).values({
-      id,
-      email: email_addresses[0].email_address,
-      name: fullName,
-      metadata: {
-        clerkId: id,
-      },
-    });
+    await db
+      .insert(usersTable)
+      .values({
+        id,
+        email: email_addresses[0].email_address,
+        name: fullName,
+        metadata: {
+          clerkId: id,
+        },
+      })
+      .onConflictDoUpdate({
+        target: [usersTable.id],
+        set: {
+          name: fullName,
+        },
+      });
   }
 
   if (eventType === "user.updated") {

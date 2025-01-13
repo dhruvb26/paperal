@@ -20,6 +20,7 @@ import {
   SignInButton,
   SignOutButton,
 } from "@clerk/nextjs";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -85,12 +86,16 @@ export default function Home() {
         </p>
         <SignedOut>
           <SignInButton>
-            <Button variant="link">Sign in</Button>
+            <Button className="p-0 m-0 text-sm font-light" variant="link">
+              sign in
+            </Button>
           </SignInButton>
         </SignedOut>
         <SignedIn>
           <SignOutButton>
-            <Button variant="link">Sign out</Button>
+            <Button className="p-0 m-0 text-sm font-light" variant="link">
+              sign out
+            </Button>
           </SignOutButton>
         </SignedIn>
       </header>
@@ -115,6 +120,18 @@ export default function Home() {
               <SearchIcon className="w-4 h-4 p-0 m-0" />
             </Button>
           </form>
+        </div>
+        <div className="absolute bottom-10 left-12 flex flex-row items-center justify-center space-x-2">
+          <Link href="/tos">
+            <Button className="p-0 m-0 text-base font-light" variant="link">
+              tos
+            </Button>
+          </Link>
+          <Link href="/privacy">
+            <Button className="p-0 m-0 text-base font-light" variant="link">
+              privacy
+            </Button>
+          </Link>
         </div>
         <p className="absolute bottom-12 right-12 font-light text-blue-600">
           write your best work with the help of the best papers on the{" "}
