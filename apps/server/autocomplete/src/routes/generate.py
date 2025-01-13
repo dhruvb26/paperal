@@ -40,23 +40,14 @@ async def generate_sentence(request: SentenceRequest):
     if request.previous_text.strip() == heading.strip():
         ai_generated_opening = suggest_opening_statement(heading)
         return {
-            "ai_sentence": ai_generated_opening,
-            "referenced_sentence": None,
+            "text": ai_generated_opening,
             "is_referenced": False,
-            "author": None,
-            "url": None,
-            "title": None,
-            "library_id": None,
+            "citations": None,
+            "href": None,
+            "context": None,
         }
 
-    # Parse JSON once and handle error early
-    # try:
-    #     json_text = json_to_markdown(json.loads(request.previous_text))
-    # except json.JSONDecodeError:
-    #     logging.warning("Failed to parse JSON, using raw text")
-    #     json_text = request.previous_text
-
-    similar_docs = await find_similar_documents(request.previous_text, heading)
+    similar_docs = await find_similar_documents(request.previous_text[:200], heading)
     ai_generated = await generate_ai_sentence(request.previous_text, heading)
     # Only process similar documents if they exist and have valid scores
     if len(similar_docs) > 0:

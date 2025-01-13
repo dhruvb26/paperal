@@ -1,5 +1,5 @@
 from models.requests import StoreResearchRequest
-from agents.store import StoreResearchPaperAgent
+from agents.store import store_research_paper_agent
 from fastapi import APIRouter, BackgroundTasks
 import logging
 
@@ -18,7 +18,7 @@ async def store_research_papers(
     logging.info("Received request to store research papers.")
     # Create and await the task directly
     background_tasks.add_task(
-        StoreResearchPaperAgent,
+        store_research_paper_agent,
         request.research_urls,
         request.user_id,
         request.is_public,

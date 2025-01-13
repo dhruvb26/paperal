@@ -12,10 +12,13 @@ export async function POST(req: Request) {
     // }
 
     try {
-        // Load PDF using Langchain's PDFLoader
+        console.log('Starting PDF processing...');
         const path = process.cwd() + "/public/attention.pdf";
-        // check if the file exists
+        console.log('Checking file at path:', path);
+        
         const fileExists = fs.existsSync(path);
+        console.log('File exists:', fileExists);
+
         if (!fileExists) {
             console.log("File not found at:", path);
             return NextResponse.json({ 
@@ -24,6 +27,7 @@ export async function POST(req: Request) {
             });
         }
 
+        console.log('Loading PDF...');
         // set up the llamaparse reader
         const reader = new LlamaParseReader({ resultType: "markdown" });
       
@@ -59,7 +63,11 @@ export async function POST(req: Request) {
             success: false 
         });
     } catch (error: any) {
-        console.error('Error processing PDF:', error);
+        console.error('Error details:', {
+            message: error.message,
+            stack: error.stack,
+            type: error.constructor.name
+        });
         return NextResponse.json({ 
             success: false, 
             error: error.message || 'Unknown error occurred',

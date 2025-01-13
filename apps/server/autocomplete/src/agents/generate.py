@@ -92,7 +92,7 @@ You are an expert keyword generator.
 You are give a text and you need to generate keywords from the text which can be used to generate a RAG.
 
 Generate 3 trivial keywords.
-Only return the keywords separated by commas, no other text.
+Only return the keywords separated by a space, no other text.
 """
 
 
@@ -140,6 +140,7 @@ async def generate_ai_sentence(
         - Is grammatically correct
         - Fits coherently with the previous content and overall paper structure
         - Advances the argument or discussion in a meaningful way
+        - Try not to use words like Moreover, Additionally, etc.
         """
 
         response = client.chat.completions.create(

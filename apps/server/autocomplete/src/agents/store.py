@@ -41,15 +41,17 @@ def generate_in_text_citation(authors: list[str], year: str) -> str:
     if not year.isdigit() or len(year) != 4:
         year = ""
 
-    if len(authors) == 1:
+    if len(authors) == 1 and year:
         return f"({authors[0]},{year})"
-    elif len(authors) == 2:
+    elif len(authors) == 2 and year:
         return f"({authors[0]} & {authors[1]},{year})"
+    elif year == "":
+        return f"({authors[0]} et al.)"
     else:
         return f"({authors[0]} et al.,{year})"
 
 
-def StoreResearchPaperAgent(
+def store_research_paper_agent(
     research_url: list[str],
     user_id: Optional[str] = None,
     is_public: Optional[bool] = True,
@@ -80,19 +82,11 @@ def StoreResearchPaperAgent(
                     logging.warning(f"Skipping PDF with {page_count} pages: {url}")
                     continue
 
-                # Check if already stored
-                # checker = database.query_metadata(
-                #     "fileUrl", url, supabase_client, user_id
-                # )
-                # if len(checker.data) != 0:
-                #     logging.warning(f"Research paper already stored: {url}")
-                #     continue
-
                 # Process valid PDF
                 pdf_document = fitz.open(stream=pdf_data, filetype="pdf")
                 text = "".join(page.get_text() for page in pdf_document)
                 # Extract and store document
-                extracted_info = ExtractPaperAgent(text[:1000])
+                extracted_info = ExtractPaperAgent(text[:1200])
                 docum = Document(page_content=text)
                 logging.info("Created document")
                 docs = database.split_documents([docum])
