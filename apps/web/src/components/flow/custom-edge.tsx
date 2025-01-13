@@ -1,6 +1,10 @@
 import { BaseEdge, EdgeProps, getBezierPath } from "@xyflow/react";
 import { useSidebarStore } from "@/store/sidebar-store";
-import { FlowNode } from "@/store/sidebar-store";
+// import { FlowNode } from "@/store/sidebar-store";
+interface FlowNode {
+  id: string;
+  type: string;
+}
 
 interface CustomEdgeProps extends EdgeProps {
   data: {
@@ -29,15 +33,11 @@ export function CustomEdge({
     targetPosition,
   });
 
-  const { toggleRightSidebar, setEdgeData, isRightSidebarOpen } =
-    useSidebarStore();
+  const { toggleRightSidebar, isRightSidebarOpen } = useSidebarStore();
 
   const handleEdgeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setEdgeData({
-      sourceNode: data?.sourceNode,
-      targetNode: data?.targetNode,
-    });
+
     if (!isRightSidebarOpen) {
       toggleRightSidebar();
     }

@@ -61,7 +61,7 @@ const VisualPage = () => {
     getLibrary
   );
 
-  const url = data?.[0]?.metadata?.fileUrl;
+  // const url = data?.[0]?.metadata?.fileUrl;
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
@@ -150,7 +150,7 @@ const VisualPage = () => {
         {isOutlineOpen && (
           <div className="absolute z-20 top-16 left-4 w-64 max-h-[80vh] overflow-y-auto bg-background border rounded-md">
             <Document
-              file={url}
+              file={"some"}
               className="[&_a]:block [&_a]:py-1.5 text-foreground p-2 text-sm outline-container"
               loading={<Loader />}
               onItemClick={({ pageNumber }) => {
@@ -164,7 +164,7 @@ const VisualPage = () => {
         )}
 
         <Document
-          file={url}
+          file={"some"}
           onLoadSuccess={onDocumentLoadSuccess}
           className="flex flex-col items-center"
           loading={""}

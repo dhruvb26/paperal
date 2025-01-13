@@ -66,6 +66,9 @@ export function SidebarRight({
     >
       <SidebarContent className="flex flex-col rounded-lg border">
         <div className="flex-1 overflow-y-auto space-y-2 mb-4 p-4 m-4">
+          <p className="text-xs text-muted-foreground py-2">
+            Work in progress.
+          </p>
           {messages.map((message) => (
             <div
               key={message.id}

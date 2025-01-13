@@ -62,15 +62,10 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
     }
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const activeStyle = getCurrentStyleIndex();
-
   const setLink = () => {
     const previousUrl = editor.getAttributes("link").href;
     setLinkUrl(previousUrl || "");
     setIsLinkOpen(true);
-    setIsOpen(false);
   };
 
   const handleLinkSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {

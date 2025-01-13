@@ -50,12 +50,10 @@ export default function NodeEditor({
 }: NodeEditorProps) {
   const selectedNodeData = nodes.find((n) => n.id === selectedNode)?.data;
   const { toast } = useToast();
-  const { updateNodeLabel } = useSidebarStore();
 
   const handleLabelChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newLabel = e.target.value;
     updateNodeData(selectedNode, { label: newLabel });
-    updateNodeLabel(selectedNode, newLabel);
   };
 
   return (
