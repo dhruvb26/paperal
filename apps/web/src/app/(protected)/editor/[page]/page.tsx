@@ -47,7 +47,7 @@ export default function EditorPage() {
           <SidebarRight />
           <Button
             onClick={toggleRightSidebar}
-            className={`fixed bottom-3 border bg-blue-700 hover:bg-blue-600 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white  transition-all duration-300 ${
+            className={`fixed bottom-3 border bg-blue-600 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white  transition-all duration-300 ${
               isRightSidebarOpen
                 ? "right-[calc(384px+2rem)]"
                 : "right-4 sm:right-8"

@@ -94,10 +94,10 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
   };
 
   return (
-    <div className="flex flex-nowrap p-1 gap-1 rounded-lg border  bg-blue-700 max-w-fit hover:shadow-sm transform hover:translate-y-[-2px] transition-transform duration-200 border-b-4 border-blue-900">
+    <div className="flex flex-nowrap p-1 gap-1 shadow-md rounded-lg border  bg-blue-600 max-w-fit  transform hover:translate-y-[-2px] transition-transform duration-200 border-b-4 border-blue-900">
       <Button
-        className={`  hover:bg-blue-600 text-white hover:text-white ${
-          editor.isActive("textStyle") ? "bg-blue-400 " : "bg-blue-700"
+        className={`  hover:bg-blue-500 text-white hover:text-white ${
+          editor.isActive("textStyle") ? "bg-blue-400 " : "bg-blue-600"
         }`}
         variant="ghost"
         size="sm"
@@ -107,8 +107,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <CaretUpDown size={12} />
       </Button>
       <Button
-        className={`h-8 w-8  text-white hover:bg-blue-600 hover:text-white ${
-          editor.isActive("bold") ? "bg-blue-600" : "bg-blue-700 "
+        className={`h-8 w-8  text-white hover:bg-blue-500 hover:text-white ${
+          editor.isActive("bold") ? "bg-blue-500" : "bg-blue-600 "
         }`}
         variant="ghost"
         size="icon"
@@ -117,8 +117,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <TextB size={12} />
       </Button>
       <Button
-        className={`h-8 w-8  text-white hover:bg-blue-600 hover:text-white ${
-          editor.isActive("italic") ? "bg-blue-600" : "bg-blue-700 "
+        className={`h-8 w-8  text-white hover:bg-blue-500 hover:text-white ${
+          editor.isActive("italic") ? "bg-blue-500" : "bg-blue-600 "
         }`}
         variant="ghost"
         size="icon"
@@ -127,8 +127,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <TextItalic size={12} />
       </Button>
       <Button
-        className={`h-8 w-8  text-white hover:bg-blue-600 hover:text-white ${
-          editor.isActive("underline") ? "bg-blue-600" : "bg-blue-700 "
+        className={`h-8 w-8  text-white hover:bg-blue-500 hover:text-white ${
+          editor.isActive("underline") ? "bg-blue-500" : "bg-blue-600 "
         }`}
         variant="ghost"
         size="icon"
@@ -137,8 +137,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <TextUnderline size={12} />
       </Button>
       <Button
-        className={`h-8 w-8  text-white hover:bg-blue-600 hover:text-white ${
-          editor.isActive("strike") ? "bg-blue-600" : "bg-blue-700 "
+        className={`h-8 w-8  text-white hover:bg-blue-500 hover:text-white ${
+          editor.isActive("strike") ? "bg-blue-500" : "bg-blue-600 "
         }`}
         variant="ghost"
         size="icon"
@@ -147,8 +147,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <TextStrikethrough size={12} />
       </Button>{" "}
       <Button
-        className={`h-8 w-8  text-white hover:bg-blue-600 hover:text-white ${
-          editor.isActive("bulletList") ? "bg-blue-600" : "bg-blue-700 "
+        className={`h-8 w-8  text-white hover:bg-blue-500 hover:text-white ${
+          editor.isActive("bulletList") ? "bg-blue-500" : "bg-blue-600 "
         }`}
         variant="ghost"
         size="icon"
@@ -157,8 +157,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <ListBullets size={12} />
       </Button>
       <Button
-        className={`h-8 w-8  text-white hover:bg-blue-600 hover:text-white ${
-          editor.isActive("orderedList") ? "bg-blue-600" : "bg-blue-700 "
+        className={`h-8 w-8  text-white hover:bg-blue-500 hover:text-white ${
+          editor.isActive("orderedList") ? "bg-blue-500" : "bg-blue-600 "
         }`}
         variant="ghost"
         size="icon"
@@ -172,8 +172,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
             variant="ghost"
             size="icon"
             onClick={setLink}
-            className={`h-8 w-8  text-white hover:bg-blue-600 hover:text-white ${
-              editor.isActive("link") ? "bg-blue-600" : "bg-blue-700 "
+            className={`h-8 w-8  text-white hover:bg-blue-500 hover:text-white ${
+              editor.isActive("link") ? "bg-blue-500" : "bg-blue-600 "
             }`}
           >
             <LinkIcon size={12} />
@@ -181,7 +181,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         </PopoverTrigger>
         <PopoverContent
           side="right"
-          className=" border-none bg-blue-700 shadow-none"
+          className=" border-none bg-blue-600 shadow-none"
         >
           <Input
             value={linkUrl}
@@ -196,7 +196,7 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8  text-white hover:bg-blue-600 hover:text-white "
+          className="h-8 w-8  text-white hover:bg-blue-500 hover:text-white "
           onClick={() => editor.chain().focus().unsetLink().run()}
         >
           <X size={12} className="" />

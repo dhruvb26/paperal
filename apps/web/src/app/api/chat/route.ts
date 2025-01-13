@@ -1,117 +1,43 @@
 import { Annotation, StateGraph } from "@langchain/langgraph";
-import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
 import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import { createClient } from "@supabase/supabase-js";
-// import { NextResponse } from "next/server";
-import { ToolNode, toolsCondition } from "@langchain/langgraph/prebuilt";
-import { z } from "zod";
-import { tool } from "@langchain/core/tools";
 import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres";
-import {
-  RemoveMessage,
-  SystemMessage,
-  ToolMessage,
-} from "@langchain/core/messages";
-// import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
 import { MessagesAnnotation } from "@langchain/langgraph";
 import { isAIMessage } from "@langchain/core/messages";
-// import { prettyPrint } from "@/utils/graph";
 import { env } from "@/env";
-// import { StreamTextResult } from "ai";
 import { LangChainAdapter } from "ai";
-// import { streamText } from "ai";
 import type { Message } from "ai";
-import {
-  AIMessage,
-  BaseMessage,
-  ChatMessage,
-  HumanMessage,
-} from "@langchain/core/messages";
+import { HumanMessage } from "@langchain/core/messages";
 import { NextResponse } from "next/server";
-import { citationsTable, documentsTable } from "@/db/schema";
-import { embeddingsTable } from "@/db/schema";
+import { documentsTable } from "@/db/schema";
 import { db } from "@/db";
-import { eq, sql } from "drizzle-orm";
-import { DOMSerializer } from "prosemirror-model";
-import { schema } from "prosemirror-markdown";
-import { generateHTML } from "@tiptap/html";
-import TurndownService from "turndown";
-import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
-import { writeFileSync } from "fs";
-
-function convertToMarkdown(prosemirrorJson: any): string {
-  // Convert ProseMirror JSON to HTML with Link extension
-  const html = generateHTML(prosemirrorJson, [StarterKit, Link]);
-
-  // Convert HTML to Markdown
-  const turndownService = new TurndownService();
-  return turndownService.turndown(html);
-}
-
-/**
- * Converts a Vercel message to a LangChain message.
- * @param message - The message to convert.
- * @returns The converted LangChain message.
- */
-const convertVercelMessageToLangChainMessage = (
-  message: Message
-): BaseMessage => {
-  switch (message.role) {
-    case "user":
-      return new HumanMessage({ content: message.content });
-    case "assistant":
-      return new AIMessage({ content: message.content });
-    default:
-      return new ChatMessage({ content: message.content, role: message.role });
-  }
-};
-/**
- * Converts a LangChain message to a Vercel message.
- * @param message - The message to convert.
- * @returns The converted Vercel message.
- */
-const convertLangChainMessageToVercelMessage = (message: BaseMessage) => {
-  switch (message.getType()) {
-    case "human":
-      return { content: message.content, role: "user" };
-    case "ai":
-      return {
-        content: message.content,
-        role: "assistant",
-        tool_calls: (message as AIMessage).tool_calls,
-      };
-    default:
-      return { content: message.content, role: message._getType() };
-  }
-};
+import { eq } from "drizzle-orm";
+import {
+  convertVercelMessageToLangChainMessage,
+  convertLangChainMessageToVercelMessage,
+  convertToMarkdown,
+} from "@/utils/lang";
+// import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
 
 const GraphAnnotation = Annotation.Root({
   ...MessagesAnnotation.spec,
 });
-// const retrieveSchema = z.object({ query: z.string() });
 
 export async function POST(req: Request) {
   const { messages, userSentence, documentId, userId, title } =
     (await req.json()) as any;
 
-  console.log("---MESSAGES---", messages);
-  // console.log("---USER SENTENCE---", userSentence.split("(")[0]);
-
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  // get document_id from url params
-  console.log("---DOCUMENT ID---", documentId);
   if (!documentId) {
     return new NextResponse("Document ID is required", { status: 400 });
   }
 
   // Define the pre-requisites
   const supabaseClient = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
-  // const embeddings = new OpenAIEmbeddings();
+  const embeddings = new OpenAIEmbeddings();
   const checkpointerFromConnString = PostgresSaver.fromConnString(
     env.DATABASE_URL
   );
@@ -131,37 +57,7 @@ export async function POST(req: Request) {
     return new NextResponse("Document content is required", { status: 400 });
   }
 
-  // documentContent.content is already in ProseMirror JSON format
-  // Just pass it directly to convertToMarkdown
-
   let result = convertToMarkdown(documentContent.content);
-
-  console.log("---RESULT---", result);
-
-  console.log("---USER SENTENCE---", userSentence);
-
-  // console.log("---USER SENTENCE SPLIT---", userSentence.split("(")[0]);
-
-  // const citedEmbedding = await db.query.citationsTable.findFirst({
-  //   where: eq(citationsTable.sentence, userSentence.split("(")[0].trim()),
-  // });
-
-  // console.log("---CITED EMBEDDING---", citedEmbedding);
-
-  // const sentence_embedding = await db
-  //   .select({
-  //     id: embeddingsTable.id,
-  //     embedding: embeddingsTable.embedding,
-  //     content: embeddingsTable.content,
-  //   })
-  //   .from(embeddingsTable)
-  //   .where(eq(embeddingsTable.content, citedEmbedding?.context as string));
-
-  // if (!sentence_embedding) {
-  //   return new NextResponse("Sentence embedding is required", { status: 400 });
-  // }
-
-  console.log("---RESULT---", result);
 
   const model = new ChatOpenAI({
     modelName: "gpt-4o",
@@ -175,8 +71,7 @@ export async function POST(req: Request) {
 
   // ** Define nodes for the graph
 
-  // console.log("---SENTENCE EMBEDDING---", sentence_embedding[0].content);
-
+  // TODO: Fix the prompt
   // agent node
   async function queryOrRespond(
     state: typeof GraphAnnotation.State
@@ -284,6 +179,5 @@ export async function POST(req: Request) {
       }
     },
   });
-  console.log("---TRANSFORM STREAM---", transformStream);
   return LangChainAdapter.toDataStreamResponse(transformStream);
 }

@@ -41,7 +41,7 @@ import { CustomUploadButton } from "./uploadthing/custom-upload-button";
 import { SidebarSkeleton } from "@/components/sidebar-skeleton";
 import { LibraryDocument } from "@/types/models/library";
 import { Document } from "@/types/models/document";
-import { ArrowRightLeft } from "lucide-react";
+import { ArrowRightLeft, Pen } from "lucide-react";
 
 const data = {
   navMain: [
@@ -86,7 +86,7 @@ export function AppSidebar({
   const [showLibraryList, setShowLibraryList] = React.useState(false);
 
   if (!isLoaded) {
-    return <SidebarSkeleton />;
+    return null;
   }
 
   if (!isSignedIn) {
@@ -146,25 +146,9 @@ export function AppSidebar({
       <Sidebar
         variant="floating"
         collapsible="offcanvas"
-        className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row " // Add border-0 class
+        className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row "
         {...props}
       >
-        {/* <Sidebar
-          collapsible="none"
-          className="!w-[calc(var(--sidebar-width-icon)_+_1px)] text-white bg-blue-700 border-l-0 border-blue-900 rounded-tl-lg rounded-bl-lg group-data-[state=collapsed]:rounded-tr-lg group-data-[state=collapsed]:rounded-br-lg  group-data-[collapsible=icon]:border-l-0 transition-all duration-300"
-        >
-          <SidebarContent>
-            <NavMain
-              items={data.navMain}
-              onLibraryClick={handleLibraryClick}
-              onEditorClick={handleEditorClick}
-            />
-          </SidebarContent>
-          <SidebarFooter>
-            <NavUser user={userData} />
-          </SidebarFooter>
-        </Sidebar> */}
-
         <Sidebar
           collapsible="offcanvas"
           variant="floating"
@@ -212,7 +196,7 @@ export function AppSidebar({
                   className="h-8 w-8"
                   onClick={() => setIsNewDocOpen(true)}
                 >
-                  <Pencil size={16} weight="regular" />
+                  <Pen size={16} />
                 </Button>
               </>
             )}

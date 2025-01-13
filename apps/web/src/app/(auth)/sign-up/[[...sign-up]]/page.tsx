@@ -3,7 +3,7 @@
 import * as Clerk from "@clerk/elements/common";
 import * as SignUp from "@clerk/elements/sign-up";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+
 export default function SignUpPage() {
   return (
     <div className="grid w-full flex-grow items-center px-4 sm:justify-center">

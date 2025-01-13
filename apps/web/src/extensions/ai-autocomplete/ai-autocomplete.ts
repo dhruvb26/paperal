@@ -447,5 +447,33 @@ async function handleSuggestionAcceptance(
   });
   view.dispatch(clearTr);
 
+  // Add new suggestion request after acceptance
+  setTimeout(() => {
+    const previousText = view.state.doc
+      .textBetween(0, view.state.doc.content.size, " ")
+      .slice(-4000);
+
+    // Get getSuggestion function from the plugin
+    const plugin = view.state.plugins.find((p: any) => p.key === pluginKey);
+    if (plugin && plugin.spec.view) {
+      const getSuggestion = plugin.spec.view(view).props.getSuggestion;
+      if (getSuggestion) {
+        getSuggestion(
+          previousText,
+          (suggestion: string | null, data: CallbackInput | undefined) => {
+            if (!suggestion || !data) return;
+            createAndDispatchSuggestion(
+              view,
+              suggestion,
+              data,
+              pluginKey,
+              getSuggestion
+            );
+          }
+        );
+      }
+    }
+  }, 0);
+
   return true;
 }

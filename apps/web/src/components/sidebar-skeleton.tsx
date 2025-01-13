@@ -11,6 +11,7 @@ export const SidebarSkeleton = () => {
   return (
     <Sidebar
       collapsible="icon"
+      variant="floating"
       className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row"
     >
       <Sidebar
