@@ -76,7 +76,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="w-full p-8 flex justify-between">
+      <header className="w-full p-4 sm:p-8 flex justify-between">
         <p className="font-light text-xs">
           {new Date().toLocaleDateString("en-US", {
             month: "2-digit",
@@ -99,12 +99,12 @@ export default function Home() {
           </SignOutButton>
         </SignedIn>
       </header>
-      <main className="flex-1 flex flex-col items-center justify-center relative">
-        <div className="flex flex-col items-center w-full -mt-48">
+      <main className="flex-1 flex flex-col items-center justify-center relative px-4 sm:px-0">
+        <div className="flex flex-col items-center w-full -mt-24 sm:-mt-48">
           <RotatingText />
           <form
             onSubmit={onSubmit}
-            className="flex flex-row items-center justify-center w-full max-w-xl gap-2 relative z-10"
+            className="flex flex-row items-center justify-center w-full max-w-xl gap-2 relative z-10 px-4 sm:px-0"
           >
             <Input
               placeholder="What would you like to write about?"
@@ -121,7 +121,7 @@ export default function Home() {
             </Button>
           </form>
         </div>
-        <div className="absolute bottom-10 left-12 flex flex-row items-center justify-center space-x-2">
+        <div className="absolute bottom-4 sm:bottom-10 left-4 sm:left-12 flex flex-row items-center justify-center space-x-2">
           <Link href="/tos">
             <Button className="p-0 m-0 text-base font-light" variant="link">
               tos
@@ -133,7 +133,7 @@ export default function Home() {
             </Button>
           </Link>
         </div>
-        <p className="absolute bottom-12 right-12 font-light text-blue-600">
+        <p className="absolute bottom-4 sm:bottom-12 right-4 sm:right-12 font-light text-blue-600 text-sm sm:text-base max-w-[200px] sm:max-w-none text-right">
           write your best work with the help of the best papers on the{" "}
           <span className="italic">internet</span>.
         </p>

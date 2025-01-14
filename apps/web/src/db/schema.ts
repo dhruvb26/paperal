@@ -133,10 +133,10 @@ export const checkpointsTable = pgTable(
       .primaryKey()
       .default(sql`uuid_generate_v4()`),
     threadId: text("thread_id").notNull(),
-    checkpointNs: text("checkpoint_ns").notNull(),
+    // checkpointNs: text("checkpoint_ns").notNull(),
     checkpointId: text("checkpoint_id").notNull(),
     parentCheckpointId: text("parent_checkpoint_id"),
-    type: text("type"),
+    // type: text("type"),
     checkpoint: jsonb("checkpoint"),
     metadata: jsonb("metadata"),
   },
@@ -144,7 +144,7 @@ export const checkpointsTable = pgTable(
     return {
       unq: uniqueIndex("checkpoint_unique_idx").on(
         table.threadId,
-        table.checkpointNs,
+        // table.checkpointNs,
         table.checkpointId
       ),
     };
@@ -159,7 +159,7 @@ export const checkpointBlobsTable = pgTable(
   "checkpoint_blobs",
   {
     threadId: text("thread_id").notNull(),
-    checkpointNs: text("checkpoint_ns").notNull(),
+    // checkpointNs: text("checkpoint_ns").notNull(),
     channel: text("channel").notNull(),
     version: text("version").notNull(),
     type: text("type"),
@@ -169,7 +169,7 @@ export const checkpointBlobsTable = pgTable(
     return {
       unq: uniqueIndex("checkpoint_blobs_unique_idx").on(
         table.threadId,
-        table.checkpointNs,
+        // table.checkpointNs,
         table.channel,
         table.version
       ),
@@ -181,7 +181,7 @@ export const checkpointWritesTable = pgTable(
   "checkpoint_writes",
   {
     threadId: text("thread_id").notNull(),
-    checkpointNs: text("checkpoint_ns").notNull(),
+    // checkpointNs: text("checkpoint_ns").notNull(),
     checkpointId: text("checkpoint_id").notNull(),
     taskId: text("task_id").notNull(),
     idx: integer("idx").notNull(),
@@ -193,7 +193,7 @@ export const checkpointWritesTable = pgTable(
     return {
       unq: uniqueIndex("checkpoint_writes_unique_idx").on(
         table.threadId,
-        table.checkpointNs,
+        // table.checkpointNs,
         table.checkpointId,
         table.taskId,
         table.idx

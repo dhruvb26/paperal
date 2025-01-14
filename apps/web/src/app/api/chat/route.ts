@@ -36,8 +36,8 @@ export async function POST(req: Request) {
   }
 
   // Define the pre-requisites
-  const supabaseClient = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
-  const embeddings = new OpenAIEmbeddings();
+  // const supabaseClient = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
+  // const embeddings = new OpenAIEmbeddings();
   const checkpointerFromConnString = PostgresSaver.fromConnString(
     env.DATABASE_URL
   );
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
 
   // TODO: Fix the prompt
   // agent node
-  async function queryOrRespond(
+  async function query_or_respond(
     state: typeof GraphAnnotation.State
   ): Promise<Partial<typeof GraphAnnotation.State>> {
     const { messages } = state;
@@ -128,9 +128,9 @@ export async function POST(req: Request) {
   // const tools = new ToolNode([retrieve]);
 
   const graphBuilder = new StateGraph(GraphAnnotation)
-    .addNode("queryOrRespond", queryOrRespond)
-    .addEdge("__start__", "queryOrRespond")
-    .addConditionalEdges("queryOrRespond", shouldContinue, {
+    .addNode("query_or_respond", query_or_respond)
+    .addEdge("__start__", "query_or_respond")
+    .addConditionalEdges("query_or_respond", shouldContinue, {
       __end__: "__end__",
     });
   // .addEdge("tools", "generate")

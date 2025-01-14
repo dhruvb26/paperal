@@ -193,10 +193,10 @@ export function AppSidebar({
                 <Button
                   size="icon"
                   variant="outline"
-                  className="h-8 w-8"
+                  className="h-8 w-8 text-muted-foreground hover:text-foreground"
                   onClick={() => setIsNewDocOpen(true)}
                 >
-                  <Pen size={16} />
+                  <Pen className="stroke-1" size={16} />
                 </Button>
               </>
             )}

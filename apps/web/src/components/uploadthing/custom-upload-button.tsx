@@ -19,8 +19,8 @@ export const CustomUploadButton = () => {
           button: ({ ready }) => {
             if (ready)
               return (
-                <div className="flex items-center text-foreground gap-2">
-                  <Plus weight="regular" />
+                <div className="flex items-center text-foreground">
+                  <Plus weight="light" />
                 </div>
               );
             return (
