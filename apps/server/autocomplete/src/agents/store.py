@@ -5,11 +5,11 @@ from typing import Optional
 from utils.pdf_pages import check_pdf_pages
 import fitz
 from langchain.schema import Document
-from supabase.client import create_client
 import database
 from agents.generate import ExtractPaperAgent
 from datetime import datetime
 import requests
+import re
 
 # Add logging configuration at the start of the file
 logging.basicConfig(
@@ -45,8 +45,12 @@ def generate_in_text_citation(authors: list[str], year: str) -> str:
         return f"({authors[0]},{year})"
     elif len(authors) == 2 and year:
         return f"({authors[0]} & {authors[1]},{year})"
-    elif year == "":
+    elif year == "" and authors != []:
         return f"({authors[0]} et al.)"
+    elif authors == [] and year == "":
+        return ""
+    elif authors == [] and year != "":
+        return f"({year})"
     else:
         return f"({authors[0]} et al.,{year})"
 
@@ -87,6 +91,12 @@ def store_research_paper_agent(
                 text = "".join(page.get_text() for page in pdf_document)
                 # Extract and store document
                 extracted_info = ExtractPaperAgent(text[:1200])
+                if extracted_info.year == "":
+                    # Try to extract year from URL using regex pattern for 4 digits
+                    import re
+
+                    year_match = re.search(r"/(\d{4})/", url)
+                    extracted_info.year = year_match.group(1) if year_match else ""
                 docum = Document(page_content=text)
                 logging.info("Created document")
                 docs = database.split_documents([docum])

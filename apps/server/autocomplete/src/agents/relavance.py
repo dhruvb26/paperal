@@ -29,6 +29,8 @@ def select_most_relevant_sentence(
     Return "1" if sentence1 follows the previous text best.
     Return "2" if sentence2 follows the previous text best.
 
+    If the sentences are similar, return "2".
+
     Sentence 1: {sentence1}
     Sentence 2: {sentence2}
     Previous Text: {previous_text}
@@ -43,5 +45,6 @@ def select_most_relevant_sentence(
     )
 
     choice = response.choices[0].message.content.strip()
-
-    return choice == "2"
+    if choice == "2" or choice == "Both":
+        return True
+    return False

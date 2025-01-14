@@ -196,6 +196,7 @@ def generate_referenced_sentence(
         - Is grammatically correct
         - Fits coherently with the previous content and overall paper structure
         - Advances the argument or discussion in a meaningful way
+        - Try not to use words like Moreover, Additionally, etc.
         """
 
         response = client.chat.completions.create(

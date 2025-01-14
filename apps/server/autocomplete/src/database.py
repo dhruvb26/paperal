@@ -97,10 +97,12 @@ def query_vector_store(query: str) -> List[Document]:
         end_time = time.time()
         logging.info(f"Embedding took {end_time - start_time} seconds")
 
-        # Call hybrid_search function via RPC with all required parameters
-        # score is between 0 and 0.0392
+        # Add timeout parameter and set statement_timeout
         start_time = time.time()
         try:
+            # Set a longer statement timeout (e.g., 30 seconds)
+            # supabase_client.postgrest.rpc("SET LOCAL statement_timeout = '30s'")
+
             documents = supabase_client.rpc(
                 "hybrid_search",
                 {
@@ -119,7 +121,6 @@ def query_vector_store(query: str) -> List[Document]:
         return documents
 
     except Exception as e:
-
         logging.error(f"Error in query_vector_store: {str(e)}", exc_info=True)
         raise e
 
