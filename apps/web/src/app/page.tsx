@@ -91,13 +91,20 @@ export default function Home() {
             </Button>
           </SignInButton>
         </SignedOut>
-        <SignedIn>
-          <SignOutButton>
-            <Button className="p-0 m-0 text-sm font-light" variant="link">
-              sign out
-            </Button>
-          </SignOutButton>
-        </SignedIn>
+        <div className="flex flex-row items-center justify-center space-x-6">
+          <SignedIn>
+            <Link href="/editor">
+              <Button variant="link" className="p-0 m-0 text-sm font-light">
+                dashboard
+              </Button>
+            </Link>
+            <SignOutButton>
+              <Button className="p-0 m-0 text-sm font-light" variant="link">
+                sign out
+              </Button>
+            </SignOutButton>
+          </SignedIn>
+        </div>
       </header>
       <main className="flex-1 flex flex-col items-center justify-center relative px-4 sm:px-0">
         <div className="flex flex-col items-center w-full -mt-24 sm:-mt-48">

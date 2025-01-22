@@ -2,25 +2,15 @@
 import * as React from "react";
 import { useSidebarStore } from "@/store/sidebar-store";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-} from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 import { useChat } from "ai/react";
 import { Button } from "@/components/ui/button";
-import { Loader } from "@/components/ui/loader";
-import {
-  ArrowBendRightUp,
-  ArrowRight,
-  PaperPlaneRight,
-  PaperPlaneTilt,
-  StopCircle,
-} from "@phosphor-icons/react";
+import { PaperPlaneTilt } from "@phosphor-icons/react";
 import ReactMarkdown from "react-markdown";
 import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { getChats } from "@/app/actions/chat";
 
 export function SidebarRight({
   ...props
@@ -28,6 +18,7 @@ export function SidebarRight({
   const { user, isLoaded } = useUser();
   const { isRightSidebarOpen, selectedLink } = useSidebarStore();
   const params = useParams();
+  const [initialMessages, setInitialMessages] = React.useState<any[]>([]);
   const documentId = params.page;
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
@@ -42,6 +33,7 @@ export function SidebarRight({
           throw new Error(response.statusText);
         }
       },
+      initialMessages: initialMessages,
     });
 
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
@@ -49,6 +41,12 @@ export function SidebarRight({
   React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  React.useEffect(() => {
+    getChats((user?.id || "") + documentId).then((messages) => {
+      setInitialMessages(messages);
+    });
+  }, [documentId]);
 
   if (!isLoaded)
     return <div className="flex justify-center items-center h-full"></div>;
@@ -66,9 +64,6 @@ export function SidebarRight({
     >
       <SidebarContent className="flex flex-col rounded-lg border">
         <div className="flex-1 overflow-y-auto space-y-4 mb-4 p-4 m-4">
-          <p className="text-xs text-muted-foreground py-2">
-            Work in progress.
-          </p>
           {messages.map((message) => (
             <div
               key={message.id}
