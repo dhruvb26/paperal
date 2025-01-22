@@ -60,7 +60,7 @@ export const AiAutocompleteExtension = Node.create<
   addOptions() {
     return {
       applySuggestionKey: "ArrowRight",
-      suggestionDebounce: 1500,
+      suggestionDebounce: 0,
       previousTextLength: 4000,
     };
   },
@@ -123,7 +123,7 @@ export const AiAutocompleteExtension = Node.create<
                 getSuggestion
               );
             });
-          }, 1000);
+          }, 0);
 
           return {
             update(view, prevState) {

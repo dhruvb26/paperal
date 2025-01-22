@@ -42,6 +42,7 @@ import { SidebarSkeleton } from "@/components/sidebar-skeleton";
 import { LibraryDocument } from "@/types/models/library";
 import { Document } from "@/types/models/document";
 import { ArrowRightLeft, Pen } from "lucide-react";
+import Link from "next/link";
 
 const data = {
   navMain: [
@@ -246,6 +247,15 @@ export function AppSidebar({
         >
           <BookOpen size={16} />
         </Button>
+        <Link href="/settings">
+          <Button
+            className="bg-blue-600  z-10 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300"
+            size="icon"
+            variant="outline"
+          >
+            <GearSix size={16} />
+          </Button>
+        </Link>
       </div>
       <DeleteDocumentDialog
         documentToDelete={documentToDelete}

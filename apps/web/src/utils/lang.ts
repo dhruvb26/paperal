@@ -28,9 +28,14 @@ export const convertLangChainMessageToVercelMessage = (
 ) => {
   switch (message.getType()) {
     case "human":
-      return { content: message.content, role: "user" };
+      return {
+        id: message.id,
+        content: message.content,
+        role: "user",
+      };
     case "ai":
       return {
+        id: message.id,
         content: message.content,
         role: "assistant",
         tool_calls: (message as AIMessage).tool_calls,
@@ -40,7 +45,7 @@ export const convertLangChainMessageToVercelMessage = (
   }
 };
 
-export function convertToMarkdown(prosemirrorJson: any): string {
+export async function convertToMarkdown(prosemirrorJson: any): Promise<string> {
   // Convert ProseMirror JSON to HTML with Link extension
   const html = generateHTML(prosemirrorJson, [StarterKit, Link]);
 

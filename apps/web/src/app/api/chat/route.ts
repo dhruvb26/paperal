@@ -1,15 +1,15 @@
-import { Annotation, StateGraph } from "@langchain/langgraph";
+import { Annotation, END, StateGraph } from "@langchain/langgraph";
 import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import { createClient } from "@supabase/supabase-js";
 import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres";
 import { MessagesAnnotation } from "@langchain/langgraph";
-import { isAIMessage } from "@langchain/core/messages";
+import { isAIMessage, SystemMessage } from "@langchain/core/messages";
 import { env } from "@/env";
 import { LangChainAdapter } from "ai";
 import type { Message } from "ai";
 import { HumanMessage } from "@langchain/core/messages";
 import { NextResponse } from "next/server";
-import { documentsTable } from "@/db/schema";
+import { citationsTable, documentsTable, embeddingsTable } from "@/db/schema";
 import { db } from "@/db";
 import { eq } from "drizzle-orm";
 import {
@@ -17,15 +17,30 @@ import {
   convertLangChainMessageToVercelMessage,
   convertToMarkdown,
 } from "@/utils/lang";
-// import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import * as hub from "langchain/hub";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
+import { tool } from "@langchain/core/tools";
+import { z } from "zod";
+import { ToolNode } from "@langchain/langgraph/prebuilt";
+import fs from "fs";
 
 const GraphAnnotation = Annotation.Root({
   ...MessagesAnnotation.spec,
 });
 
 export async function POST(req: Request) {
-  const { messages, userSentence, documentId, userId, title } =
+  const { messages, userSentence, documentId, userId } =
     (await req.json()) as any;
+
+  const documentContent = await db.query.documentsTable.findFirst({
+    where: eq(documentsTable.id, documentId),
+  });
+
+  const markdownDocumentContent = await convertToMarkdown(
+    documentContent?.content
+  );
 
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 });
@@ -41,28 +56,62 @@ export async function POST(req: Request) {
   const checkpointerFromConnString = PostgresSaver.fromConnString(
     env.DATABASE_URL
   );
-  // ** checkpointerFromConnString.setup(); -> Uncomment this when running the first time
+
+  // checkpointerFromConnString.setup();
+
   // const vectorStore = new SupabaseVectorStore(embeddings, {
   //   client: supabaseClient,
   //   tableName: "embeddings",
   //   queryName: "hybrid_search",
   // });
 
-  // query database to get document content from document_id
-  const documentContent = await db.query.documentsTable.findFirst({
-    where: eq(documentsTable.id, documentId),
-  });
+  // ** Define tools
 
-  if (!documentContent?.content) {
-    return new NextResponse("Document content is required", { status: 400 });
-  }
+  const retrievePdf = tool(
+    async ({ embedding }: { embedding: string }) => {
+      try {
+        console.log("---RETRIEVE PDF---");
+        const embeddingRow = await db.query.embeddingsTable.findFirst({
+          where: eq(embeddingsTable.content, embedding ?? ""),
+        });
 
-  let result = convertToMarkdown(documentContent.content);
+        if (!embeddingRow) {
+          console.log("---NO EMBEDDING FOUND---");
+          return "No embedding found";
+        }
+
+        const embeddingMetadata = embeddingRow?.metadata as EmbeddingMetadata;
+
+        const response = await fetch(embeddingMetadata.source);
+        const blob = await response.blob();
+        const pdfLoader = new WebPDFLoader(blob);
+        const pdf = await pdfLoader.load();
+
+        const pdfText = pdf.map((page) => page.pageContent).join("\n");
+
+        return pdfText.slice(0, 2000);
+      } catch (error) {
+        console.error("Error retrieving PDF:", error);
+        return "Error retrieving PDF";
+      }
+    },
+    {
+      name: "retrievePdf",
+      description:
+        "Retrieve the pdf of the paper used to extract the embedding above",
+      schema: z.object({
+        embedding: z.string(),
+      }),
+      responseFormat: "content",
+    }
+  );
+
+  const toolsNode = new ToolNode([retrievePdf]);
 
   const model = new ChatOpenAI({
     modelName: "gpt-4o",
     temperature: 0,
-  });
+  }).bind(toolsNode);
 
   // make a configurable object with thread_id as the user_id + document_id
   const config = {
@@ -70,28 +119,59 @@ export async function POST(req: Request) {
   };
 
   // ** Define nodes for the graph
-
-  // TODO: Fix the prompt
   // agent node
-  async function query_or_respond(
+  async function queryOrRespond(
     state: typeof GraphAnnotation.State
   ): Promise<Partial<typeof GraphAnnotation.State>> {
     const { messages } = state;
 
-    const systemMessageContent =
-      "You are an AI assistant helping users understand their documents and citations. " +
-      "When users ask about citations, explain how they relate to the document content. " +
-      "If asked about a specific citation, explain its context and relevance to the main document. " +
-      // (result ? `\n\nHere is the main document content:\n\n${result}` : "") +
-      // (sentence_embedding && userSentence
-      //   ? `\n\nThe user is asking about this citation: "${userSentence}"\n\nHere is the original context that was used to generate this citation:\n\n${sentence_embedding[0].content}`
-      //   : "") +
-      "\n\nWhen explaining citations:\n" +
-      "1. Compare the citation to the original context\n" +
-      "2. Explain how it relates to the main document\n" +
-      "3. Clarify if the citation accurately represents the source material";
+    console.log("---QUERY OR RESPOND---");
 
-    const response = await model.invoke(messages);
+    let citationSentence;
+    let usedEmbedding;
+
+    if (userSentence) {
+      citationSentence = await db.query.citationsTable.findFirst({
+        where: eq(citationsTable.sentence, userSentence.split("(")[0].trim()),
+      });
+      usedEmbedding = citationSentence?.context;
+    }
+
+    const systemMessageContent = `
+      You are a chatbot. You help users answer questions about a document they are writing and citations they have made in the document. 
+
+      You will use the following context to answer any user questions: 
+
+      <document>
+      ${markdownDocumentContent}
+      </document>
+
+      ${
+        userSentence
+          ? `
+      <citation>
+      ${citationSentence?.sentence}
+      </citation>
+
+      <embedding>
+      ${usedEmbedding}
+      </embedding>
+      (This is the embedding used to generate the citation above)
+      `
+          : ""
+      }
+
+      Keep in mind the following rules when answering the user's question:
+        - The response should be relevant, concise and to the point. 
+        - The response should be formatted correctly in markdown. 
+        - Use bullet points, numbered lists, and spacing to make the response more readable.
+      `;
+
+    const response = await model.invoke([
+      new SystemMessage(systemMessageContent),
+      ...messages,
+    ]);
+    console.log("---RESPONSE FROM QUERY OR RESPOND---");
     return { messages: [response] };
   }
 
@@ -99,46 +179,32 @@ export async function POST(req: Request) {
   async function shouldContinue(
     state: typeof GraphAnnotation.State
   ): Promise<"tools" | "__end__"> {
+    console.log("---SHOULD CONTINUE---");
     const lastMessage = state.messages[state.messages.length - 1];
     if (isAIMessage(lastMessage) && (lastMessage.tool_calls?.length ?? 0) > 0) {
+      console.log("---DECISION: RETRIEVE---");
       return "tools";
     }
+    console.log("---DECISION: END---");
     return "__end__";
   }
 
-  // ** Define tools
-  // const retrieve = tool(
-  //   async ({ query }) => {
-  //     const retrievedDocs = await vectorStore.similaritySearch(query);
-  //     const serialized = retrievedDocs
-  //       .map(
-  //         (doc) => `Source: ${doc.metadata.source}\nContent: ${doc.pageContent}`
-  //       )
-  //       .join("\n");
-  //     console.log("---RETRIEVED DOCS---");
-  //     return [serialized, retrievedDocs];
-  //   },
-  //   {
-  //     name: "retrieve",
-  //     description: "Retrieve information related to a query.",
-  //     schema: retrieveSchema,
-  //     responseFormat: "content_and_artifact",
-  //   }
-  // );
-  // const tools = new ToolNode([retrieve]);
-
+  // Save the image of the graph to a file
   const graphBuilder = new StateGraph(GraphAnnotation)
-    .addNode("query_or_respond", query_or_respond)
-    .addEdge("__start__", "query_or_respond")
-    .addConditionalEdges("query_or_respond", shouldContinue, {
-      __end__: "__end__",
-    });
-  // .addEdge("tools", "generate")
-  // .addEdge("generate", "__end__");
+    .addNode("agent", queryOrRespond)
+    .addEdge("__start__", "agent")
+    .addNode("tools", toolsNode)
+    .addEdge("tools", "agent")
+    .addConditionalEdges("agent", shouldContinue);
 
   const graph = graphBuilder.compile({
     checkpointer: checkpointerFromConnString,
   });
+
+  const graphImage = graph.getGraph();
+  const image = await graphImage.drawMermaidPng();
+  const imageBuffer = await image.arrayBuffer();
+  fs.writeFileSync("graph.png", Buffer.from(imageBuffer));
 
   // Convert incoming messages to LangChain format
   const history = messages
