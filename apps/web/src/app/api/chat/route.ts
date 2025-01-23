@@ -193,7 +193,7 @@ export async function POST(req: Request) {
   const graphBuilder = new StateGraph(GraphAnnotation)
     .addNode("agent", queryOrRespond)
     .addEdge("__start__", "agent")
-    .addNode("tools", toolsNode)
+    .addNode("tools", toolsNode as any)
     .addEdge("tools", "agent")
     .addConditionalEdges("agent", shouldContinue);
 

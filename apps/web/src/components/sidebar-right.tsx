@@ -10,7 +10,7 @@ import ReactMarkdown from "react-markdown";
 import { useUser } from "@clerk/nextjs";
 import { useParams } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { getChats } from "@/app/actions/chat";
+// import { getChats } from "@/app/actions/chat";
 
 export function SidebarRight({
   ...props
@@ -42,11 +42,11 @@ export function SidebarRight({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  React.useEffect(() => {
-    getChats((user?.id || "") + documentId).then((messages) => {
-      setInitialMessages(messages);
-    });
-  }, [documentId]);
+  // React.useEffect(() => {
+  //   getChats((user?.id || "") + documentId).then((messages) => {
+  //     setInitialMessages(messages);
+  //   });
+  // }, [documentId]);
 
   if (!isLoaded)
     return <div className="flex justify-center items-center h-full"></div>;
@@ -123,7 +123,7 @@ export function SidebarRight({
               type="submit"
               className="absolute bottom-2 right-2 h-6 w-6 text-muted-foreground"
               size={"icon"}
-              variant={"ghost"}
+              variant={"outline"}
               onClick={isLoading ? () => stop() : () => {}}
             >
               {isLoading ? null : <PaperPlaneTilt size={8} />}
