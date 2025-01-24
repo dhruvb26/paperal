@@ -84,14 +84,15 @@ export default function Home() {
             year: "numeric",
           })}
         </p>
-        <SignedOut>
-          <SignInButton>
-            <Button className="p-0 m-0 text-sm font-light" variant="link">
-              sign in
-            </Button>
-          </SignInButton>
-        </SignedOut>
+
         <div className="flex flex-row items-center justify-center space-x-6">
+          <SignedOut>
+            <SignInButton>
+              <Button className="p-0 m-0 text-sm font-light" variant="link">
+                sign in
+              </Button>
+            </SignInButton>
+          </SignedOut>
           <SignedIn>
             <Link href="/editor">
               <Button variant="link" className="p-0 m-0 text-sm font-light">

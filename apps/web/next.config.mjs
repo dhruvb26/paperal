@@ -13,11 +13,13 @@ const nextConfig = {
       type: "javascript/auto",
     });
 
-    // // Exclude ONNX and OpenTelemetry from webpack bundling
     config.externals = [
       ...(config.externals || []),
       { "onnxruntime-node": "onnxruntime-node" },
+      // "@opentelemetry/api",
+      "@opentelemetry/core",
       "@opentelemetry/semantic-conventions",
+      "@opentelemetry/resources",
       "sharp",
     ];
 
