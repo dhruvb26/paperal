@@ -193,7 +193,7 @@ export async function POST(req: Request) {
   const graphBuilder = new StateGraph(GraphAnnotation)
     .addNode("agent", queryOrRespond)
     .addEdge("__start__", "agent")
-    .addNode("tools", toolsNode)
+    .addNode("tools", toolsNode as any)
     .addEdge("tools", "agent")
     .addConditionalEdges("agent", shouldContinue);
 
@@ -201,10 +201,11 @@ export async function POST(req: Request) {
     checkpointer: checkpointerFromConnString,
   });
 
-  const graphImage = graph.getGraph();
-  const image = await graphImage.drawMermaidPng();
-  const imageBuffer = await image.arrayBuffer();
-  fs.writeFileSync("graph.png", Buffer.from(imageBuffer));
+  // ** Save the graph to a file
+  // const graphImage = graph.getGraph();
+  // const image = await graphImage.drawMermaidPng();
+  // const imageBuffer = await image.arrayBuffer();
+  // fs.writeFileSync("graph.png", Buffer.from(imageBuffer));
 
   // Convert incoming messages to LangChain format
   const history = messages

@@ -247,7 +247,7 @@ export function AppSidebar({
         >
           <BookOpen size={16} />
         </Button>
-        <Link href="/settings">
+        <Link href="/settings" className="z-10">
           <Button
             className="bg-blue-600  z-10 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300"
             size="icon"
