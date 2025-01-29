@@ -4,12 +4,11 @@ import "./styles.scss";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import DragHandle from "@tiptap-pro/extension-drag-handle-react";
-import Placeholder from "@tiptap/extension-placeholder";
 import { Mention } from "@tiptap/extension-mention";
 import { FloatingMenuBar } from "./floating-menu-bar";
-import { CaretRight, Plus } from "@phosphor-icons/react";
+import { Plus } from "@phosphor-icons/react";
 import { useToast } from "@/hooks/use-toast";
 import suggestion from "@/extensions/suggestion/suggestion";
 import { saveDocument } from "@/app/actions/documents";
@@ -18,7 +17,8 @@ import { CustomLink } from "@/extensions/custom-link/custom-link";
 import { Highlight } from "@tiptap/extension-highlight";
 import debounce from "lodash/debounce";
 import { useSettingsStore } from "@/stores/settings-store";
-import { SidebarTrigger } from "../ui/sidebar";
+import { convertToLatex, downloadLatex } from "@/utils/latex-converter";
+import { useUser } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 
 interface TiptapProps {
@@ -27,8 +27,10 @@ interface TiptapProps {
 }
 export default ({ documentId, initialContent }: TiptapProps) => {
   const { toast } = useToast();
-  const [isEditorLoading, setIsEditorLoading] = useState(true);
   const { showAiSuggestions } = useSettingsStore();
+  const { user } = useUser();
+
+  if (!user) return null;
 
   const debouncedSave = useCallback(
     debounce(async (editor) => {
@@ -125,13 +127,7 @@ export default ({ documentId, initialContent }: TiptapProps) => {
         },
       }),
     ].filter(Boolean),
-    onBeforeCreate: () => {
-      setIsEditorLoading(true);
-    },
     onCreate: () => {
-      setIsEditorLoading(false);
-
-      // If there's content, move cursor to the end
       if (editor.state.doc.content.size > 0) {
         editor.commands.setTextSelection(editor.state.doc.content.size);
       } else {
@@ -173,13 +169,36 @@ export default ({ documentId, initialContent }: TiptapProps) => {
     }
   };
 
+  const handleExportLatex = useCallback(() => {
+    if (!editor || !user) return;
+
+    const content = editor.getJSON();
+    const latex = convertToLatex(content, {
+      documentClass: "article",
+      user: {
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+      },
+      // date: "January 2025",
+      date: new Date().toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      }),
+    });
+
+    downloadLatex(latex);
+  }, [editor, user]);
+
   if (!editor) return null;
 
   return (
     <>
       {editor && (
-        <div className="max-w-fit flex justify-center items-center fixed left-1/2 -translate-x-1/2 top-0 z-10 py-6">
+        <div className="max-w-fit gap-4 flex justify-between items-center fixed left-1/2 -translate-x-1/2 top-0 z-10 py-6">
           <FloatingMenuBar editor={editor} />
+          <Button onClick={handleExportLatex} variant="outline" size={"sm"}>
+            Export
+          </Button>
         </div>
       )}
 
