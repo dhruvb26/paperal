@@ -39,7 +39,7 @@ importers:
         version: 2.15.0(@tiptap/pm@2.11.3)(y-prosemirror@1.2.15(prosemirror-model@1.24.1)(prosemirror-state@1.4.3)(prosemirror-view@1.37.2)(y-protocols@1.0.6(yjs@13.6.23))(yjs@13.6.23))(yjs@13.6.23)
       '@langchain/community':
         specifier: ^0.3.26
-        version: 0.3.26(t4mdlvoxoicdajwvcenoy33ptu)
+        version: 0.3.26(@aws-crypto/sha256-js@5.2.0)(@aws-sdk/client-dynamodb@3.733.0)(@aws-sdk/client-lambda@3.731.1)(@aws-sdk/client-s3@3.733.0)(@aws-sdk/credential-provider-node@3.731.1)(@azure/search-documents@12.1.0)(@browserbasehq/sdk@2.0.0(encoding@0.1.13))(@browserbasehq/stagehand@1.7.0(@playwright/test@1.49.1)(deepmerge@4.3.1)(dotenv@16.4.7)(encoding@0.1.13)(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1))(zod@3.24.1))(@datastax/astra-db-ts@1.5.0)(@huggingface/inference@2.8.1)(@huggingface/transformers@3.2.4)(@ibm-cloud/watsonx-ai@1.3.0)(@langchain/core@0.3.33(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1)))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@4.1.0)(@qdrant/js-client-rest@1.13.0(typescript@5.7.3))(@smithy/protocol-http@3.3.0)(@smithy/signature-v4@2.3.0)(@smithy/util-utf8@2.3.0)(@supabase/supabase-js@2.48.0)(@upstash/vector@1.2.0)(@zilliz/milvus2-sdk-node@2.5.4)(assemblyai@4.8.0)(axios@1.7.9)(cheerio@1.0.0)(chromadb@1.9.2(cohere-ai@7.14.0(encoding@0.1.13))(encoding@0.1.13)(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1)))(cohere-ai@7.14.0(encoding@0.1.13))(crypto-js@4.2.0)(encoding@0.1.13)(fast-xml-parser@4.4.1)(google-auth-library@9.15.0(encoding@0.1.13))(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.1.0)(ignore@5.3.2)(jsonwebtoken@9.0.2)(lodash@4.17.21)(mammoth@1.9.0)(mongodb@6.12.0)(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1))(pdf-parse@1.1.1)(pg@8.13.1)(playwright@1.49.1)(portkey-ai@0.1.16)(ws@8.18.0)
       '@langchain/core':
         specifier: ^0.3.33
         version: 0.3.33(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1))
@@ -170,11 +170,11 @@ importers:
         specifier: ^2.11.3
         version: 2.11.3(@tiptap/core@2.11.3(@tiptap/pm@2.11.3))(@tiptap/pm@2.11.3)
       '@trigger.dev/cli':
-        specifier: 3.3.11
-        version: 3.3.11(encoding@0.1.13)(typescript@5.7.3)
+        specifier: 3.3.12
+        version: 3.3.12(encoding@0.1.13)(typescript@5.7.3)
       '@trigger.dev/sdk':
-        specifier: 3.3.11
-        version: 3.3.11(zod@3.24.1)
+        specifier: 3.3.12
+        version: 3.3.12(zod@3.24.1)
       '@types/dagre':
         specifier: ^0.7.52
         version: 0.7.52
@@ -366,8 +366,8 @@ importers:
         specifier: ^0.3.9
         version: 0.3.9(wrangler@3.105.0(@cloudflare/workers-types@4.20250121.0))
       '@trigger.dev/build':
-        specifier: 3.3.11
-        version: 3.3.11(typescript@5.7.3)
+        specifier: 3.3.12
+        version: 3.3.12(typescript@5.7.3)
       '@types/lodash':
         specifier: ^4.17.14
         version: 4.17.14
@@ -642,6 +642,7 @@ packages:
   '@aws-sdk/middleware-flexible-checksums@3.732.0':
     resolution: {integrity: sha512-MIbF6cYWg5noRO1kRZNC0vewj6qzSYL/BGNlPxRQcqb6egUiGrhPEi8Y/qqweB7MlBHsqSO5YNPwH/Py8ToSVw==}
     engines: {node: '>=18.0.0'}
+    deprecated: Please upgrade to >=3.735.0, which contains fixes for checksum validation in S3 getObject calls. Details https://github.com/aws/aws-sdk-js-v3/issues/6827
 
   '@aws-sdk/middleware-host-header@3.398.0':
     resolution: {integrity: sha512-m+5laWdBaxIZK2ko0OwcCHJZJ5V1MgEIt8QVQ3k4/kOkN9ICjevOYmba751pHoTnbOYB7zQd6D2OT3EYEEsUcA==}
@@ -4421,12 +4422,12 @@ packages:
   '@tootallnate/quickjs-emscripten@0.23.0':
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
 
-  '@trigger.dev/build@3.3.11':
-    resolution: {integrity: sha512-m6z8BJCL30Eve/GzqdqjJ/BslZ8hPc0Dt1gABvCyr+MeJ53D25HuScKXlZLvH8LkPAhDLlOoR6FPcaA3OD6j5w==}
+  '@trigger.dev/build@3.3.12':
+    resolution: {integrity: sha512-nMj153C9Ly/5PAVuSBj/fsQ7HNF2V2UA9bGSarOmDC3xsjdq2a5/6woUgQ8F8XEU22b3n7mqrJb1Vk0mMBtm9A==}
     engines: {node: '>=18.20.0'}
 
-  '@trigger.dev/cli@3.3.11':
-    resolution: {integrity: sha512-D7fR3Z3JTJ2U9UIV+ZNT4OBPIwHFPvlG8FYAJvETSqySOA7gxOXBd3gqNw4acE/aU0qspDzNfBeFy3tcwGmFWg==}
+  '@trigger.dev/cli@3.3.12':
+    resolution: {integrity: sha512-HAQo/+sne3enwTYd6GeL/1NMwTum/I5pBnWA2PWsFMpP8EUOhRIee+MdAj3y5/VByWXUoxZPerRuGxQE19Z8fQ==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -4434,14 +4435,18 @@ packages:
     resolution: {integrity: sha512-UpzFwiF5X4SVAmWXQzkw9Wj7tnaoDeyFwfa7heApoFJI3Ox3pOum3Xs9nWiro56KDp3tYWh7OAX6uH8I+T728g==}
     engines: {node: '>=18.20.0'}
 
-  '@trigger.dev/sdk@3.3.11':
-    resolution: {integrity: sha512-gnFh6NHwXjavrF0tD34Tf98FB1Sn6fCEN6LvVN8hajcLGwGypWKa++Tytk4JYOtoDx1U+Omaq7ldULxLCFTjYQ==}
+  '@trigger.dev/core@3.3.12':
+    resolution: {integrity: sha512-cdOb5Qu59HGgS6mC+FcG/zMWarqoMlk7dCXGTySiC725IRfEbIzmyZ5vpoFALMqXNZeYsxGcZvGaDug6RgfcZA==}
+    engines: {node: '>=18.20.0'}
+
+  '@trigger.dev/sdk@3.3.12':
+    resolution: {integrity: sha512-HcDgdozocrOi8+X0/LQEVrawSBOVfAywFvLXUBULIWrltvuIwsJy6e5rX105SKBsvwq/eBbNvi9u5t6jiyEA+Q==}
     engines: {node: '>=18.20.0'}
     peerDependencies:
       zod: ^3.0.0
 
-  '@trigger.dev/yalt@3.3.11':
-    resolution: {integrity: sha512-6yVSrF2SpREnoxkofxnBboaTePJi/IDP90J8nxmNAWbGxFg4x8u/TucjWVPQTMgOBmTsxWlicYtZcu3kUhev9A==}
+  '@trigger.dev/yalt@3.3.12':
+    resolution: {integrity: sha512-1NJSetZRYFigBa5Cv3ELpk0FSoYzWg0PKIwBUtr9TtSHogufKqktgzqN/Ghj1I+Ai/PZ0yyQMwNROjL8rOV0yw==}
     engines: {node: '>=18.0.0'}
 
   '@ts-morph/common@0.24.0':
@@ -12755,8 +12760,8 @@ snapshots:
 
   '@kwsites/promise-deferred@1.1.1': {}
 
-  '@langchain/community@0.3.26(t4mdlvoxoicdajwvcenoy33ptu)':
-    dependencies:
+  ? '@langchain/community@0.3.26(@aws-crypto/sha256-js@5.2.0)(@aws-sdk/client-dynamodb@3.733.0)(@aws-sdk/client-lambda@3.731.1)(@aws-sdk/client-s3@3.733.0)(@aws-sdk/credential-provider-node@3.731.1)(@azure/search-documents@12.1.0)(@browserbasehq/sdk@2.0.0(encoding@0.1.13))(@browserbasehq/stagehand@1.7.0(@playwright/test@1.49.1)(deepmerge@4.3.1)(dotenv@16.4.7)(encoding@0.1.13)(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1))(zod@3.24.1))(@datastax/astra-db-ts@1.5.0)(@huggingface/inference@2.8.1)(@huggingface/transformers@3.2.4)(@ibm-cloud/watsonx-ai@1.3.0)(@langchain/core@0.3.33(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1)))(@notionhq/client@2.2.15(encoding@0.1.13))(@pinecone-database/pinecone@4.1.0)(@qdrant/js-client-rest@1.13.0(typescript@5.7.3))(@smithy/protocol-http@3.3.0)(@smithy/signature-v4@2.3.0)(@smithy/util-utf8@2.3.0)(@supabase/supabase-js@2.48.0)(@upstash/vector@1.2.0)(@zilliz/milvus2-sdk-node@2.5.4)(assemblyai@4.8.0)(axios@1.7.9)(cheerio@1.0.0)(chromadb@1.9.2(cohere-ai@7.14.0(encoding@0.1.13))(encoding@0.1.13)(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1)))(cohere-ai@7.14.0(encoding@0.1.13))(crypto-js@4.2.0)(encoding@0.1.13)(fast-xml-parser@4.4.1)(google-auth-library@9.15.0(encoding@0.1.13))(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.1.0)(ignore@5.3.2)(jsonwebtoken@9.0.2)(lodash@4.17.21)(mammoth@1.9.0)(mongodb@6.12.0)(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1))(pdf-parse@1.1.1)(pg@8.13.1)(playwright@1.49.1)(portkey-ai@0.1.16)(ws@8.18.0)'
+  : dependencies:
       '@browserbasehq/stagehand': 1.7.0(@playwright/test@1.49.1)(deepmerge@4.3.1)(dotenv@16.4.7)(encoding@0.1.13)(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1))(zod@3.24.1)
       '@ibm-cloud/watsonx-ai': 1.3.0
       '@langchain/core': 0.3.33(openai@4.80.0(encoding@0.1.13)(ws@8.18.0)(zod@3.24.1))
@@ -12804,7 +12809,7 @@ snapshots:
       jsonwebtoken: 9.0.2
       lodash: 4.17.21
       mammoth: 1.9.0
-      mongodb: 6.12.0(@aws-sdk/credential-providers@3.733.0)(socks@2.8.3)
+      mongodb: 6.12.0
       pdf-parse: 1.1.1
       pg: 8.13.1
       playwright: 1.49.1
@@ -15050,9 +15055,9 @@ snapshots:
 
   '@tootallnate/quickjs-emscripten@0.23.0': {}
 
-  '@trigger.dev/build@3.3.11(typescript@5.7.3)':
+  '@trigger.dev/build@3.3.12(typescript@5.7.3)':
     dependencies:
-      '@trigger.dev/core': 3.3.11
+      '@trigger.dev/core': 3.3.12
       pkg-types: 1.3.1
       tinyglobby: 0.2.10
       tsconfck: 3.1.3(typescript@5.7.3)
@@ -15062,10 +15067,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@trigger.dev/cli@3.3.11(encoding@0.1.13)(typescript@5.7.3)':
+  '@trigger.dev/cli@3.3.12(encoding@0.1.13)(typescript@5.7.3)':
     dependencies:
       '@trigger.dev/core': 3.3.11
-      '@trigger.dev/yalt': 3.3.11
+      '@trigger.dev/yalt': 3.3.12
       '@types/degit': 2.8.6
       boxen: 7.1.1
       chalk: 5.4.1
@@ -15138,12 +15143,44 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@trigger.dev/sdk@3.3.11(zod@3.24.1)':
+  '@trigger.dev/core@3.3.12':
+    dependencies:
+      '@electric-sql/client': 1.0.0-beta.1
+      '@google-cloud/precise-date': 4.0.0
+      '@jsonhero/path': 1.0.21
+      '@opentelemetry/api': 1.9.0
+      '@opentelemetry/api-logs': 0.52.1
+      '@opentelemetry/exporter-logs-otlp-http': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/exporter-trace-otlp-http': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/instrumentation': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/resources': 1.25.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-logs': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-node': 0.52.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-base': 1.25.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/sdk-trace-node': 1.25.1(@opentelemetry/api@1.9.0)
+      '@opentelemetry/semantic-conventions': 1.25.1
+      dequal: 2.0.3
+      eventsource-parser: 3.0.0
+      execa: 8.0.1
+      humanize-duration: 3.32.1
+      jose: 5.9.6
+      nanoid: 3.3.8
+      socket.io-client: 4.7.5
+      superjson: 2.2.2
+      zod: 3.23.8
+      zod-error: 1.5.0
+      zod-validation-error: 1.5.0(zod@3.23.8)
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+
+  '@trigger.dev/sdk@3.3.12(zod@3.24.1)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/api-logs': 0.52.1
       '@opentelemetry/semantic-conventions': 1.25.1
-      '@trigger.dev/core': 3.3.11
+      '@trigger.dev/core': 3.3.12
       chalk: 5.4.1
       cronstrue: 2.53.0
       debug: 4.4.0
@@ -15151,7 +15188,7 @@ snapshots:
       slug: 6.1.0
       terminal-link: 3.0.0
       ulid: 2.3.0
-      uuid: 9.0.0
+      uuid: 9.0.1
       ws: 8.18.0
       zod: 3.24.1
     transitivePeerDependencies:
@@ -15159,7 +15196,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@trigger.dev/yalt@3.3.11':
+  '@trigger.dev/yalt@3.3.12':
     dependencies:
       https: 1.0.0
       node-fetch: 3.3.2
@@ -15741,7 +15778,7 @@ snapshots:
 
   axios@1.7.9:
     dependencies:
-      follow-redirects: 1.15.9(debug@4.3.2)
+      follow-redirects: 1.15.9(debug@4.4.0)
       form-data: 4.0.1
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -17033,7 +17070,7 @@ snapshots:
       '@typescript-eslint/parser': 7.2.0(eslint@8.57.1)(typescript@5.7.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-react: 7.37.4(eslint@8.57.1)
@@ -17053,7 +17090,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1):
+  eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
@@ -17069,14 +17106,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 7.2.0(eslint@8.57.1)(typescript@5.7.3)
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1)
+      eslint-import-resolver-typescript: 3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1)
     transitivePeerDependencies:
       - supports-color
 
@@ -17091,7 +17128,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.1
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0(eslint@8.57.1))(eslint@8.57.1))(eslint@8.57.1)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@7.2.0(eslint@8.57.1)(typescript@5.7.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.7.0(eslint-plugin-import@2.31.0)(eslint@8.57.1))(eslint@8.57.1)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -19311,14 +19348,11 @@ snapshots:
       whatwg-url: 14.1.0
     optional: true
 
-  mongodb@6.12.0(@aws-sdk/credential-providers@3.733.0)(socks@2.8.3):
+  mongodb@6.12.0:
     dependencies:
       '@mongodb-js/saslprep': 1.1.9
       bson: 6.10.1
       mongodb-connection-string-url: 3.0.2
-    optionalDependencies:
-      '@aws-sdk/credential-providers': 3.733.0
-      socks: 2.8.3
     optional: true
 
   motion-dom@11.18.1:
