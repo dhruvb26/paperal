@@ -48,15 +48,9 @@ app.include_router(vector_query.router)
 
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "Hello World"}
 
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="127.0.0.1",
-        port=8000,
-        workers=4,
-        loop="uvloop",
-    )
+    uvicorn.run("main:app", host="127.0.0.1", port=8000)

@@ -10,6 +10,8 @@ from agents.generate import ExtractPaperAgent
 from datetime import datetime
 import requests
 import re
+from agents.store_pinecone import process_documents_batch
+
 
 # Add logging configuration at the start of the file
 logging.basicConfig(
@@ -88,19 +90,25 @@ def store_research_paper_agent(
 
                 # Process valid PDF
                 pdf_document = fitz.open(stream=pdf_data, filetype="pdf")
-                text = "".join(page.get_text() for page in pdf_document)
+                text = ""
+                for page in pdf_document:
+                    text += page.get_text()
+
                 # Extract and store document
                 extracted_info = ExtractPaperAgent(text[:1200])
                 if extracted_info.year == "":
                     # Try to extract year from URL using regex pattern for 4 digits
-                    import re
 
                     year_match = re.search(r"/(\d{4})/", url)
                     extracted_info.year = year_match.group(1) if year_match else ""
                 docum = Document(page_content=text)
-                logging.info("Created document")
-                docs = database.split_documents([docum])
-                logging.info("Split documents")
+
+                # Ensure user_id is a string or empty string instead of None
+                safe_user_id = str(user_id) if user_id is not None else ""
+
+                # logging.info("Created document")
+                # docs = database.split_documents([docum])
+                # logging.info("Split documents")
 
                 # Store in database
                 metadata_for_library = {
@@ -117,7 +125,7 @@ def store_research_paper_agent(
                 data = {
                     "title": extracted_info.title,
                     "description": extracted_info.abstract,
-                    "user_id": user_id,
+                    "user_id": user_id if user_id else None,
                     "metadata": metadata_for_library,
                     "is_public": is_public,
                 }
@@ -127,19 +135,32 @@ def store_research_paper_agent(
                 )
                 library_id = library_response.data[0]["id"]
 
-                # embeddings table
-                database.add_metadata(
-                    docs,
-                    url,
-                    extracted_info.author,
-                    extracted_info.title,
-                    extracted_info.year,
-                    user_id,
-                    library_id,
-                    is_public,
+                process_documents_batch(
+                    [docum],
+                    metadata={
+                        "url": url,
+                        "authors": extracted_info.author,
+                        "title": extracted_info.title,
+                        "year": extracted_info.year,
+                        "user_id": safe_user_id,
+                        "library_id": library_id,
+                        "is_public": is_public,
+                    },
                 )
 
-                database.vector_store.add_documents(docs)
+                # embeddings table
+                # database.add_metadata(
+                #     docs,
+                #     url,
+                #     extracted_info.author,
+                #     extracted_info.title,
+                #     extracted_info.year,
+                #     safe_user_id,
+                #     library_id,
+                #     is_public,
+                # )
+
+                # database.vector_store.add_documents(docs)
 
                 logging.info(f"Successfully stored paper: {url}")
 

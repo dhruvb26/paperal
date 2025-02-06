@@ -3,6 +3,7 @@ from typing import Optional
 from openai import OpenAI
 from database import query_vector_store
 import baml_connect.baml_main as baml_main
+from agents.store_pinecone import get_query_embeddings, query_pinecone_index
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
@@ -38,49 +39,88 @@ async def find_similar_documents(
 
     try:
         similar_keywords = await generate_question_for_RAG(generated_sentence, heading)
-        matched_docs = query_vector_store(similar_keywords)
-        if not matched_docs.data:
+        # matched_docs = query_vector_store(similar_keywords)
+        query_embeddings = get_query_embeddings(query=similar_keywords)
+        query_response = query_pinecone_index(query_embeddings)
+
+        if not query_response or not query_response.matches:
             return []
+        results = query_response.matches
+        user_filtered_docs = []
+        # for doc in results:
+        #     if (user_id is None and doc.get("metadata", {}).get("user_id") == "") or (
+        #         user_id and doc.get("metadata", {}).get("user_id") in {user_id, ""}
+        #     ):
+        #         user_filtered_docs.append(doc)
 
-        # First filter by user_id
-        user_filtered_docs = [
-            doc
-            for doc in matched_docs.data
-            if (user_id is None and doc.get("metadata", {}).get("user_id") is None)
-            or (user_id and doc.get("metadata", {}).get("user_id") in {user_id, None})
-        ]
+        # # filtered_results = []
 
-        if not user_filtered_docs:
-            return []
+        # for doc in user_filtered_docs:
+        #     if doc["metadata"]["library_id"] != last_used_document_source:
+        #         filtered_results = [doc]
+        #         last_used_document_source = doc["metadata"]["library_id"]
+        #         break
+        # if not filtered_results:
+        #     return []
 
-        # Find the first document that's different from the last used one
-        filtered_docs = []
-        for doc in user_filtered_docs:
-            if doc["metadata"]["library_id"] != last_used_document_source:
-                filtered_docs = [doc]
-                last_used_document_source = doc["metadata"]["library_id"]
-                break
+        for doc in results:
+            user_filtered_docs.append(
+                {
+                    "content": str(doc.get("metadata", {}).get("text")),
+                    "score": float(doc.get("score", 0.0)),
+                    "metadata": {
+                        "author": str(doc.get("metadata", {}).get("authors")),
+                        "title": str(doc.get("metadata", {}).get("title")),
+                        # "url": str(doc["metadata"]["source"]),
+                        "library_id": str(doc.get("metadata", {}).get("library_id")),
+                    },
+                }
+            )
+        # print(query_response)
+        # if not matched_docs.data:
+        #     return []
+        # for doc in matched_docs.data:
+        #     print(doc["content"])
+        #     break
+        # # First filter by user_id
+        # user_filtered_docs = [
+        #     doc
+        #     for doc in matched_docs.data
+        #     if (user_id is None and doc.get("metadata", {}).get("user_id") is None)
+        #     or (user_id and doc.get("metadata", {}).get("user_id") in {user_id, None})
+        # ]
 
-        # If no different document found, return empty list
-        if not filtered_docs:
-            return []
+        # if not user_filtered_docs:
+        #     return []
 
-        # Create results for the selected document
-        results = [
-            {
-                "content": str(doc["content"]),
-                "score": float(doc["similarity"]),
-                "metadata": {
-                    "author": str(doc["metadata"]["author"]),
-                    "title": str(doc["metadata"]["title"]),
-                    "url": str(doc["metadata"]["source"]),
-                    "library_id": str(doc["metadata"]["library_id"]),
-                },
-            }
-            for doc in filtered_docs
-        ]
+        # # Find the first document that's different from the last used one
+        # filtered_docs = []
+        # for doc in user_filtered_docs:
+        #     if doc["metadata"]["library_id"] != last_used_document_source:
+        #         filtered_docs = [doc]
+        #         last_used_document_source = doc["metadata"]["library_id"]
+        #         break
 
-        return results
+        # # If no different document found, return empty list
+        # if not filtered_docs:
+        #     return []
+
+        # # Create results for the selected document
+        # results = [
+        #     {
+        #         "content": str(doc["content"]),
+        #         "score": float(doc["similarity"]),
+        #         "metadata": {
+        #             "author": str(doc["metadata"]["author"]),
+        #             "title": str(doc["metadata"]["title"]),
+        #             "url": str(doc["metadata"]["source"]),
+        #             "library_id": str(doc["metadata"]["library_id"]),
+        #         },
+        #     }
+        #     for doc in filtered_docs
+        # ]
+
+        return user_filtered_docs
 
     except Exception as e:
         logging.error(f"Error in find_similar_documents: {e}")

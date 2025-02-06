@@ -14,7 +14,7 @@ async def search_tavily(query: str):
     """Endpoint to search Tavily database."""
     logging.info("Received search request.")
     try:
-        results = TavilySearchAgent(query)
+        results = await TavilySearchAgent(query)
         return {"results": results}
     except Exception as e:
         logging.error(f"Error in search_tavily: {str(e)}", exc_info=True)

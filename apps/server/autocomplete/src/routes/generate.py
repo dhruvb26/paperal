@@ -56,26 +56,26 @@ async def generate_sentence(request: SentenceRequest):
         )
         print(sentence)
         print(similar_docs[0]["score"])
-        if similar_docs[0]["score"] > 0.05:
-            citation = (
-                database.supabase_client.table("library")
-                .select("*")
-                .eq("id", similar_docs[0]["metadata"].get("library_id"))
-                .execute()
-            )
+        # if similar_docs[0]["score"] > 0.05:
+        #     citation = (
+        #         database.supabase_client.table("library")
+        #         .select("*")
+        #         .eq("id", similar_docs[0]["metadata"].get("library_id"))
+        #         .execute()
+        #     )
 
-            return {
-                "text": sentence.get("sentence"),
-                "is_referenced": True,
-                "citations": similar_docs[0]["metadata"].get(
-                    "citations",
-                    {
-                        "in-text": citation.data[0]["metadata"]["citations"]["in-text"],
-                    },
-                ),
-                "href": similar_docs[0]["metadata"].get("url"),
-                "context": similar_docs[0]["content"],
-            }
+        #     return {
+        #         "text": sentence.get("sentence"),
+        #         "is_referenced": True,
+        #         "citations": similar_docs[0]["metadata"].get(
+        #             "citations",
+        #             {
+        #                 "in-text": citation.data[0]["metadata"]["citations"]["in-text"],
+        #             },
+        #         ),
+        #         "href": similar_docs[0]["metadata"].get("url"),
+        #         "context": similar_docs[0]["content"],
+        #     }
 
         if (
             sentence
