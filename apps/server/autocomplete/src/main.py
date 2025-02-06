@@ -4,7 +4,8 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from contextlib import asynccontextmanager
+from database import supabase_client
 
 from routes import generate, store, vector_query, search
 
@@ -18,9 +19,18 @@ logging.basicConfig(
 )
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    # Close Supabase connection
+    supabase_client.postgrest.aclose()
+    logging.info("Supabase connection closed successfully")
+
+
 app = FastAPI(
     title="Autocomplete API",
     description="This is the Autocomplete API",
+    lifespan=lifespan,
 )
 app.add_middleware(
     CORSMiddleware,

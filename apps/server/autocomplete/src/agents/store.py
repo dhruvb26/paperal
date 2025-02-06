@@ -5,11 +5,13 @@ from typing import Optional
 from utils.pdf_pages import check_pdf_pages
 import fitz
 from langchain.schema import Document
-from supabase.client import create_client
 import database
 from agents.generate import ExtractPaperAgent
 from datetime import datetime
 import requests
+import re
+from agents.store_pinecone import process_documents_batch
+
 
 # Add logging configuration at the start of the file
 logging.basicConfig(
@@ -45,8 +47,12 @@ def generate_in_text_citation(authors: list[str], year: str) -> str:
         return f"({authors[0]},{year})"
     elif len(authors) == 2 and year:
         return f"({authors[0]} & {authors[1]},{year})"
-    elif year == "":
+    elif year == "" and authors != []:
         return f"({authors[0]} et al.)"
+    elif authors == [] and year == "":
+        return ""
+    elif authors == [] and year != "":
+        return f"({year})"
     else:
         return f"({authors[0]} et al.,{year})"
 
@@ -84,13 +90,25 @@ def store_research_paper_agent(
 
                 # Process valid PDF
                 pdf_document = fitz.open(stream=pdf_data, filetype="pdf")
-                text = "".join(page.get_text() for page in pdf_document)
+                text = ""
+                for page in pdf_document:
+                    text += page.get_text()
+
                 # Extract and store document
                 extracted_info = ExtractPaperAgent(text[:1200])
+                if extracted_info.year == "":
+                    # Try to extract year from URL using regex pattern for 4 digits
+
+                    year_match = re.search(r"/(\d{4})/", url)
+                    extracted_info.year = year_match.group(1) if year_match else ""
                 docum = Document(page_content=text)
-                logging.info("Created document")
-                docs = database.split_documents([docum])
-                logging.info("Split documents")
+
+                # Ensure user_id is a string or empty string instead of None
+                safe_user_id = str(user_id) if user_id is not None else ""
+
+                # logging.info("Created document")
+                # docs = database.split_documents([docum])
+                # logging.info("Split documents")
 
                 # Store in database
                 metadata_for_library = {
@@ -107,7 +125,7 @@ def store_research_paper_agent(
                 data = {
                     "title": extracted_info.title,
                     "description": extracted_info.abstract,
-                    "user_id": user_id,
+                    "user_id": user_id if user_id else None,
                     "metadata": metadata_for_library,
                     "is_public": is_public,
                 }
@@ -117,19 +135,32 @@ def store_research_paper_agent(
                 )
                 library_id = library_response.data[0]["id"]
 
-                # embeddings table
-                database.add_metadata(
-                    docs,
-                    url,
-                    extracted_info.author,
-                    extracted_info.title,
-                    extracted_info.year,
-                    user_id,
-                    library_id,
-                    is_public,
+                process_documents_batch(
+                    [docum],
+                    metadata={
+                        "url": url,
+                        "authors": extracted_info.author,
+                        "title": extracted_info.title,
+                        "year": extracted_info.year,
+                        "user_id": safe_user_id,
+                        "library_id": library_id,
+                        "is_public": is_public,
+                    },
                 )
 
-                database.vector_store.add_documents(docs)
+                # embeddings table
+                # database.add_metadata(
+                #     docs,
+                #     url,
+                #     extracted_info.author,
+                #     extracted_info.title,
+                #     extracted_info.year,
+                #     safe_user_id,
+                #     library_id,
+                #     is_public,
+                # )
+
+                # database.vector_store.add_documents(docs)
 
                 logging.info(f"Successfully stored paper: {url}")
 

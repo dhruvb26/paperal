@@ -4,7 +4,8 @@
   "description": "Analyze Research Papers using AI",
   "scripts": {
     "dev": "../../venv/bin/python run.py",
-    "build": "pip install -r requirements.txt"
+    "build": "pip install -r requirements.txt",
+    "tunnel": "ngrok http 8000"
   },
   "keywords": [],
   "author": ""
