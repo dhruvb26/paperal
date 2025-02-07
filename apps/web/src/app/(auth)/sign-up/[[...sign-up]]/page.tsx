@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import * as Clerk from "@clerk/elements/common";
-import * as SignUp from "@clerk/elements/sign-up";
-import { Button } from "@/components/ui/button";
+import * as Clerk from '@clerk/elements/common'
+import * as SignUp from '@clerk/elements/sign-up'
+import { Button } from '@/components/ui/button'
 
 export default function SignUpPage() {
   return (
@@ -45,7 +45,7 @@ export default function SignUpPage() {
             </Clerk.Connection>
           </Button>
           <p className="text-center text-sm text-zinc-500">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Clerk.Link
               navigate="sign-in"
               className="font-medium text-foreground decoration-foreground/20 underline-offset-4 outline-none hover:text-foreground/80 hover:underline focus-visible:underline"
@@ -56,5 +56,5 @@ export default function SignUpPage() {
         </SignUp.Step>
       </SignUp.Root>
     </div>
-  );
+  )
 }

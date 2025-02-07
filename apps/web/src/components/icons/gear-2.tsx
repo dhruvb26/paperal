@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 
 interface Gear2Props {
-  title?: string;
+  title?: string
 }
 
-function Gear2({ title = "gear 2" }: Gear2Props) {
-  const color = "hsl(var(--foreground))";
+function Gear2({ title = 'gear 2' }: Gear2Props) {
+  const color = 'hsl(var(--foreground))'
 
   return (
     <svg
@@ -193,7 +193,7 @@ function Gear2({ title = "gear 2" }: Gear2Props) {
         />
       </g>
     </svg>
-  );
+  )
 }
 
-export default Gear2;
+export default Gear2

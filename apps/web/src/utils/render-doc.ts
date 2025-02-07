@@ -1,75 +1,75 @@
 interface TextNode {
-  type: "text";
-  text: string;
+  type: 'text'
+  text: string
 }
 
 interface HeadingNode {
-  type: "heading";
+  type: 'heading'
   attrs: {
-    level: number;
-  };
-  content: TextNode[];
+    level: number
+  }
+  content: TextNode[]
 }
 
 interface ParagraphNode {
-  type: "paragraph";
-  content: (HeadingNode | TextNode)[];
+  type: 'paragraph'
+  content: (HeadingNode | TextNode)[]
 }
 
 interface Doc {
-  type: "doc";
-  content: ParagraphNode[];
+  type: 'doc'
+  content: ParagraphNode[]
 }
 
 export const getDocHeading = (docString: string): string => {
   try {
     const content =
-      typeof docString === "string" ? JSON.parse(docString) : docString;
+      typeof docString === 'string' ? JSON.parse(docString) : docString
 
     const firstHeading = content.content.find(
-      (node: any) => node.type === "heading"
-    );
+      (node: any) => node.type === 'heading'
+    )
 
-    return firstHeading?.content?.[0]?.text || "Untitled Document";
+    return firstHeading?.content?.[0]?.text || 'Untitled Document'
   } catch (error) {
-    return "";
+    return ''
   }
-};
+}
 
 export const getDocContent = (docString: string): string => {
   try {
     const content =
-      typeof docString === "string" ? JSON.parse(docString) : docString;
+      typeof docString === 'string' ? JSON.parse(docString) : docString
 
     return (
       content.content
-        .filter((node: any) => node.type === "paragraph" && node.content)
+        .filter((node: any) => node.type === 'paragraph' && node.content)
         .flatMap((node: any) =>
           node.content.map((contentNode: any) => contentNode.text)
         )
-        .join(" ") || "Nothing here yet. Start writing now!"
-    );
+        .join(' ') || 'Nothing here yet. Start writing now!'
+    )
   } catch (error) {
-    return "";
+    return ''
   }
-};
+}
 
 export const getDocDate = (date: Date): string => {
   try {
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const now = new Date()
+    const diff = now.getTime() - date.getTime()
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
 
     if (days === 0) {
-      return "Today";
+      return 'Today'
     } else if (days === 1) {
-      return "Yesterday";
+      return 'Yesterday'
     } else if (days < 7) {
-      return `${days} days ago`;
+      return `${days} days ago`
     } else {
-      return date.toLocaleDateString();
+      return date.toLocaleDateString()
     }
   } catch (error) {
-    return "";
+    return ''
   }
-};
+}

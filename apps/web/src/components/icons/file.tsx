@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 
 interface FileProps {
-  title?: string;
+  title?: string
 }
 
-function File({ title = "file" }: FileProps) {
-  const color = "hsl(var(--foreground))";
+function File({ title = 'file' }: FileProps) {
+  const color = 'hsl(var(--foreground))'
 
   return (
     <svg
@@ -34,7 +34,7 @@ function File({ title = "file" }: FileProps) {
         />
       </g>
     </svg>
-  );
+  )
 }
 
-export default File;
+export default File

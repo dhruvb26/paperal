@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,12 +8,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog'
 
 interface DeleteDocumentDialogProps {
-  documentToDelete: string | null;
-  onDelete: (documentId: string) => void;
-  onCancel: () => void;
+  documentToDelete: string | null
+  onDelete: (documentId: string) => void
+  onCancel: () => void
 }
 
 export const DeleteDocumentDialog: React.FC<DeleteDocumentDialogProps> = ({
@@ -41,5 +41,5 @@ export const DeleteDocumentDialog: React.FC<DeleteDocumentDialogProps> = ({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  );
-};
+  )
+}

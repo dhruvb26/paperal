@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import * as Clerk from "@clerk/elements/common";
-import * as SignIn from "@clerk/elements/sign-in";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import * as Clerk from '@clerk/elements/common'
+import * as SignIn from '@clerk/elements/sign-in'
+import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 export default function SignInPage() {
   return (
     <div className="grid w-full flex-grow items-center px-4 sm:justify-center">
@@ -45,7 +45,7 @@ export default function SignInPage() {
             </Clerk.Connection>
           </Button>
           <p className="text-center text-sm text-zinc-500">
-            No account?{" "}
+            No account?{' '}
             <Clerk.Link
               navigate="sign-up"
               className="font-medium text-foreground decoration-foreground/20 underline-offset-4 outline-none hover:text-foreground/80 hover:underline focus-visible:underline"
@@ -56,5 +56,5 @@ export default function SignInPage() {
         </SignIn.Step>
       </SignIn.Root>
     </div>
-  );
+  )
 }

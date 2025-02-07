@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { NavMain } from "@/components/nav-main";
-import { NavUser } from "@/components/nav-user";
-import { useUser } from "@clerk/nextjs";
+import * as React from 'react'
+import { NavMain } from '@/components/nav-main'
+import { NavUser } from '@/components/nav-user'
+import { useUser } from '@clerk/nextjs'
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +12,7 @@ import {
   SidebarInput,
   SidebarTrigger,
   useSidebar,
-} from "@/components/ui/sidebar";
+} from '@/components/ui/sidebar'
 import {
   GearSix,
   TerminalWindow,
@@ -25,44 +25,44 @@ import {
   ArrowUp,
   CaretRight,
   Pencil,
-} from "@phosphor-icons/react";
+} from '@phosphor-icons/react'
 
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { Button } from "./ui/button";
-import { NewDocumentDialog } from "@/components/document/new-document-dialog";
-import { deleteDocument } from "@/app/actions/documents";
-import { useToast } from "@/hooks/use-toast";
-import { DocumentList } from "@/components/document/document-list";
-import { DeleteDocumentDialog } from "@/components/document/delete-document-dialog";
-import { LibraryList } from "@/components/document/library-list";
-import { deleteLibrary } from "@/app/actions/library";
-import { CustomUploadButton } from "./uploadthing/custom-upload-button";
-import { SidebarSkeleton } from "@/components/sidebar-skeleton";
-import { LibraryDocument } from "@/types/models/library";
-import { Document } from "@/types/models/document";
-import { ArrowRightLeft, Pen } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
+import { Button } from './ui/button'
+import { NewDocumentDialog } from '@/components/document/new-document-dialog'
+import { deleteDocument } from '@/app/actions/documents'
+import { useToast } from '@/hooks/use-toast'
+import { DocumentList } from '@/components/document/document-list'
+import { DeleteDocumentDialog } from '@/components/document/delete-document-dialog'
+import { LibraryList } from '@/components/document/library-list'
+import { deleteLibrary } from '@/app/actions/library'
+import { CustomUploadButton } from './uploadthing/custom-upload-button'
+import { SidebarSkeleton } from '@/components/sidebar-skeleton'
+import { LibraryDocument } from '@/types/models/library'
+import { Document } from '@/types/models/document'
+import { ArrowRightLeft, Pen } from 'lucide-react'
+import Link from 'next/link'
 
 const data = {
   navMain: [
     {
-      title: "Documents",
-      url: "/editor",
+      title: 'Documents',
+      url: '/editor',
       icon: <File weight="duotone" />,
     },
 
     {
-      title: "Library",
-      url: "/library",
+      title: 'Library',
+      url: '/library',
       icon: <BookOpen weight="duotone" />,
     },
   ],
-};
+}
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  documents?: Document[];
-  libraries?: LibraryDocument[];
+  documents?: Document[]
+  libraries?: LibraryDocument[]
 }
 
 export function AppSidebar({
@@ -70,77 +70,77 @@ export function AppSidebar({
   libraries = [],
   ...props
 }: AppSidebarProps) {
-  const { toast } = useToast();
-  const { isLoaded, isSignedIn, user } = useUser();
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [sortDesc, setSortDesc] = React.useState(true);
-  const pathname = usePathname();
-  const [isNewDocOpen, setIsNewDocOpen] = React.useState(false);
+  const { toast } = useToast()
+  const { isLoaded, isSignedIn, user } = useUser()
+  const [searchQuery, setSearchQuery] = React.useState('')
+  const [sortDesc, setSortDesc] = React.useState(true)
+  const pathname = usePathname()
+  const [isNewDocOpen, setIsNewDocOpen] = React.useState(false)
   const [documentToDelete, setDocumentToDelete] = React.useState<string | null>(
     null
-  );
+  )
   const [libraryToDelete, setLibraryToDelete] = React.useState<string | null>(
     null
-  );
-  const { toggleSidebar, open } = useSidebar();
-  const router = useRouter();
-  const [showLibraryList, setShowLibraryList] = React.useState(false);
+  )
+  const { toggleSidebar, open } = useSidebar()
+  const router = useRouter()
+  const [showLibraryList, setShowLibraryList] = React.useState(false)
 
   if (!isLoaded) {
-    return null;
+    return null
   }
 
   if (!isSignedIn) {
-    return null;
+    return null
   }
 
   const userData = {
-    name: user.fullName ?? "",
-    email: user.emailAddresses[0].emailAddress ?? "",
-    avatar: user.imageUrl ?? "",
-  };
+    name: user.fullName ?? '',
+    email: user.emailAddresses[0].emailAddress ?? '',
+    avatar: user.imageUrl ?? '',
+  }
 
   const handleDeleteDocument = async (documentId: string) => {
     try {
-      await deleteDocument(documentId);
-      setDocumentToDelete(null);
-      router.refresh();
+      await deleteDocument(documentId)
+      setDocumentToDelete(null)
+      router.refresh()
       toast({
-        title: "Document deleted",
-        description: "The document has been deleted successfully.",
-      });
+        title: 'Document deleted',
+        description: 'The document has been deleted successfully.',
+      })
     } catch (error) {
-      console.error("Failed to delete document:", error);
+      console.error('Failed to delete document:', error)
     }
-  };
+  }
 
   const handleDeleteLibrary = async (libraryId: string) => {
     try {
-      await deleteLibrary(libraryId);
+      await deleteLibrary(libraryId)
 
-      setLibraryToDelete(null);
+      setLibraryToDelete(null)
       toast({
-        title: "Document Deleted",
-        description: "The library document has been deleted successfully.",
-      });
+        title: 'Document Deleted',
+        description: 'The library document has been deleted successfully.',
+      })
     } catch (error) {
-      console.error("Failed to delete library:", error);
+      console.error('Failed to delete library:', error)
     }
-  };
+  }
 
   const handleLibraryClick = () => {
-    setShowLibraryList(true);
+    setShowLibraryList(true)
     if (!open) {
-      toggleSidebar();
+      toggleSidebar()
     }
-  };
+  }
 
   const handleEditorClick = () => {
-    setShowLibraryList(false);
+    setShowLibraryList(false)
     if (!open) {
-      toggleSidebar();
+      toggleSidebar()
     }
-  };
+  }
 
   return (
     <>
@@ -173,7 +173,7 @@ export function AppSidebar({
                   className="h-8"
                   onClick={() => setSortDesc(!sortDesc)}
                 >
-                  Sort{" "}
+                  Sort{' '}
                   {sortDesc ? <ArrowDown size={12} /> : <ArrowUp size={12} />}
                 </Button>
 
@@ -187,7 +187,7 @@ export function AppSidebar({
                   className="h-8"
                   onClick={() => setSortDesc(!sortDesc)}
                 >
-                  Sort{" "}
+                  Sort{' '}
                   {sortDesc ? <ArrowDown size={12} /> : <ArrowUp size={12} />}
                 </Button>
 
@@ -229,30 +229,16 @@ export function AppSidebar({
         </Sidebar>
       </Sidebar>
       <div className="flex flex-col items-center max-h-fit justify-start gap-2 p-2 rounded-lg  relative left-8 top-8">
-        <SidebarTrigger className=" z-10 bg-blue-600 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300" />
+        <SidebarTrigger className="z-10" />
 
-        <Button
-          className="bg-blue-600  z-10 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300"
-          size="icon"
-          variant="outline"
-          onClick={() => handleEditorClick()}
-        >
+        <Button size="icon" onClick={() => handleEditorClick()}>
           <File size={16} />
         </Button>
-        <Button
-          className="bg-blue-600  z-10 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300"
-          size="icon"
-          variant="outline"
-          onClick={() => handleLibraryClick()}
-        >
+        <Button size="icon" onClick={() => handleLibraryClick()}>
           <BookOpen size={16} />
         </Button>
         <Link href="/settings" className="z-10">
-          <Button
-            className="bg-blue-600  z-10 hover:bg-blue-500 hover:translate-y-[-1px] border-blue-900 border-b-4 text-white hover:text-white transition-all duration-300"
-            size="icon"
-            variant="outline"
-          >
+          <Button className="" size="icon">
             <GearSix size={16} />
           </Button>
         </Link>
@@ -269,5 +255,5 @@ export function AppSidebar({
         onCancel={() => setLibraryToDelete(null)}
       />
     </>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   CheckCircle,
@@ -6,9 +6,9 @@ import {
   CreditCard,
   Sparkle,
   SignOut,
-} from "@phosphor-icons/react";
+} from '@phosphor-icons/react'
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,38 +16,38 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu'
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
-import { SignOutButton } from "@clerk/nextjs";
-import { LogOut } from "lucide-react";
+} from '@/components/ui/sidebar'
+import { SignOutButton } from '@clerk/nextjs'
+import { LogOut } from 'lucide-react'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./ui/tooltip";
+} from './ui/tooltip'
 
 export function NavUser({
   user,
 }: {
   user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
+    name: string
+    email: string
+    avatar: string
+  }
 }) {
-  const { isMobile } = useSidebar();
+  const { isMobile } = useSidebar()
 
   return (
     <SidebarMenu>
       <SidebarMenuButton
         tooltip={{
-          children: "Logout",
+          children: 'Logout',
           hidden: false,
         }}
       >
@@ -102,5 +102,5 @@ export function NavUser({
             </DropdownMenuItem>
           </DropdownMenuContent> */}
     </SidebarMenu>
-  );
+  )
 }

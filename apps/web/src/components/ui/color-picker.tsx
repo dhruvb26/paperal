@@ -1,38 +1,38 @@
-"use client";
+'use client'
 
-import { forwardRef, useMemo, useState } from "react";
-import { HexColorPicker } from "react-colorful";
-import { cn } from "@/lib/utils";
-import { useForwardedRef } from "@/lib/use-forwarded-ref";
-import type { ButtonProps } from "@/components/ui/button";
-import { Button } from "@/components/ui/button";
+import { forwardRef, useMemo, useState } from 'react'
+import { HexColorPicker } from 'react-colorful'
+import { cn } from '@/lib/utils'
+import { useForwardedRef } from '@/lib/use-forwarded-ref'
+import type { ButtonProps } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/popover'
+import { Input } from '@/components/ui/input'
 
 interface ColorPickerProps {
-  value: string;
-  onChange: (value: string) => void;
-  onBlur?: () => void;
+  value: string
+  onChange: (value: string) => void
+  onBlur?: () => void
 }
 
 const ColorPicker = forwardRef<
   HTMLInputElement,
-  Omit<ButtonProps, "value" | "onChange" | "onBlur"> & ColorPickerProps
+  Omit<ButtonProps, 'value' | 'onChange' | 'onBlur'> & ColorPickerProps
 >(
   (
     { disabled, value, onChange, onBlur, name, className, ...props },
     forwardedRef
   ) => {
-    const ref = useForwardedRef(forwardedRef);
-    const [open, setOpen] = useState(false);
+    const ref = useForwardedRef(forwardedRef)
+    const [open, setOpen] = useState(false)
 
     const parsedValue = useMemo(() => {
-      return value || "#FFFFFF";
-    }, [value]);
+      return value || '#FFFFFF'
+    }, [value])
 
     return (
       <Popover onOpenChange={setOpen} open={open}>
@@ -45,12 +45,12 @@ const ColorPicker = forwardRef<
           <Button
             {...props}
             className={cn(
-              "w-full flex items-center text-center px-4",
+              'w-full flex items-center text-center px-4',
               className
             )}
             name={name}
             onClick={() => {
-              setOpen(true);
+              setOpen(true)
             }}
             variant="outline"
           >
@@ -71,16 +71,16 @@ const ColorPicker = forwardRef<
             className="mt-4 uppercase text-center"
             maxLength={7}
             onChange={(e) => {
-              onChange(e?.currentTarget?.value);
+              onChange(e?.currentTarget?.value)
             }}
             ref={ref}
             value={parsedValue}
           />
         </PopoverContent>
       </Popover>
-    );
+    )
   }
-);
-ColorPicker.displayName = "ColorPicker";
+)
+ColorPicker.displayName = 'ColorPicker'
 
-export { ColorPicker };
+export { ColorPicker }

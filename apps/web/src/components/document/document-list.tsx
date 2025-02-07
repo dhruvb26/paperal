@@ -1,22 +1,22 @@
-import React from "react";
-import Link from "next/link";
+import React from 'react'
+import Link from 'next/link'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { DotsThreeVertical } from "@phosphor-icons/react";
-import { getDocContent, getDocDate, getDocHeading } from "@/utils/render-doc";
-import { Document } from "@/types/models/document";
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { DotsThreeVertical } from '@phosphor-icons/react'
+import { getDocContent, getDocDate, getDocHeading } from '@/utils/render-doc'
+import { Document } from '@/types/models/document'
 
 interface DocumentListProps {
-  documents: Document[];
-  searchQuery: string;
-  sortDesc: boolean;
-  pathname: string;
-  setDocumentToDelete: (id: string | null) => void;
+  documents: Document[]
+  searchQuery: string
+  sortDesc: boolean
+  pathname: string
+  setDocumentToDelete: (id: string | null) => void
 }
 
 export const DocumentList: React.FC<DocumentListProps> = ({
@@ -28,19 +28,19 @@ export const DocumentList: React.FC<DocumentListProps> = ({
 }) => {
   const filteredDocuments = documents
     .filter((document) => {
-      const title = getDocHeading(document.content)?.toLowerCase() || "";
-      const content = getDocContent(document.content)?.toLowerCase() || "";
-      const query = searchQuery.toLowerCase();
+      const title = getDocHeading(document.content)?.toLowerCase() || ''
+      const content = getDocContent(document.content)?.toLowerCase() || ''
+      const query = searchQuery.toLowerCase()
 
-      return title.includes(query) || content.includes(query);
+      return title.includes(query) || content.includes(query)
     })
     .sort((a, b) => {
-      const dateA = a.updatedAt || a.createdAt;
-      const dateB = b.updatedAt || b.createdAt;
+      const dateA = a.updatedAt || a.createdAt
+      const dateB = b.updatedAt || b.createdAt
       return sortDesc
         ? dateB.getTime() - dateA.getTime()
-        : dateA.getTime() - dateB.getTime();
-    });
+        : dateA.getTime() - dateB.getTime()
+    })
 
   return (
     <div>
@@ -49,8 +49,8 @@ export const DocumentList: React.FC<DocumentListProps> = ({
           key={document.id}
           className={`flex flex-col items-start gap-2 whitespace-nowrap border-b p-2 text-sm leading-tight ${
             pathname === `/editor/${document.id}`
-              ? "bg-background text-sidebar-accent-foreground"
-              : ""
+              ? 'bg-background text-sidebar-accent-foreground'
+              : ''
           }`}
         >
           <div className="flex w-full items-center">
@@ -93,5 +93,5 @@ export const DocumentList: React.FC<DocumentListProps> = ({
         <div className="p-4 text-sm text-center w-full">No results found.</div>
       )}
     </div>
-  );
-};
+  )
+}

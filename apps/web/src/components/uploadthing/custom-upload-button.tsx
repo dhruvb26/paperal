@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import { UploadButton } from "@/utils/uploadthing";
-import { useToast } from "@/hooks/use-toast";
-import { twMerge } from "tailwind-merge";
-import { Loader } from "../ui/loader";
-import { Plus } from "@phosphor-icons/react";
-import { useLoadingToast } from "@/hooks/use-loading-toast";
-import { Spinner } from "@phosphor-icons/react";
+import { UploadButton } from '@/utils/uploadthing'
+import { useToast } from '@/hooks/use-toast'
+import { twMerge } from 'tailwind-merge'
+import { Loader } from '../ui/loader'
+import { Plus } from '@phosphor-icons/react'
+import { useLoadingToast } from '@/hooks/use-loading-toast'
+import { Spinner } from '@phosphor-icons/react'
 
 export const CustomUploadButton = () => {
-  const { toast } = useToast();
-  const { startLoadingToast } = useLoadingToast();
+  const { toast } = useToast()
+  const { startLoadingToast } = useLoadingToast()
 
   return (
     <>
@@ -22,12 +22,12 @@ export const CustomUploadButton = () => {
                 <div className="flex items-center text-foreground">
                   <Plus weight="light" />
                 </div>
-              );
+              )
             return (
               <div>
                 <Loader />
               </div>
-            );
+            )
           },
         }}
         config={{ cn: twMerge }}
@@ -35,28 +35,28 @@ export const CustomUploadButton = () => {
         endpoint="pdfUploader"
         onUploadBegin={() => {
           startLoadingToast({
-            id: "upload-started",
-            message: "Upload Started",
-            description: "Your file is being uploaded.",
+            id: 'upload-started',
+            message: 'Upload Started',
+            description: 'Your file is being uploaded.',
             duration: Infinity,
-          });
+          })
         }}
         onClientUploadComplete={(res) => {
           toast({
-            id: "upload-complete",
-            title: "Upload Complete",
-            description: "File uploaded successfully.",
-            variant: "success",
-          });
+            id: 'upload-complete',
+            title: 'Upload Complete',
+            description: 'File uploaded successfully.',
+            variant: 'success',
+          })
         }}
         onUploadError={(error) => {
           toast({
-            title: "Upload Error",
+            title: 'Upload Error',
             description: error.message,
-            variant: "destructive",
-          });
+            variant: 'destructive',
+          })
         }}
       />
     </>
-  );
-};
+  )
+}

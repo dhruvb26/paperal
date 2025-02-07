@@ -1,8 +1,8 @@
-import React from "react";
-import { Editor } from "@tiptap/react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import React from 'react'
+import { Editor } from '@tiptap/react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
 import {
   Dialog,
   DialogContent,
@@ -10,19 +10,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Gear } from "@phosphor-icons/react";
+} from '@/components/ui/dialog'
+import { Gear } from '@phosphor-icons/react'
 
 interface VersioningSidebarProps {
-  isAutoVersioning: boolean;
-  hasChanges: boolean;
-  commitDescription: string;
-  editor: Editor | null;
+  isAutoVersioning: boolean
+  hasChanges: boolean
+  commitDescription: string
+  editor: Editor | null
   onCommitDescriptionChange: (
     event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
-  onNewVersion: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  showVersioningModal: () => void;
+  ) => void
+  onNewVersion: (e: React.MouseEvent<HTMLButtonElement>) => void
+  showVersioningModal: () => void
 }
 
 export const VersioningSidebar: React.FC<VersioningSidebarProps> = ({
@@ -69,5 +69,5 @@ export const VersioningSidebar: React.FC<VersioningSidebarProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}

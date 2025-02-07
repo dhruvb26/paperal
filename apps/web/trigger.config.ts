@@ -1,9 +1,9 @@
-import { defineConfig } from "@trigger.dev/sdk/v3";
+import { defineConfig } from '@trigger.dev/sdk/v3'
 
 export default defineConfig({
-  project: "proj_xvejkqytgifdrcuywvaa",
-  runtime: "node",
-  logLevel: "log",
+  project: 'proj_xvejkqytgifdrcuywvaa',
+  runtime: 'node',
+  logLevel: 'log',
   maxDuration: 300,
   retries: {
     enabledInDev: true,
@@ -15,5 +15,5 @@ export default defineConfig({
       randomize: true,
     },
   },
-  dirs: ["./src/trigger"],
-});
+  dirs: ['./src/trigger'],
+})

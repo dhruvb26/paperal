@@ -1,18 +1,18 @@
 export interface LibraryDocument {
-  id: string;
-  title: string;
-  description: string;
-  userId: string | null;
-  isPublic: boolean;
-  createdAt: Date;
-  updatedAt: Date | null;
+  id: string
+  title: string
+  description: string
+  userId: string | null
+  isPublic: boolean
+  createdAt: Date
+  updatedAt: Date | null
   metadata?: {
-    fileUrl?: string;
-    authors?: string[];
-    year?: string;
+    fileUrl?: string
+    authors?: string[]
+    year?: string
     citations?: {
-      "in-text"?: string;
-      "after-text"?: string;
-    };
-  };
+      'in-text'?: string
+      'after-text'?: string
+    }
+  }
 }

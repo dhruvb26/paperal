@@ -1,12 +1,12 @@
-import { renderDate } from "@/utils/render-date";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { renderDate } from '@/utils/render-date'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 interface VersionItemProps {
-  title: string;
-  date: string | number | Date;
-  isActive: boolean;
-  onClick: () => void;
+  title: string
+  date: string | number | Date
+  isActive: boolean
+  onClick: () => void
 }
 
 export const VersionItem = ({
@@ -20,8 +20,8 @@ export const VersionItem = ({
       onClick={onClick}
       variant="ghost"
       className={cn(
-        "w-full h-auto p-2 px-3 justify-start",
-        isActive && "bg-accent hover:bg-accent shadow-none"
+        'w-full h-auto p-2 px-3 justify-start',
+        isActive && 'bg-accent hover:bg-accent shadow-none'
       )}
     >
       <div className="flex flex-col items-start space-y-2">
@@ -33,5 +33,5 @@ export const VersionItem = ({
         )}
       </div>
     </Button>
-  );
-};
+  )
+}

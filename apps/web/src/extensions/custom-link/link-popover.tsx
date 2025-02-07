@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 
 interface LinkPopoverProps {
-  document: any;
-  href: string;
-  target?: string;
-  initialCitationType: string;
-  onCitationTypeChange: (newText: string) => void;
+  document: any
+  href: string
+  target?: string
+  initialCitationType: string
+  onCitationTypeChange: (newText: string) => void
 }
 
 export const LinkPopover = React.forwardRef<HTMLDivElement, LinkPopoverProps>(
@@ -13,7 +13,7 @@ export const LinkPopover = React.forwardRef<HTMLDivElement, LinkPopoverProps>(
     {
       document,
       href,
-      target = "_blank",
+      target = '_blank',
       initialCitationType,
       onCitationTypeChange,
     },
@@ -27,10 +27,10 @@ export const LinkPopover = React.forwardRef<HTMLDivElement, LinkPopoverProps>(
         <div className="flex flex-col space-y-1 items-start text-xs">
           <span className="text-xs truncate">{document.title}</span>
           <span className="text-xs truncate w-full text-muted-foreground">
-            {document.metadata?.authors?.join(", ") || ""}
+            {document.metadata?.authors?.join(', ') || ''}
           </span>
           <span className="text-xs text-muted-foreground italic">
-            {document.metadata?.year || ""}
+            {document.metadata?.year || ''}
           </span>
         </div>
         <div className="flex items-center justify-between w-full">
@@ -38,16 +38,16 @@ export const LinkPopover = React.forwardRef<HTMLDivElement, LinkPopoverProps>(
             <button
               className="citation-toggle flex items-center gap-2 px-2 py-1 rounded-md bg-muted hover:bg-muted/80"
               onClick={() => {
-                const currentType = initialCitationType;
+                const currentType = initialCitationType
                 const newType =
-                  currentType === "in-text" ? "after-text" : "in-text";
+                  currentType === 'in-text' ? 'after-text' : 'in-text'
                 const newText =
-                  document.metadata?.citations?.[newType] || document.title;
-                onCitationTypeChange(newText);
+                  document.metadata?.citations?.[newType] || document.title
+                onCitationTypeChange(newText)
               }}
             >
               <span className="text-xs">
-                {initialCitationType === "in-text" ? "In-text" : "After-text"}
+                {initialCitationType === 'in-text' ? 'In-text' : 'After-text'}
               </span>
             </button>
             <button
@@ -68,6 +68,6 @@ export const LinkPopover = React.forwardRef<HTMLDivElement, LinkPopoverProps>(
           </div>
         </div>
       </div>
-    );
+    )
   }
-);
+)
