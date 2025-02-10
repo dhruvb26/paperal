@@ -190,22 +190,22 @@ def delete_pinecone_data():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-    )
+    # logging.basicConfig(
+    #     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    # )
 
-    urls = ["https://arxiv.org/pdf/1706.03762"]
+    # urls = ["https://arxiv.org/pdf/1706.03762"]
 
-    try:
-        # documents = load_pdf_from_url(urls)
-        # if documents:
-        #     process_documents_batch(documents)
+    # try:
+    #     # documents = load_pdf_from_url(urls)
+    #     # if documents:
+    #     #     process_documents_batch(documents)
 
-        logging.info("Querying Pinecone index...")
-        query_embeddings = get_query_embeddings(query="attention, multi-head")
-        query_response = query_pinecone_index(query_embeddings)
+    #     logging.info("Querying Pinecone index...")
+    #     query_embeddings = get_query_embeddings(query="attention, multi-head")
+    #     query_response = query_pinecone_index(query_embeddings)
 
-        logging.info("Query response: %s", query_response)
-    except Exception as e:
-        logging.error(f"Error in main execution: {str(e)}")
-    # delete_pinecone_data()
+    #     logging.info("Query response: %s", query_response)
+    # except Exception as e:
+    #     logging.error(f"Error in main execution: {str(e)}")
+    delete_pinecone_data()

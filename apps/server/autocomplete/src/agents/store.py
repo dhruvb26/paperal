@@ -134,6 +134,7 @@ def store_research_paper_agent(
                     database.supabase_client.table("library").insert(data).execute()
                 )
                 library_id = library_response.data[0]["id"]
+                print(url)
 
                 process_documents_batch(
                     [docum],

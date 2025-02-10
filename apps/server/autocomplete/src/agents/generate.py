@@ -71,7 +71,7 @@ async def find_similar_documents(
                     "metadata": {
                         "author": str(doc.get("metadata", {}).get("authors")),
                         "title": str(doc.get("metadata", {}).get("title")),
-                        # "url": str(doc["metadata"]["source"]),
+                        "url": str(doc["metadata"]["url"]),
                         "library_id": str(doc.get("metadata", {}).get("library_id")),
                     },
                 }
