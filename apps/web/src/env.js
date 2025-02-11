@@ -19,6 +19,7 @@ export const env = createEnv({
     SUPABASE_URL: z.string().url(),
     SUPABASE_ANON_KEY: z.string().min(1),
     DATABASE_PASSWORD: z.string().min(1),
+    CREATE_EMBEDDINGS: z.boolean().default(true),
   },
   /*
    * Environment variables available on the client (and server).
