@@ -43,27 +43,7 @@ async def getURL(research_sentence: str) -> list:
     if not tavily_client:
         logging.error("Tavily client is not initialized.")
         return []
-    # use openai to extract important words from the research_sentence
 
-    # prompt = f"""Extract important words from the following research sentence: {research_sentence}
-    # Return only the important words as a comma separated string.
-    # """
-    # client = OpenAI()
-    # response = client.chat.completions.create(
-    #     model="gpt-3.5-turbo",
-    #     messages=[
-    #         {
-    #             "role": "system",
-    #             "content": "You are a world class researcher. Extract important words from the given research sentence.",
-    #         },
-    #         {"role": "user", "content": prompt},
-    #     ],
-    #     temperature=0.3,
-    # )
-    # research_topic = response.choices[0].message.content.strip()
-
-    # # research_topic = research_sentence
-    # logging.info(f"Searching for research papers on: {research_topic}")
     url_list = []
 
     # Search parameters
@@ -72,8 +52,6 @@ async def getURL(research_sentence: str) -> list:
         "query": query,
         "max_results": 20,
         "exclude_domains": ["reddit.com", "wikipedia.org", "ieeexplore.ieee.org/"],
-        # some other good domains
-        # "include_domains": ["arxiv.org", "aclanthology.org"],
         "search_depth": "advanced",
         "filter_language": "en",
     }
