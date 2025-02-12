@@ -1,4 +1,4 @@
-import { AiSettings } from "@/components/settings/ai-settings";
+import { AiSettings } from '@/components/settings/ai-settings'
 
 export default function SettingsPage() {
   return (
@@ -7,5 +7,5 @@ export default function SettingsPage() {
         <AiSettings />
       </div>
     </main>
-  );
+  )
 }

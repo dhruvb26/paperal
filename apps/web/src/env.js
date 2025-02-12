@@ -1,5 +1,5 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-nextjs'
+import { z } from 'zod'
 
 export const env = createEnv({
   /*
@@ -10,7 +10,7 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     CLERK_SECRET_KEY: z.string().min(1),
     UPLOADTHING_TOKEN: z.string().min(1),
-    NODE_ENV: z.enum(["development", "production"]),
+    NODE_ENV: z.enum(['development', 'production']),
     CLERK_WEBHOOK_SIGNING_SECRET: z.string().min(1),
     API_URL: z.string().url(),
     DATABASE_USER: z.string().min(1),
@@ -19,6 +19,7 @@ export const env = createEnv({
     SUPABASE_URL: z.string().url(),
     SUPABASE_ANON_KEY: z.string().min(1),
     DATABASE_PASSWORD: z.string().min(1),
+    CREATE_EMBEDDINGS: z.boolean().default(true),
   },
   /*
    * Environment variables available on the client (and server).
@@ -56,4 +57,4 @@ export const env = createEnv({
     TRIGGER_SECRET_KEY: process.env.TRIGGER_SECRET_KEY,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
-});
+})

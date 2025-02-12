@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 
 interface BookOpenProps {
-  title?: string;
+  title?: string
 }
 
-function BookOpen({ title = "book open" }: BookOpenProps) {
-  const color = "hsl(var(--foreground))";
+function BookOpen({ title = 'book open' }: BookOpenProps) {
+  const color = 'hsl(var(--foreground))'
 
   return (
     <svg
@@ -34,7 +34,7 @@ function BookOpen({ title = "book open" }: BookOpenProps) {
         />
       </g>
     </svg>
-  );
+  )
 }
 
-export default BookOpen;
+export default BookOpen

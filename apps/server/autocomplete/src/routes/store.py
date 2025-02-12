@@ -11,12 +11,11 @@ router = APIRouter()
 
 
 @router.post("/store")
-async def store_research_papers(
+def store_research_papers(
     request: StoreResearchRequest, background_tasks: BackgroundTasks
 ):
     """Endpoint to store research papers in the database."""
     logging.info("Received request to store research papers.")
-    # Create and await the task directly
     background_tasks.add_task(
         store_research_paper_agent,
         request.research_urls,

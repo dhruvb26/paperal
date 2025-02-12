@@ -1,46 +1,49 @@
-"use server";
+'use server'
 
-import { db } from "@/db";
-import { documentsTable } from "@/db/schema";
-import { v4 as uuidv4 } from "uuid";
-import { currentUser } from "@clerk/nextjs/server";
-import { and, eq } from "drizzle-orm";
-import { createEmbeddings } from "@/trigger/embeddings";
-import { tasks } from "@trigger.dev/sdk/v3";
+import { db } from '@/db'
+import { documentsTable } from '@/db/schema'
+import { v4 as uuidv4 } from 'uuid'
+import { currentUser } from '@clerk/nextjs/server'
+import { and, eq } from 'drizzle-orm'
+import { createEmbeddings } from '@/trigger/embeddings'
+import { tasks } from '@trigger.dev/sdk/v3'
+import { env } from '@/env'
 
 export async function createDocument(prompt: string) {
-  const docId = uuidv4();
-  const user = await currentUser();
-  const userId = user?.id;
+  const docId = uuidv4()
+  const user = await currentUser()
+  const userId = user?.id
 
   if (!userId) {
-    throw new Error("User not found");
+    throw new Error('User not found')
   }
 
-  await tasks.trigger<typeof createEmbeddings>("create-embeddings", {
-    prompt,
-  });
+  if (env.CREATE_EMBEDDINGS) {
+    await tasks.trigger<typeof createEmbeddings>('create-embeddings', {
+      prompt,
+    })
+  }
 
   const defaultContent = {
-    type: "doc",
+    type: 'doc',
     content: [
       {
-        type: "heading",
+        type: 'heading',
         attrs: {
           level: 1,
         },
         content: [
           {
-            type: "text",
+            type: 'text',
             text: prompt,
           },
         ],
       },
       {
-        type: "paragraph",
+        type: 'paragraph',
       },
     ],
-  };
+  }
 
   await db.insert(documentsTable).values({
     id: docId,
@@ -48,34 +51,34 @@ export async function createDocument(prompt: string) {
     prompt: prompt,
     title: prompt,
     userId: userId,
-  });
+  })
 
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  await new Promise((resolve) => setTimeout(resolve, 8000))
 
-  return docId;
+  return docId
 }
 
 export async function getDocuments() {
-  const user = await currentUser();
-  const userId = user?.id;
+  const user = await currentUser()
+  const userId = user?.id
 
   if (!userId) {
-    return [];
+    return []
   }
 
   const documents = await db
     .select()
     .from(documentsTable)
-    .where(eq(documentsTable.userId, userId));
-  return documents;
+    .where(eq(documentsTable.userId, userId))
+  return documents
 }
 
 export async function saveDocument(documentId: string, content: any) {
-  const user = await currentUser();
-  const userId = user?.id;
+  const user = await currentUser()
+  const userId = user?.id
 
   if (!userId) {
-    throw new Error("User not found");
+    throw new Error('User not found')
   }
 
   await db
@@ -85,15 +88,15 @@ export async function saveDocument(documentId: string, content: any) {
     })
     .where(
       and(eq(documentsTable.id, documentId), eq(documentsTable.userId, userId))
-    );
+    )
 }
 
 export async function getDocument(documentId: string) {
-  const user = await currentUser();
-  const userId = user?.id;
+  const user = await currentUser()
+  const userId = user?.id
 
   if (!userId) {
-    throw new Error("User not found");
+    throw new Error('User not found')
   }
 
   const document = await db
@@ -101,24 +104,24 @@ export async function getDocument(documentId: string) {
     .from(documentsTable)
     .where(
       and(eq(documentsTable.id, documentId), eq(documentsTable.userId, userId))
-    );
+    )
 
-  return document;
+  return document
 }
 
 export async function deleteDocument(documentId: string) {
-  const user = await currentUser();
-  const userId = user?.id;
+  const user = await currentUser()
+  const userId = user?.id
 
   if (!userId) {
-    throw new Error("User not found");
+    throw new Error('User not found')
   }
 
   await db
     .delete(documentsTable)
     .where(
       and(eq(documentsTable.id, documentId), eq(documentsTable.userId, userId))
-    );
+    )
 
-  return true;
+  return true
 }

@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 
 interface House2Props {
-  title?: string;
+  title?: string
 }
 
-function House2({ title = "house 2" }: House2Props) {
-  const color = "hsl(var(--foreground))";
+function House2({ title = 'house 2' }: House2Props) {
+  const color = 'hsl(var(--foreground))'
 
   return (
     <svg
@@ -37,7 +37,7 @@ function House2({ title = "house 2" }: House2Props) {
         />
       </g>
     </svg>
-  );
+  )
 }
 
-export default House2;
+export default House2

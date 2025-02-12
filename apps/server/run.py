@@ -1,9 +1,12 @@
 import sys
 import os
-import uvicorn
+from pathlib import Path
 
-# Add the autocomplete directory to the Python path
-sys.path.append(os.path.join(os.path.dirname(__file__), "autocomplete"))
+# Add the autocomplete/src directory to the Python path
+current_dir = Path(__file__).parent
+src_path = current_dir / "autocomplete" / "src"
+sys.path.append(str(src_path))
 
 if __name__ == "__main__":
-    uvicorn.run("autocomplete.main:app", port=8000, reload=True)
+    import uvicorn
+    uvicorn.run("main:app", port=8000, reload=True)

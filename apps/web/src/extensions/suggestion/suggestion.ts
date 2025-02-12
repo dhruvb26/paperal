@@ -1,29 +1,29 @@
-import { ReactRenderer } from "@tiptap/react";
-import tippy from "tippy.js";
-import { Editor } from "@tiptap/core";
-import { MentionList } from "./mention-list";
+import { ReactRenderer } from '@tiptap/react'
+import tippy from 'tippy.js'
+import { Editor } from '@tiptap/core'
+import { MentionList } from './mention-list'
 
 interface SuggestionProps {
-  query: string;
-  editor: Editor;
-  clientRect: (() => DOMRect) | null;
-  event?: KeyboardEvent;
-  isLoading?: boolean;
+  query: string
+  editor: Editor
+  clientRect: (() => DOMRect) | null
+  event?: KeyboardEvent
+  isLoading?: boolean
 }
 
 export default {
   items: async () => {
-    return [];
+    return []
   },
 
   render: () => {
-    let reactRenderer: ReactRenderer | null = null;
-    let popup: ReturnType<typeof tippy> | null = null;
+    let reactRenderer: ReactRenderer | null = null
+    let popup: ReturnType<typeof tippy> | null = null
 
     return {
       onStart: (props: SuggestionProps) => {
         if (!props.clientRect) {
-          return;
+          return
         }
 
         reactRenderer = new ReactRenderer(MentionList, {
@@ -33,121 +33,121 @@ export default {
               href,
               citations,
             }: {
-              id: string;
-              href: string;
+              id: string
+              href: string
               citations?: {
-                "in-text"?: string;
-                "after-text"?: string;
-              };
-              isLoading: boolean;
+                'in-text'?: string
+                'after-text'?: string
+              }
+              isLoading: boolean
             }) => {
-              const citation = citations?.["in-text"];
+              const citation = citations?.['in-text']
               props.editor
                 .chain()
                 .focus()
                 .command(({ tr }) => {
                   const start =
-                    tr.selection.$from.pos - (props.query.length + 1);
-                  const end = tr.selection.$from.pos;
-                  tr.delete(start, end);
-                  return true;
+                    tr.selection.$from.pos - (props.query.length + 1)
+                  const end = tr.selection.$from.pos
+                  tr.delete(start, end)
+                  return true
                 })
                 .insertContent([
                   {
-                    type: "text",
-                    text: " ",
+                    type: 'text',
+                    text: ' ',
                   },
                   {
-                    type: "text",
+                    type: 'text',
                     marks: [
                       {
-                        type: "link",
+                        type: 'link',
                         attrs: { href },
                       },
                     ],
                     text: citation,
                   },
                   {
-                    type: "text",
-                    text: " ",
+                    type: 'text',
+                    text: ' ',
                   },
                 ])
-                .run();
+                .run()
 
               if (popup?.[0]) {
-                popup[0].hide();
+                popup[0].hide()
               }
             },
           },
           editor: props.editor,
-        });
+        })
 
-        popup = tippy("body", {
+        popup = tippy('body', {
           getReferenceClientRect: props.clientRect,
           appendTo: () => document.body,
           content: reactRenderer.element,
           showOnCreate: true,
           interactive: true,
-          trigger: "manual",
-          placement: "bottom-start",
-          theme: "custom",
+          trigger: 'manual',
+          placement: 'bottom-start',
+          theme: 'custom',
           arrow: false,
           offset: [0, 10],
           maxWidth: 500,
-          animation: "shift-away",
+          animation: 'shift-away',
           popperOptions: {
-            strategy: "fixed",
+            strategy: 'fixed',
             modifiers: [
               {
-                name: "preventOverflow",
+                name: 'preventOverflow',
                 options: {
                   padding: 8,
                 },
               },
             ],
           },
-        });
+        })
       },
 
       onUpdate(props: SuggestionProps) {
-        if (!reactRenderer || !popup) return;
+        if (!reactRenderer || !popup) return
 
-        reactRenderer.updateProps(props);
+        reactRenderer.updateProps(props)
 
         if (!props.clientRect) {
-          return;
+          return
         }
 
         popup[0].setProps({
           getReferenceClientRect: props.clientRect,
-        });
+        })
       },
 
       onKeyDown(props: SuggestionProps) {
-        if (!popup || !reactRenderer) return false;
+        if (!popup || !reactRenderer) return false
 
-        if (props.event?.key === "Escape") {
-          popup[0].hide();
-          return true;
+        if (props.event?.key === 'Escape') {
+          popup[0].hide()
+          return true
         }
 
         return (
           (
             reactRenderer.ref as {
-              onKeyDown: (props: SuggestionProps) => boolean;
+              onKeyDown: (props: SuggestionProps) => boolean
             }
           )?.onKeyDown(props) || false
-        );
+        )
       },
 
       onExit() {
         if (popup) {
-          popup[0].destroy();
+          popup[0].destroy()
         }
         if (reactRenderer) {
-          reactRenderer.destroy();
+          reactRenderer.destroy()
         }
       },
-    };
+    }
   },
-};
+}

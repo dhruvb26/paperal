@@ -1,134 +1,134 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { ArrowUpRight, Plus } from "@phosphor-icons/react";
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
+import { ArrowUpRight, Plus } from '@phosphor-icons/react'
 import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
   useState,
-} from "react";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Loader } from "@/components/ui/loader";
-import axios from "axios";
-import { LibraryDocument } from "@/types/models/library";
-import { Button } from "@/components/ui/button";
+} from 'react'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { Loader } from '@/components/ui/loader'
+import axios from 'axios'
+import { LibraryDocument } from '@/types/models/library'
+import { Button } from '@/components/ui/button'
 
 interface MentionListProps {
-  items: Array<LibraryDocument>;
+  items: Array<LibraryDocument>
   command: (props: {
-    id: string;
-    href?: string;
+    id: string
+    href?: string
     citations?: {
-      "in-text"?: string;
-      "after-text"?: string;
-    };
-  }) => void;
-  isLoading?: boolean;
+      'in-text'?: string
+      'after-text'?: string
+    }
+  }) => void
+  isLoading?: boolean
 }
 
 interface MentionListRef {
-  onKeyDown: (props: { event: KeyboardEvent }) => boolean;
+  onKeyDown: (props: { event: KeyboardEvent }) => boolean
 }
 
 export const MentionList = forwardRef<MentionListRef, MentionListProps>(
   (props, ref) => {
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [libraryItems, setLibraryItems] = useState<LibraryDocument[]>([]);
-    const [discoverItems, setDiscoverItems] = useState<LibraryDocument[]>([]);
-    const [isLibraryLoading, setIsLibraryLoading] = useState(false);
-    const [isDiscoverLoading, setIsDiscoverLoading] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(0)
+    const [libraryItems, setLibraryItems] = useState<LibraryDocument[]>([])
+    const [discoverItems, setDiscoverItems] = useState<LibraryDocument[]>([])
+    const [isLibraryLoading, setIsLibraryLoading] = useState(false)
+    const [isDiscoverLoading, setIsDiscoverLoading] = useState(false)
 
     const selectItem = (index: number) => {
-      const item = props.items[index];
+      const item = props.items[index]
 
       if (item) {
         props.command({
           id: item.id,
-          href: item.metadata?.fileUrl || "#",
+          href: item.metadata?.fileUrl || '#',
           citations: item.metadata?.citations,
-        });
+        })
       }
-    };
+    }
 
     const upHandler = () => {
       setSelectedIndex(
         (selectedIndex + props.items.length - 1) % props.items.length
-      );
-    };
+      )
+    }
 
     const downHandler = () => {
-      setSelectedIndex((selectedIndex + 1) % props.items.length);
-    };
+      setSelectedIndex((selectedIndex + 1) % props.items.length)
+    }
 
     const enterHandler = () => {
-      selectItem(selectedIndex);
-    };
+      selectItem(selectedIndex)
+    }
 
-    useEffect(() => setSelectedIndex(0), [props.items]);
+    useEffect(() => setSelectedIndex(0), [props.items])
 
     useImperativeHandle(ref, () => ({
       onKeyDown: ({ event }) => {
-        if (event.key === "ArrowUp") {
-          upHandler();
-          return true;
+        if (event.key === 'ArrowUp') {
+          upHandler()
+          return true
         }
 
-        if (event.key === "ArrowDown") {
-          downHandler();
-          return true;
+        if (event.key === 'ArrowDown') {
+          downHandler()
+          return true
         }
 
-        if (event.key === "Enter") {
-          enterHandler();
-          return true;
+        if (event.key === 'Enter') {
+          enterHandler()
+          return true
         }
 
-        return false;
+        return false
       },
-    }));
+    }))
 
     const handleCite = (item: LibraryDocument) => {
       props.command({
         id: item.id,
-        href: item.metadata?.fileUrl || "#",
+        href: item.metadata?.fileUrl || '#',
         citations: item.metadata?.citations,
-      });
-    };
+      })
+    }
 
     const handleView = (item: LibraryDocument) => {
-      window.open(item.metadata?.fileUrl || "#", "_blank");
-    };
+      window.open(item.metadata?.fileUrl || '#', '_blank')
+    }
 
     const fetchDiscoverItems = async () => {
-      setIsDiscoverLoading(true);
+      setIsDiscoverLoading(true)
       try {
-        const response = await axios.get("/api/library/discover");
-        const { documents } = response.data;
-        setDiscoverItems(documents);
+        const response = await axios.get('/api/library/discover')
+        const { documents } = response.data
+        setDiscoverItems(documents)
       } catch (error) {
-        console.error("Error fetching discover items:", error);
+        console.error('Error fetching discover items:', error)
       } finally {
-        setIsDiscoverLoading(false);
+        setIsDiscoverLoading(false)
       }
-    };
+    }
 
     const fetchLibraryItems = async () => {
-      setIsLibraryLoading(true);
+      setIsLibraryLoading(true)
       try {
-        const response = await axios.get("/api/library/all");
-        const { documents } = response.data;
-        setLibraryItems(documents);
+        const response = await axios.get('/api/library/all')
+        const { documents } = response.data
+        setLibraryItems(documents)
       } catch (error) {
-        console.error("Error fetching library items:", error);
+        console.error('Error fetching library items:', error)
       } finally {
-        setIsLibraryLoading(false);
+        setIsLibraryLoading(false)
       }
-    };
+    }
 
     useEffect(() => {
-      fetchLibraryItems();
-      fetchDiscoverItems();
-    }, []);
+      fetchLibraryItems()
+      fetchDiscoverItems()
+    }, [])
 
     return (
       <Tabs
@@ -142,10 +142,10 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
         <TabsContent value="library">
           <div>
             {isLibraryLoading ? (
-              <ScrollArea style={{ height: "250px" }}>
+              <ScrollArea style={{ height: '250px' }}>
                 <div
                   className="flex items-center justify-center"
-                  style={{ minHeight: "250px", width: "450px" }}
+                  style={{ minHeight: '250px', width: '450px' }}
                 >
                   <span className="text-muted-foreground text-xs">
                     <Loader />
@@ -154,7 +154,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
               </ScrollArea>
             ) : libraryItems.length ? (
               <ScrollArea
-                style={{ height: "250px", width: "450px" }}
+                style={{ height: '250px', width: '450px' }}
                 className="pr-6 pl-2 py-1"
               >
                 {libraryItems.map((item, index) => (
@@ -165,7 +165,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                           {item.title}
                         </span>
                         <span className="text-xs w-full text-muted-foreground line-clamp-2">
-                          {item.metadata?.authors?.join(", ")}
+                          {item.metadata?.authors?.join(', ')}
                         </span>
                         <span className="text-xs text-muted-foreground italic">
                           {item.metadata?.year}
@@ -205,17 +205,17 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                     </div>
                     <Separator
                       className={`${
-                        index === libraryItems.length - 1 ? "hidden" : ""
+                        index === libraryItems.length - 1 ? 'hidden' : ''
                       }`}
                     />
                   </React.Fragment>
                 ))}
               </ScrollArea>
             ) : (
-              <ScrollArea style={{ height: "250px" }}>
+              <ScrollArea style={{ height: '250px' }}>
                 <div
                   className="flex items-center justify-center"
-                  style={{ minHeight: "250px", width: "450px" }}
+                  style={{ minHeight: '250px', width: '450px' }}
                 >
                   <span className="text-muted-foreground text-xs">
                     No results.
@@ -228,10 +228,10 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
         <TabsContent value="discover">
           <div>
             {isDiscoverLoading ? (
-              <ScrollArea style={{ height: "250px" }}>
+              <ScrollArea style={{ height: '250px' }}>
                 <div
                   className="flex items-center justify-center"
-                  style={{ minHeight: "250px", width: "450px" }}
+                  style={{ minHeight: '250px', width: '450px' }}
                 >
                   <span className="text-muted-foreground text-xs">
                     <Loader />
@@ -240,7 +240,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
               </ScrollArea>
             ) : discoverItems.length ? (
               <ScrollArea
-                style={{ height: "250px", width: "450px" }}
+                style={{ height: '250px', width: '450px' }}
                 className="pr-6 pl-2 py-1"
               >
                 {discoverItems.map((item, index) => (
@@ -251,7 +251,7 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                           {item.title}
                         </span>
                         <span className="text-xs w-full text-muted-foreground line-clamp-2">
-                          {item.metadata?.authors?.join(", ")}
+                          {item.metadata?.authors?.join(', ')}
                         </span>
                         <span className="text-xs text-muted-foreground italic">
                           {item.metadata?.year}
@@ -292,17 +292,17 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
                     </div>
                     <Separator
                       className={`${
-                        index === discoverItems.length - 1 ? "hidden" : ""
+                        index === discoverItems.length - 1 ? 'hidden' : ''
                       }`}
                     />
                   </React.Fragment>
                 ))}
               </ScrollArea>
             ) : (
-              <ScrollArea style={{ height: "250px" }}>
+              <ScrollArea style={{ height: '250px' }}>
                 <div
                   className="flex items-center justify-center"
-                  style={{ minHeight: "250px", width: "450px" }}
+                  style={{ minHeight: '250px', width: '450px' }}
                 >
                   <span className="text-muted-foreground text-xs">
                     No results found.
@@ -313,6 +313,6 @@ export const MentionList = forwardRef<MentionListRef, MentionListProps>(
           </div>
         </TabsContent>
       </Tabs>
-    );
+    )
   }
-);
+)

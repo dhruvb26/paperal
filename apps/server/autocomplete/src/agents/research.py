@@ -5,7 +5,7 @@ import os
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from tavily import TavilyClient
+from tavily import AsyncTavilyClient
 
 # Configure logging
 logging.basicConfig(
@@ -15,7 +15,7 @@ logging.basicConfig(
 load_dotenv()
 # Initialize Tavily client
 try:
-    tavily_client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
+    tavily_client = AsyncTavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
     logging.info("Tavily client initialized successfully.")
 except Exception as e:
     logging.error(f"Error initializing Tavily client: {e}")
@@ -30,7 +30,7 @@ except Exception as e:
     openai_client = None
 
 
-def getURL(research_sentence: str) -> list:
+async def getURL(research_sentence: str) -> list:
     """
     Fetches URLs of research papers based on a topic using Tavily API.
 
@@ -42,7 +42,7 @@ def getURL(research_sentence: str) -> list:
     """
     if not tavily_client:
         logging.error("Tavily client is not initialized.")
-        return {}
+        return []
     # use openai to extract important words from the research_sentence
 
     # prompt = f"""Extract important words from the following research sentence: {research_sentence}
@@ -78,7 +78,7 @@ def getURL(research_sentence: str) -> list:
         "filter_language": "en",
     }
     try:
-        response = tavily_client.search(**search_params)
+        response = await tavily_client.search(**search_params)
         url_list = []
 
         # Simplified URL processing
@@ -99,11 +99,12 @@ def getURL(research_sentence: str) -> list:
         return []
 
 
-def TavilySearchAgent(query: str) -> dict:
+async def TavilySearchAgent(query: str) -> list:
     """Agent to search the Tavily database for relevant information."""
     try:
         logging.info(f"Searching Tavily for query: {query}")
-        return getURL(query)
+        url_list = await getURL(query)
+        return url_list
     except Exception as e:
         logging.error(f"Error in TavilySearchAgent: {e}")
-        return {}
+        return []

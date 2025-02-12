@@ -1,17 +1,17 @@
-import { NextResponse } from "next/server";
-import { env } from "@/env";
-import axios from "axios";
-import { db } from "@/db";
-import { eq } from "drizzle-orm";
-import { documentsTable, libraryTable } from "@/db/schema";
-import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from 'next/server'
+import { env } from '@/env'
+import axios from 'axios'
+import { db } from '@/db'
+import { eq } from 'drizzle-orm'
+import { documentsTable, libraryTable } from '@/db/schema'
+import { auth } from '@clerk/nextjs/server'
 
 interface Metadata {
-  fileUrl: string;
+  fileUrl: string
   citations: {
-    "in-text": string;
-    "after-text"?: string;
-  };
+    'in-text': string
+    'after-text'?: string
+  }
 }
 
 export async function POST(request: Request) {
@@ -70,19 +70,19 @@ export async function POST(request: Request) {
     //   { status: 200 }
     // );
     return NextResponse.json({
-      text: "Here is some sentence",
+      text: 'Here is some sentence',
       is_referenced: true,
       citations: {
-        "in-text": "(Dhruv et al., 2024)",
-        "after-text": "(Dhruv et al., 2024)",
+        'in-text': '(Dhruv et al., 2024)',
+        'after-text': '(Dhruv et al., 2024)',
       },
-      href: "https://www.google.com",
-    });
+      href: 'https://www.google.com',
+    })
   } catch (error) {
-    console.error("Error generating suggestion:", error);
+    console.error('Error generating suggestion:', error)
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: 'Internal Server Error' },
       { status: 500 }
-    );
+    )
   }
 }

@@ -49,3 +49,6 @@ packages/*/dist
 packages/*/.next
 packages/*/build
 .vercel
+
+# Prettier
+.prettierrc

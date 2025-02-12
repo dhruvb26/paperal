@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 import logging
 from models.requests import SentenceRequest
 from agents.generate import (
@@ -26,17 +26,25 @@ logging.basicConfig(
 async def generate_sentence(request: SentenceRequest):
     """Endpoint to generate a sentence based on the given context."""
     logging.info("Received request to generate sentence.")
-    # get heading from table documents
-    heading = (
-        database.supabase_client.table("documents")
-        .select("*")
-        .eq("id", request.document_id)
-        .execute()
-    )
-    heading = heading.data[0]["prompt"]
+
+    # Get heading from table documents with error handling
+    try:
+        heading_result = (
+            database.supabase_client.table("documents")
+            .select("*")
+            .eq("id", request.document_id)
+            .execute()
+        )
+        if not heading_result.data:
+            logging.error(f"No document found with id: {request.document_id}")
+            raise HTTPException(status_code=404, message="Document not found")
+
+        heading = heading_result.data[0]["prompt"]
+    except Exception as e:
+        logging.error(f"Error fetching document: {str(e)}")
+        raise HTTPException(status_code=500, message="Error fetching document")
 
     # Early return for empty previous_text
-
     if request.previous_text.strip() == heading.strip():
         ai_generated_opening = suggest_opening_statement(heading)
         return {
@@ -47,67 +55,78 @@ async def generate_sentence(request: SentenceRequest):
             "context": None,
         }
 
-    similar_docs = await find_similar_documents(request.previous_text[:200], heading)
-    ai_generated = await generate_ai_sentence(request.previous_text, heading)
+    # Run similar docs search and AI generation in parallel
+    similar_docs, ai_generated = await asyncio.gather(
+        find_similar_documents(request.previous_text[:200], heading),
+        generate_ai_sentence(request.previous_text, heading),
+    )
+    sentence = generate_referenced_sentence(
+        request.previous_text, heading, similar_docs[0]["content"]
+    )
+    print(similar_docs[0]["metadata"].get("url"))
+    print(similar_docs[0]["metadata"])
+
     # Only process similar documents if they exist and have valid scores
-    if len(similar_docs) > 0:
-        sentence = generate_referenced_sentence(
-            request.previous_text, heading, similar_docs[0]["content"]
+    # if len(similar_docs) > 0 and similar_docs[0]["score"] > 0.68:
+
+    #     sentence = generate_referenced_sentence(
+    #         request.previous_text, heading, similar_docs[0]["content"]
+    #     )
+
+    #     # Get citation data
+    #     citation = (
+    #         database.supabase_client.table("library")
+    #         .select("*")
+    #         .eq("id", similar_docs[0]["metadata"].get("library_id"))
+    #         .execute()
+    #     )
+
+    #     return {
+    #         "text": sentence.get("sentence"),
+    #         "is_referenced": True,
+    #         "citations": similar_docs[0]["metadata"].get(
+    #             "citations",
+    #             {
+    #                 "in-text": citation.data[0]["metadata"]["citations"]["in-text"],
+    #             },
+    #         ),
+    #         "href": similar_docs[0]["metadata"].get("url"),
+    #         "context": similar_docs[0]["content"],
+    #     }
+
+    if len(similar_docs) > 0 and (
+        sentence
+        and select_most_relevant_sentence(
+            # similar_docs[0]["content"],
+            ai_generated.get("sentence"),
+            sentence.get("sentence"),
+            request.previous_text[:200],
         )
-        print(sentence)
-        print(similar_docs[0]["score"])
-        if similar_docs[0]["score"] > 0.05:
-            citation = (
-                database.supabase_client.table("library")
-                .select("*")
-                .eq("id", similar_docs[0]["metadata"].get("library_id"))
-                .execute()
-            )
+        == True
+    ):
 
-            return {
-                "text": sentence.get("sentence"),
-                "is_referenced": True,
-                "citations": similar_docs[0]["metadata"].get(
-                    "citations",
-                    {
-                        "in-text": citation.data[0]["metadata"]["citations"]["in-text"],
-                    },
-                ),
-                "href": similar_docs[0]["metadata"].get("url"),
-                "context": similar_docs[0]["content"],
-            }
+        # query library table for citation
+        citation = (
+            database.supabase_client.table("library")
+            .select("*")
+            .eq("id", similar_docs[0]["metadata"].get("library_id"))
+            .execute()
+        )
+        # print(similar_docs[0]["metadata"].get("url"))
+        # print(similar_docs[0]["metadata"])
 
-        if (
-            sentence
-            and select_most_relevant_sentence(
-                # similar_docs[0]["content"],
-                ai_generated.get("sentence"),
-                sentence.get("sentence"),
-                request.previous_text[:500],
-            )
-            == True
-        ):
-
-            # query library table for citation
-            citation = (
-                database.supabase_client.table("library")
-                .select("*")
-                .eq("id", similar_docs[0]["metadata"].get("library_id"))
-                .execute()
-            )
-
-            return {
-                "text": sentence.get("sentence"),
-                "is_referenced": True,
-                "citations": similar_docs[0]["metadata"].get(
-                    "citations",
-                    {
-                        "in-text": citation.data[0]["metadata"]["citations"]["in-text"],
-                    },
-                ),
-                "href": similar_docs[0]["metadata"].get("url"),
-                "context": similar_docs[0]["content"],
-            }
+        return {
+            "text": sentence.get("sentence"),
+            "is_referenced": True,
+            "citations": similar_docs[0]["metadata"].get(
+                "citations",
+                {
+                    "in-text": citation.data[0]["metadata"]["citations"]["in-text"],
+                },
+            ),
+            "href": similar_docs[0]["metadata"].get("url"),
+            "context": similar_docs[0]["content"],
+        }
     # Generate non-referenced sentence
     # ai_generated = await generate_ai_sentence(
     #     request.previous_text, heading, request.user_id

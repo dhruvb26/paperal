@@ -1,21 +1,21 @@
-import React from "react";
-import Link from "next/link";
+import React from 'react'
+import Link from 'next/link'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { DotsThreeVertical } from "@phosphor-icons/react";
-import { LibraryDocument } from "@/types/models/library";
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import { DotsThreeVertical } from '@phosphor-icons/react'
+import { LibraryDocument } from '@/types/models/library'
 
 interface LibraryListProps {
-  libraries: LibraryDocument[];
-  searchQuery: string;
-  sortDesc: boolean;
-  pathname: string;
-  setLibraryToDelete: (id: string | null) => void;
+  libraries: LibraryDocument[]
+  searchQuery: string
+  sortDesc: boolean
+  pathname: string
+  setLibraryToDelete: (id: string | null) => void
 }
 
 export const LibraryList: React.FC<LibraryListProps> = ({
@@ -27,27 +27,27 @@ export const LibraryList: React.FC<LibraryListProps> = ({
 }) => {
   const filteredLibraries = libraries
     .filter((library) => {
-      const title = library.title.toLowerCase();
-      const description = library.description.toLowerCase();
-      const query = searchQuery.toLowerCase();
+      const title = library.title.toLowerCase()
+      const description = library.description.toLowerCase()
+      const query = searchQuery.toLowerCase()
 
-      return title.includes(query) || description.includes(query);
+      return title.includes(query) || description.includes(query)
     })
     .sort((a, b) => {
-      const dateA = a.updatedAt || a.createdAt;
-      const dateB = b.updatedAt || b.createdAt;
+      const dateA = a.updatedAt || a.createdAt
+      const dateB = b.updatedAt || b.createdAt
       return sortDesc
         ? dateB.getTime() - dateA.getTime()
-        : dateA.getTime() - dateB.getTime();
-    });
+        : dateA.getTime() - dateB.getTime()
+    })
 
   const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+  }
 
   return (
     <div>
@@ -56,8 +56,8 @@ export const LibraryList: React.FC<LibraryListProps> = ({
           key={library.id}
           className={`flex flex-col items-start gap-2 whitespace-nowrap border-b p-2 text-sm leading-tight ${
             pathname === `/library/${library.id}`
-              ? "bg-background text-sidebar-accent-foreground"
-              : ""
+              ? 'bg-background text-sidebar-accent-foreground'
+              : ''
           }`}
         >
           <div className="flex w-full items-center">
@@ -108,5 +108,5 @@ export const LibraryList: React.FC<LibraryListProps> = ({
         <div className="p-4 text-sm text-center w-full">No results found.</div>
       )}
     </div>
-  );
-};
+  )
+}

@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-} from "./ui/sidebar";
-import { Skeleton } from "./ui/skeleton";
+} from './ui/sidebar'
+import { Skeleton } from './ui/skeleton'
 
 export const SidebarSkeleton = () => {
   return (
@@ -45,7 +45,7 @@ export const SidebarSkeleton = () => {
         </SidebarContent>
       </Sidebar>
     </Sidebar>
-  );
-};
+  )
+}
 
-export default SidebarSkeleton;
+export default SidebarSkeleton

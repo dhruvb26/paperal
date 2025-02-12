@@ -1,5 +1,5 @@
-import React from "react";
-import { BaseEdge, getBezierPath, type EdgeProps } from "@xyflow/react";
+import React from 'react'
+import { BaseEdge, getBezierPath, type EdgeProps } from '@xyflow/react'
 
 export function AnimatedEdge({
   id,
@@ -17,7 +17,7 @@ export function AnimatedEdge({
     targetX,
     targetY,
     targetPosition,
-  });
+  })
 
   return (
     <>
@@ -35,5 +35,5 @@ export function AnimatedEdge({
         />
       </path>
     </>
-  );
+  )
 }

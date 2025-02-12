@@ -1,9 +1,9 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 interface SettingsState {
-  showAiSuggestions: boolean;
-  toggleAiSuggestions: () => void;
+  showAiSuggestions: boolean
+  toggleAiSuggestions: () => void
 }
 
 export const useSettingsStore = create<SettingsState>()(
@@ -14,7 +14,7 @@ export const useSettingsStore = create<SettingsState>()(
         set((state) => ({ showAiSuggestions: !state.showAiSuggestions })),
     }),
     {
-      name: "user-settings",
+      name: 'user-settings',
     }
   )
-);
+)
