@@ -7,6 +7,7 @@ import { currentUser } from '@clerk/nextjs/server'
 import { and, eq } from 'drizzle-orm'
 import { createEmbeddings } from '@/trigger/embeddings'
 import { tasks } from '@trigger.dev/sdk/v3'
+import { env } from '@/env'
 
 export async function createDocument(prompt: string) {
   const docId = uuidv4()
@@ -17,9 +18,11 @@ export async function createDocument(prompt: string) {
     throw new Error('User not found')
   }
 
-  await tasks.trigger<typeof createEmbeddings>('create-embeddings', {
-    prompt,
-  })
+  if (env.CREATE_EMBEDDINGS) {
+    await tasks.trigger<typeof createEmbeddings>('create-embeddings', {
+      prompt,
+    })
+  }
 
   const defaultContent = {
     type: 'doc',
@@ -50,7 +53,7 @@ export async function createDocument(prompt: string) {
     userId: userId,
   })
 
-  await new Promise((resolve) => setTimeout(resolve, 10000))
+  await new Promise((resolve) => setTimeout(resolve, 8000))
 
   return docId
 }

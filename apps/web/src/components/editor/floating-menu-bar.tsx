@@ -180,8 +180,8 @@ export const FloatingMenuBar = ({ editor }: { editor: Editor }) => {
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          side="right"
-          className=" border-none bg-blue-600 shadow-none"
+          side="bottom"
+          className=" border-none shadow-none bg-transparent"
         >
           <Input
             value={linkUrl}

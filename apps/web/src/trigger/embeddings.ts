@@ -1,4 +1,4 @@
-import { task } from '@trigger.dev/sdk/v3'
+import { task, logger } from '@trigger.dev/sdk/v3'
 import { env } from '@/env'
 
 interface CreateEmbeddingsPayload {
