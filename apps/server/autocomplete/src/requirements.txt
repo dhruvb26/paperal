@@ -20,6 +20,4 @@ baml-py
 locust
 pinecone
 pinecone-client
-pinecone-plugin-interface
-pinecone-plugin-inference
 asyncio
