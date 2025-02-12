@@ -17,7 +17,6 @@ uvicorn
 gunicorn
 urllib3
 baml-py
-python-multiprocessing
 locust
 pinecone
 asyncio
