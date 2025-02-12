@@ -192,6 +192,7 @@ pdfplumber==0.11.4
 pi_heif==0.21.0
 pikepdf==9.4.2
 pillow==10.4.0
+pinecone==6.0.1
 pinecone-client==5.0.1
 pinecone-plugin-inference==1.1.0
 pinecone-plugin-interface==0.0.7
