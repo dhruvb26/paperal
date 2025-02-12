@@ -6,7 +6,9 @@ import baml_connect.baml_main as baml_main
 from agents.store_pinecone import get_query_embeddings, query_pinecone_index
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.WARNING,  # Reduce logging overhead
+    format="%(levelname)s - %(message)s",
+    force=True,
 )
 
 client = OpenAI()
@@ -76,49 +78,6 @@ async def find_similar_documents(
                     },
                 }
             )
-        # print(query_response)
-        # if not matched_docs.data:
-        #     return []
-        # for doc in matched_docs.data:
-        #     print(doc["content"])
-        #     break
-        # # First filter by user_id
-        # user_filtered_docs = [
-        #     doc
-        #     for doc in matched_docs.data
-        #     if (user_id is None and doc.get("metadata", {}).get("user_id") is None)
-        #     or (user_id and doc.get("metadata", {}).get("user_id") in {user_id, None})
-        # ]
-
-        # if not user_filtered_docs:
-        #     return []
-
-        # # Find the first document that's different from the last used one
-        # filtered_docs = []
-        # for doc in user_filtered_docs:
-        #     if doc["metadata"]["library_id"] != last_used_document_source:
-        #         filtered_docs = [doc]
-        #         last_used_document_source = doc["metadata"]["library_id"]
-        #         break
-
-        # # If no different document found, return empty list
-        # if not filtered_docs:
-        #     return []
-
-        # # Create results for the selected document
-        # results = [
-        #     {
-        #         "content": str(doc["content"]),
-        #         "score": float(doc["similarity"]),
-        #         "metadata": {
-        #             "author": str(doc["metadata"]["author"]),
-        #             "title": str(doc["metadata"]["title"]),
-        #             "url": str(doc["metadata"]["source"]),
-        #             "library_id": str(doc["metadata"]["library_id"]),
-        #         },
-        #     }
-        #     for doc in filtered_docs
-        # ]
 
         return user_filtered_docs
 
@@ -127,13 +86,9 @@ async def find_similar_documents(
         return []
 
 
-_RAG_SYSTEM_PROMPT = """
-You are an expert keyword generator.
-You are give a text and you need to generate keywords from the text which can be used to generate a RAG.
-
-Generate 3 trivial keywords.
-Only return the keywords separated by a space, no other text.
-"""
+# Simplified RAG prompt
+_RAG_SYSTEM_PROMPT = """Expert keyword generator. Generate 3 keywords from the text for RAG.
+Return only space-separated keywords."""
 
 
 async def generate_question_for_RAG(text: str, heading: str):
@@ -154,35 +109,17 @@ async def generate_question_for_RAG(text: str, heading: str):
     return generated_question
 
 
-async def generate_ai_sentence(
-    previous_text: str,
-    heading: str,
-) -> dict:
-    """
-    Generates a sentence using AI without referencing external materials.
-    """
+# Simplified sentence generation prompt
+async def generate_ai_sentence(previous_text: str, heading: str) -> dict:
+    context = f"""Academic writer generating next paper sentence. Paper heading: {heading}
+    Rules:
+    - 20-25 words
+    - Grammatically correct
+    - Coherent flow
+    - Meaningful advancement
+    - Avoid Moreover, Additionally"""
+
     try:
-        context = f"""
-        You are an expert academic writer tasked with generating the next sentence for a research paper. Your goal is to produce a single, coherent sentence that logically follows the previous content and fits seamlessly into the paper's structure.
-
-        Here is the heading of the paper:
-        <paper_heading>
-        {heading}
-        </paper_heading>
-
-        Please follow these steps to generate the next sentence:
-
-        1. Analyze the paper heading and previous content to understand the context and current section of the paper.
-        2. Consider how the next sentence should logically flow from the existing content.
-        3. You will recieve the previous content of the paper in <previous_content> tags.
-        3. Generate a sentence that meets the following criteria:
-        - Contains between 20 to 25 words
-        - Is grammatically correct
-        - Fits coherently with the previous content and overall paper structure
-        - Advances the argument or discussion in a meaningful way
-        - Try not to use words like Moreover, Additionally, etc.
-        """
-
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
@@ -190,7 +127,7 @@ async def generate_ai_sentence(
                 {
                     "role": "user",
                     "content": f"Here is the previous content of the paper:\n"
-                    f"<previous_content>{previous_text}</previous_content>",
+                    f"{previous_text}",
                 },
             ],
         )
@@ -203,7 +140,7 @@ async def generate_ai_sentence(
         return {}
 
 
-def generate_referenced_sentence(
+async def generate_referenced_sentence(
     previous_text: str, heading: str, paper_content: str
 ) -> dict:
     """
