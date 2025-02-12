@@ -19,5 +19,4 @@ urllib3
 baml-py
 locust
 pinecone
-pinecone-client
 asyncio
