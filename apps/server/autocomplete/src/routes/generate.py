@@ -12,13 +12,16 @@ import os
 from dotenv import load_dotenv
 import database
 import asyncio
+from datetime import datetime
 
 load_dotenv()
 
 router = APIRouter()
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True
+    level=logging.WARNING,  # Reduce logging overhead
+    format="%(levelname)s - %(message)s",  # Simpler format
+    force=True,
 )
 
 
@@ -56,18 +59,24 @@ async def generate_sentence(request: SentenceRequest):
         }
 
     # Run similar docs search and AI generation in parallel
-    similar_docs, ai_generated = await asyncio.gather(
-        find_similar_documents(request.previous_text[:200], heading),
-        generate_ai_sentence(request.previous_text, heading),
-    )
-    sentence = generate_referenced_sentence(
+    print("start time", datetime.now(), "\n")
+    # similar_docs, ai_generated = await asyncio.gather(
+    #     find_similar_documents(request.previous_text[:150], heading),
+    #     generate_ai_sentence(request.previous_text, heading),
+    # )
+
+    similar_docs = await find_similar_documents(request.previous_text[:150], heading)
+    ai_generated = await generate_ai_sentence(request.previous_text, heading)
+
+    print("end time", datetime.now(), "\n")
+    sentence = await generate_referenced_sentence(
         request.previous_text, heading, similar_docs[0]["content"]
     )
 
     if sentence and select_most_relevant_sentence(
         ai_generated.get("sentence"),
         sentence.get("sentence"),
-        request.previous_text[:200],
+        request.previous_text[:150],
     ):
         # Get citation data
         citation = (
