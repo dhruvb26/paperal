@@ -11,6 +11,7 @@ from datetime import datetime
 import requests
 import re
 from agents.store_pinecone import process_documents_batch
+from multiprocessing import Pool
 
 
 # Add logging configuration at the start of the file
@@ -57,6 +58,108 @@ def generate_in_text_citation(authors: list[str], year: str) -> str:
         return f"({authors[0]} et al.,{year})"
 
 
+def process_single_url(args):
+    """Process a single URL with its associated parameters"""
+    url, user_id, is_public = args
+    try:
+        response = requests.get(url)
+        if response.status_code != 200:
+            logging.warning(f"Failed to fetch PDF. Status code: {response.status_code}")
+            return False
+
+        logging.info(f"Downloading PDF from URL: {url}")
+        pdf_data = response.content
+        pdf_content = io.BytesIO(pdf_data)
+        page_count = check_pdf_pages(pdf_content)
+
+        # Skip if PDF is invalid or too long
+        if not (0 < page_count <= 30):
+            logging.warning(f"Skipping PDF with {page_count} pages: {url}")
+            return False
+
+        # Process valid PDF
+        pdf_document = fitz.open(stream=pdf_data, filetype="pdf")
+        text = ""
+        for page in pdf_document:
+            text += page.get_text()
+
+        # Extract and store document
+        extracted_info = ExtractPaperAgent(text[:1200])
+        if extracted_info.year == "":
+            # Try to extract year from URL using regex pattern for 4 digits
+
+            year_match = re.search(r"/(\d{4})/", url)
+            extracted_info.year = year_match.group(1) if year_match else ""
+        docum = Document(page_content=text)
+
+        # Ensure user_id is a string or empty string instead of None
+        safe_user_id = str(user_id) if user_id is not None else ""
+
+        # logging.info("Created document")
+        # docs = database.split_documents([docum])
+        # logging.info("Split documents")
+
+        # Store in database
+        metadata_for_library = {
+            "fileUrl": url,
+            "authors": extracted_info.author,
+            "year": extracted_info.year,
+            "citations": {
+                "in-text": generate_in_text_citation(
+                    extracted_info.author, extracted_info.year
+                ),
+            },
+        }
+
+        data = {
+            "title": extracted_info.title,
+            "description": extracted_info.abstract,
+            "user_id": user_id if user_id else None,
+            "metadata": metadata_for_library,
+            "is_public": is_public,
+        }
+
+        library_response = (
+            database.supabase_client.table("library").insert(data).execute()
+        )
+        library_id = library_response.data[0]["id"]
+        print(url)
+
+        process_documents_batch(
+            [docum],
+            metadata={
+                "url": url,
+                "authors": extracted_info.author,
+                "title": extracted_info.title,
+                "year": extracted_info.year,
+                "user_id": safe_user_id,
+                "library_id": library_id,
+                "is_public": is_public,
+            },
+        )
+
+        # embeddings table
+        # database.add_metadata(
+        #     docs,
+        #     url,
+        #     extracted_info.author,
+        #     extracted_info.title,
+        #     extracted_info.year,
+        #     safe_user_id,
+        #     library_id,
+        #     is_public,
+        # )
+
+        # database.vector_store.add_documents(docs)
+
+        logging.info(f"Successfully stored paper: {url}")
+        return True
+
+    except Exception as e:
+        logging.error(f"Error processing URL: {e}")
+        return False
+
+
 def store_research_paper_agent(
     research_url: list[str],
     user_id: Optional[str] = None,
@@ -69,108 +172,18 @@ def store_research_paper_agent(
 
         print(datetime.now())
 
-        for url in research_url:
-            try:
-                response = requests.get(url)
-                if response.status_code != 200:
-                    logging.warning(
-                        f"Failed to fetch PDF. Status code: {response.status_code}"
-                    )
-                    continue
+        # Create arguments for each URL
+        args = [(url, user_id, is_public) for url in research_url]
 
-                logging.info(f"Downloading PDF from URL: {url}")
-                pdf_data = response.content
-                pdf_content = io.BytesIO(pdf_data)
-                page_count = check_pdf_pages(pdf_content)
-
-                # Skip if PDF is invalid or too long
-                if not (0 < page_count <= 30):
-                    logging.warning(f"Skipping PDF with {page_count} pages: {url}")
-                    continue
-
-                # Process valid PDF
-                pdf_document = fitz.open(stream=pdf_data, filetype="pdf")
-                text = ""
-                for page in pdf_document:
-                    text += page.get_text()
-
-                # Extract and store document
-                extracted_info = ExtractPaperAgent(text[:1200])
-                if extracted_info.year == "":
-                    # Try to extract year from URL using regex pattern for 4 digits
-
-                    year_match = re.search(r"/(\d{4})/", url)
-                    extracted_info.year = year_match.group(1) if year_match else ""
-                docum = Document(page_content=text)
-
-                # Ensure user_id is a string or empty string instead of None
-                safe_user_id = str(user_id) if user_id is not None else ""
-
-                # logging.info("Created document")
-                # docs = database.split_documents([docum])
-                # logging.info("Split documents")
-
-                # Store in database
-                metadata_for_library = {
-                    "fileUrl": url,
-                    "authors": extracted_info.author,
-                    "year": extracted_info.year,
-                    "citations": {
-                        "in-text": generate_in_text_citation(
-                            extracted_info.author, extracted_info.year
-                        ),
-                    },
-                }
-
-                data = {
-                    "title": extracted_info.title,
-                    "description": extracted_info.abstract,
-                    "user_id": user_id if user_id else None,
-                    "metadata": metadata_for_library,
-                    "is_public": is_public,
-                }
-
-                library_response = (
-                    database.supabase_client.table("library").insert(data).execute()
-                )
-                library_id = library_response.data[0]["id"]
-                print(url)
-
-                process_documents_batch(
-                    [docum],
-                    metadata={
-                        "url": url,
-                        "authors": extracted_info.author,
-                        "title": extracted_info.title,
-                        "year": extracted_info.year,
-                        "user_id": safe_user_id,
-                        "library_id": library_id,
-                        "is_public": is_public,
-                    },
-                )
-
-                # embeddings table
-                # database.add_metadata(
-                #     docs,
-                #     url,
-                #     extracted_info.author,
-                #     extracted_info.title,
-                #     extracted_info.year,
-                #     safe_user_id,
-                #     library_id,
-                #     is_public,
-                # )
-
-                # database.vector_store.add_documents(docs)
-
-                logging.info(f"Successfully stored paper: {url}")
-
-            except Exception as e:
-                logging.error(f"Error processing URL: {e}")
-                continue
+        # Process URLs in parallel using a process pool
+        with Pool(processes=2) as pool:
+            results = pool.map(process_single_url, args)
 
         print(datetime.now())
-        return True
+        return any(
+            results
+        )  # Return True if at least one URL was processed successfully
+
     except Exception as e:
         logging.error(f"Error in StoreResearchPaperAgent: {e}")
         return False

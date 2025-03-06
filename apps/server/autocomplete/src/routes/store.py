@@ -2,6 +2,7 @@ from models.requests import StoreResearchRequest
 from agents.store import store_research_paper_agent
 from fastapi import APIRouter, BackgroundTasks
 import logging
+from multiprocessing import Process
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s", force=True
@@ -16,10 +17,12 @@ def store_research_papers(
 ):
     """Endpoint to store research papers in the database."""
     logging.info("Received request to store research papers.")
-    background_tasks.add_task(
-        store_research_paper_agent,
-        request.research_urls,
-        request.user_id,
-        request.is_public,
+
+    # Create and start a new process for the store_research_paper_agent
+    process = Process(
+        target=store_research_paper_agent,
+        args=(request.research_urls, request.user_id, request.is_public),
     )
+    process.start()
+
     return {"success": True}

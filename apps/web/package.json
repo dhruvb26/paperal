@@ -85,7 +85,6 @@
     "axios": "^1.7.9",
     "cheerio": "^1.0.0",
     "class-variance-authority": "^0.7.1",
-    "cli@3.3.13": "link:trigger.dev/cli@3.3.13",
     "clsx": "^2.1.1",
     "dagre": "^0.8.5",
     "docx": "^9.1.1",

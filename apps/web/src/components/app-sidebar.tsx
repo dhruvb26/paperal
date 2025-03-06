@@ -231,10 +231,18 @@ export function AppSidebar({
       <div className="flex flex-col items-center max-h-fit justify-start gap-2 p-2 rounded-lg  relative left-8 top-8">
         <SidebarTrigger className="z-10" />
 
-        <Button size="icon" onClick={() => handleEditorClick()}>
+        <Button
+          size="icon"
+          onClick={() => handleEditorClick()}
+          className="z-10"
+        >
           <File size={16} />
         </Button>
-        <Button size="icon" onClick={() => handleLibraryClick()}>
+        <Button
+          size="icon"
+          onClick={() => handleLibraryClick()}
+          className="z-10"
+        >
           <BookOpen size={16} />
         </Button>
         <Link href="/settings" className="z-10">
