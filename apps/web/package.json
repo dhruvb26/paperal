@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"next dev\" \"pnpm dlx trigger.dev@3.3.12 dev\"",
+    "dev": "concurrently \"next dev\" \"pnpm dlx trigger.dev@latest dev\"",
     "build": "next build",
     "start": "next start",
     "deploy": "opennextjs-cloudflare && wrangler deploy",
@@ -74,8 +74,7 @@
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
     "@tiptap/suggestion": "^2.11.5",
-    "@trigger.dev/cli": "^3.3.12",
-    "@trigger.dev/sdk": "3.3.12",
+    "@trigger.dev/sdk": "^3.3.17",
     "@types/dagre": "^0.7.52",
     "@types/html-to-text": "^9.0.4",
     "@uidotdev/usehooks": "^2.4.1",
@@ -140,9 +139,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.26.5",
-    "@cloudflare/workers-types": "^4.20250204.0",
-    "@opennextjs/cloudflare": "^0.3.10",
-    "@trigger.dev/build": "3.3.12",
+    "@trigger.dev/build": "3.3.17",
     "@types/lodash": "^4.17.15",
     "@types/node": "^20.17.17",
     "@types/react": "^18.3.18",
@@ -157,13 +154,11 @@
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
-    "open-next": "link:@opennextjs/aws/types/open-next",
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.3",
-    "wrangler": "^3.107.3"
+    "typescript": "^5.7.3"
   },
   "type": "module"
 }
