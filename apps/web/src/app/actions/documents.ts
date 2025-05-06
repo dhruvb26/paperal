@@ -5,8 +5,8 @@ import { documentsTable } from '@/db/schema'
 import { v4 as uuidv4 } from 'uuid'
 import { currentUser } from '@clerk/nextjs/server'
 import { and, eq } from 'drizzle-orm'
-import { createEmbeddings } from '@/trigger/embeddings'
 import { tasks } from '@trigger.dev/sdk/v3'
+import { createEmbeddings } from '@/trigger/embeddings'
 import { env } from '@/env'
 
 export async function createDocument(prompt: string) {
