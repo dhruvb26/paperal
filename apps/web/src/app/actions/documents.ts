@@ -5,8 +5,6 @@ import { documentsTable } from '@/db/schema'
 import { v4 as uuidv4 } from 'uuid'
 import { currentUser } from '@clerk/nextjs/server'
 import { and, eq } from 'drizzle-orm'
-import { tasks } from '@trigger.dev/sdk/v3'
-import { createEmbeddings } from '@/trigger/embeddings'
 import { env } from '@/env'
 
 export async function createDocument(prompt: string) {
@@ -18,44 +16,56 @@ export async function createDocument(prompt: string) {
     throw new Error('User not found')
   }
 
-  if (env.CREATE_EMBEDDINGS) {
-    await tasks.trigger<typeof createEmbeddings>('create-embeddings', {
-      prompt,
-    })
-  }
+  const response = await fetch(`${env.API_URL}/topic`, {
+    method: 'POST',
+    body: JSON.stringify({ query: prompt }),
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  const {
+    data: { main_topic: topic },
+  } = await response.json()
 
   const defaultContent = {
     type: 'doc',
     content: [
       {
         type: 'heading',
-        attrs: {
-          level: 1,
-        },
-        content: [
-          {
-            type: 'text',
-            text: prompt,
-          },
-        ],
+        attrs: { level: 1 },
+        content: [{ type: 'text', text: topic }],
       },
-      {
-        type: 'paragraph',
-      },
+      { type: 'paragraph' },
     ],
   }
 
-  await db.insert(documentsTable).values({
-    id: docId,
-    content: JSON.stringify(defaultContent),
-    prompt: prompt,
-    title: prompt,
-    userId: userId,
-  })
+  const {
+    data: { urls: urls },
+  } = await fetch(`${env.API_URL}/search`, {
+    method: 'POST',
+    body: JSON.stringify({ topic }),
+    headers: { 'Content-Type': 'application/json' },
+  }).then((res) => res.json())
 
-  await new Promise((resolve) => setTimeout(resolve, 8000))
+  const [document] = await Promise.all([
+    db
+      .insert(documentsTable)
+      .values({
+        id: docId,
+        content: JSON.stringify(defaultContent),
+        prompt,
+        title: prompt,
+        userId,
+      })
+      .returning(),
 
-  return docId
+    fetch(`${env.API_URL}/process`, {
+      method: 'POST',
+      body: JSON.stringify({ urls }),
+      headers: { 'Content-Type': 'application/json' },
+    }).then((res) => res.json()),
+  ])
+
+  return document[0].id
 }
 
 export async function getDocuments() {

@@ -22,7 +22,7 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       const research_urls = [file.url]
 
-      await axios.post(`${env.API_URL}/store`, {
+      await axios.post(`${env.API_URL}/process`, {
         research_urls,
         user_id: metadata.userId,
       })

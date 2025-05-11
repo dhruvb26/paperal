@@ -84,9 +84,6 @@ export const libraryTable = pgTable('library', {
   createdAt: timestamp('created_at', { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 })
-    .$onUpdate(() => new Date())
-    .default(sql`CURRENT_TIMESTAMP`),
 })
 
 export const usersRelations = relations(usersTable, ({ many }) => ({
