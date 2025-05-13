@@ -73,17 +73,14 @@ export const AiAutocompleteExtension = Node.create<
         cb: (suggestion: string | null, data?: CallbackInput) => void
       ) => {
         try {
-          const pathDocumentId = window.location.pathname.split('/editor/')[1]
-
-          const suggestion = await axios.post(
+          const response = await axios.post(
             `${env.NEXT_PUBLIC_API_URL}/generate`,
             {
-              previous_text: previousText,
-              document_id: pathDocumentId,
+              query: previousText,
             }
           )
 
-          const data = suggestion.data as CallbackInput
+          const data = response.data.data.response as CallbackInput
           cb(data.text, data)
         } catch (error) {
           cb(null)

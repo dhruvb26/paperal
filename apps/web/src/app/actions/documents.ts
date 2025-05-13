@@ -38,13 +38,13 @@ export async function createDocument(prompt: string) {
     ],
   }
 
-  const {
-    data: { urls: urls },
-  } = await fetch(`${env.API_URL}/search`, {
-    method: 'POST',
-    body: JSON.stringify({ topic }),
-    headers: { 'Content-Type': 'application/json' },
-  }).then((res) => res.json())
+  // const {
+  //   data: { urls: urls },
+  // } = await fetch(`${env.API_URL}/search`, {
+  //   method: 'POST',
+  //   body: JSON.stringify({ topic }),
+  //   headers: { 'Content-Type': 'application/json' },
+  // }).then((res) => res.json())
 
   const [document] = await Promise.all([
     db
@@ -58,11 +58,11 @@ export async function createDocument(prompt: string) {
       })
       .returning(),
 
-    fetch(`${env.API_URL}/process`, {
-      method: 'POST',
-      body: JSON.stringify({ urls }),
-      headers: { 'Content-Type': 'application/json' },
-    }).then((res) => res.json()),
+    // fetch(`${env.API_URL}/process`, {
+    //   method: 'POST',
+    //   body: JSON.stringify({ urls }),
+    //   headers: { 'Content-Type': 'application/json' },
+    // }).then((res) => res.json()),
   ])
 
   return document[0].id

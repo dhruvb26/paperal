@@ -5,6 +5,5 @@ export interface LibraryDocument {
   userId: string | null
   isPublic: boolean
   createdAt: Date
-  updatedAt: Date | null
   metadata?: any
 }
