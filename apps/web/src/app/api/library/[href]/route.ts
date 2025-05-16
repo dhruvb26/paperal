@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     const fileUrl = decodeURIComponent(pathname.split('/').pop() || '')
 
     const document = await db.query.libraryTable.findFirst({
-      where: eq(sql`${libraryTable.metadata}->>'fileUrl'`, fileUrl),
+      where: eq(sql`${libraryTable.metadata}->>'file_url'`, fileUrl),
     })
 
     if (!document) {
