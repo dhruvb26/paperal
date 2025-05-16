@@ -1,6 +1,5 @@
 import logging
-from PyPDF2 import PdfReader
-
+from pypdf import PdfReader 
 
 logger = logging.getLogger(__name__)
 

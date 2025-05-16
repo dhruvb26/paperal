@@ -20,3 +20,4 @@ baml-py
 locust
 pinecone
 asyncio
+pypdf
