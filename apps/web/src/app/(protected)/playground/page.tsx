@@ -15,7 +15,7 @@ import '@xyflow/react/dist/style.css'
 import { AnimatedEdge } from '@/components/flow/animated-edge'
 import { Button } from '@/components/ui/button'
 import { CustomEdge } from '@/components/flow/custom-edge'
-import { useSidebarStore } from '@/store/sidebar-store'
+import { useSidebarStore } from '@/stores/sidebar-store'
 import { Chats } from '@phosphor-icons/react'
 import dagre from '@dagrejs/dagre'
 
@@ -191,7 +191,7 @@ function Flow() {
             y: clientY,
           }),
           data: {
-            title: ``,
+            title: '',
             label: `Node ${id}`,
           },
           type: 'custom',

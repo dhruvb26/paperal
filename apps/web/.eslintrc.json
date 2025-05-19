@@ -3,6 +3,8 @@
   "rules": {
     "react/display-name": "off",
     "react-hooks/exhaustive-deps": "off",
-    "import/no-anonymous-default-export": "off"
+    "import/no-anonymous-default-export": "off",
+    "no-unused-vars": "warn",
+    "quotes": ["warn", "single"]
   }
 }

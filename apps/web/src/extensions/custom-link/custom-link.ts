@@ -1,7 +1,7 @@
 import Link from '@tiptap/extension-link'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 import { EditorView } from '@tiptap/pm/view'
-import { useSidebarStore } from '@/store/sidebar-store'
+import { useSidebarStore } from '@/stores/sidebar-store'
 
 export const CustomLink = Link.extend({
   addProseMirrorPlugins() {

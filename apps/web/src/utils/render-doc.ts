@@ -16,11 +16,6 @@ interface ParagraphNode {
   content: (HeadingNode | TextNode)[]
 }
 
-interface Doc {
-  type: 'doc'
-  content: ParagraphNode[]
-}
-
 export const getDocHeading = (docString: string): string => {
   try {
     const content =

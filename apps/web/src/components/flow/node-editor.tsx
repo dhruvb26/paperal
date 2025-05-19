@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useSidebarStore } from '@/store/sidebar-store'
+import { useSidebarStore } from '@/stores/sidebar-store'
 
 interface NodeEditorProps {
   selectedNode: string

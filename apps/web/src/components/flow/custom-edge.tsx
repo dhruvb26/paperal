@@ -1,5 +1,5 @@
 import { BaseEdge, EdgeProps, getBezierPath } from '@xyflow/react'
-import { useSidebarStore } from '@/store/sidebar-store'
+import { useSidebarStore } from '@/stores/sidebar-store'
 // import { FlowNode } from "@/store/sidebar-store";
 interface FlowNode {
   id: string

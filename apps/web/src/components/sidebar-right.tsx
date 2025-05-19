@@ -1,6 +1,6 @@
 'use client'
 import * as React from 'react'
-import { useSidebarStore } from '@/store/sidebar-store'
+import { useSidebarStore } from '@/stores/sidebar-store'
 import { Textarea } from '@/components/ui/textarea'
 import { Sidebar, SidebarContent } from '@/components/ui/sidebar'
 import { useChat } from 'ai/react'
@@ -10,6 +10,7 @@ import ReactMarkdown from 'react-markdown'
 import { useUser } from '@clerk/nextjs'
 import { useParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import SelectedLinkPreview from './selected-link-preview'
 
 export function SidebarRight({
   ...props
@@ -81,6 +82,8 @@ export function SidebarRight({
           ))}
           <div ref={messagesEndRef} />
         </div>
+
+        <SelectedLinkPreview />
 
         <form
           onSubmit={handleSubmit}

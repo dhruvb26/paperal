@@ -31,7 +31,7 @@ export const usersTable = pgTable('users', {
 
 const tsvector = customType<{ data: string }>({
   dataType() {
-    return `tsvector`
+    return 'tsvector'
   },
 })
 

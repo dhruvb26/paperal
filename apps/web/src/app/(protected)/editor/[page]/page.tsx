@@ -9,7 +9,7 @@ import { SidebarRight } from '@/components/sidebar-right'
 import { Document } from '@/types/models/document'
 import { Button } from '@/components/ui/button'
 import { Chats } from '@phosphor-icons/react'
-import { useSidebarStore } from '@/store/sidebar-store'
+import { useSidebarStore } from '@/stores/sidebar-store'
 
 export default function EditorPage() {
   const params = useParams()
