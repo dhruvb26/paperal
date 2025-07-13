@@ -3,6 +3,9 @@ import { AppSidebar } from '@/components/app-sidebar'
 import { getDocuments } from '@/app/actions/documents'
 import { getLibraries } from '@/app/actions/library'
 
+// Force dynamic rendering since we're using server actions that need headers
+export const dynamic = 'force-dynamic'
+
 export default async function ProtectedLayout({
   children,
 }: {
