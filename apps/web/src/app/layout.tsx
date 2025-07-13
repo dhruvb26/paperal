@@ -22,18 +22,18 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <SWRConfig value={{ revalidateOnFocus: false }}>
-      <ClerkProvider>
-        <html lang="en" suppressHydrationWarning>
-          <body className={inter.className} suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
+        <SWRConfig value={{ revalidateOnFocus: false }}>
+          <ClerkProvider>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
 
             {children}
 
             <Toaster />
-          </body>
-        </html>
-      </ClerkProvider>
-    </SWRConfig>
+          </ClerkProvider>
+        </SWRConfig>
+      </body>
+    </html>
   )
 }
