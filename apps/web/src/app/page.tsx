@@ -21,6 +21,7 @@ import {
   SignOutButton,
 } from '@clerk/nextjs'
 import Link from 'next/link'
+import { toast } from 'sonner'
 
 export default function Home() {
   const router = useRouter()
@@ -56,11 +57,13 @@ export default function Home() {
 
   const handleSearchClick = async () => {
     if (!inputValue.trim()) return
+    //add toast to show that render is starting
+    toast.loading('Backend is hosted on a free tier, it may take a few seconds to render after you go the editor.')
 
     // TODO: check if user is signed in
     const userId = user?.id
     if (!userId) {
-      router.push('/sign-up')
+      router.push('/sign-in')
       return
     }
 
