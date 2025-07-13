@@ -13,12 +13,32 @@ export async function getUser() {
 
     const userId = userClerk.id
 
-    const user = await db.query.usersTable.findFirst({
+    let user = await db.query.usersTable.findFirst({
       where: eq(usersTable.id, userId),
     })
 
     if (!user) {
-      throw new Error('User not found in the database.')
+      console.log('User not found in database, creating user...')
+      // Create the user if they don't exist
+      const fullName = `${userClerk.firstName || ''} ${userClerk.lastName || ''}`.trim() || 'User'
+      
+      await db.insert(usersTable).values({
+        id: userId,
+        email: userClerk.emailAddresses[0]?.emailAddress || 'user@example.com',
+        name: fullName,
+        metadata: {
+          clerkId: userId,
+        },
+      })
+
+      // Fetch the newly created user
+      user = await db.query.usersTable.findFirst({
+        where: eq(usersTable.id, userId),
+      })
+
+      if (!user) {
+        throw new Error('Failed to create user in database.')
+      }
     }
 
     return user

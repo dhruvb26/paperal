@@ -4,6 +4,9 @@ import os
 from supabase.client import create_client
 import logging
 from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv(override=True)
 
 
 router = APIRouter()
@@ -13,28 +16,14 @@ logging.basicConfig(
 )
 
 
-@lru_cache
-def _cached_client_supabase():
-    try:
-        logging.info("Creating Supabase client...")
-        supabase_url = os.getenv("SUPABASE_URL")
-        supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
-        if not supabase_url or not supabase_key:
-            logging.error(
-                "Supabase URL or Service Key is missing in environment variables."
-            )
-            raise ValueError("Supabase URL or Service Key is not set.")
-        supabase_client = create_client(supabase_url, supabase_key)
-        logging.info("Supabase client created successfully.")
-        return supabase_client
-
-    except Exception as e:
-        logging.error(f"Error creating Supabase client: {e}")
-
 
 @lru_cache
 def _cached_client_openai():
-    return OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        logging.error("OpenAI API key is not configured")
+        return None
+    return OpenAI(api_key=api_key)
 
 
 @router.get("/vector_query")
@@ -47,6 +36,10 @@ async def vector_query(query: str, num_results: int = 2) -> dict:
     try:
         # Use cached embedding
         openai_client = _cached_client_openai()
+        if not openai_client:
+            logging.error("OpenAI client is not available")
+            return {"error": "OpenAI client not configured"}
+            
         embedding_response = openai_client.embeddings.create(
             model="text-embedding-3-large", input=query, dimensions=1536
         )
@@ -54,7 +47,18 @@ async def vector_query(query: str, num_results: int = 2) -> dict:
 
         # Call hybrid_search function via RPC with all required parameters
         # score is between 0 and 0.0392
-        supabase_client = _cached_client_supabase()
+        supabase_url = os.getenv("SUPABASE_URL")
+        supabase_key = os.getenv("SUPABASE_SERVICE_KEY")
+        
+        if not supabase_url or not supabase_key:
+            logging.error("Supabase credentials are not configured")
+            return {"error": "Supabase client not configured - missing credentials"}
+            
+        supabase_client = create_client(supabase_url, supabase_key)
+        if not supabase_client:
+            logging.error("Supabase client is not available")
+            return {"error": "Supabase client not configured"}
+            
         documents = supabase_client.rpc(
             "hybrid_search",
             {
@@ -74,4 +78,4 @@ async def vector_query(query: str, num_results: int = 2) -> dict:
 
     except Exception as e:
         logging.error(f"Error in query_vector_store: {str(e)}", exc_info=True)
-        raise e
+        return {"error": f"Query failed: {str(e)}"}
