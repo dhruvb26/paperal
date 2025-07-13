@@ -76,6 +76,11 @@ async def generate_sentence(request: SentenceRequest):
     print(ai_generated)
 
     print("end time", datetime.now(), "\n")
+    
+    # Check if we have similar documents before proceeding
+    if not similar_docs:
+        return {"text": ai_generated.get("sentence"), "is_referenced": False, "href": None}
+    
     sentence = await generate_referenced_sentence(
         request.previous_text, heading, similar_docs[0]["content"]
     )
@@ -93,15 +98,21 @@ async def generate_sentence(request: SentenceRequest):
             .execute()
         )
 
+        # Safely extract citation information
+        citation_info = similar_docs[0]["metadata"].get("citations")
+        if not citation_info and citation.data:
+            # Fallback to citation data if available
+            citation_metadata = citation.data[0].get("metadata", {})
+            citation_info = citation_metadata.get("citations", {})
+        
+        # Provide a safe fallback if no citation info is available
+        if not citation_info:
+            citation_info = {"in-text": ""}
+
         return {
             "text": sentence.get("sentence"),
             "is_referenced": True,
-            "citations": similar_docs[0]["metadata"].get(
-                "citations",
-                {
-                    "in-text": citation.data[0]["metadata"]["citations"]["in-text"],
-                },
-            ),
+            "citations": citation_info,
             "href": similar_docs[0]["metadata"].get("url"),
             "context": similar_docs[0]["content"],
         }
