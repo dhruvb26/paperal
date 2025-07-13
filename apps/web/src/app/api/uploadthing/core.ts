@@ -1,6 +1,6 @@
 import { createUploadthing, type FileRouter } from 'uploadthing/next'
 import { UploadThingError } from 'uploadthing/server'
-import { getUser } from '@/app/actions/user'
+import { auth } from '@clerk/nextjs/server'
 import { env } from '@/env'
 import axios from 'axios'
 
@@ -13,11 +13,11 @@ export const ourFileRouter = {
     },
   })
     .middleware(async ({ req }) => {
-      const user = await getUser()
+      const { userId } = await auth()
 
-      if (!user) throw new UploadThingError('Unauthorized')
+      if (!userId) throw new UploadThingError('Unauthorized')
 
-      return { userId: user.id }
+      return { userId }
     })
     .onUploadComplete(async ({ metadata, file }) => {
       const research_urls = [file.url]

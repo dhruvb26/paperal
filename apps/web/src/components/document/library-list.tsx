@@ -34,8 +34,8 @@ export const LibraryList: React.FC<LibraryListProps> = ({
       return title.includes(query) || description.includes(query)
     })
     .sort((a, b) => {
-      const dateA = a.updatedAt || a.createdAt
-      const dateB = b.updatedAt || b.createdAt
+      const dateA = new Date(a.createdAt)
+      const dateB = new Date(b.createdAt)
       return sortDesc
         ? dateB.getTime() - dateA.getTime()
         : dateA.getTime() - dateB.getTime()
