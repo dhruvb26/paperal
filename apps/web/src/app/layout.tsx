@@ -23,17 +23,17 @@ export default async function RootLayout({
 }>) {
   return (
     <SWRConfig value={{ revalidateOnFocus: false }}>
-      <ClerkProvider>
-        <html lang="en" suppressHydrationWarning>
-          <body className={inter.className} suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning>
+        <body className={inter.className} suppressHydrationWarning>
+          <ClerkProvider>
             <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
 
             {children}
 
             <Toaster />
-          </body>
-        </html>
-      </ClerkProvider>
+          </ClerkProvider>
+        </body>
+      </html>
     </SWRConfig>
   )
 }

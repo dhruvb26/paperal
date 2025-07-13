@@ -22,7 +22,7 @@
     "@ai-sdk/openai": "^1.1.9",
     "@ai-sdk/react": "^1.1.10",
     "@clerk/elements": "^0.22.20",
-    "@clerk/nextjs": "^6.11.1",
+    "@clerk/nextjs": "^6.24.0",
     "@dagrejs/dagre": "^1.1.4",
     "@hocuspocus/provider": "^2.15.2",
     "@hocuspocus/transformer": "^2.15.2",
