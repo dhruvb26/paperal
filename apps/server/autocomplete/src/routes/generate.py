@@ -32,6 +32,10 @@ async def generate_sentence(request: SentenceRequest):
 
     # Get heading from table documents with error handling
     try:
+        if not database.supabase_client:
+            logging.error("Supabase client is not available")
+            raise HTTPException(status_code=500, detail="Database connection not available")
+            
         heading_result = (
             database.supabase_client.table("documents")
             .select("*")
@@ -40,12 +44,14 @@ async def generate_sentence(request: SentenceRequest):
         )
         if not heading_result.data:
             logging.error(f"No document found with id: {request.document_id}")
-            raise HTTPException(status_code=404, message="Document not found")
+            raise HTTPException(status_code=404, detail="Document not found")
 
         heading = heading_result.data[0]["prompt"]
+    except HTTPException:
+        raise
     except Exception as e:
         logging.error(f"Error fetching document: {str(e)}")
-        raise HTTPException(status_code=500, message="Error fetching document")
+        raise HTTPException(status_code=500, detail="Error fetching document")
 
     # Early return for empty previous_text
     if request.previous_text.strip() == heading.strip():
@@ -67,12 +73,13 @@ async def generate_sentence(request: SentenceRequest):
 
     similar_docs = await find_similar_documents(request.previous_text[:150], heading)
     ai_generated = await generate_ai_sentence(request.previous_text, heading)
+    print(ai_generated)
 
     print("end time", datetime.now(), "\n")
     sentence = await generate_referenced_sentence(
         request.previous_text, heading, similar_docs[0]["content"]
     )
-
+    print(sentence)
     if sentence and select_most_relevant_sentence(
         ai_generated.get("sentence"),
         sentence.get("sentence"),

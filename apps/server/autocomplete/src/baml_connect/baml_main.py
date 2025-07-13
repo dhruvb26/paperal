@@ -1,22 +1,33 @@
 import os
+from typing import Optional
 
-from baml_connect.baml_client import reset_baml_env_vars
 from baml_connect.baml_client.types import Paper
 from dotenv import load_dotenv
 from openai import OpenAI
 
 load_dotenv()
 
-from baml_connect.baml_client.sync_client import b
-
-reset_baml_env_vars(dict(os.environ))
 OpenAI.api_key = os.getenv("OPENAI_API_KEY")
+
+# Global variable to hold the client
+_baml_client: Optional[object] = None
+
+
+def get_baml_client():
+    """Get or create the BAML client."""
+    global _baml_client
+    
+    if _baml_client is None:
+        # Import the client directly - environment variables are already loaded
+        from baml_connect.baml_client.sync_client import b
+        _baml_client = b
+    
+    return _baml_client
 
 
 def example(raw_text: str) -> Paper:
-
-    response = b.ExtractPaper(raw_text)
-
+    client = get_baml_client()
+    response = client.ExtractPaper(raw_text)
     return response
 
 

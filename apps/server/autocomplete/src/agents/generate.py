@@ -3,6 +3,7 @@ from typing import Optional
 from openai import OpenAI
 from database import query_vector_store
 import baml_connect.baml_main as baml_main
+from baml_connect.baml_client.types import Paper
 from agents.store_pinecone import get_query_embeddings, query_pinecone_index
 
 logging.basicConfig(
@@ -14,17 +15,22 @@ logging.basicConfig(
 client = OpenAI()
 
 
-def ExtractPaperAgent(text: str) -> str:
+def ExtractPaperAgent(text: str) -> Paper:
     """
     Extracts text from a PDF file and processes it for further use.
     """
     try:
-
         response = baml_main.example(text)
         return response
     except Exception as e:
         logging.error(f"Error in ExtractPaperAgent: {e}")
-        return ""
+        # Return a default Paper object with empty values
+        return Paper(
+            author=[],
+            title="",
+            year="",
+            abstract=""
+        )
 
 
 # Global variable to track the last used document
@@ -41,7 +47,6 @@ async def find_similar_documents(
 
     try:
         similar_keywords = await generate_question_for_RAG(generated_sentence, heading)
-        # matched_docs = query_vector_store(similar_keywords)
         query_embeddings = get_query_embeddings(query=similar_keywords)
         query_response = query_pinecone_index(query_embeddings)
 
@@ -49,21 +54,6 @@ async def find_similar_documents(
             return []
         results = query_response.matches
         user_filtered_docs = []
-        # for doc in results:
-        #     if (user_id is None and doc.get("metadata", {}).get("user_id") == "") or (
-        #         user_id and doc.get("metadata", {}).get("user_id") in {user_id, ""}
-        #     ):
-        #         user_filtered_docs.append(doc)
-
-        # # filtered_results = []
-
-        # for doc in user_filtered_docs:
-        #     if doc["metadata"]["library_id"] != last_used_document_source:
-        #         filtered_results = [doc]
-        #         last_used_document_source = doc["metadata"]["library_id"]
-        #         break
-        # if not filtered_results:
-        #     return []
 
         for doc in results:
             user_filtered_docs.append(
@@ -71,7 +61,6 @@ async def find_similar_documents(
                     "content": str(doc.get("metadata", {}).get("text")),
                     "score": float(doc.get("score", 0.0)),
                     "metadata": {
-                        "author": str(doc.get("metadata", {}).get("authors")),
                         "title": str(doc.get("metadata", {}).get("title")),
                         "url": str(doc["metadata"]["url"]),
                         "library_id": str(doc.get("metadata", {}).get("library_id")),

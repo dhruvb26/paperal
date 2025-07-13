@@ -12,77 +12,59 @@
 
 import typing
 import typing_extensions
-from enum import Enum
-
-
 from pydantic import BaseModel, ConfigDict
-
 
 import baml_py
 
-CheckT = typing_extensions.TypeVar('CheckT')
-CheckName = typing_extensions.TypeVar('CheckName', bound=str)
+from . import types
 
-class Check(BaseModel):
-    name: str
-    expression: str
-    status: str
-class Checked(BaseModel, typing.Generic[CheckT, CheckName]):
-    value: CheckT
-    checks: typing.Dict[CheckName, Check]
-
-def get_checks(checks: typing.Dict[CheckName, Check]) -> typing.List[Check]:
-    return list(checks.values())
-
-def all_succeeded(checks: typing.Dict[CheckName, Check]) -> bool:
-    return all(check.status == "succeeded" for check in get_checks(checks))
-# #########################################################################
-# Generated enums (0)
-# #########################################################################
-
+StreamStateValueT = typing.TypeVar('StreamStateValueT')
+class StreamState(BaseModel, typing.Generic[StreamStateValueT]):
+    value: StreamStateValueT
+    state: typing_extensions.Literal["Pending", "Incomplete", "Complete"]
 # #########################################################################
 # Generated classes (9)
 # #########################################################################
 
 class CitationObject(BaseModel):
-    in_text: str
-    complete_reference: str
-    url: str
+    in_text: typing.Optional[str] = None
+    complete_reference: typing.Optional[str] = None
+    url: typing.Optional[str] = None
 
 class NewCitationObject(BaseModel):
-    in_text: str
-    complete_reference: str
+    in_text: typing.Optional[str] = None
+    complete_reference: typing.Optional[str] = None
 
 class NewPage(BaseModel):
     sections: typing.List["Section"]
 
 class NewSection(BaseModel):
-    title: str
-    content: str
+    title: typing.Optional[str] = None
+    content: typing.Optional[str] = None
     references: typing.List["CitationObject"]
-    is_finished: bool
+    is_finished: typing.Optional[bool] = None
 
 class Page(BaseModel):
     sections: typing.List["Section"]
 
 class Paper(BaseModel):
     author: typing.List[str]
-    title: str
-    year: str
-    abstract: str
+    title: typing.Optional[str] = None
+    year: typing.Optional[str] = None
+    abstract: typing.Optional[str] = None
 
 class ReferenceObject(BaseModel):
-    text: str
-    url: str
+    text: typing.Optional[str] = None
+    url: typing.Optional[str] = None
 
 class References(BaseModel):
     references: typing.List["ReferenceObject"]
 
 class Section(BaseModel):
-    title: str
-    content: str
+    title: typing.Optional[str] = None
+    content: typing.Optional[str] = None
     references: typing.List["CitationObject"]
-    is_finished: bool
+    is_finished: typing.Optional[bool] = None
 
 # #########################################################################
 # Generated type aliases (0)

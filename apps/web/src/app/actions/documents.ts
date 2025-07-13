@@ -8,15 +8,14 @@ import { and, eq } from 'drizzle-orm'
 import { tasks } from '@trigger.dev/sdk/v3'
 import { createEmbeddings } from '@/trigger/embeddings'
 import { env } from '@/env'
+import { getUser } from './user'
 
 export async function createDocument(prompt: string) {
   const docId = uuidv4()
-  const user = await currentUser()
-  const userId = user?.id
-
-  if (!userId) {
-    throw new Error('User not found')
-  }
+  
+  // Use getUser to ensure user exists in database
+  const user = await getUser()
+  const userId = user.id
 
   if (env.CREATE_EMBEDDINGS) {
     await tasks.trigger<typeof createEmbeddings>('create-embeddings', {
@@ -59,27 +58,24 @@ export async function createDocument(prompt: string) {
 }
 
 export async function getDocuments() {
-  const user = await currentUser()
-  const userId = user?.id
+  try {
+    const user = await getUser()
+    const userId = user.id
 
-  if (!userId) {
+    const documents = await db
+      .select()
+      .from(documentsTable)
+      .where(eq(documentsTable.userId, userId))
+    return documents
+  } catch (error) {
+    console.error('Error getting documents:', error)
     return []
   }
-
-  const documents = await db
-    .select()
-    .from(documentsTable)
-    .where(eq(documentsTable.userId, userId))
-  return documents
 }
 
 export async function saveDocument(documentId: string, content: any) {
-  const user = await currentUser()
-  const userId = user?.id
-
-  if (!userId) {
-    throw new Error('User not found')
-  }
+  const user = await getUser()
+  const userId = user.id
 
   await db
     .update(documentsTable)
@@ -92,12 +88,8 @@ export async function saveDocument(documentId: string, content: any) {
 }
 
 export async function getDocument(documentId: string) {
-  const user = await currentUser()
-  const userId = user?.id
-
-  if (!userId) {
-    throw new Error('User not found')
-  }
+  const user = await getUser()
+  const userId = user.id
 
   const document = await db
     .select()
@@ -110,12 +102,8 @@ export async function getDocument(documentId: string) {
 }
 
 export async function deleteDocument(documentId: string) {
-  const user = await currentUser()
-  const userId = user?.id
-
-  if (!userId) {
-    throw new Error('User not found')
-  }
+  const user = await getUser()
+  const userId = user.id
 
   await db
     .delete(documentsTable)

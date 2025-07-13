@@ -23,8 +23,14 @@ logging.basicConfig(
 async def lifespan(app: FastAPI):
     yield
     # Close Supabase connection
-    supabase_client.postgrest.aclose()
-    logging.info("Supabase connection closed successfully")
+    if supabase_client:
+        try:
+            supabase_client.postgrest.aclose()
+            logging.info("Supabase connection closed successfully")
+        except Exception as e:
+            logging.error(f"Error closing Supabase connection: {e}")
+    else:
+        logging.info("No Supabase connection to close")
 
 
 app = FastAPI(
